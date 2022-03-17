@@ -19,7 +19,7 @@ public class MeshRoom : MonoBehaviour
     [NonSerialized] private List<int> triangles = new List<int>();
     [NonSerialized] private List<Color> _colors;
     
-    public List<MeshTiles> MeshTilesList = new ();
+    public Dictionary<int, MeshTiles> MeshTilesList = new ();
 
     private void Start()
     {
@@ -30,10 +30,10 @@ public class MeshRoom : MonoBehaviour
             TilesType = TilesType.Floor
         };
         
-        MeshTilesList.Add(meshTile);
+        MeshTilesList.Add(0, meshTile);
         
-        MakeWallNewStyle(0, new Vector3(1,0,1), new Vector3(10,4,10), new Vector3(0,0,0));
-        AddPanel(0, new Vector3(5,4,5));
+        MakeWallNewStyle(0, new Vector3(1,0,1), size, start);
+        BuildAWall(3, 2);
     }
 
     
@@ -59,7 +59,7 @@ public class MeshRoom : MonoBehaviour
         if (MeshTilesList.Count < meshTilesIndex)
         {
             var newTile = new MeshTiles();
-            MeshTilesList.Add(newTile);
+            
         }
         
         var finalPanel = MeshTilesList[meshTilesIndex].panels[^1];
@@ -84,84 +84,45 @@ public class MeshRoom : MonoBehaviour
 
         switch (wallIndex)
         {
-            case 0:
-                MakeAWall(start, new Vector3(0,1,1), numberPanels);
-                break;
             case 1:
-                MakeAWall(start + new Vector3(0,0,size.z), new Vector3(1,1,0), numberPanels);
+                MakeANewWall(start, new Vector3(0,1,1), numberPanels, wallIndex);
                 break;
             case 2:
-                MakeAWall(start + new Vector3(size.x,0,size.z), new Vector3(0,1,-1), numberPanels);
+                MakeANewWall(start + new Vector3(0,0,size.z), new Vector3(1,1,0), numberPanels, wallIndex);
                 break;
             case 3:
-                MakeAWall(start + new Vector3(size.x,0,0), new Vector3(-1,1,0), numberPanels);
+                MakeANewWall(start + new Vector3(size.x,0,size.z), new Vector3(0,1,-1), numberPanels, wallIndex);
+                break;
+            case 4:
+                MakeANewWall(start + new Vector3(size.x,0,0), new Vector3(-1,1,0), numberPanels, wallIndex);
                 break;
         }
     }
     
-    private void BuildAllWalls()
+    private void MakeANewWall(Vector3 startPos, Vector3 direction, int numberPanels, int wallIndex)
     {
-        MakeAWall(start, new Vector3(0,1,1));
-        MakeAWall(start + new Vector3(0,0,size.z), new Vector3(1,1,0));
-        MakeAWall(start + new Vector3(size.x,0,size.z), new Vector3(0,1,-1));
-        MakeAWall(start + new Vector3(size.x,0,0), new Vector3(-1,1,0));
-    }
-
-    private void AddFloorPanel(Vector3 newSize, Vector3 newDirection, int tileIndex)
-    {
-        var floorTrans = GetComponentsInChildren<Transform>()
-            .SingleOrDefault(x => x.CompareTag("FloorContainer"));
-        if (floorTrans == default) return;
+        var panelSize = new Vector3(size.x / numberPanels, size.y, size.z / numberPanels);
+        wallIndex++;
         
-        var floorTile = floorTrans.GetComponentsInChildren<MeshWall>()[0];
-
-        floorTile.AddFloorPanel(newSize, 1, newDirection, new Vector3(1,0,-1), 0);
-        floorTile.AddPanels();
-        
-    }
-    
-    private void MakeFloor()
-    {
-        var floorTrans = GetComponentsInChildren<Transform>()
-            .SingleOrDefault(x => x.CompareTag("FloorContainer"));
-        
-        var aFloor = Instantiate(theMeshWall, new Vector3(0, 0, 0), Quaternion.identity, floorTrans);
-        aFloor.GetComponent<MeshWall>().BuildFloor(new Vector3(1,0,1), size, start);
-        aFloor.GetComponent<MeshWall>().AddPanels(0);
-        aFloor.GetComponent<MeshWall>().SetMaterial(baseMaterial);
-    }
-
-    private void MakeAWall(Vector3 startPos, Vector3 direction)
-    {
-        var wallTrans = GetComponentsInChildren<Transform>()
-            .SingleOrDefault(x => x.CompareTag("WallContainer"));
-        
-        var aWall = Instantiate(theMeshWall, new Vector3(0, 0, 0), Quaternion.identity, wallTrans);
-        aWall.GetComponent<MeshWall>().start = startPos;
-        aWall.GetComponent<MeshWall>().direction = direction;
-        aWall.GetComponent<MeshWall>().AddWallPanel(direction, new Vector3(0,0,0), size, 0);
-        aWall.GetComponent<MeshWall>().AddPanels(0);
-        aWall.GetComponent<MeshWall>().SetMaterial(baseMaterial);
-    }
-    
-    private void MakeAWall(Vector3 startPos, Vector3 direction, int numberPanels)
-    {
-        var wallTrans = GetComponentsInChildren<Transform>()
-            .SingleOrDefault(x => x.CompareTag("WallContainer"));
-        
-        var aWall = Instantiate(theMeshWall, new Vector3(0, 0, 0), Quaternion.identity, wallTrans);
-        aWall.GetComponent<MeshWall>().start = startPos;
-        aWall.GetComponent<MeshWall>().direction = direction;
-        var theSize = new Vector3(size.x / numberPanels, size.y, size.z / numberPanels);
+        if (!MeshTilesList.ContainsKey(wallIndex))
+        {
+            var newTiles = new MeshTiles();
+            MeshTilesList.Add(wallIndex, newTiles);
+        }
         
         for (int i = 0; i < numberPanels; i++)
         {
-            aWall.GetComponent<MeshWall>().AddWallPanel(theSize, 1, new Vector3(0,0,0));
-            aWall.GetComponent<MeshWall>().AddPanels(i);
-        }
-        aWall.GetComponent<MeshWall>().SetMaterial(baseMaterial);    
-    }
+            var points =
+                MeshStatic.SetVertexPositions(startPos, panelSize, true, direction);
+            
+            var vertIndex = AddQuadWithPointList(points);
 
+            var meshPanel = new MeshPanel(vertIndex, direction);
+            MeshTilesList[wallIndex].panels.Add(meshPanel);
+            startPos = points[1];
+        }
+    }
+    
 
     private void AddPanelToWall(int wallIndex, Vector3 panelSize)
     {
