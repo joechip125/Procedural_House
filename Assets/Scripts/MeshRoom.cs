@@ -11,8 +11,7 @@ public class MeshRoom : MonoBehaviour
     public Vector3 start;
     public Vector3 size;
     public Material baseMaterial;
-    public GameObject theMeshWall;
-    
+
     Mesh roomMesh;
     MeshCollider meshCollider;
     [NonSerialized] List<Vector3> vertices = new ();
@@ -21,7 +20,7 @@ public class MeshRoom : MonoBehaviour
     
     public Dictionary<int, MeshTiles> MeshTilesList = new ();
 
-    private void Start()
+    private void Awake()
     {
         GetComponent<MeshFilter>().mesh = roomMesh = new Mesh();
         roomMesh.name = "RoomMesh";
@@ -31,22 +30,27 @@ public class MeshRoom : MonoBehaviour
         };
         
         MeshTilesList.Add(0, meshTile);
-        
-        MakeWallNewStyle(0, new Vector3(1,0,1), size, start);
-        BuildAWall(3, 2);
-        
-        MakeWallOpening(2, 0, 0.5f);
     }
+    
+    private void AddPanelToWall(int wallIndex, int panelIndex, Vector3 newSize)
+    {
+        var panelOne = MeshTilesList[wallIndex].panels[panelIndex];
 
+        var pos = vertices[panelOne.startTriangleIndex + 1] + new Vector3(0,3,0);
+        
+        var points =
+            MeshStatic.SetVertexPositions(pos,  newSize, true, panelOne.direction);
+
+        AddQuadWithPointList(points);
+    }
     
     
-    
-    private void MakeWallNewStyle(int meshTilesIndex, Vector3 direction, Vector3 newSize, Vector3 newStart)
+    public void MakeNewFloor(int meshTilesIndex, Vector3 direction)
     {
         var wallOrFloor = direction.y != 0;
 
         var points =
-            MeshStatic.SetVertexPositions(newStart, newSize, wallOrFloor, direction);
+            MeshStatic.SetVertexPositions(start, size, wallOrFloor, direction);
         
         var vertIndex = AddQuadWithPointList(points);
         var panel = new MeshPanel(vertIndex, direction);
@@ -94,9 +98,9 @@ public class MeshRoom : MonoBehaviour
         UpdateMesh();
     }
 
-    private void MoveAWall(Vector3 moveAmount)
+    private void MoveAWall(Vector3 moveAmount, int wallIndex)
     {
-        foreach (var p in MeshTilesList[2].panels)
+        foreach (var p in MeshTilesList[wallIndex].panels)
         {
             for (var i = 0; i < 4; i++)
             {
@@ -107,14 +111,13 @@ public class MeshRoom : MonoBehaviour
     }
     
     
-    private void MovePanelSide(int wallIndex, int panelIndex, int sideIndex, float moveAmount, Vector3 side)
+    private void MovePanelSide(int wallIndex, int panelIndex, int sideIndex, float moveAmount)
     {
         var panelOne = MeshTilesList[wallIndex].panels[panelIndex];
         
         var wallNormal = roomMesh.normals[panelOne.startTriangleIndex];
         var vertOne = sideIndex;
         var vertTwo = sideIndex + 1;
-        
         
         
         if (sideIndex > 2)
@@ -129,6 +132,14 @@ public class MeshRoom : MonoBehaviour
         else
         {
             
+        }
+    }
+
+    public void BuildAllWalls()
+    {
+        for (int i = 1; i < 5; i++)
+        {
+            BuildAWall(2, i);
         }
     }
 

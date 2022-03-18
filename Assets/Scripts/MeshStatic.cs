@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MeshStatic : MonoBehaviour
 {
+    public static float WallThickness = 0.3f;
+    
     public static Vector3[] DirectionVectors()
     {
         return new[] {new Vector3(1,0,0),};
