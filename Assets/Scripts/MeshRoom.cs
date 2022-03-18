@@ -15,9 +15,9 @@ public class MeshRoom : MonoBehaviour
     
     Mesh roomMesh;
     MeshCollider meshCollider;
-    [NonSerialized] List<Vector3> vertices = new List<Vector3>();
-    [NonSerialized] private List<int> triangles = new List<int>();
-    [NonSerialized] private List<Color> _colors;
+    [NonSerialized] List<Vector3> vertices = new ();
+    [NonSerialized] private List<int> triangles = new ();
+//    [NonSerialized] private List<Color> _colors;
     
     public Dictionary<int, MeshTiles> MeshTilesList = new ();
 
@@ -34,6 +34,8 @@ public class MeshRoom : MonoBehaviour
         
         MakeWallNewStyle(0, new Vector3(1,0,1), size, start);
         BuildAWall(3, 2);
+        
+        MakeWallOpening(2, 0, 0.5f);
     }
 
     
@@ -72,11 +74,62 @@ public class MeshRoom : MonoBehaviour
         UpdateMesh();
     }
     
+    
+    
     private void MakeWallOpening(int wallIndex, int firstPanel, float openingSize)
     {
-        var wall = gameObject.GetComponentsInChildren<MeshWall>()[wallIndex];
-        wall.ResizePanel(firstPanel, new Vector3(wall.direction.x,0,wall.direction.z), -openingSize / 2, false);
-        wall.ResizePanel(firstPanel + 1, new Vector3(wall.direction.x,0,wall.direction.z), openingSize / 2, true);
+        var panelOne = MeshTilesList[wallIndex].panels[firstPanel];
+        var panelTwo = MeshTilesList[wallIndex].panels[firstPanel + 1];
+
+        var direction = panelOne.direction;
+        var addOne = new Vector3(panelOne.direction.x * openingSize / 2, 0, direction.z * openingSize / 2);
+        
+        
+        vertices[panelOne.startTriangleIndex + 1] -= addOne;
+        vertices[panelOne.startTriangleIndex + 3] -= addOne;
+        
+        vertices[panelTwo.startTriangleIndex] += addOne;
+        vertices[panelTwo.startTriangleIndex + 2] += addOne;
+        
+        UpdateMesh();
+    }
+
+    private void MoveAWall(Vector3 moveAmount)
+    {
+        foreach (var p in MeshTilesList[2].panels)
+        {
+            for (var i = 0; i < 4; i++)
+            {
+                vertices[p.startTriangleIndex + i] += moveAmount;    
+            }
+        }
+        UpdateMesh();
+    }
+    
+    
+    private void MovePanelSide(int wallIndex, int panelIndex, int sideIndex, float moveAmount, Vector3 side)
+    {
+        var panelOne = MeshTilesList[wallIndex].panels[panelIndex];
+        
+        var wallNormal = roomMesh.normals[panelOne.startTriangleIndex];
+        var vertOne = sideIndex;
+        var vertTwo = sideIndex + 1;
+        
+        
+        
+        if (sideIndex > 2)
+        {
+            vertTwo = 0;
+        }
+        
+        if (moveAmount > 0)
+        {
+                   
+        }
+        else
+        {
+            
+        }
     }
 
     private void BuildAWall(int numberPanels, int wallIndex)
@@ -102,8 +155,7 @@ public class MeshRoom : MonoBehaviour
     private void MakeANewWall(Vector3 startPos, Vector3 direction, int numberPanels, int wallIndex)
     {
         var panelSize = new Vector3(size.x / numberPanels, size.y, size.z / numberPanels);
-        wallIndex++;
-        
+
         if (!MeshTilesList.ContainsKey(wallIndex))
         {
             var newTiles = new MeshTiles();
