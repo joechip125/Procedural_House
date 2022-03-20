@@ -43,7 +43,22 @@ public class MeshRoom : MonoBehaviour
 
         AddQuadWithPointList(points);
     }
-    
+
+
+    public void AddFloorTile(int panelIndex, Vector3 newSize)
+    {
+        var newDirection = new Vector3(1, 0, 1);
+        var panel = MeshTilesList[0].panels[panelIndex];
+        var newStart = vertices[panel.startTriangleIndex +  2];
+
+        var points =
+            MeshStatic.SetVertexPositions(newStart, newSize, false, newDirection);
+
+        var newIndex = AddQuadWithPointList(points);
+
+        var newPanel = new MeshPanel(newIndex, newDirection);
+        MeshTilesList[0].panels.Add(newPanel);
+    }
     
     public void MakeNewFloor(int meshTilesIndex, Vector3 direction)
     {
