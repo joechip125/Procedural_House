@@ -13,12 +13,15 @@ public class MeshHouse : MonoBehaviour
     private void Start()
     {
         MakeARoom(new Vector3(0,0,0), new Vector3(10,4,10), new Vector3(0,0,0));
-        MakeARoom(new Vector3(10,0,0), new Vector3(10,4,10), new Vector3(1,0,0));
+        AddFloorTiles(new Vector3(0,0,0));
     }
 
     private void AddFloorTiles(Vector3 roomIndex)
     {
-        _rooms[roomIndex].AddFloorTile(0, new Vector3(5,5,5));
+        _rooms[roomIndex].AddFloorTile(0, new Vector3(10,5,10), RoomDirections.XPlus);
+        _rooms[roomIndex].AddFloorTile(0, new Vector3(10,5,10), RoomDirections.XMinus);
+        _rooms[roomIndex].AddFloorTile(0, new Vector3(10,5,10), RoomDirections.ZPlus);
+        _rooms[roomIndex].AddFloorTile(0, new Vector3(10,5,10), RoomDirections.ZMinus);
     }
     
     private void MakeARoom(Vector3 start, Vector3 size, Vector3 index)

@@ -20,12 +20,14 @@ public class MeshRoom : MonoBehaviour
     public Vector3 start;
     public Vector3 size;
     public Material baseMaterial;
-
+    public Vector3 startIndex;
+    
     Mesh roomMesh;
     MeshCollider meshCollider;
     [NonSerialized] List<Vector3> vertices = new ();
     [NonSerialized] private List<int> triangles = new ();
 //    [NonSerialized] private List<Color> _colors;
+    public RoomTiles roomTiles = new ();
     
     public Dictionary<int, MeshTiles> MeshTilesList = new ();
 
@@ -61,11 +63,28 @@ public class MeshRoom : MonoBehaviour
     }
 
 
-    public void AddFloorTile(int panelIndex, Vector3 newSize)
+    public void AddFloorTile(int panelIndex, Vector3 newSize, RoomDirections directionFromTile)
     {
         var newDirection = new Vector3(1, 0, 1);
         var panel = MeshTilesList[0].panels[panelIndex];
-        var newStart = vertices[panel.startTriangleIndex +  2];
+        var newStart = vertices[panel.startTriangleIndex];
+
+        switch (directionFromTile)
+        {
+            case RoomDirections.XPlus:
+                newStart = vertices[panel.startTriangleIndex +  1];
+                break;
+            case RoomDirections.XMinus:
+                newStart = vertices[panel.startTriangleIndex] - new Vector3(newSize.x,0,0);
+                break;
+            case RoomDirections.ZPlus:
+                newStart = vertices[panel.startTriangleIndex + 2];
+                break;
+            case RoomDirections.ZMinus:
+                newStart = vertices[panel.startTriangleIndex ] - new Vector3(0,0, newSize.z);
+                break;
+        }
+        
 
         var points =
             MeshStatic.SetVertexPositions(newStart, newSize, false, newDirection);

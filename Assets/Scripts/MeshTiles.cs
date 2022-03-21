@@ -16,3 +16,12 @@ public class MeshTiles
     public List<MeshPanel> panels = new ();
     
 }
+
+[Serializable]
+public class RoomTiles
+{
+    public List<MeshPanel> panels = new ();
+    public Vector3 coordinate;
+    public Dictionary<int, MeshPanel> floorPanels;
+}
+
