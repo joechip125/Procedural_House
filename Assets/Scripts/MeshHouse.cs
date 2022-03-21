@@ -13,7 +13,7 @@ public class MeshHouse : MonoBehaviour
     private void Start()
     {
         MakeARoom(new Vector3(0,0,0), new Vector3(10,4,10), new Vector3(0,0,0));
-        AddFloorTiles(new Vector3(0,0,0));
+        MakeARoom(new Vector3(10,0,0), new Vector3(10,4,10), new Vector3(1,0,0));
     }
 
     private void AddFloorTiles(Vector3 roomIndex)

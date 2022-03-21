@@ -118,38 +118,6 @@ public class MeshWall : MonoBehaviour
        
        UpdateMesh();
     }
-
-    public void AddWallPanel(Vector3 newDirection, Vector3 addStart, Vector3 size, int panelIndex)
-    {
-       
-    }
-    
-    public void AddWallPanel( Vector3 size, int panelIndex, int vertIndex, Vector3 addVector)
-    {
-       
-    }
-    
-    public void AddWallPanel( Vector3 size, int vertIndex, Vector3 addVector)
-    {
-        
-    }
-    
-    public void AddFloorPanel( Vector3 newSize, int vertIndex, Vector3 addVector)
-    {
-       
-  
-    }
-    public void AddFloorPanel( Vector3 newSize, int vertIndex, Vector3 newDirection, Vector3 adjustMultiplier, int oldQuadStartIndex)
-    {
-      
-
-
-    }
-    
-    public void BuildFloor(Vector3 direction, Vector3 floorSize, Vector3 floorStart)
-    {
-       
-    }
     
     private void RaisePanel(MeshPanel panel, float raiseAmount)
     {

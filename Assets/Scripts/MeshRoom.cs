@@ -5,6 +5,15 @@ using System.Linq;
 using UnityEngine;
 
 
+public enum RoomDirections
+{
+    XPlus, XMinus, ZPlus, ZMinus
+}
+
+public enum RoomTypes
+{
+    Rectangle, LShape, TShape
+}
 
 public class MeshRoom : MonoBehaviour
 {
@@ -20,7 +29,14 @@ public class MeshRoom : MonoBehaviour
     
     public Dictionary<int, MeshTiles> MeshTilesList = new ();
 
+    public Dictionary<Vector3, MeshTiles> FloorTiles = new();
+
     private void Awake()
+    {
+        AwakeMethod();
+    }
+
+    private void AwakeMethod()
     {
         GetComponent<MeshFilter>().mesh = roomMesh = new Mesh();
         roomMesh.name = "RoomMesh";
@@ -201,11 +217,6 @@ public class MeshRoom : MonoBehaviour
         }
     }
     
-
-    private void AddPanelToWall(int wallIndex, Vector3 panelSize)
-    {
-        var aWall = gameObject.GetComponentsInChildren<MeshWall>()[wallIndex];
-    }
     
     private void ResizeWall(int wallIndex, bool moveStartEnd, int panelIndex, float  moveAmount)
     {
@@ -226,7 +237,7 @@ public class MeshRoom : MonoBehaviour
     }
     
     
-    public void UpdateMesh()
+    private void UpdateMesh()
     {
         roomMesh.Clear();
         roomMesh.SetVertices(vertices);
@@ -246,11 +257,26 @@ public class MeshRoom : MonoBehaviour
         
         UpdateMesh();
     }
-
-
-    public int AddQuadWithPointList(List<Vector3> pointList)
+    
+    private int AddTriangleWithPointList(List<Vector3> pointList)
     {
-        int vertexIndex = vertices.Count;
+        var vertexIndex = vertices.Count;
+        vertices.Add(pointList[0]);
+        vertices.Add(pointList[1]);
+        vertices.Add(pointList[2]);
+        triangles.Add(vertexIndex);
+        triangles.Add(vertexIndex + 1);
+        triangles.Add(vertexIndex + 2);
+        
+        UpdateMesh();
+
+        return vertexIndex;
+    }
+
+
+    private int AddQuadWithPointList(List<Vector3> pointList)
+    {
+        var vertexIndex = vertices.Count;
         
         vertices.Add(pointList[0]);
         vertices.Add(pointList[1]);
@@ -269,7 +295,7 @@ public class MeshRoom : MonoBehaviour
     
     public void AddQuad(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4) 
     {
-        int vertexIndex = vertices.Count;
+        var vertexIndex = vertices.Count;
         vertices.Add(v1);
         vertices.Add(v2);
         vertices.Add(v3);
