@@ -11,7 +11,7 @@ public class MeshHouse : MonoBehaviour
     
     private void Start()
     {
-        MakeARoom(new Vector3(0,0,0), new Vector3(10,4,10), new Vector3(0,0,0));
+        MakeARoom(new Vector3(0,0,0), new Vector3(10,4,10), new Vector3(0,0,0), true);
         AddWallsToRoom(new Vector3(0,0,0));
     }
 
@@ -37,9 +37,11 @@ public class MeshHouse : MonoBehaviour
     {
         _rooms[index].BuildAllWalls();
         _rooms[index].AddOuterWalls();
+
+        _rooms[index].MakeWallOpening(1,0, 1f);
     }
     
-    private void MakeARoom(Vector3 start, Vector3 size, Vector3 startIndex)
+    private void MakeARoom(Vector3 start, Vector3 size, Vector3 startIndex, bool newOrExtend = true)
     {
         var room = 
             Instantiate(meshRoom, new Vector3(0, 0, 0), Quaternion.identity, transform);

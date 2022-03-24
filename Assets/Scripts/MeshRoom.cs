@@ -27,11 +27,8 @@ public class MeshRoom : MonoBehaviour
     [NonSerialized] List<Vector3> vertices = new ();
     [NonSerialized] private List<int> triangles = new ();
 //    [NonSerialized] private List<Color> _colors;
-    public RoomTiles roomTiles = new ();
-    
+
     public Dictionary<int, MeshTiles> MeshTilesList = new ();
-    public Dictionary<Vector3, MeshTiles> FloorTiles = new();
-    
     public delegate void RegisterFloorIndexDelegate(Vector3 index);
     
     
@@ -58,7 +55,21 @@ public class MeshRoom : MonoBehaviour
     
     public Vector3 GetPositionAtVert(int vertIndex)
         => vertices[vertIndex];
-    
+
+
+    public void DisplayCosine(int index)
+    {
+
+        var input = 180f * index;
+        var aVector =
+            roomMesh.normals[MeshTilesList[1].panels[0].startTriangleIndex];
+        Debug.Log(MathF.Sin(input * (MathF.PI / 180f)));
+        Debug.Log(MathF.Cos(input * (MathF.PI / 180f)));
+        Debug.Log(aVector.x);
+        Debug.Log(aVector.z);
+        Debug.Log(MathF.Asin(aVector.x) * (180f / MathF.PI));
+        Debug.Log(MathF.Acos(aVector.z ) * (180f / MathF.PI));
+    }
     
     public void AddRoom()
     {
@@ -73,11 +84,12 @@ public class MeshRoom : MonoBehaviour
     }
 
     public void AddOuterWalls()
-    { 
+    {
         var addVector = new Vector3(MeshStatic.OuterWallThickness * 1, 0, MeshStatic.OuterWallThickness * 1);
-        MakeANewWall(start - addVector, new Vector3(1,1,0), 2, 0, addVector);
-        
-        MakeANewWall(start + new Vector3(0,0,size.z), new Vector3(-1,1,0), 2, 1);
+        MakeANewWall(vertices[0] + new Vector3(addVector.x * -1, 0, addVector.z * -1), new Vector3(1,1,0), 2, 5, addVector);
+        MakeANewWall(vertices[1] + new Vector3(addVector.x * 1, 0, addVector.z * -1), new Vector3(0,1,1), 2, 6, addVector);
+        MakeANewWall(vertices[3] + new Vector3(addVector.x * 1, 0, addVector.z * 1), new Vector3(-1,1,0), 2, 7, addVector);
+        MakeANewWall(vertices[2] + new Vector3(addVector.x * -1, 0, addVector.z * 1), new Vector3(0,1,-1), 2, 8, addVector);
     }
     
     private void AddPanelToWall(int wallIndex, int panelIndex, Vector3 newSize)
@@ -183,22 +195,38 @@ public class MeshRoom : MonoBehaviour
     
     
     
-    private void MakeWallOpening(int wallIndex, int firstPanel, float openingSize)
+    public void MakeWallOpening(int wallIndex, int firstPanel, float openingSize)
     {
         var panelOne = MeshTilesList[wallIndex].panels[firstPanel];
         var panelTwo = MeshTilesList[wallIndex].panels[firstPanel + 1];
 
         var direction = panelOne.direction;
-        var addOne = new Vector3(panelOne.direction.x * openingSize / 2, 0, direction.z * openingSize / 2);
+        var addVec = new Vector3(panelOne.direction.x * openingSize / 2, 0, direction.z * openingSize / 2);
+
+        var theNormal = roomMesh.normals[panelOne.startTriangleIndex + 1];
+
+
+        vertices[panelOne.startTriangleIndex + 1] -= addVec;
+        vertices[panelOne.startTriangleIndex + 3] -= addVec;
+
+        vertices[panelTwo.startTriangleIndex] += addVec;
+        vertices[panelTwo.startTriangleIndex + 2] += addVec;
+     
+        var theNormal2 = new Vector3(-theNormal.x,1, -theNormal.z);
         
-        
-        vertices[panelOne.startTriangleIndex + 1] -= addOne;
-        vertices[panelOne.startTriangleIndex + 3] -= addOne;
-        
-        vertices[panelTwo.startTriangleIndex] += addOne;
-        vertices[panelTwo.startTriangleIndex + 2] += addOne;
-        
-        UpdateMesh();
+        var newPanel = new Vector3(MeshStatic.OuterWallThickness, size.y, MeshStatic.OuterWallThickness);
+        CreateNewPanel(vertices[panelOne.startTriangleIndex + 1],newPanel, theNormal2, wallIndex, true);
+    }
+
+    private void CreateNewPanel(Vector3 theStart, Vector3 theSize, Vector3 theDirection, int wallIndex, bool wallFloor)
+    {
+        var points =
+            MeshStatic.SetVertexPositions(theStart, theSize, wallFloor, theDirection);
+
+        var vertIndex = AddQuadWithPointList(points);
+
+        var meshPanel = new MeshPanel(vertIndex, theDirection);
+        MeshTilesList[wallIndex].panels.Add(meshPanel);
     }
 
     private void MoveAWall(Vector3 moveAmount, int wallIndex)

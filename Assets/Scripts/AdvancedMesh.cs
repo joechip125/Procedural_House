@@ -1,18 +1,40 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AdvancedMesh : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    Mesh theMesh;
+    MeshCollider meshCollider;
+    [NonSerialized] List<Vector3> vertices = new ();
+    [NonSerialized] private List<int> triangles = new ();
+ 
+    
+    private int AddQuadWithPointList(List<Vector3> pointList)
     {
+        var vertexIndex = vertices.Count;
         
-    }
+        vertices.Add(pointList[0]);
+        vertices.Add(pointList[1]);
+        vertices.Add(pointList[2]);
+        vertices.Add(pointList[3]);
+        triangles.Add(vertexIndex);
+        triangles.Add(vertexIndex + 2);
+        triangles.Add(vertexIndex + 1);
+        triangles.Add(vertexIndex + 1);
+        triangles.Add(vertexIndex + 2);
+        triangles.Add(vertexIndex + 3);
+        UpdateMesh();
 
-    // Update is called once per frame
-    void Update()
+        return vertexIndex;
+    }
+    
+    private void UpdateMesh()
     {
-        
+        theMesh.Clear();
+        theMesh.SetVertices(vertices);
+        theMesh.SetTriangles(triangles, 0);
+        theMesh.RecalculateNormals();
     }
 }
