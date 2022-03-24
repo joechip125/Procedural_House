@@ -25,3 +25,11 @@ public class RoomTiles
     public Dictionary<int, MeshPanel> floorPanels;
 }
 
+[Serializable]
+public class FloorTile
+{
+    public Vector3 coordinate;
+    public int startTriangleIndex;
+    public string roomName;
+}
+

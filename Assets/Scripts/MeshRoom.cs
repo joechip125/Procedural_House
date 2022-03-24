@@ -20,8 +20,8 @@ public class MeshRoom : MonoBehaviour
     public Vector3 start;
     public Vector3 size;
     public Material baseMaterial;
-    public Vector3 startIndex;
-    
+    public string roomName;
+
     Mesh roomMesh;
     MeshCollider meshCollider;
     [NonSerialized] List<Vector3> vertices = new ();
@@ -30,9 +30,11 @@ public class MeshRoom : MonoBehaviour
     public RoomTiles roomTiles = new ();
     
     public Dictionary<int, MeshTiles> MeshTilesList = new ();
-
     public Dictionary<Vector3, MeshTiles> FloorTiles = new();
-
+    
+    public delegate void RegisterFloorIndexDelegate(Vector3 index);
+    
+    
     private void Awake()
     {
         AwakeMethod();
@@ -49,6 +51,34 @@ public class MeshRoom : MonoBehaviour
         
         MeshTilesList.Add(0, meshTile);
     }
+
+    public Vector3 GetNormalAtVert(int vertIndex)
+        => roomMesh.normals[vertIndex];
+    
+    
+    public Vector3 GetPositionAtVert(int vertIndex)
+        => vertices[vertIndex];
+    
+    
+    public void AddRoom()
+    {
+        GetComponent<MeshFilter>().mesh = roomMesh = new Mesh();
+        roomMesh.name = "RoomMesh";
+        var meshTile = new MeshTiles()
+        {
+            TilesType = TilesType.Floor
+        };
+        
+        MeshTilesList.Add(0, meshTile);
+    }
+
+    public void AddOuterWalls()
+    { 
+        var addVector = new Vector3(MeshStatic.OuterWallThickness * 1, 0, MeshStatic.OuterWallThickness * 1);
+        MakeANewWall(start - addVector, new Vector3(1,1,0), 2, 0, addVector);
+        
+        MakeANewWall(start + new Vector3(0,0,size.z), new Vector3(-1,1,0), 2, 1);
+    }
     
     private void AddPanelToWall(int wallIndex, int panelIndex, Vector3 newSize)
     {
@@ -62,8 +92,31 @@ public class MeshRoom : MonoBehaviour
         AddQuadWithPointList(points);
     }
 
+    public Vector3 GetNewFloorPos(RoomDirections directions, Vector3 newSize)
+    {
+        var panel = MeshTilesList[0].panels[0];
+        var newStart = vertices[panel.startTriangleIndex];
+        
+        switch (directions)
+        {
+            case RoomDirections.XPlus:
+                newStart = vertices[panel.startTriangleIndex +  1];
+                break;
+            case RoomDirections.XMinus:
+                newStart = vertices[panel.startTriangleIndex] - new Vector3(newSize.x,0,0);
+                break;
+            case RoomDirections.ZPlus:
+                newStart = vertices[panel.startTriangleIndex + 2];
+                break;
+            case RoomDirections.ZMinus:
+                newStart = vertices[panel.startTriangleIndex ] - new Vector3(0,0, newSize.z);
+                break;
+        }
 
-    public void AddFloorTile(int panelIndex, Vector3 newSize, RoomDirections directionFromTile)
+        return newStart;
+    }
+    
+    public void AddFloorTile(int panelIndex, Vector3 newSize, RoomDirections directionFromTile, Vector3 index)
     {
         var newDirection = new Vector3(1, 0, 1);
         var panel = MeshTilesList[0].panels[panelIndex];
@@ -213,9 +266,9 @@ public class MeshRoom : MonoBehaviour
         }
     }
     
-    private void MakeANewWall(Vector3 startPos, Vector3 direction, int numberPanels, int wallIndex)
+    private void MakeANewWall(Vector3 startPos, Vector3 direction, int numberPanels, int wallIndex, Vector3 addVector = new Vector3())
     {
-        var panelSize = new Vector3(size.x / numberPanels, size.y, size.z / numberPanels);
+        var panelSize = new Vector3(size.x / numberPanels, size.y, size.z / numberPanels) + addVector;
 
         if (!MeshTilesList.ContainsKey(wallIndex))
         {

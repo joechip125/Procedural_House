@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class MeshStatic : MonoBehaviour
 {
-    public static float WallThickness = 0.3f;
+    public static float InnerWallThickness = 0.3f;
     
-    public static Vector3[] DirectionVectors()
-    {
-        return new[] {new Vector3(1,0,0),};
-    }
+    public static float OuterWallThickness = 0.5f;
+    
 
     public static Vector3 GetCenterOfFloorSquare(Vector3 size, Vector3 start)
     {
