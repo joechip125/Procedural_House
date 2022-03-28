@@ -35,6 +35,7 @@ public class MeshRoom : MonoBehaviour
     private void Awake()
     {
         AwakeMethod();
+        AddDoorway();
     }
 
     private void AwakeMethod()
@@ -63,12 +64,6 @@ public class MeshRoom : MonoBehaviour
         var input = 180f * index;
         var aVector =
             roomMesh.normals[MeshTilesList[1].panels[0].startTriangleIndex];
-        Debug.Log(MathF.Sin(input * (MathF.PI / 180f)));
-        Debug.Log(MathF.Cos(input * (MathF.PI / 180f)));
-        Debug.Log(aVector.x);
-        Debug.Log(aVector.z);
-        Debug.Log(MathF.Asin(aVector.x) * (180f / MathF.PI));
-        Debug.Log(MathF.Acos(aVector.z ) * (180f / MathF.PI));
     }
     
     public void AddRoom()
@@ -218,6 +213,21 @@ public class MeshRoom : MonoBehaviour
         CreateNewPanel(vertices[panelOne.startTriangleIndex + 1],newPanel, theNormal2, wallIndex, true);
     }
 
+    private void AddDoorway()
+    {
+        var aStart = new Vector3(0, 0, 0);
+        float openingHeight = 2;
+        float openingLength = 1;
+        float openingWidth = 0.1f;
+        var aSize = new Vector3(openingWidth, openingHeight, openingLength);
+        var tile = new MeshTiles();
+        MeshTilesList.Add(30, tile);
+        CreateNewPanel(aStart, aSize, new Vector3(1,0,1), 30, false);
+        CreateNewPanel(aStart + new Vector3(0,openingHeight,openingLength), new Vector3(0.1f,0, openingLength), new Vector3(1,0,-1), 30, false);
+        CreateNewPanel(aStart + new Vector3(openingWidth,0,0), new Vector3(openingWidth,openingHeight, openingWidth), new Vector3(-1,1,0), 30, true);
+        CreateNewPanel(aStart + new Vector3(0,0,openingLength), new Vector3(openingWidth,openingHeight, openingWidth), new Vector3(1,1,0), 30, true);
+    }
+    
     private void CreateNewPanel(Vector3 theStart, Vector3 theSize, Vector3 theDirection, int wallIndex, bool wallFloor)
     {
         var points =
