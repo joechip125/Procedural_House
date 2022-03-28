@@ -12,6 +12,7 @@ public class MeshHouse : MonoBehaviour
     private void Start()
     {
         MakeARoom(new Vector3(0,0,0), new Vector3(10,4,10), new Vector3(0,0,0), true);
+        AddWallsToRoom(new Vector3(0,0,0));
     }
 
     private void AddRandomRoom(Vector3 startIndex)
@@ -35,7 +36,6 @@ public class MeshHouse : MonoBehaviour
     private void AddWallsToRoom(Vector3 index)
     {
         _rooms[index].BuildAllWalls();
-        _rooms[index].AddOuterWalls();
 
         _rooms[index].MakeWallOpening(1,0, 1f);
     }
@@ -46,7 +46,7 @@ public class MeshHouse : MonoBehaviour
             Instantiate(meshRoom, new Vector3(0, 0, 0), Quaternion.identity, transform);
         room.GetComponent<MeshRoom>().size = size;
         room.GetComponent<MeshRoom>().start = start;
-    //    room.GetComponent<MeshRoom>().MakeNewFloor(0, new Vector3(1,0,1));
+        room.GetComponent<MeshRoom>().MakeNewFloor(0, new Vector3(1,0,1));
         
         _rooms.Add(startIndex, room.GetComponent<MeshRoom>());
     }

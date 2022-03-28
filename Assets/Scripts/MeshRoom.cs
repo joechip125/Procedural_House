@@ -35,7 +35,6 @@ public class MeshRoom : MonoBehaviour
     private void Awake()
     {
         AwakeMethod();
-        AddDoorway();
     }
 
     private void AwakeMethod()
@@ -210,31 +209,33 @@ public class MeshRoom : MonoBehaviour
         var theNormal2 = new Vector3(-theNormal.x,1, -theNormal.z);
         
         var newPanel = new Vector3(MeshStatic.OuterWallThickness, size.y, MeshStatic.OuterWallThickness);
-        CreateNewPanel(vertices[panelOne.startTriangleIndex + 1],newPanel, theNormal2, wallIndex, true);
+
+        AddDoorway(new Vector3(1,0,1), vertices[panelOne.startTriangleIndex + 1] + new Vector3(-0.1f,0,0));
     }
 
-    private void AddDoorway()
+    private void AddDoorway(Vector3 primeDirection, Vector3 aStart)
     {
-        var aStart = new Vector3(0, 0, 0);
         float openingHeight = 2;
         float openingLength = 1;
         float openingWidth = 0.1f;
         var aSize = new Vector3(openingWidth, openingHeight, openingLength);
         var tile = new MeshTiles();
         MeshTilesList.Add(30, tile);
-        CreateNewPanel(aStart, aSize, new Vector3(1,0,1), 30, false);
-        CreateNewPanel(aStart + new Vector3(0,openingHeight,openingLength), new Vector3(0.1f,0, openingLength), new Vector3(1,0,-1), 30, false);
-        CreateNewPanel(aStart + new Vector3(openingWidth,0,0), new Vector3(openingWidth,openingHeight, openingWidth), new Vector3(-1,1,0), 30, true);
-        CreateNewPanel(aStart + new Vector3(0,0,openingLength), new Vector3(openingWidth,openingHeight, openingWidth), new Vector3(1,1,0), 30, true);
+        CreateNewPanel(aStart, aSize, primeDirection, 30);
+        CreateNewPanel(aStart + new Vector3(0,openingHeight,openingLength), new Vector3(0.1f,0, openingLength), new Vector3(1,0,-1), 30);
+        CreateNewPanel(aStart + new Vector3(openingWidth,0,0), new Vector3(openingWidth,openingHeight, openingWidth), new Vector3(-1,1,0), 30);
+        CreateNewPanel(aStart + new Vector3(0,0,openingLength), new Vector3(openingWidth,openingHeight, openingWidth), new Vector3(1,1,0), 30);
+        
+        CreateNewPanel(aStart + new Vector3(openingWidth,openingHeight,0), new Vector3(1,2, 1), new Vector3(0,1,1), 30);
     }
     
-    private void CreateNewPanel(Vector3 theStart, Vector3 theSize, Vector3 theDirection, int wallIndex, bool wallFloor)
+    private void CreateNewPanel(Vector3 theStart, Vector3 theSize, Vector3 theDirection, int wallIndex)
     {
+        var wallOrFloor = theDirection.y != 0;
+        
         var points =
-            MeshStatic.SetVertexPositions(theStart, theSize, wallFloor, theDirection);
-
+            MeshStatic.SetVertexPositions(theStart, theSize, wallOrFloor, theDirection);
         var vertIndex = AddQuadWithPointList(points);
-
         var meshPanel = new MeshPanel(vertIndex, theDirection);
         MeshTilesList[wallIndex].panels.Add(meshPanel);
     }
