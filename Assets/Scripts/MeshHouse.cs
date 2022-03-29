@@ -47,7 +47,7 @@ public class MeshHouse : MonoBehaviour
         room.GetComponent<MeshRoom>().size = size;
         room.GetComponent<MeshRoom>().start = start;
       //  room.GetComponent<MeshRoom>().MakeNewFloor(0, new Vector3(1,0,1));
-        room.GetComponent<MeshRoom>().AddDoorway2(new Vector3(0,0,0), new Vector2(1,2), new Vector3(1,0,0));
+      //  room.GetComponent<MeshRoom>().AddDoorway2(new Vector3(0,0,0), new Vector2(1,2), new Vector3(1,0,0));
         
         
         _rooms.Add(startIndex, room.GetComponent<MeshRoom>());

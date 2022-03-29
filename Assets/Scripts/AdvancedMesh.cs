@@ -5,23 +5,14 @@ using UnityEngine;
 
 public class AdvancedMesh : MonoBehaviour
 {
-    Mesh theMesh;
+    protected Mesh theMesh;
     MeshCollider meshCollider;
     [NonSerialized] List<Vector3> vertices = new ();
     [NonSerialized] private List<int> triangles = new ();
-    public Dictionary<int, MeshTiles> MeshTilesList = new ();
 
+    public Vector3 GetNormalAtVert(int panelIndex)
+        => theMesh.normals[panelIndex];
     
-    public void CreateNewPanel(Vector3 theStart, Vector3 theSize, Vector3 theDirection, int wallIndex)
-    {
-        var wallOrFloor = theDirection.y != 0;
-        
-        var points =
-            MeshStatic.SetVertexPositions(theStart, theSize, wallOrFloor, theDirection);
-        var vertIndex = AddQuadWithPointList(points);
-        var meshPanel = new MeshPanel(vertIndex, theDirection);
-        MeshTilesList[wallIndex].panels.Add(meshPanel);
-    }
     
     private void Awake()
     {

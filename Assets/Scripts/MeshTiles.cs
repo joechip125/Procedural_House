@@ -18,6 +18,12 @@ public class MeshTiles
 }
 
 [Serializable]
+public class WallTiles
+{
+    public Dictionary<int, MeshPanel> panels = new ();
+}
+
+[Serializable]
 public class RoomTiles
 {
     public List<MeshPanel> panels = new ();

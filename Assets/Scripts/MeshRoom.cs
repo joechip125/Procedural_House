@@ -36,16 +36,19 @@ public class MeshRoom : MonoBehaviour
     
     private void Awake()
     {
-        AwakeMethod();
+        InstanceNewWall(1);
     }
 
 
-    private void InstanceNewWall()
+    private void InstanceNewWall(int wallIndex)
     {
-        var temp = Instantiate(meshWall, transform);
+        var aStart = new Vector3(0, 0, 0);
+        var temp = Instantiate(meshWall, aStart, Quaternion.identity, transform);
         var aWall = temp.GetComponent<AdvancedMesh_Wall>();
+        aWall.CreateNewPanel(aStart, new Vector3(1,1,1), new Vector3(1,1,0), 0);
         
-
+        if(!meshWalls.ContainsKey(wallIndex))
+            meshWalls.Add(wallIndex, aWall);
     }
     
     private void AwakeMethod()
