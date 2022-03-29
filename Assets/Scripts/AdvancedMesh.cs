@@ -9,9 +9,6 @@ public class AdvancedMesh : MonoBehaviour
     MeshCollider meshCollider;
     [NonSerialized] List<Vector3> vertices = new ();
     [NonSerialized] private List<int> triangles = new ();
-
-    public Vector3 GetNormalAtVert(int panelIndex)
-        => theMesh.normals[panelIndex];
     
     
     private void Awake()

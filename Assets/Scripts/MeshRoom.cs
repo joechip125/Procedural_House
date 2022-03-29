@@ -31,7 +31,7 @@ public class MeshRoom : MonoBehaviour
 
     public Dictionary<int, MeshTiles> MeshTilesList = new ();
 
-    public Dictionary<int,AdvancedMesh_Wall> meshWalls;
+    public Dictionary<int,AdvancedMesh_Wall> meshWalls = new Dictionary<int, AdvancedMesh_Wall>();
     
     
     private void Awake()
@@ -45,10 +45,17 @@ public class MeshRoom : MonoBehaviour
         var aStart = new Vector3(0, 0, 0);
         var temp = Instantiate(meshWall, aStart, Quaternion.identity, transform);
         var aWall = temp.GetComponent<AdvancedMesh_Wall>();
-        aWall.CreateNewPanel(aStart, new Vector3(1,1,1), new Vector3(1,1,0), 0);
+        aWall.CreateNewPanel(aStart, new Vector3(2,4,2), new Vector3(1,1,0), 0);
         
         if(!meshWalls.ContainsKey(wallIndex))
             meshWalls.Add(wallIndex, aWall);
+        
+        var pos = meshWalls[wallIndex].GetPositionAtIndex(0, 1);
+        var norm = meshWalls[wallIndex].GetNormalAtIndex(0, 1);
+        
+        //aWall.AddDoorway(pos, new Vector2(1,2), new Vector3(1,1,0), size.y, 0, norm);
+        aWall.AddDoorway2(0, new Vector2(1, 3));
+        aWall.ApplyMaterial(baseMaterial);
     }
     
     private void AwakeMethod()

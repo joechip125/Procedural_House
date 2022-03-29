@@ -44,4 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d0e8295661877f4bbc2f1138c8f2679, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meshRoom: {fileID: 0}
+  meshRoom: {fileID: 6946699164849369140, guid: 1df3e2db1b5bb4b43a15d5b266e8ccbe, type: 3}
