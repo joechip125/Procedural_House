@@ -44,9 +44,10 @@ public class AdvancedMesh_Wall : AdvancedMesh
                      + new Vector3(wallThick * Mathf.Abs(wallNormal.x), 0, wallThick * Mathf.Abs(wallNormal.z));
         var xySize = new  Vector3(wallThick * Mathf.Abs(wallNormal.x), size.y, wallThick * Mathf.Abs(wallNormal.z));
 
-        var topSize = new Vector3();
-        
-        
+        var totalH = theMesh.vertices[WallTiles[panelIndex].startTriangleIndex + 3].y - aNewStart.y;
+
+        var topSize = new Vector3(size.x * wallDirection.x, totalH - size.y, size.x * wallDirection.z);
+
         var floorSize = new Vector3();
         var actualSize = new Vector3(1,0,1);
         var aDirection = new Vector3(0,1,1);
@@ -62,7 +63,7 @@ public class AdvancedMesh_Wall : AdvancedMesh
         CreateNewPanel(theMesh.vertices[index], xySize, new Vector3(-wallNormal.x,1, -wallNormal.z), wallIndex++);
         CreateNewPanel(theMesh.vertices[index + 3], xySize, new Vector3(wallNormal.x,1, wallNormal.z), wallIndex++);
                        
-        CreateNewPanel(theMesh.vertices[index + 1] + new Vector3(0,size.y,0), actualSize, aDirection2, wallIndex);
+        CreateNewPanel(theMesh.vertices[index + 1] + new Vector3(0,size.y,0), topSize, aDirection2, wallIndex);
         
     }
     
