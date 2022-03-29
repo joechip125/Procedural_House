@@ -17,6 +17,10 @@ public class MeshWall : MonoBehaviour
     public Vector3 direction;
     public bool startMoving = false;
 
+    public AdvancedMesh adMesh;
+
+    
+    
     private void Start()
     {
         var meshTile = new MeshTiles()
@@ -40,19 +44,10 @@ public class MeshWall : MonoBehaviour
         return Vector3.Lerp(vertices[vertOne], vertices[vertTwo], alpha);
     }
     
-
-    public void LogANormal()
-    {
-        Debug.Log(testMesh.normals[3]);
-    }
     
     private void Awake()
     {
-        GetComponent<MeshFilter>().mesh = testMesh = new Mesh();
-        testMesh.name = "testMesh";
-        vertices = new List<Vector3>();
-        triangles = new List<int>();
-        _colors = new List<Color>();
+        
     }
 
     public void AddPanels(int startIndex)

@@ -21,7 +21,8 @@ public class MeshRoom : MonoBehaviour
     public Vector3 size;
     public Material baseMaterial;
     public string roomName;
-
+    public GameObject meshWall;
+    
     Mesh roomMesh;
     MeshCollider meshCollider;
     [NonSerialized] List<Vector3> vertices = new ();
@@ -29,7 +30,8 @@ public class MeshRoom : MonoBehaviour
 //    [NonSerialized] private List<Color> _colors;
 
     public Dictionary<int, MeshTiles> MeshTilesList = new ();
-    public delegate void RegisterFloorIndexDelegate(Vector3 index);
+
+    public Dictionary<int,AdvancedMesh_Wall> meshWalls;
     
     
     private void Awake()
@@ -37,14 +39,21 @@ public class MeshRoom : MonoBehaviour
         AwakeMethod();
     }
 
+
+    private void InstanceNewWall()
+    {
+        var temp = Instantiate(meshWall, transform);
+        var aWall = temp.GetComponent<AdvancedMesh_Wall>();
+        
+
+    }
+    
     private void AwakeMethod()
     {
         GetComponent<MeshFilter>().mesh = roomMesh = new Mesh();
         roomMesh.name = "RoomMesh";
-        var meshTile = new MeshTiles()
-        {
-            TilesType = TilesType.Floor
-        };
+        var meshTile = new MeshTiles();
+        
         
         MeshTilesList.Add(0, meshTile);
     }
@@ -186,8 +195,29 @@ public class MeshRoom : MonoBehaviour
         var vertIndex = AddQuadWithPointList(points);
         UpdateMesh();
     }
-    
-    
+
+    public void RemoveAWall(int wallIndex)
+    {
+        int start = MeshTilesList[wallIndex].panels[0].startTriangleIndex;
+        int start2 = MeshTilesList[wallIndex].panels[1].startTriangleIndex;
+        int end = MeshTilesList[wallIndex].panels[^1].startTriangleIndex;
+        RemoveQuad(start);
+        RemoveQuad(end);
+        
+        
+        
+        foreach (var p in MeshTilesList[wallIndex].panels)
+        {
+        //    RemoveQuad(p.startTriangleIndex);    
+        }
+
+        Debug.Log($"number of verts: {vertices.Count}");
+        Debug.Log($"number of tris: {triangles.Count}");
+        
+        
+        Debug.Log($"number of verts: {vertices.Count}");
+        Debug.Log($"number of tris: {triangles.Count}");
+    }
     
     public void MakeWallOpening(int wallIndex, int firstPanel, float openingSize)
     {
@@ -209,25 +239,56 @@ public class MeshRoom : MonoBehaviour
         var theNormal2 = new Vector3(-theNormal.x,1, -theNormal.z);
         
         var newPanel = new Vector3(MeshStatic.OuterWallThickness, size.y, MeshStatic.OuterWallThickness);
-
-        AddDoorway(new Vector3(1,0,1), vertices[panelOne.startTriangleIndex + 1] + new Vector3(-0.1f,0,0));
+        var doorSize = new Vector3(Mathf.Abs(openingSize * direction.x), 2, Mathf.Abs(openingSize * direction.z));
+        AddDoorway(new Vector3(1,0,1), vertices[panelOne.startTriangleIndex + 1] + new Vector3(-0.1f,0,0), doorSize);
     }
 
-    private void AddDoorway(Vector3 primeDirection, Vector3 aStart)
+    private void AddDoorway(Vector3 primeDirection, Vector3 aStart, Vector3 openingSize)
     {
-        float openingHeight = 2;
         float openingLength = 1;
         float openingWidth = 0.1f;
-        var aSize = new Vector3(openingWidth, openingHeight, openingLength);
+        float remainingH = size.y - openingSize.y;
         var tile = new MeshTiles();
         MeshTilesList.Add(30, tile);
-        CreateNewPanel(aStart, aSize, primeDirection, 30);
-        CreateNewPanel(aStart + new Vector3(0,openingHeight,openingLength), new Vector3(0.1f,0, openingLength), new Vector3(1,0,-1), 30);
-        CreateNewPanel(aStart + new Vector3(openingWidth,0,0), new Vector3(openingWidth,openingHeight, openingWidth), new Vector3(-1,1,0), 30);
-        CreateNewPanel(aStart + new Vector3(0,0,openingLength), new Vector3(openingWidth,openingHeight, openingWidth), new Vector3(1,1,0), 30);
+        CreateNewPanel(aStart, openingSize, primeDirection, 30);
+        CreateNewPanel(aStart + new Vector3(openingSize.x,openingSize.y,openingSize.z), new Vector3(0.1f,0, openingLength), new Vector3(1,0,-1), 30);
+        CreateNewPanel(aStart + new Vector3(openingWidth,0,0), new Vector3(openingWidth,openingSize.y, openingWidth), new Vector3(-1,1,0), 30);
+        CreateNewPanel(aStart + new Vector3(0,0,openingLength), new Vector3(openingWidth,openingSize.y, openingWidth), new Vector3(1,1,0), 30);
         
-        CreateNewPanel(aStart + new Vector3(openingWidth,openingHeight,0), new Vector3(1,2, 1), new Vector3(0,1,1), 30);
+        CreateNewPanel(aStart + new Vector3(openingWidth,openingSize.y,0), new Vector3(1,2, 1), new Vector3(0,1,1), 30);
     }
+    
+    public void AddDoorway2(Vector3 aStart, Vector2 openingSize, Vector3 direction)
+    {
+        var actualSize = new Vector3();
+        var aDirection = new Vector3(0,1,1);
+        var aDirection2 = new Vector3(-1,0,1);
+        if (direction.x != 0)
+        {
+            actualSize = new Vector3(openingSize.x, openingSize.y, 0.1f);
+        }
+        
+        if (direction.z != 0)
+        {
+            actualSize = new Vector3(0.1f, openingSize.y, openingSize.x);
+            aDirection = new Vector3(1,1,0);
+        }
+        
+        float remainingH = size.y - openingSize.y;
+        int wallIndex = 30;
+        var tile = new MeshTiles();
+        MeshTilesList.Add(wallIndex, tile);
+        CreateNewPanel(aStart, actualSize, new Vector3(1,0,1), wallIndex);
+        var index = MeshTilesList[wallIndex].panels[0].startTriangleIndex;
+        
+        
+        CreateNewPanel(roomMesh.vertices[index], actualSize, aDirection, wallIndex);
+        CreateNewPanel(roomMesh.vertices[index + 3], actualSize, new Vector3(-aDirection.x,1,-aDirection.z), wallIndex);
+        
+        CreateNewPanel(roomMesh.vertices[index + 1] + new Vector3(0,openingSize.y,0), actualSize, aDirection2, wallIndex);
+        
+    }
+    
     
     private void CreateNewPanel(Vector3 theStart, Vector3 theSize, Vector3 theDirection, int wallIndex)
     {
@@ -385,6 +446,19 @@ public class MeshRoom : MonoBehaviour
     }
 
 
+    private void RemoveQuad(int firstIndex)
+    {
+
+        var tris = triangles.FindAll(x => x == firstIndex);
+        triangles.RemoveAt(firstIndex + 5);
+        triangles.RemoveAt(firstIndex + 4);
+        triangles.RemoveAt(firstIndex + 3);
+        triangles.RemoveAt(firstIndex + 2);
+        triangles.RemoveAt(firstIndex + 1);
+        triangles.RemoveAt(firstIndex);
+        UpdateMesh();
+    }
+    
     private int AddQuadWithPointList(List<Vector3> pointList)
     {
         var vertexIndex = vertices.Count;

@@ -12,7 +12,7 @@ public class MeshStatic : MonoBehaviour
     public static Vector3 GetCenterOfFloorSquare(Vector3 size, Vector3 start)
     {
         return new Vector3(start.x + size.x / 2, start.y, start.z + size.z/ 2);
-    }
+   }
 
     public static Vector3 GetSizeOfTile(Vector3 min, Vector3 max)
     {
