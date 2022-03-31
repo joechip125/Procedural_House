@@ -21,6 +21,20 @@ public class AdvancedMesh_Floor : AdvancedMesh
 
         return pos;
     }
+    
+    public List<Vector3> GetPositionClockWise(Vector3 tileIndex)
+    {
+        var theTile = FloorTiles[tileIndex];
+        List<Vector3> pos = new List<Vector3>()
+        {
+            theMesh.vertices[theTile.startTriangleIndex],
+            theMesh.vertices[theTile.startTriangleIndex + 1],
+            theMesh.vertices[theTile.startTriangleIndex + 3],
+            theMesh.vertices[theTile.startTriangleIndex + 2],
+        };
+
+        return pos;
+    }
 
     public void CreateNewPanel(Vector3 theStart, Vector3 theSize, Vector3 theDirection, Vector3 wallIndex)
     {

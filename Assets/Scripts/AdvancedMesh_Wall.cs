@@ -18,10 +18,8 @@ public class AdvancedMesh_Wall : AdvancedMesh
     
     public void CreateNewPanel(Vector3 theStart, Vector3 theSize, Vector3 theDirection, int wallIndex)
     {
-        var wallOrFloor = theDirection.y != 0;
-        
         var points =
-            MeshStatic.SetVertexPositions(theStart, theSize, wallOrFloor, theDirection);
+            MeshStatic.SetVertexPositions(theStart, theSize, true, theDirection);
         var vertIndex = AddQuadWithPointList(points);
         var meshPanel = new MeshPanel(vertIndex, theDirection);
         
