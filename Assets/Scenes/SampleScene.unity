@@ -360,5 +360,9 @@ PrefabInstance:
       propertyPath: meshRoom
       value: 
       objectReference: {fileID: 6946699164849369140, guid: 1df3e2db1b5bb4b43a15d5b266e8ccbe, type: 3}
+    - target: {fileID: 3537895441842395057, guid: 2aec2187040c9204ab3bf79e387ec852, type: 3}
+      propertyPath: simpleMaterial
+      value: 
+      objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2aec2187040c9204ab3bf79e387ec852, type: 3}

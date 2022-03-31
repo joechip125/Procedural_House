@@ -57,7 +57,31 @@ public class AdvancedMesh_Wall : AdvancedMesh
             WallTiles.Add(theIndex, new MeshPanel(vertIndex, theDirection));
     }
     
-    public void AddDoorway2(int panelIndex, Vector2 size)
+    public void MakeWallOpening(int firstPanel, float openingSize)
+    {
+        var panelOne = WallTiles[firstPanel];
+        var panelTwo = WallTiles[firstPanel + 1];
+
+        var direction = panelOne.direction;
+        var addVec = new Vector3(panelOne.direction.x * openingSize / 2, 0, direction.z * openingSize / 2);
+
+        var theNormal = theMesh.normals[panelOne.startTriangleIndex + 1];
+
+
+        theMesh.vertices[panelOne.startTriangleIndex + 1] -= addVec;
+        theMesh.vertices[panelOne.startTriangleIndex + 3] -= addVec;
+
+        theMesh.vertices[panelTwo.startTriangleIndex] += addVec;
+        theMesh.vertices[panelTwo.startTriangleIndex + 2] += addVec;
+     
+        var theNormal2 = new Vector3(-theNormal.x,1, -theNormal.z);
+        
+    //    var newPanel = new Vector3(MeshStatic.OuterWallThickness, size.y, MeshStatic.OuterWallThickness);
+        var doorSize = new Vector3(Mathf.Abs(openingSize * direction.x), 2, Mathf.Abs(openingSize * direction.z));
+    //    AddDoorway(new Vector3(1,0,1), vertices[panelOne.startTriangleIndex + 1] + new Vector3(-0.1f,0,0), doorSize);
+    }
+    
+    public void AddDoorway(int panelIndex, Vector2 size)
     {
         var wallThick = 0.1f;
         var wallDirection = WallTiles[panelIndex].direction;

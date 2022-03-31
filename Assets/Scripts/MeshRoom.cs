@@ -21,6 +21,7 @@ public class MeshRoom : MonoBehaviour
     public Vector3 size;
     public Material baseMaterial;
     public string roomName;
+    public RoomTypes roomType;
     public GameObject meshWall;
     public List<Vector3> floorIndices;
     Mesh roomMesh;
@@ -31,12 +32,16 @@ public class MeshRoom : MonoBehaviour
 
     public Dictionary<int, MeshTiles> MeshTilesList = new ();
 
+    public Dictionary<Vector3, FloorTileValues> floorTileValues;
+
     public Dictionary<int,AdvancedMesh_Wall> meshWalls = new Dictionary<int, AdvancedMesh_Wall>();
+
+ //   public AdvancedMesh_Floor theFloor;
     
     
     private void Awake()
     {
-        InstanceNewWall(1);
+      
     }
 
 

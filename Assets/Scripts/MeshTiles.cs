@@ -20,6 +20,15 @@ public class MeshTiles
 }
 
 [Serializable]
+public class FloorTileValues
+{
+    public Vector3 min;
+    public Vector3 max;
+    public List<Vector3> pos = new ();
+}
+
+
+[Serializable]
 public class WallTiles
 {
     public Dictionary<int, MeshPanel> panels = new ();

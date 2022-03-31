@@ -48,4 +48,5 @@ public class AdvancedMesh : MonoBehaviour
         theMesh.SetTriangles(triangles, 0);
         theMesh.RecalculateNormals();
     }
+    
 }

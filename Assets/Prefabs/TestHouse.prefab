@@ -45,3 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshRoom: {fileID: 6946699164849369140, guid: 1df3e2db1b5bb4b43a15d5b266e8ccbe, type: 3}
+  meshFloor: {fileID: 1943818997048870602, guid: f3f25a6341d52824c9d789931da5a8c7, type: 3}

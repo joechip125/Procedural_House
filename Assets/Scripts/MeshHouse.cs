@@ -8,13 +8,48 @@ public class MeshHouse : MonoBehaviour
 {
     private Dictionary<Vector3, MeshRoom> _rooms = new();
     public GameObject meshRoom;
-    
+    private AdvancedMesh_Floor theFloorTiles;
+
+    public GameObject meshFloor;
+
+    public Material simpleMaterial;
+
     private void Start()
     {
-        MakeARoom(new Vector3(0,0,0), new Vector3(10,4,10), new Vector3(0,0,0), true);
-    //    AddWallsToRoom(new Vector3(0,0,0));
+        AddAFloor();
+        AddAFloorTile(new Vector3(0,0,0), new Vector3(1,0,0));
+        AddWallsToFloor(new Vector3(0,0,0), 4);
     }
 
+    private void AddAFloor()
+    {
+        theFloorTiles = Instantiate(meshFloor, new Vector3(0, 0, 0), Quaternion.identity, transform)
+            .GetComponent<AdvancedMesh_Floor>();
+        theFloorTiles.CreateNewPanel(new Vector3(0,0,0), new Vector3(10,0,10), new Vector3(1,0,1), new Vector3(0,0,0));
+        theFloorTiles.ApplyMaterial(simpleMaterial);
+    }
+
+    private void AddAFloorTile(Vector3 oldIndex, Vector3 newDirection)
+    {
+        var addPos = new Vector3(newDirection.x * MeshStatic.InnerWallThickness, 0, newDirection.z * MeshStatic.InnerWallThickness);
+        theFloorTiles.AddFloorTile(new Vector3(5,0,5), newDirection, oldIndex, addPos);
+    }
+
+    private void AddWallsToFloor(Vector3 floorIndex, float wallH)
+    {
+        var room = 
+            Instantiate(meshRoom, new Vector3(0, 0, 0), Quaternion.identity, transform).GetComponent<MeshRoom>();
+ 
+        var floorValues = new FloorTileValues
+        {
+            pos = theFloorTiles.GetPositionFromTile(floorIndex)
+        };
+
+        room.floorTileValues.Add(floorIndex,floorValues);
+        
+        _rooms.Add(floorIndex, room);
+    }
+    
     private void AddRandomRoom(Vector3 startIndex)
     {
         Vector3 newSize = new Vector3(10, 4, 10);
@@ -43,13 +78,11 @@ public class MeshHouse : MonoBehaviour
     private void MakeARoom(Vector3 start, Vector3 size, Vector3 startIndex, bool newOrExtend = true)
     {
         var room = 
-            Instantiate(meshRoom, new Vector3(0, 0, 0), Quaternion.identity, transform);
-        room.GetComponent<MeshRoom>().size = size;
-        room.GetComponent<MeshRoom>().start = start;
+            Instantiate(meshRoom, new Vector3(0, 0, 0), Quaternion.identity, transform).GetComponent<MeshRoom>();
+        
       //  room.GetComponent<MeshRoom>().MakeNewFloor(0, new Vector3(1,0,1));
       //  room.GetComponent<MeshRoom>().AddDoorway2(new Vector3(0,0,0), new Vector2(1,2), new Vector3(1,0,0));
         
         
-        _rooms.Add(startIndex, room.GetComponent<MeshRoom>());
     }
 }
