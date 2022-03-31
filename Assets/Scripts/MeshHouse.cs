@@ -38,20 +38,16 @@ public class MeshHouse : MonoBehaviour
 
     
     
-    private void AddWallsToFloor(Vector3 floorIndex, float wallH)
+    private void AddWallsToFloor(Vector3 floorIndex, float wallH = 4)
     {
         var room = 
             Instantiate(meshRoom, new Vector3(0, 0, 0), Quaternion.identity, transform).GetComponent<MeshRoom>();
- 
-        var floorValues = new FloorTileValues
-        {
-            pos = theFloorTiles.GetPositionFromTile(floorIndex)
-        };
 
-        room.floorTileValues.Add(floorIndex,floorValues);
+        room.InstanceNewWall(0, floorIndex);
         room.InstanceNewWall(1, floorIndex);
-        room.InstanceNewWall(1, floorIndex);
-        
+        room.InstanceNewWall(2, floorIndex);
+        room.InstanceNewWall(3, floorIndex);
+
         _rooms.Add(floorIndex, room);
     }
     
@@ -76,6 +72,10 @@ public class MeshHouse : MonoBehaviour
                 Instantiate(meshRoom, new Vector3(0, 0, 0), Quaternion.identity, transform).GetComponent<MeshRoom>();
 
             room.InstanceTheFloor(start, startIndex, size);
+            
+        }
+        else
+        {
             
         }
 

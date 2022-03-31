@@ -18,39 +18,43 @@ public class AdvancedMesh_Wall : AdvancedMesh
     
     public void CreateNewPanel(Vector3 theStart, Vector3 theSize, Vector3 theDirection, int wallIndex)
     {
+        
+     //   Debug.Log(theDirection);
+     //   if (WallTiles.ContainsKey(wallIndex)) return;
+        
         var points =
             MeshStatic.SetVertexPositions(theStart, theSize, true, theDirection);
         var vertIndex = AddQuadWithPointList(points);
-        var meshPanel = new MeshPanel(vertIndex, theDirection);
-        
-        if(!WallTiles.ContainsKey(wallIndex))
-            WallTiles.Add(wallIndex, new MeshPanel(vertIndex, theDirection));
+
+     
+        WallTiles.Add(wallIndex, new MeshPanel(vertIndex, theDirection));
     }
 
     public void AddPanel(Vector3 theSize, Vector3 theDirection, bool startEnd = false)
     {
         var theIndex = 0;
         Vector3 theStart;
+        
         if (!startEnd)
-        { 
-           var maxKey = WallTiles.Keys.Max();
-           theStart = theMesh.vertices[WallTiles[maxKey].startTriangleIndex + 1];
-           theIndex = maxKey + 1;
+        {
+            var maxKey = WallTiles.Keys.Max();
+            theStart = theMesh.vertices[WallTiles[maxKey].startTriangleIndex + 1];
+            theIndex = maxKey + 1;
         }
         else
         {
             var minKey = WallTiles.Keys.Min();
             theStart = theMesh.vertices[WallTiles[minKey].startTriangleIndex];
             theStart -= new Vector3(theSize.x * theDirection.x, 0, theSize.z * theDirection.z);
-            
+
             theIndex = minKey - 1;
         }
         
+
         var points =
             MeshStatic.SetVertexPositions(theStart, theSize, true, theDirection);
         var vertIndex = AddQuadWithPointList(points);
-        var meshPanel = new MeshPanel(vertIndex, theDirection);
-        
+
         if(!WallTiles.ContainsKey(theIndex))
             WallTiles.Add(theIndex, new MeshPanel(vertIndex, theDirection));
     }

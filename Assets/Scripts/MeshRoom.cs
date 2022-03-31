@@ -44,37 +44,37 @@ public class MeshRoom : MonoBehaviour
 
     public void InstanceTheFloor(Vector3 theStart, Vector3 theIndex, Vector3 theSize)
     {
-        var temp = Instantiate(meshFloor, theStart, Quaternion.identity);
+        var temp = Instantiate(meshFloor, theStart, Quaternion.identity, transform);
         theFloor = temp.GetComponent<AdvancedMesh_Floor>();
         theFloor.CreateNewPanel(theStart, theSize, new Vector3(1,0,1), theIndex);
         
         theFloor.GetComponent<MeshRenderer>().material = baseMaterial;
         
-        InstanceNewWall(1,new Vector3(0,0,0));
-        
+        InstanceNewWall(0, theIndex);
+        InstanceNewWall(1, theIndex);
     }
 
     public void InstanceNewWall(int wallIndex, Vector3 floorIndex)
     {
+        float deg = 90 + wallIndex * 90;
+        float theCos = Mathf.Round(Mathf.Cos(deg * Mathf.PI / 180));
+        float theSin = Mathf.Round(Mathf.Sin(deg * Mathf.PI / 180));
+        var simpleDir = new Vector3(theCos,1,theSin);
         var dir = GetWallDirection(wallIndex);
-        var thePos = theFloor.GetPositionClockWise(floorIndex);
+        var thePos = theFloor.GetPositionClockWise(floorIndex); 
         var theSize = (thePos[3] - thePos[0]) / 2;
 
+        Debug.Log(thePos[wallIndex]);
+       // Debug.Log(theCos);
+      //  Debug.Log(theSin + " : ");
         var panelSize = new Vector3(theSize.x, 4, theSize.z);
 
         var temp = Instantiate(meshWall,thePos[0], Quaternion.identity, theFloor.transform);
         var aWall = temp.GetComponent<AdvancedMesh_Wall>();
-        aWall.CreateNewPanel(thePos[wallIndex], panelSize, dir, 0);
-        aWall.AddPanel(panelSize, dir);
+        aWall.CreateNewPanel(thePos[wallIndex], panelSize, simpleDir, 0);
+        aWall.AddPanel(panelSize, simpleDir);
         if(!meshWalls.ContainsKey(wallIndex))
             meshWalls.Add(wallIndex, aWall);
-        
-        var pos = meshWalls[wallIndex].GetPositionAtIndex(0, 1);
-        var norm = meshWalls[wallIndex].GetNormalAtIndex(0, 1);
-        
-        //aWall.AddDoorway(pos, new Vector2(1,2), new Vector3(1,1,0), size.y, 0, norm);
-
-        var poses =theFloor.GetPositionClockWise(floorIndex);
 
         aWall.ApplyMaterial(baseMaterial);
     }
@@ -104,7 +104,7 @@ public class MeshRoom : MonoBehaviour
                 theDir = new Vector3(0, 1, -1);
                 break;
             case 3:
-                theDir = new Vector3(-1, 1, 0);
+                theDir = new Vector3(1, 1, 0);
                 break;
         }
 
