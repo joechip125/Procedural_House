@@ -12,7 +12,7 @@ public enum RoomDirections
 
 public enum RoomTypes
 {
-    Rectangle, LShape, TShape
+    Lobby, Kitchen, Bedroom
 }
 
 public class MeshRoom : MonoBehaviour
@@ -22,7 +22,7 @@ public class MeshRoom : MonoBehaviour
     public Material baseMaterial;
     public string roomName;
     public GameObject meshWall;
-    
+    public List<Vector3> floorIndices;
     Mesh roomMesh;
     MeshCollider meshCollider;
     [NonSerialized] List<Vector3> vertices = new ();
@@ -42,11 +42,13 @@ public class MeshRoom : MonoBehaviour
 
     private void InstanceNewWall(int wallIndex)
     {
+        var panelSize = new Vector3(2, 4, 2);
+        var aDirection = new Vector3(1, 1, 0);
         var aStart = new Vector3(0, 0, 0);
         var temp = Instantiate(meshWall, aStart, Quaternion.identity, transform);
         var aWall = temp.GetComponent<AdvancedMesh_Wall>();
-        aWall.CreateNewPanel(aStart, new Vector3(2,4,2), new Vector3(1,1,0), 0);
-        
+        aWall.CreateNewPanel(aStart, panelSize, aDirection, 0);
+        aWall.AddPanel(panelSize, aDirection);
         if(!meshWalls.ContainsKey(wallIndex))
             meshWalls.Add(wallIndex, aWall);
         
@@ -54,7 +56,7 @@ public class MeshRoom : MonoBehaviour
         var norm = meshWalls[wallIndex].GetNormalAtIndex(0, 1);
         
         //aWall.AddDoorway(pos, new Vector2(1,2), new Vector3(1,1,0), size.y, 0, norm);
-        aWall.AddDoorway2(0, new Vector2(1, 3));
+      
         aWall.ApplyMaterial(baseMaterial);
     }
     

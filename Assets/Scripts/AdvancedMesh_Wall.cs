@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -17,11 +18,6 @@ public class AdvancedMesh_Wall : AdvancedMesh
     
     public void CreateNewPanel(Vector3 theStart, Vector3 theSize, Vector3 theDirection, int wallIndex)
     {
-        if (wallIndex < 0)
-        {
-            
-        }
-        
         var wallOrFloor = theDirection.y != 0;
         
         var points =
@@ -31,6 +27,34 @@ public class AdvancedMesh_Wall : AdvancedMesh
         
         if(!WallTiles.ContainsKey(wallIndex))
             WallTiles.Add(wallIndex, new MeshPanel(vertIndex, theDirection));
+    }
+
+    public void AddPanel(Vector3 theSize, Vector3 theDirection, bool startEnd = false)
+    {
+        var theIndex = 0;
+        Vector3 theStart;
+        if (!startEnd)
+        { 
+           var maxKey = WallTiles.Keys.Max();
+           theStart = theMesh.vertices[WallTiles[maxKey].startTriangleIndex + 1];
+           theIndex = maxKey + 1;
+        }
+        else
+        {
+            var minKey = WallTiles.Keys.Min();
+            theStart = theMesh.vertices[WallTiles[minKey].startTriangleIndex];
+            theStart -= new Vector3(theSize.x * theDirection.x, 0, theSize.z * theDirection.z);
+            
+            theIndex = minKey - 1;
+        }
+        
+        var points =
+            MeshStatic.SetVertexPositions(theStart, theSize, true, theDirection);
+        var vertIndex = AddQuadWithPointList(points);
+        var meshPanel = new MeshPanel(vertIndex, theDirection);
+        
+        if(!WallTiles.ContainsKey(theIndex))
+            WallTiles.Add(theIndex, new MeshPanel(vertIndex, theDirection));
     }
     
     public void AddDoorway2(int panelIndex, Vector2 size)
@@ -47,56 +71,20 @@ public class AdvancedMesh_Wall : AdvancedMesh
         var totalH = theMesh.vertices[WallTiles[panelIndex].startTriangleIndex + 3].y - aNewStart.y;
 
         var topSize = new Vector3(size.x * wallDirection.x, totalH - size.y, size.x * wallDirection.z);
-
-        var floorSize = new Vector3();
-        var actualSize = new Vector3(1,0,1);
-        var aDirection = new Vector3(0,1,1);
+        
         var aDirection2 = new Vector3(-1,0,1);
+        var aDirection3 = new Vector3(1,1,0);
         
         int wallIndex = panelIndex + 50;
         CreateNewPanel(aNewStart, xzSize, new Vector3(1,0,1), wallIndex++);
-        var theIndex = theMesh.vertices[WallTiles[panelIndex].startTriangleIndex + 1];
         var index = WallTiles[panelIndex + 50].startTriangleIndex;
         
-        CreateNewPanel(theMesh.vertices[index + 1] + new Vector3(0,size.y,0), xzSize, aDirection2, wallIndex);
+        CreateNewPanel(theMesh.vertices[index + 1] + new Vector3(0,size.y,0), xzSize, aDirection2, wallIndex++);
 
         CreateNewPanel(theMesh.vertices[index], xySize, new Vector3(-wallNormal.x,1, -wallNormal.z), wallIndex++);
         CreateNewPanel(theMesh.vertices[index + 3], xySize, new Vector3(wallNormal.x,1, wallNormal.z), wallIndex++);
                        
-        CreateNewPanel(theMesh.vertices[index + 1] + new Vector3(0,size.y,0), topSize, aDirection2, wallIndex);
-        
-    }
-    
-    public void AddDoorway(Vector3 aStart, Vector2 openingSize, Vector3 direction, float totalHeight, int panelIndex, Vector3 wallNormal)
-    {
-        var wallDirection = new Vector3(-1,1,0);
-        var wallNormal2 = new Vector3(1,0,0);
-        var sidePiece = new Vector3(wallNormal.x, 1, wallNormal.z);
-        
-        var floorSize = new Vector3();
-        var actualSize = new Vector3();
-        var aDirection = new Vector3(0,1,1);
-        var aDirection2 = new Vector3(-1,0,1);
-        if (direction.x != 0)
-        {
-            actualSize = new Vector3(openingSize.x, openingSize.y, 0.1f);
-        }
-        
-        if (direction.z != 0)
-        {
-            actualSize = new Vector3(0.1f, openingSize.y, openingSize.x);
-            aDirection = new Vector3(1,1,0);
-        }
-        
-        float remainingH = totalHeight - openingSize.y;
-        int wallIndex = panelIndex + 50;
-        CreateNewPanel(aStart, actualSize, new Vector3(1,0,1), wallIndex++);
-        var index = WallTiles[panelIndex + 50].startTriangleIndex;
-        
-        CreateNewPanel(theMesh.vertices[index + 1], actualSize, new Vector3(-wallNormal.x,1, -wallNormal.z), wallIndex++);
-        CreateNewPanel(theMesh.vertices[index + 2], actualSize, sidePiece, wallIndex++);
-                       
-        CreateNewPanel(theMesh.vertices[index + 1] + new Vector3(0,openingSize.y,0), actualSize, aDirection2, wallIndex);
+        CreateNewPanel(theMesh.vertices[index] + new Vector3(0,size.y,0), topSize, aDirection3, wallIndex);
         
     }
 }
