@@ -48,7 +48,34 @@ public class AdvancedMesh : MonoBehaviour
         theMesh.SetTriangles(triangles, 0);
         theMesh.RecalculateNormals();
     }
-    
+
+
+    public void ClearMesh()
+    {
+        vertices.Clear();
+        triangles.Clear();
+        theMesh.SetVertices(vertices);
+        theMesh.SetTriangles(triangles, 0);
+    }
+
+
+    public void MoveVertices(Dictionary<int, Vector3> pointsAndMove)
+    {
+        foreach (var p in pointsAndMove)
+        {
+            vertices[p.Key] += p.Value;
+        }
+        UpdateMesh();
+    }
+    public void MoveVertices(Vector3 moveAmount, List<int> indexes)
+    {
+        foreach (var i in indexes)
+        {
+            vertices[i] += moveAmount;
+        }
+        
+        UpdateMesh();
+    }
     
     private void AddTriangle(Vector3 v1,Vector3 v2, Vector3 v3)
     {

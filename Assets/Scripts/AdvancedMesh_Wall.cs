@@ -14,7 +14,7 @@ public class AdvancedMesh_Wall : AdvancedMesh
     
     public Vector3 GetNormalAtIndex(int panelIndex, int addIndex = 0) 
         => theMesh.normals[WallTiles[panelIndex].startTriangleIndex + addIndex];
-
+    
     
     public void CreateNewPanel(Vector3 theStart, Vector3 theSize, Vector3 theDirection, int wallIndex)
     {
@@ -30,6 +30,26 @@ public class AdvancedMesh_Wall : AdvancedMesh
         WallTiles.Add(wallIndex, new MeshPanel(vertIndex, theDirection));
     }
 
+
+    public void MoveWallVerts(int firstIndex, Vector3 moveAmount, Vector3 sideToMove, int lastIndex = 0)
+    {
+        firstIndex = 2;
+
+        moveAmount = new Vector3(0,0,-1.25f);
+        var panelOne = WallTiles[firstIndex];
+        
+        
+        
+        if (lastIndex != 0)
+        {
+            
+        }
+        else
+        {
+            
+        }
+    }
+    
     public void AddPanel(Vector3 theSize, Vector3 theDirection, bool startEnd = false)
     {
         var theIndex = 0;

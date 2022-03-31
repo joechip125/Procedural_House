@@ -42,6 +42,52 @@ public class MeshRoom : MonoBehaviour
       
     }
 
+    public void ExpandRoom(Vector3 direction, Vector3 newSize, Vector3 oldIndex)
+    {
+        var newIndex = oldIndex + direction;
+        theFloor.AddFloorTile(newSize, direction, oldIndex);
+        var theWall = 2;
+        var wallDirection = -meshWalls[theWall].WallTiles[0].direction;
+        var aMove = new Vector3(newSize.x * wallDirection.x, 0, newSize.z * wallDirection.z);
+
+        bool flip = false;
+        int count = 0;
+
+        var startTri = meshWalls[theWall].WallTiles[0].startTriangleIndex + 1;
+        
+        Dictionary<int, Vector3> wallPoints = new Dictionary<int, Vector3>();
+        wallPoints.Add(startTri, aMove);
+        wallPoints.Add(startTri + 2, aMove);
+
+        foreach (var p in meshWalls[2].WallTiles)
+        {
+            if (flip)
+            {
+                startTri = meshWalls[theWall].WallTiles[p.Key].startTriangleIndex;
+                wallPoints.Add(startTri, aMove);
+                wallPoints.Add(startTri + 2, aMove);
+                wallPoints.Add(startTri + 1, aMove * 2);
+                wallPoints.Add(startTri + 3, aMove * 2);
+            }
+
+            flip = true;
+            count++;
+        }
+
+        meshWalls[2].MoveVertices(wallPoints);
+
+        var pos = theFloor.GetPositionClockWise(newIndex);
+        
+   
+        InstanceNewWall(1, newIndex);
+        InstanceNewWall(2, newIndex);
+        InstanceNewWall(3, newIndex);
+    }
+    
+    
+    
+    
+    
     public void InstanceTheFloor(Vector3 theStart, Vector3 theIndex, Vector3 theSize)
     {
         var temp = Instantiate(meshFloor, theStart, Quaternion.identity, transform);
@@ -52,6 +98,10 @@ public class MeshRoom : MonoBehaviour
         
         InstanceNewWall(0, theIndex);
         InstanceNewWall(1, theIndex);
+        InstanceNewWall(2, theIndex);
+        InstanceNewWall(3, theIndex);
+        
+        ExpandRoom(new Vector3(1,0,0), new Vector3(5,4,5), theIndex);
     }
 
     public void InstanceNewWall(int wallIndex, Vector3 floorIndex)
@@ -60,19 +110,17 @@ public class MeshRoom : MonoBehaviour
         float theCos = Mathf.Round(Mathf.Cos(deg * Mathf.PI / 180));
         float theSin = Mathf.Round(Mathf.Sin(deg * Mathf.PI / 180));
         var simpleDir = new Vector3(theCos,1,theSin);
-        var dir = GetWallDirection(wallIndex);
+ 
         var thePos = theFloor.GetPositionClockWise(floorIndex); 
-        var theSize = (thePos[3] - thePos[0]) / 2;
-
-        Debug.Log(thePos[wallIndex]);
-       // Debug.Log(theCos);
-      //  Debug.Log(theSin + " : ");
+        var theSize = (thePos[2] - thePos[0]);
+        
         var panelSize = new Vector3(theSize.x, 4, theSize.z);
+        var floorTrans = theFloor.transform;
 
-        var temp = Instantiate(meshWall,thePos[0], Quaternion.identity, theFloor.transform);
+        var temp = Instantiate(meshWall,floorTrans.position, Quaternion.identity, floorTrans);
         var aWall = temp.GetComponent<AdvancedMesh_Wall>();
         aWall.CreateNewPanel(thePos[wallIndex], panelSize, simpleDir, 0);
-        aWall.AddPanel(panelSize, simpleDir);
+    //    aWall.AddPanel(panelSize, simpleDir);
         if(!meshWalls.ContainsKey(wallIndex))
             meshWalls.Add(wallIndex, aWall);
 

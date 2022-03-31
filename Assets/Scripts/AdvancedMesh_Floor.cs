@@ -24,16 +24,17 @@ public class AdvancedMesh_Floor : AdvancedMesh
     
     public List<Vector3> GetPositionClockWise(Vector3 tileIndex)
     {
-        var theTile = FloorTiles[tileIndex];
-        List<Vector3> pos = new List<Vector3>()
+        var theTile = FloorTiles[tileIndex].startTriangleIndex;
+        
+        List<Vector3> positions = new List<Vector3>()
         {
-            theMesh.vertices[theTile.startTriangleIndex],
-            theMesh.vertices[theTile.startTriangleIndex + 1],
-            theMesh.vertices[theTile.startTriangleIndex + 3],
-            theMesh.vertices[theTile.startTriangleIndex + 2],
+            theMesh.vertices[theTile],
+            theMesh.vertices[theTile + 1],
+            theMesh.vertices[theTile + 3],
+            theMesh.vertices[theTile + 2],
         };
 
-        return pos;
+        return positions;
     }
 
     public void CreateNewPanel(Vector3 theStart, Vector3 theSize, Vector3 theDirection, Vector3 wallIndex)
@@ -82,6 +83,23 @@ public class AdvancedMesh_Floor : AdvancedMesh
 
         var newDirection = new Vector3(1,0,1);
         var newStart = GetNewFloorPos(directionFromTile, newSize, oldIndex) + addPos;
+        var newIndex = oldIndex + directionFromTile;
+
+        var points =
+            MeshStatic.SetVertexPositions(newStart, newSize, false, newDirection);
+
+        var triIndex =AddQuadWithPointList(points);
+
+        var newPanel = new MeshPanel(triIndex, newDirection);
+        FloorTiles.Add(newIndex, newPanel);
+    }
+    
+    public void AddFloorTile(Vector3 newSize, Vector3 directionFromTile, Vector3 oldIndex)
+    {
+        if (FloorTiles.ContainsKey(oldIndex + directionFromTile)) return;
+
+        var newDirection = new Vector3(1,0,1);
+        var newStart = GetNewFloorPos(directionFromTile, newSize, oldIndex);
         var newIndex = oldIndex + directionFromTile;
 
         var points =

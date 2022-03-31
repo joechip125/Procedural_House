@@ -9,7 +9,7 @@ public class MeshHouse : MonoBehaviour
     private Dictionary<Vector3, MeshRoom> _rooms = new();
     public GameObject meshRoom;
     private AdvancedMesh_Floor theFloorTiles;
-
+    public Vector3 origin;
     public GameObject meshFloor;
 
     public Material simpleMaterial;
