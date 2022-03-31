@@ -83,9 +83,13 @@ public class MeshRoom : MonoBehaviour
         InstanceNewWall(2, newIndex);
         InstanceNewWall(3, newIndex);
     }
-    
-    
-    
+
+
+    public void AddPanelToWall(int wallIndex)
+    {
+        var last =meshWalls.Keys.Max();
+        var startTri = meshWalls[wallIndex].WallTiles[last].startTriangleIndex;    
+    }
     
     
     public void InstanceTheFloor(Vector3 theStart, Vector3 theIndex, Vector3 theSize)
@@ -97,11 +101,13 @@ public class MeshRoom : MonoBehaviour
         theFloor.GetComponent<MeshRenderer>().material = baseMaterial;
         
         InstanceNewWall(0, theIndex);
-        InstanceNewWall(1, theIndex);
+    //    InstanceNewWall(1, theIndex);
         InstanceNewWall(2, theIndex);
-        InstanceNewWall(3, theIndex);
+    //    InstanceNewWall(3, theIndex);
         
         ExpandRoom(new Vector3(1,0,0), new Vector3(5,4,5), theIndex);
+        
+        meshWalls[0].ShrinkWall(0, -5f);
     }
 
     public void InstanceNewWall(int wallIndex, Vector3 floorIndex)

@@ -76,6 +76,14 @@ public class AdvancedMesh : MonoBehaviour
         
         UpdateMesh();
     }
+
+    protected void MoveTwoVerts(int indexOne, int indexTwo, Vector3 moveAmount)
+    {
+        vertices[indexOne] += moveAmount;
+        vertices[indexTwo] += moveAmount;
+        
+        UpdateMesh();
+    }
     
     private void AddTriangle(Vector3 v1,Vector3 v2, Vector3 v3)
     {
