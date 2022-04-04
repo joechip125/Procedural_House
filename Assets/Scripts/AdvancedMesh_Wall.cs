@@ -53,29 +53,13 @@ public class AdvancedMesh_Wall : AdvancedMesh
 
     public void ShrinkWall(int tileIndex, float shrinkAmount)
     {
-        var moveVec = WallTiles[tileIndex].direction;
         var startTri = WallTiles[tileIndex].startTriangleIndex;
-        Vector3 shrink = new Vector3(shrinkAmount, 0, shrinkAmount);
+        var moveDir = Vector3.Cross(new Vector3(0, 1, 0), -theMesh.normals[startTri]);
+        Vector3 shrink = new Vector3(shrinkAmount * moveDir.x, 0, shrinkAmount * moveDir.z);
 
-        var moveDirF = Mathf.Clamp(shrinkAmount, -1, 1);
-        
-        Debug.Log(moveDirF);
-
-        var moveDir = -Vector3.Cross(new Vector3(0, moveDirF, 0), theMesh.normals[startTri]);
-        
-        var aSum  new Vector3()
-        
-        Debug.Log(moveDir);
-        Debug.Log(Vector3.Scale(shrink, moveDir));
-
-        MoveTwoVerts(startTri + 1, startTri + 3, Vector3.Scale(shrink, moveDir));
+        MoveTwoVerts(startTri + 1, startTri + 3, shrink);
     }
-    public void SimpleMove(int tileIndex)
-    {
-        var startTri = WallTiles[tileIndex].startTriangleIndex;
-        
-    }
-    
+
     public void AddPanel(Vector3 theSize, Vector3 theDirection, bool startEnd = false)
     {
         var theIndex = 0;
@@ -131,7 +115,7 @@ public class AdvancedMesh_Wall : AdvancedMesh
     
     public void AddDoorway(int panelIndex, Vector2 size)
     {
-        var wallThick = 0.1f;
+        var wallThick = MeshStatic.InnerWallThickness;
         var wallDirection = WallTiles[panelIndex].direction;
         var wallNormal = theMesh.normals[WallTiles[panelIndex].startTriangleIndex];
         var aNewStart = theMesh.vertices[WallTiles[panelIndex].startTriangleIndex + 1];
