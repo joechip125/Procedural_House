@@ -3,6 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public enum VectorTypes
+{
+    Normal, InvertNormal, Forward, Back
+}
+
 public class AdvancedMesh : MonoBehaviour
 {
     protected Mesh theMesh;
@@ -81,6 +87,15 @@ public class AdvancedMesh : MonoBehaviour
     {
         vertices[indexOne] += moveAmount;
         vertices[indexTwo] += moveAmount;
+        
+        UpdateMesh();
+    }
+    
+    protected void SetTwoVerts(int indexOne, int indexTwo, Vector3 setVector, float offset)
+    {
+        
+        vertices[indexOne] = setVector;
+        vertices[indexTwo] = setVector + new Vector3(0, offset, 0);
         
         UpdateMesh();
     }

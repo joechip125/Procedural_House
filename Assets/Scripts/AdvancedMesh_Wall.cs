@@ -16,46 +16,115 @@ public class AdvancedMesh_Wall : AdvancedMesh
         => theMesh.normals[WallTiles[panelIndex].startTriangleIndex + addIndex];
 
 
-    public void MoveWallVerts(int firstIndex, Vector3 moveAmount, Vector3 sideToMove, int lastIndex = 0)
+    public void MoveWallVerts()
     {
-        firstIndex = 2;
-
-        moveAmount = new Vector3(0,0,-1.25f);
-        var panelOne = WallTiles[firstIndex];
+        var wallSize = 2.0f;
+        var numberWalls = 3;
+        var start = theMesh.vertices[0];
+        var moveDir = Vector3.Cross(new Vector3(0, -1, 0), theMesh.normals[0]);
         
-        
-        
-        if (lastIndex != 0)
+        for (int i = 0; i < numberWalls; i++)
         {
-            
-        }
-        else
-        {
-            
+            var totalSizeFirst = wallSize * i;
+            var firstVec = start + new Vector3(moveDir.x * totalSizeFirst, 0 , moveDir.z * totalSizeFirst);
+            var secondVec = firstVec + new Vector3(wallSize * moveDir.x, 0, wallSize * moveDir.z);
+            var aVert = i * 4;
+            SetTwoVerts(aVert, aVert + 2, firstVec, 4);
+            SetTwoVerts(aVert + 1, aVert + 3, secondVec, 4);
         }
     }
 
+    public List<Vector3> GetWallPositions(int numberWalls, Vector3 moveVec, float wallSize, Vector3 start)
+    {
+        var theList = new List<Vector3>();
+        
+        for (int i = 0; i < numberWalls; i++)
+        {
+            var moveAmount = wallSize * i;
+            var theVec = start + new Vector3(moveAmount * moveVec.x, 0, moveAmount * moveVec.z);
+            theList.Add(theVec);
+        }
 
-    public void ShrinkWall(int tileIndex, float shrinkAmount)
+        return theList;
+    }
+    
+    public Vector3 GetWallSize()
+    {
+        var outVec = new Vector3();
+        
+        
+        return outVec;
+    }
+    
+    public Vector3 GetNextPos()
+    {
+        var outVec = new Vector3();
+
+
+        return outVec;
+    }
+
+    public Vector3 GetWallVectorOfType(VectorTypes type, int panelIndex)
+    {
+        var outVec = new Vector3();
+
+        switch (type)
+        {
+            case VectorTypes.Normal:
+                
+                break;
+        }
+
+        return outVec;
+    }
+    
+    
+    public void SetSomeVerts(Vector3 firstPos,int tileIndex, float offset, bool startEnd = true)
+    {
+        var secondPos = firstPos + new Vector3(0, offset, 0);
+      
+    }
+    
+    public void ShrinkWallTile(int tileIndex, float shrinkAmount, bool startEnd = true, bool plusMinus = false)
     {
         var startTri = WallTiles[tileIndex].startTriangleIndex;
-        var moveDir = Vector3.Cross(new Vector3(0, 1, 0), -theMesh.normals[startTri]);
+        int firstVert = 0;
+        int secondVert = 0;
+        float crossMod = 0;
+
+        if (startEnd)
+        {
+            firstVert = startTri;
+            secondVert = startTri + 2;
+        }
+        
+        else
+        {
+            firstVert = startTri + 1;
+            secondVert = startTri + 3;
+        }
+
+        if (plusMinus)
+        {
+            crossMod = -1;
+        }
+        else
+        {
+            crossMod = 1;
+        }
+        
+        var moveDir = Vector3.Cross(new Vector3(0, crossMod, 0), theMesh.normals[startTri]);
         Vector3 shrink = new Vector3(shrinkAmount * moveDir.x, 0, shrinkAmount * moveDir.z);
 
-        MoveTwoVerts(startTri + 1, startTri + 3, shrink);
+        MoveTwoVerts(firstVert, secondVert, shrink);
     }
 
     public void CreateNewPanel(Vector3 theStart, Vector3 theSize, Vector3 theDirection, int wallIndex)
     {
-        
-        //   Debug.Log(theDirection);
-        //   if (WallTiles.ContainsKey(wallIndex)) return;
-        
         var points =
             MeshStatic.SetVertexPositions(theStart, theSize, true, theDirection);
         var vertIndex = AddQuadWithPointList(points);
-
-     
+        
         WallTiles.Add(wallIndex, new MeshPanel(vertIndex, theDirection));
     }
 

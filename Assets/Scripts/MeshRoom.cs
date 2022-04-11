@@ -102,7 +102,8 @@ public class MeshRoom : MonoBehaviour
 
     public void ShrinkAWall(int wallIndex)
     {
-        
+        meshWalls[0].MoveWallVerts();
+        meshWalls[0].GetWallPositions(4, new Vector3(1, 0, 0), 3, new Vector3(0, 0, 0));
     }
     
     public void InstanceNewWall(int wallIndex, Vector3 floorIndex)
@@ -115,7 +116,7 @@ public class MeshRoom : MonoBehaviour
         var simpleDir = new Vector3(theCos,1,theSin);
  
         var thePos = theFloor.GetPositionClockWise(floorIndex); 
-        var theSize = (thePos[2] - thePos[0]) / 2;
+        var theSize = (thePos[2] - thePos[0]) / 3;
         
         var panelSize = new Vector3(theSize.x, 4, theSize.z);
         var floorTrans = theFloor.transform;
@@ -123,6 +124,7 @@ public class MeshRoom : MonoBehaviour
         var temp = Instantiate(meshWall,floorTrans.position, Quaternion.identity, floorTrans);
         var aWall = temp.GetComponent<AdvancedMesh_Wall>();
         aWall.CreateNewPanel(thePos[wallIndex], panelSize, simpleDir, 0);
+        aWall.AddPanel(panelSize, simpleDir);
         aWall.AddPanel(panelSize, simpleDir);
 
         meshWalls.Add(wallIndex, aWall);
