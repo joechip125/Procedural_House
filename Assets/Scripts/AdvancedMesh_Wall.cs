@@ -14,21 +14,6 @@ public class AdvancedMesh_Wall : AdvancedMesh
     
     public Vector3 GetNormalAtIndex(int panelIndex, int addIndex = 0) 
         => theMesh.normals[WallTiles[panelIndex].startTriangleIndex + addIndex];
-    
-    
-    public void CreateNewPanel(Vector3 theStart, Vector3 theSize, Vector3 theDirection, int wallIndex)
-    {
-        
-     //   Debug.Log(theDirection);
-     //   if (WallTiles.ContainsKey(wallIndex)) return;
-        
-        var points =
-            MeshStatic.SetVertexPositions(theStart, theSize, true, theDirection);
-        var vertIndex = AddQuadWithPointList(points);
-
-     
-        WallTiles.Add(wallIndex, new MeshPanel(vertIndex, theDirection));
-    }
 
 
     public void MoveWallVerts(int firstIndex, Vector3 moveAmount, Vector3 sideToMove, int lastIndex = 0)
@@ -58,6 +43,20 @@ public class AdvancedMesh_Wall : AdvancedMesh
         Vector3 shrink = new Vector3(shrinkAmount * moveDir.x, 0, shrinkAmount * moveDir.z);
 
         MoveTwoVerts(startTri + 1, startTri + 3, shrink);
+    }
+
+    public void CreateNewPanel(Vector3 theStart, Vector3 theSize, Vector3 theDirection, int wallIndex)
+    {
+        
+        //   Debug.Log(theDirection);
+        //   if (WallTiles.ContainsKey(wallIndex)) return;
+        
+        var points =
+            MeshStatic.SetVertexPositions(theStart, theSize, true, theDirection);
+        var vertIndex = AddQuadWithPointList(points);
+
+     
+        WallTiles.Add(wallIndex, new MeshPanel(vertIndex, theDirection));
     }
 
     public void AddPanel(Vector3 theSize, Vector3 theDirection, bool startEnd = false)

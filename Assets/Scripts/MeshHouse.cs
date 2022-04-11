@@ -72,6 +72,7 @@ public class MeshHouse : MonoBehaviour
                 Instantiate(meshRoom, new Vector3(0, 0, 0), Quaternion.identity, transform).GetComponent<MeshRoom>();
 
             room.InstanceTheFloor(start, startIndex, size);
+            room.ShrinkAWall(2);
             
         }
         else

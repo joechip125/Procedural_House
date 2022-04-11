@@ -24,26 +24,18 @@ public class MeshRoom : MonoBehaviour
     public RoomTypes roomType;
     public GameObject meshWall;
     public GameObject meshFloor;
- 
-
-//    [NonSerialized] private List<Color> _colors;
-
-    public Dictionary<int, MeshTiles> MeshTilesList = new ();
- 
-    public Dictionary<Vector3, FloorTileValues> floorTileValues = new Dictionary<Vector3, FloorTileValues>();
 
     public Dictionary<int,AdvancedMesh_Wall> meshWalls = new Dictionary<int, AdvancedMesh_Wall>();
-
     public AdvancedMesh_Floor theFloor;
     
+    public Vector3 GetWallForward(int wallIndex)
+        => -meshWalls[wallIndex].GetNormalAtIndex(0);
     
-    private void Awake()
-    {
-      
-    }
-
+    
     public void ExpandRoom(Vector3 direction, Vector3 newSize, Vector3 oldIndex, int wallDir)
     {
+        var aMoveDir = GetWallForward(wallDir);
+        
         var newIndex = oldIndex + direction;
         theFloor.AddFloorTile(newSize, direction, oldIndex);
         var theWall = 2;
@@ -84,17 +76,6 @@ public class MeshRoom : MonoBehaviour
         InstanceNewWall(3, newIndex);
     }
 
-
-    public void AddPanelToWall(int wallIndex)
-    {
-        var last =meshWalls.Keys.Max();
-        var startTri = meshWalls[wallIndex].WallTiles[last].startTriangleIndex;    
-    }
-
-    public Vector3 GetWallForward(int wallIndex)
-        => -meshWalls[wallIndex].GetNormalAtIndex(0);
-    
-    
     public void InstanceTheFloor(Vector3 theStart, Vector3 theIndex, Vector3 theSize)
     {
         var temp = Instantiate(meshFloor, theStart, Quaternion.identity, transform);
@@ -109,6 +90,21 @@ public class MeshRoom : MonoBehaviour
         InstanceNewWall(3, theIndex);
     }
 
+    public void InstanceTheseWalls()
+    {
+        
+    }
+
+    public void AddTileToExistingWall(int wallIndex)
+    {
+            
+    }
+
+    public void ShrinkAWall(int wallIndex)
+    {
+        
+    }
+    
     public void InstanceNewWall(int wallIndex, Vector3 floorIndex)
     {
         if (meshWalls.ContainsKey(wallIndex)) return;
@@ -133,37 +129,4 @@ public class MeshRoom : MonoBehaviour
 
         aWall.ApplyMaterial(baseMaterial);
     }
-    
-
-    public void AddOuterWalls()
-    {
-        var addVector = new Vector3(MeshStatic.OuterWallThickness * 1, 0, MeshStatic.OuterWallThickness * 1);
-    //    MakeANewWall(vertices[0] + new Vector3(addVector.x * -1, 0, addVector.z * -1), new Vector3(1,1,0), 2, 5, addVector);
-    //    MakeANewWall(vertices[1] + new Vector3(addVector.x * 1, 0, addVector.z * -1), new Vector3(0,1,1), 2, 6, addVector);
-    //    MakeANewWall(vertices[3] + new Vector3(addVector.x * 1, 0, addVector.z * 1), new Vector3(-1,1,0), 2, 7, addVector);
-    //    MakeANewWall(vertices[2] + new Vector3(addVector.x * -1, 0, addVector.z * 1), new Vector3(0,1,-1), 2, 8, addVector);
-    }
-    
-    private Vector3 GetWallDirection(int wallIndex)
-    {
-        var theDir = new Vector3(0, 0, 0);
-        switch (wallIndex)
-        {
-            case 0:
-                theDir = new Vector3(0, 1, 1);
-                break;
-            case 1:
-                theDir = new Vector3(-1, 1, 0);
-                break;
-            case 2:
-                theDir = new Vector3(0, 1, -1);
-                break;
-            case 3:
-                theDir = new Vector3(1, 1, 0);
-                break;
-        }
-
-        return theDir;
-    }
-
 }
