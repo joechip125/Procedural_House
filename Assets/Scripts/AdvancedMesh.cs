@@ -20,7 +20,7 @@ public class AdvancedMesh : MonoBehaviour
     private void Awake()
     {
         GetComponent<MeshFilter>().mesh = theMesh = new Mesh();
-        theMesh.name = "RoomMesh";
+        theMesh.name = "TheMesh";
     }
 
     public void ApplyMaterial(Material material)
@@ -46,7 +46,24 @@ public class AdvancedMesh : MonoBehaviour
 
         return vertexIndex;
     }
-    
+
+    protected void AddQuad(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4) 
+    {
+        var vertexIndex = vertices.Count;
+        vertices.Add(v1);
+        vertices.Add(v2);
+        vertices.Add(v3);
+        vertices.Add(v4);
+        triangles.Add(vertexIndex);
+        triangles.Add(vertexIndex + 2);
+        triangles.Add(vertexIndex + 1);
+        triangles.Add(vertexIndex + 1);
+        triangles.Add(vertexIndex + 2);
+        triangles.Add(vertexIndex + 3);
+        
+        UpdateMesh();
+    }
+
     private void UpdateMesh()
     {
         theMesh.Clear();
@@ -73,6 +90,7 @@ public class AdvancedMesh : MonoBehaviour
         }
         UpdateMesh();
     }
+
     public void MoveVertices(Vector3 moveAmount, List<int> indexes)
     {
         foreach (var i in indexes)
@@ -90,7 +108,7 @@ public class AdvancedMesh : MonoBehaviour
         
         UpdateMesh();
     }
-    
+
     protected void SetTwoVerts(int indexOne, int indexTwo, Vector3 setVector, float offset)
     {
         
@@ -99,8 +117,8 @@ public class AdvancedMesh : MonoBehaviour
         
         UpdateMesh();
     }
-    
-    private void AddTriangle(Vector3 v1,Vector3 v2, Vector3 v3)
+
+    protected void AddTriangle(Vector3 v1,Vector3 v2, Vector3 v3)
     {
         var vertexIndex = vertices.Count;
         vertices.Add(v1);
@@ -112,8 +130,8 @@ public class AdvancedMesh : MonoBehaviour
         
         UpdateMesh();
     }
-    
-    private int AddTriangleWithPointList(List<Vector3> pointList)
+
+    protected int AddTriangleWithPointList(List<Vector3> pointList)
     {
         var vertexIndex = vertices.Count;
         vertices.Add(pointList[0]);
@@ -128,21 +146,6 @@ public class AdvancedMesh : MonoBehaviour
         return vertexIndex;
     }
 
-    public void AddQuad(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4) 
-    {
-        var vertexIndex = vertices.Count;
-        vertices.Add(v1);
-        vertices.Add(v2);
-        vertices.Add(v3);
-        vertices.Add(v4);
-        triangles.Add(vertexIndex);
-        triangles.Add(vertexIndex + 2);
-        triangles.Add(vertexIndex + 1);
-        triangles.Add(vertexIndex + 1);
-        triangles.Add(vertexIndex + 2);
-        triangles.Add(vertexIndex + 3);
-    }
-    
 
     private void RemoveQuad(int firstIndex)
     {

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
 public class AdvancedMesh_Floor : AdvancedMesh
@@ -22,6 +23,7 @@ public class AdvancedMesh_Floor : AdvancedMesh
         return pos;
     }
     
+    
     public List<Vector3> GetPositionClockWise(Vector3 tileIndex)
     {
         var theTile = FloorTiles[tileIndex].startTriangleIndex;
@@ -33,8 +35,8 @@ public class AdvancedMesh_Floor : AdvancedMesh
             theMesh.vertices[theTile + 3],
             theMesh.vertices[theTile + 2],
         };
-
         return positions;
+        
     }
 
     public void CreateNewPanel(Vector3 theStart, Vector3 theSize, Vector3 theDirection, Vector3 wallIndex)
@@ -51,6 +53,11 @@ public class AdvancedMesh_Floor : AdvancedMesh
     
     private Vector3 GetNewFloorPos(Vector3 directions, Vector3 newSize, Vector3 floorIndex)
     {
+        var min = theMesh.bounds.min;
+        var max = theMesh.bounds.max;
+
+        var ex = new Vector3(max.x, min.y, max.z);
+        
         var panel = FloorTiles[floorIndex];
         var newStart = theMesh.vertices[panel.startTriangleIndex];
 
@@ -108,6 +115,7 @@ public class AdvancedMesh_Floor : AdvancedMesh
         var triIndex =AddQuadWithPointList(points);
 
         var newPanel = new MeshPanel(triIndex, newDirection);
+
         FloorTiles.Add(newIndex, newPanel);
     }
 }

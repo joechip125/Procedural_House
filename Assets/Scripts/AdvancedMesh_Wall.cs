@@ -16,18 +16,30 @@ public class AdvancedMesh_Wall : AdvancedMesh
         => theMesh.normals[WallTiles[panelIndex].startTriangleIndex + addIndex];
 
 
-    public void MoveWallVerts()
+    public void ShrinkAllWallTiles(bool startEnd, float totalShrink)
     {
+        var t1 = theMesh.vertices[0];
+        var t2 = theMesh.vertices[3];
+        var tileSize = new Vector3(Mathf.Abs(t2.x - t1.x), t2.y, Mathf.Abs(t2.z - t1.z));
+        var totalSize = ((tileSize.z * 3) - totalShrink) / 3;
+        
         var wallSize = 2.0f;
-        var numberWalls = 3;
+        var numberTiles = 3;
+        var wallShrink = totalShrink / numberTiles;
+        
         var start = theMesh.vertices[0];
         var moveDir = Vector3.Cross(new Vector3(0, -1, 0), theMesh.normals[0]);
-        
-        for (int i = 0; i < numberWalls; i++)
+        Debug.Log(moveDir);
+        if (startEnd)
         {
-            var totalSizeFirst = wallSize * i;
-            var firstVec = start + new Vector3(moveDir.x * totalSizeFirst, 0 , moveDir.z * totalSizeFirst);
-            var secondVec = firstVec + new Vector3(wallSize * moveDir.x, 0, wallSize * moveDir.z);
+            start += new Vector3(moveDir.x * totalShrink, 0, moveDir.z * totalShrink);
+        }
+        
+        
+        for (int i = 0; i < WallTiles.Count; i++)
+        {
+            var firstVec = start + new Vector3(moveDir.x * (wallShrink * i), 0, moveDir.z * (wallShrink * i));
+            var secondVec = firstVec + new Vector3(wallShrink * moveDir.x, 0, wallShrink * moveDir.z);
             var aVert = i * 4;
             SetTwoVerts(aVert, aVert + 2, firstVec, 4);
             SetTwoVerts(aVert + 1, aVert + 3, secondVec, 4);

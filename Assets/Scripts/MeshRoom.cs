@@ -32,45 +32,21 @@ public class MeshRoom : MonoBehaviour
         => -meshWalls[wallIndex].GetNormalAtIndex(0);
     
     
-    public void ExpandRoom(Vector3 direction, Vector3 newSize, Vector3 oldIndex, int wallDir)
+    public void ExpandRoom(Vector3 direction, Vector3 newSize, Vector3 oldIndex, int wallDir = 0)
     {
         var aMoveDir = GetWallForward(wallDir);
         
-        var newIndex = oldIndex + direction;
-        theFloor.AddFloorTile(newSize, direction, oldIndex);
+        var newIndex = oldIndex + aMoveDir;
+        theFloor.AddFloorTile(newSize, aMoveDir, oldIndex);
         var theWall = 2;
         var wallDirection = -meshWalls[theWall].WallTiles[0].direction;
         var aMove = new Vector3(newSize.x * wallDirection.x, 0, newSize.z * wallDirection.z);
-
-        bool flip = false;
-        int count = 0;
-
-        var startTri = meshWalls[theWall].WallTiles[0].startTriangleIndex + 1;
         
-        Dictionary<int, Vector3> wallPoints = new Dictionary<int, Vector3>();
-        wallPoints.Add(startTri, aMove);
-        wallPoints.Add(startTri + 2, aMove);
 
-        foreach (var p in meshWalls[2].WallTiles)
-        {
-            if (flip)
-            {
-                startTri = meshWalls[theWall].WallTiles[p.Key].startTriangleIndex;
-                wallPoints.Add(startTri, aMove);
-                wallPoints.Add(startTri + 2, aMove);
-                wallPoints.Add(startTri + 1, aMove * 2);
-                wallPoints.Add(startTri + 3, aMove * 2);
-            }
-
-            flip = true;
-            count++;
-        }
-
-        meshWalls[2].MoveVertices(wallPoints);
+        meshWalls[wallDir].ShrinkAllWallTiles(true, newSize.x);
 
         var pos = theFloor.GetPositionClockWise(newIndex);
         
-   
         InstanceNewWall(1, newIndex);
         InstanceNewWall(2, newIndex);
         InstanceNewWall(3, newIndex);
@@ -90,30 +66,18 @@ public class MeshRoom : MonoBehaviour
         InstanceNewWall(3, theIndex);
     }
 
-    public void InstanceTheseWalls()
-    {
-        
-    }
-
-    public void AddTileToExistingWall(int wallIndex)
-    {
-            
-    }
 
     public void ShrinkAWall(int wallIndex)
     {
-        meshWalls[0].MoveWallVerts();
-        meshWalls[0].GetWallPositions(4, new Vector3(1, 0, 0), 3, new Vector3(0, 0, 0));
+        meshWalls[2].ShrinkAllWallTiles(true, 1);
+        meshWalls[3].ShrinkAllWallTiles(true, 1);
     }
     
     public void InstanceNewWall(int wallIndex, Vector3 floorIndex)
     {
         if (meshWalls.ContainsKey(wallIndex)) return;
-        
-        float deg = 90 + wallIndex * 90;
-        float theCos = Mathf.Round(Mathf.Cos(deg * Mathf.PI / 180));
-        float theSin = Mathf.Round(Mathf.Sin(deg * Mathf.PI / 180));
-        var simpleDir = new Vector3(theCos,1,theSin);
+   
+        var simpleDir = GetDirectionFromCosine(wallIndex);
  
         var thePos = theFloor.GetPositionClockWise(floorIndex); 
         var theSize = (thePos[2] - thePos[0]) / 3;
@@ -130,5 +94,17 @@ public class MeshRoom : MonoBehaviour
         meshWalls.Add(wallIndex, aWall);
 
         aWall.ApplyMaterial(baseMaterial);
+    }
+
+    
+    
+    private Vector3 GetDirectionFromCosine(float wallIndex)
+    {
+        var deg = 90 + wallIndex * 90;
+        var theCos = Mathf.Round(Mathf.Cos(deg * Mathf.PI / 180));
+        var theSin = Mathf.Round(Mathf.Sin(deg * Mathf.PI / 180));
+        var simpleDir = new Vector3(theCos,1,theSin);
+
+        return simpleDir;
     }
 }

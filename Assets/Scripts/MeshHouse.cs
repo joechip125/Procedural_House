@@ -66,21 +66,21 @@ public class MeshHouse : MonoBehaviour
     
     private void MakeARoom(Vector3 start, Vector3 size, Vector3 startIndex, bool newOrExtend = true)
     {
+        var room =
+            Instantiate(meshRoom, new Vector3(0, 0, 0), Quaternion.identity, transform).GetComponent<MeshRoom>();
+
         if (newOrExtend)
         {
-            var room =
-                Instantiate(meshRoom, new Vector3(0, 0, 0), Quaternion.identity, transform).GetComponent<MeshRoom>();
-
             room.InstanceTheFloor(start, startIndex, size);
-            room.ShrinkAWall(2);
-            
         }
         else
         {
             
         }
 
-        //  room.GetComponent<MeshRoom>().MakeNewFloor(0, new Vector3(1,0,1));
+        var dir = new Vector3(1, 0, 0);
+        var newSize = new Vector3(5, 4, 5);
+        room.ExpandRoom(dir, newSize, startIndex);
       //  room.GetComponent<MeshRoom>().AddDoorway2(new Vector3(0,0,0), new Vector2(1,2), new Vector3(1,0,0));
         
         
