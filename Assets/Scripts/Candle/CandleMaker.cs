@@ -13,6 +13,7 @@ public class CandleMaker : MonoBehaviour
         cylinder = gameObject.AddComponent<CylinderMesh>();
         //cylinder.BuildCylinder2();
         cylinder.BuildCylinder(0.3f, 12);
+        shrink = true;
     }
 
 
@@ -20,16 +21,12 @@ public class CandleMaker : MonoBehaviour
     {
         shrink = true;
     }
-
-    private void MovePoints()
-    {
-        
-    }
+    
     
     void Update()
     {
         if (!shrink) return;
-        
+        cylinder.MovePoints(Time.deltaTime * 0.01f);
         
         
     }

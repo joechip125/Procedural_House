@@ -32,10 +32,19 @@ public class CylinderMesh : AdvancedMesh
         
         return center + new Vector3((float)cos, 0, (float) sin);
     }
-
-  
-    void Update()
+    
+    public void MovePoints(float moveAmount)
     {
+     
         
+        for (int i = 0; i < vertices.Count; i+= 4)
+        {
+            if (i + 3 >= vertices.Count) break;
+            
+            vertices[i + 1] -= new Vector3(0, moveAmount, 0);
+            vertices[i + 3] -= new Vector3(0, moveAmount, 0);
+        }
+        UpdateMesh();
     }
+
 }

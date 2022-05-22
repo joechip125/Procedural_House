@@ -13,8 +13,8 @@ public class AdvancedMesh : MonoBehaviour
 {
     protected Mesh theMesh;
     MeshCollider meshCollider;
-    [NonSerialized] List<Vector3> vertices = new ();
-    [NonSerialized] private List<int> triangles = new ();
+    [NonSerialized] protected List<Vector3> vertices = new ();
+    [NonSerialized] protected List<int> triangles = new ();
     
     
     private void Awake()
@@ -64,7 +64,7 @@ public class AdvancedMesh : MonoBehaviour
         UpdateMesh();
     }
 
-    private void UpdateMesh()
+    protected void UpdateMesh()
     {
         theMesh.Clear();
         theMesh.SetVertices(vertices);
