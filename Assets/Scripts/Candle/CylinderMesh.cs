@@ -47,7 +47,7 @@ public class CylinderMesh : AdvancedMesh
     {
         var degInc = 360 / numberSegments;
         var center = new Vector3(0, 0, 0);
-        var endHeight = new Vector3(0, 0.3f, 0);
+        var endHeight = new Vector3(0, -0.3f, 0);
         var startHeight = new Vector3(0, 0, 0);
         var deg = 0;
 
