@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CylinderMesh : AdvancedMesh
 {
-    public void BuildCylinder(float radius, int numberSegments)
+    public void BuildCylinder(float radius, int numberSegments, float height)
     {
 
         var center = new Vector3(0, 0, 0);
@@ -18,7 +18,26 @@ public class CylinderMesh : AdvancedMesh
             var pointOne = GetCircleEdge(deg, center, radius);
             var pointTwo = GetCircleEdge(deg - degInc, center, radius);
             
-            AddQuad(pointOne, pointOne + new Vector3(0, 1,0), pointTwo, pointTwo + new Vector3(0,1,0));
+            AddQuad(pointOne, pointOne + new Vector3(0, height,0), pointTwo, pointTwo + new Vector3(0,height,0));
+
+            deg += degInc;
+        }
+    }
+
+    public void BuildCircle(float radius, int numberSegments, float height)
+    {
+        var center = new Vector3(0, height, 0);
+        var deg = 0;
+        var degInc = 360 / numberSegments;
+        
+        
+        for (int i = 0; i < numberSegments; i++)
+        {
+            var pointOne = GetCircleEdge(deg, center, radius);
+            var pointTwo = GetCircleEdge(deg + degInc, center, radius);
+          //  AddTriangle(center, pointOne, pointTwo);
+            AddTriangle(center, pointTwo, pointOne);
+           // AddQuad(pointOne, pointOne + new Vector3(0, 1,0), pointTwo, pointTwo + new Vector3(0,1,0));
 
             deg += degInc;
         }

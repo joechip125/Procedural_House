@@ -145,6 +145,26 @@ public class DialogueGraphView : GraphView
         AddElement(CreateDialogueNode(nodeName, mousePosition));
     }
 
+    public void CreateNode2(int someValue, Vector2 mousePosition)
+    {
+        AddElement(CreateTestNode(someValue, mousePosition));
+    }
+
+    public TestNode CreateTestNode(int someValue, Vector2 mousePosition)
+    {
+        var testNode = new TestNode();
+        testNode.title = "Test";
+        testNode.someValue = someValue;
+        testNode.GUID = Guid.NewGuid().ToString();
+        
+        testNode.styleSheets.Add(Resources.Load<StyleSheet>("Node2"));
+        
+        testNode.SetPosition(new Rect (mousePosition, DefaultNodeSize));
+        
+        
+        return testNode;
+    }
+
     public DialogueNode CreateDialogueNode(string nodeName, Vector2 mousePosition)
     {
         var dialogueNode = new DialogueNode();

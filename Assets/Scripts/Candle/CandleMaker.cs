@@ -11,9 +11,9 @@ public class CandleMaker : MonoBehaviour
     void Start()
     {
         cylinder = gameObject.AddComponent<CylinderMesh>();
-        //cylinder.BuildCylinder2();
-        cylinder.BuildCylinder(0.3f, 12);
-        shrink = true;
+        cylinder.BuildCylinder(1, 12, 1);
+        cylinder.BuildCircle(1, 12, 1);
+    //    shrink = true;
     }
 
 
