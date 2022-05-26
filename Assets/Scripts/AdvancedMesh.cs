@@ -26,6 +26,7 @@ public class AdvancedMesh : MonoBehaviour
     public void ApplyMaterial(Material material)
     {
         GetComponent<MeshRenderer>().material = material;
+        theMesh.RecalculateNormals();
     }
     
     protected int AddQuadWithPointList(List<Vector3> pointList)

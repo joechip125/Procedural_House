@@ -24,7 +24,7 @@ public class CylinderMesh : AdvancedMesh
         }
     }
 
-    public void BuildCircle(float radius, int numberSegments, float height)
+    public void BuildCircle(float radius, int numberSegments, float height = 0)
     {
         var center = new Vector3(0, height, 0);
         var deg = 0;
@@ -39,6 +39,26 @@ public class CylinderMesh : AdvancedMesh
             AddTriangle(center, pointTwo, pointOne);
            // AddQuad(pointOne, pointOne + new Vector3(0, 1,0), pointTwo, pointTwo + new Vector3(0,1,0));
 
+            deg += degInc;
+        }
+    }
+
+    public void BuildRing(float beginRadius, float ringExtent, int numberSegments)
+    {
+        var degInc = 360 / numberSegments;
+        var center = new Vector3(0, 0, 0);
+        var endHeight = new Vector3(0, 0.3f, 0);
+        var startHeight = new Vector3(0, 0, 0);
+        var deg = 0;
+
+        for (int i = 0; i < numberSegments; i++)
+        {
+            var pointOne = GetCircleEdge(deg, center + startHeight, beginRadius);
+            var pointTwo = GetCircleEdge(deg + degInc, center + startHeight, beginRadius);
+            var pointThree = GetCircleEdge(deg, center + endHeight, beginRadius + ringExtent);
+            var pointFour = GetCircleEdge(deg + degInc, center + endHeight, beginRadius + ringExtent);
+        
+            AddQuad(pointOne, pointThree, pointTwo, pointFour);
             deg += degInc;
         }
     }
