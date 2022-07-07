@@ -2,7 +2,7 @@ Label
 {
     font-size: 20px;
     -unity-font-style: bold;
-    color: rgb(68, 138, 255);
+    color: rgb(150, 150, 150);
 }
 
 GridBackground

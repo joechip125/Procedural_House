@@ -7,6 +7,8 @@ public abstract class BaseNode : ScriptableObject
     public State state = State.Update;
     public bool started;
 
+    public string guid;
+
     public enum State
     {
         Failure,

@@ -1,3 +1,4 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -6,6 +7,9 @@ using UnityEditor.UIElements;
 
 public class BehaviourTreeEditor : EditorWindow
 {
+    private BehaviorTreeView _treeView;
+    private InspectorView _inspectorView;
+    
     [MenuItem("BehaviourTreeEditor/Editor...")]
     public static void OpenWindow()
     {
@@ -19,12 +23,25 @@ public class BehaviourTreeEditor : EditorWindow
         VisualElement root = rootVisualElement;
         
         // Import UXML
-        var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Editor/BehaviourTreeEditor.uxml");
+        var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Editor/BehaviourTreeUI.uxml");
         visualTree.CloneTree(root);
 
         // A stylesheet can be added to a VisualElement.
         // The style will be applied to the VisualElement and all of its children.
         var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Editor/BehaviourTreeEditor.uss");
         root.styleSheets.Add(styleSheet);
+
+        _treeView = root.Q<BehaviorTreeView>();
+        _inspectorView = root.Q<InspectorView>();
+    }
+
+    private void OnSelectionChange()
+    {
+        BehaviourTree tree = Selection.activeObject as BehaviourTree;
+
+        if (tree)
+        {
+            _treeView.PopulateView(tree);
+        }
     }
 }
