@@ -12,6 +12,11 @@ public class BehaviourTree : ScriptableObject
 
     public BaseNode.State Update()
     {
-        return rootNode.Update();
+        if (state == BaseNode.State.Update)
+        {
+            state = rootNode.Update();
+        }
+
+        return state;
     }
 }
