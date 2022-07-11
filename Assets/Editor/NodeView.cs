@@ -62,6 +62,9 @@ public class NodeView : Node
             case DecoratorNode:
                 output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
                 break;
+            case RootNode:
+                output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
+                break;
         }
         
         

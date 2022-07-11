@@ -21,6 +21,8 @@ public class InspectorView : VisualElement
     public void UpdateSelection(NodeView nodeView)
     {
        Clear();
+       
+       Object.DestroyImmediate(_editor);
        _editor = Editor.CreateEditor(nodeView.Node);
 
        var container = new IMGUIContainer(() => { _editor.OnInspectorGUI(); });

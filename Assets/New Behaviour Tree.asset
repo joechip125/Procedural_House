@@ -1,5 +1,22 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-9109778381135273277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c65377a83545324a9dfc0ac71d195c2, type: 3}
+  m_Name: DebugLogNode
+  m_EditorClassIdentifier: 
+  state: 1
+  started: 0
+  guid: 407bf991235e0b74281e8035f4054407
+  position: {x: 353.68, y: 78.951996}
+  message: 
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14,4 +31,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rootNode: {fileID: 0}
   state: 1
-  nodes: []
+  nodes:
+  - {fileID: -9109778381135273277}
+  - {fileID: 2076224662253756678}
+--- !u!114 &2076224662253756678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20a9d60dd060c7a4e8c533efeb46d7b0, type: 3}
+  m_Name: SequencerNode
+  m_EditorClassIdentifier: 
+  state: 1
+  started: 0
+  guid: fe7ef26211a137140bc790dfc970366f
+  position: {x: 0, y: 0}
+  children: []

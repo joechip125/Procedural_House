@@ -42,6 +42,13 @@ public class BehaviorTreeView : GraphView
         graphViewChanged -= OnGraphViewChanged;
         DeleteElements(graphElements);
         graphViewChanged += OnGraphViewChanged;
+
+        if (!_tree.rootNode)
+        {
+            _tree.rootNode = tree.CreateNode(typeof(RootNode)) as RootNode;
+            EditorUtility.SetDirty(_tree);
+            AssetDatabase.SaveAssets();
+        }
         
         _tree.nodes.ForEach(CreateNodeView);
         

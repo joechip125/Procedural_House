@@ -36,6 +36,12 @@ public abstract class BaseNode : ScriptableObject
         return state;
     }
 
+
+    public virtual BaseNode Clone()
+    {
+        return Instantiate(this);
+    }
+    
     public abstract void OnStart();
     public abstract void OnExit();
     public abstract State OnUpdate();
