@@ -15,7 +15,7 @@ MonoBehaviour:
   state: 1
   started: 0
   guid: 407bf991235e0b74281e8035f4054407
-  position: {x: 353.68, y: 78.951996}
+  position: {x: 343.4, y: -98.29599}
   message: 
 --- !u!114 &11400000
 MonoBehaviour:
@@ -29,11 +29,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 762c148f0962d0c4785f724d0a4bffd9, type: 3}
   m_Name: New Behaviour Tree
   m_EditorClassIdentifier: 
-  rootNode: {fileID: 0}
+  rootNode: {fileID: 714413776023055654}
   state: 1
   nodes:
   - {fileID: -9109778381135273277}
   - {fileID: 2076224662253756678}
+  - {fileID: 714413776023055654}
+--- !u!114 &714413776023055654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dab16fad0c71f544d8bd0dd952a71e6d, type: 3}
+  m_Name: RootNode
+  m_EditorClassIdentifier: 
+  state: 1
+  started: 0
+  guid: 0b39b591b3d17f94ba6238669363cdb7
+  position: {x: 0, y: 0}
+  child: {fileID: 0}
 --- !u!114 &2076224662253756678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49,5 +67,6 @@ MonoBehaviour:
   state: 1
   started: 0
   guid: fe7ef26211a137140bc790dfc970366f
-  position: {x: 0, y: 0}
-  children: []
+  position: {x: 27.007996, y: -3}
+  children:
+  - {fileID: -9109778381135273277}
