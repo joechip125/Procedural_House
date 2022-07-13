@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+using System.Linq;
 using UnityEngine;
 
 
@@ -44,6 +45,7 @@ using UnityEngine;
         protected Vector3[] Positions;
         protected Vector3[] StartDirectionSucc;
         protected Quaternion[] StartRotationBone;
+        protected RotationLimiter[] rotationLimiters;
         protected Quaternion StartRotationTarget;
         protected Transform Root;
 
@@ -62,6 +64,7 @@ using UnityEngine;
             BonesLength = new float[ChainLength];
             StartDirectionSucc = new Vector3[ChainLength + 1];
             StartRotationBone = new Quaternion[ChainLength + 1];
+            rotationLimiters = new RotationLimiter[ChainLength + 1];
 
             //find root
             Root = transform;
@@ -88,6 +91,11 @@ using UnityEngine;
             {
                 Bones[i] = current;
                 StartRotationBone[i] = GetRotationRootSpace(current);
+                
+                if (Bones[i].GetComponent<RotationLimiter>())
+                {
+                    rotationLimiters[i] = Bones[i].GetComponent<RotationLimiter>();
+                }
 
                 if (i == Bones.Length - 1)
                 {
@@ -104,8 +112,6 @@ using UnityEngine;
 
                 current = current.parent;
             }
-
-
 
         }
 
@@ -166,7 +172,7 @@ using UnityEngine;
                         Positions[i] = Positions[i - 1] + (Positions[i] - Positions[i - 1]).normalized * BonesLength[i - 1];
 
                     //close enough?
-                    if ((Positions[Positions.Length - 1] - targetPosition).sqrMagnitude < Delta * Delta)
+                    if ((Positions[^1] - targetPosition).sqrMagnitude < Delta * Delta)
                         break;
                 }
             }
@@ -226,8 +232,11 @@ using UnityEngine;
             if (Root == null)
                 current.rotation = rotation;
             else
+            {
+                
                 current.rotation = Root.rotation * rotation;
-        }
+            }
+    }
 
         void OnDrawGizmos()
         {
