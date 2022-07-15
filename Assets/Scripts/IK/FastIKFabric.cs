@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -45,7 +46,7 @@ using UnityEngine;
         protected Vector3[] Positions;
         protected Vector3[] StartDirectionSucc;
         protected Quaternion[] StartRotationBone;
-        protected RotationLimiter[] rotationLimiters;
+        protected List<RotationLimiter> rotationLimiters;
         protected Quaternion StartRotationTarget;
         protected Transform Root;
 
@@ -64,7 +65,7 @@ using UnityEngine;
             BonesLength = new float[ChainLength];
             StartDirectionSucc = new Vector3[ChainLength + 1];
             StartRotationBone = new Quaternion[ChainLength + 1];
-            rotationLimiters = new RotationLimiter[ChainLength + 1];
+            rotationLimiters = new ();
 
             //find root
             Root = transform;
@@ -92,11 +93,16 @@ using UnityEngine;
                 Bones[i] = current;
                 StartRotationBone[i] = GetRotationRootSpace(current);
                 
-                if (Bones[i].GetComponent<RotationLimiter>())
+                if (Bones[i].transform.GetComponent<RotationLimiter>())
                 {
-                    rotationLimiters[i] = Bones[i].GetComponent<RotationLimiter>();
+                   // Debug.Log($"{Bones[i].transform.name} has RotationLimiter");
+                    rotationLimiters.Add (Bones[i].transform.GetComponent<RotationLimiter>());
                 }
 
+                var qAngles = Bones[i].localRotation;
+                var eAngles = qAngles.eulerAngles;
+            //    Debug.Log($"{Bones[i].transform.name} has startRotation {eAngles}");
+                
                 if (i == Bones.Length - 1)
                 {
                     //leaf
@@ -112,7 +118,6 @@ using UnityEngine;
 
                 current = current.parent;
             }
-
         }
 
         // Update is called once per frame
@@ -149,12 +154,18 @@ using UnityEngine;
                 var direction = (targetPosition - Positions[0]).normalized;
                 //set everything after root
                 for (int i = 1; i < Positions.Length; i++)
+                {
                     Positions[i] = Positions[i - 1] + direction * BonesLength[i - 1];
+                }
             }
             else
             {
                 for (int i = 0; i < Positions.Length - 1; i++)
-                    Positions[i + 1] = Vector3.Lerp(Positions[i + 1], Positions[i] + StartDirectionSucc[i], SnapBackStrength);
+                {
+                    Positions[i + 1] = Vector3.Lerp(Positions[i + 1], Positions[i] + StartDirectionSucc[i],
+                        SnapBackStrength);
+                }
+                
 
                 for (int iteration = 0; iteration < Iterations; iteration++)
                 {
@@ -195,9 +206,19 @@ using UnityEngine;
             for (int i = 0; i < Positions.Length; i++)
             {
                 if (i == Positions.Length - 1)
-                    SetRotationRootSpace(Bones[i], Quaternion.Inverse(targetRotation) * StartRotationTarget * Quaternion.Inverse(StartRotationBone[i]));
+                {
+
+
+                    SetRotationRootSpace(Bones[i], Quaternion.Inverse(targetRotation) * StartRotationTarget * Quaternion.Inverse(StartRotationBone[i]), i);
+                  //  SetRotationRootSpace(Bones[i], targetRotation * Quaternion.Inverse(StartRotationTarget) * StartRotationBone[i], i);
+                }
+                
                 else
-                    SetRotationRootSpace(Bones[i], Quaternion.FromToRotation(StartDirectionSucc[i], Positions[i + 1] - Positions[i]) * Quaternion.Inverse(StartRotationBone[i]));
+                {
+                    SetRotationRootSpace(Bones[i], Quaternion.FromToRotation(StartDirectionSucc[i], Positions[i + 1] - Positions[i]) *
+                                                   Quaternion.Inverse(StartRotationBone[i]), i);
+                }
+
                 SetPositionRootSpace(Bones[i], Positions[i]);
             }
         }
@@ -227,14 +248,25 @@ using UnityEngine;
                 return Quaternion.Inverse(current.rotation) * Root.rotation;
         }
 
-        private void SetRotationRootSpace(Transform current, Quaternion rotation)
+        private void SetRotationRootSpace(Transform current, Quaternion rotation, int index)
         {
             if (Root == null)
                 current.rotation = rotation;
             else
             {
-                
-                current.rotation = Root.rotation * rotation;
+                var theRot = Root.rotation * rotation;
+                if (index == 0)
+                {
+                   // var diff = StartRotationBone[index].z + rotation.z;
+                   // var xClamp = Mathf.Clamp(diff, -0.0004f, 0.0005f);
+                   // //Debug.Log($"clamp x : {xClamp}");
+                   // Debug.Log(theRot);
+                   // theRot.z = xClamp;
+                }
+ 
+                //current.localRotation = theRot;
+
+                current.rotation = theRot;
             }
     }
 
