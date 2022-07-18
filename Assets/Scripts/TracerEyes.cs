@@ -20,6 +20,7 @@ public class TracerEyes : MonoBehaviour
     private int multiMask;
     private float traceInterval = 0.4f;
     private float timeSinceTrace;
+    private Vector3 currentDir;
 
     private void Awake()
     {
@@ -36,12 +37,21 @@ public class TracerEyes : MonoBehaviour
             timeSinceTrace -= traceInterval;
 
             DoMultiTrace();
+            currentDir = transform.forward + new Vector3(-1,-1);
         }
     }
 
     private void DoMultiTrace()
     {
-        
+        for (int i = 0; i < 5; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                DoSingleTrace(currentDir, transform.position, 23);
+                currentDir += transform.forward + new Vector3(0, 0f, 0.3f);
+            }
+            currentDir += transform.forward + new Vector3(0, 0.2f);
+        }
     }
 
     private TraceType DoSingleTrace(Vector3 dir, Vector3 pos, float traceDistance)
@@ -51,19 +61,24 @@ public class TracerEyes : MonoBehaviour
         if (Physics.Raycast(ray, out var hit, traceDistance, multiMask))
         {
             var layer = hit.collider.gameObject.layer;
-            if (layer is 6)
+
+            switch (layer)
             {
-                Debug.DrawRay(pos, dir *hit.distance, Color.green, traceInterval);
-            
-                return TraceType.Ground | TraceType.Wall;
+                case 6:
+                    Debug.DrawRay(pos, dir *hit.distance, Color.green, traceInterval);
+                    return TraceType.Ground | TraceType.Wall;
+                
+                case 8:
+                    Debug.DrawRay(pos, dir *hit.distance, Color.blue, traceInterval);
+                    return TraceType.Player;
             }
+        }
+
+        else
+        {
+            Debug.DrawRay(pos, dir *traceDistance, Color.red, traceInterval);
             
-            if(layer is 8)
-            {
-                Debug.DrawRay(pos, dir *hit.distance, Color.blue, traceInterval);
-            
-                return TraceType.Player;
-            }
+            return TraceType.None;
         }
         
         return TraceType.None;

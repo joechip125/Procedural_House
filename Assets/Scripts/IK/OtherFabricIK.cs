@@ -156,9 +156,6 @@ public class OtherFabricIK : MonoBehaviour
                 }
                 else if(i != 0 && i != Positions.Length)
                 {
-                    Debug.DrawLine(Positions[i], (Positions[i + 1] - Positions[i - 1]) * 2, Color.red);
-                    Debug.DrawLine(Positions[i], Positions[i - 1], Color.yellow);
-                    
                     projectionPlane = new Plane(Positions[i + 1] - Positions[i - 1], Positions[i - 1]);
                     var normVec = Positions[i + 1] - Positions[i - 1];
                 //    Debug.DrawLine(Positions[i], Vector3.Scale(new Vector3(4,4,4), normVec), Color.red);
@@ -203,7 +200,7 @@ public class OtherFabricIK : MonoBehaviour
     
     private void Update()
     {
-       MoveTest();
+       
     }
 
     private void MoveTest()
