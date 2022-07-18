@@ -17,6 +17,8 @@ public class OtherFabricIK : MonoBehaviour
     // Target the affector will attempt to move to
     [SerializeField]
     Transform target;
+    
+    [SerializeField] Transform control;
 
     // List of bones
     Transform[] Bones;
@@ -138,28 +140,57 @@ public class OtherFabricIK : MonoBehaviour
             }
         }
         
-        
-
-        // Set transform positions to the computed new positions
-        for (int i = 0; i < Positions.Length; i++)
-            Bones[i].position = Positions[i];
-        
-        for (int i = 0; i < Positions.Length; i++) 
+        if (control != null)
         {
+            // We are only interested in the bones between the first and last one
+            for (int i = 0; i < Positions.Length - 1; i++) 
+            {
+                var projectionPlane = new Plane();
+
+                if (i == 2)
+                {
+                    projectionPlane = new Plane(Positions[i], target.position);
+                }
+                else if(i != 0 && i != Positions.Length)
+                {
+                    Debug.DrawLine(Positions[i], (Positions[i + 1] - Positions[i - 1]) * 2, Color.red);
+                    Debug.DrawLine(Positions[i], Positions[i - 1], Color.yellow);
+                    
+                    projectionPlane = new Plane(Positions[i + 1] - Positions[i - 1], Positions[i - 1]);
+                    var normVec = Positions[i + 1] - Positions[i - 1];
+                //    Debug.DrawLine(Positions[i], Vector3.Scale(new Vector3(4,4,4), normVec), Color.red);
+                    Vector3 projectedBonePosition = projectionPlane.ClosestPointOnPlane(Positions[i]);
+                    Vector3 projectedControl = projectionPlane.ClosestPointOnPlane(control.position);
+                    float angleOnPlane = Vector3.SignedAngle(projectedBonePosition - Positions[i - 1], projectedControl - Positions[i - 1], projectionPlane.normal);
+                    Positions[i] = Quaternion.AngleAxis(angleOnPlane, projectionPlane.normal) * (Positions[i] - Positions[i - 1]) + Positions[i - 1];
+                }
+    
+            }
+        }
+        
+        for (var i = 0; i < Positions.Length; i++) 
+        {
+            // Set transform positions to the computed new positions
+            Bones[i].position = Positions[i];
+            
             if (i == Positions.Length - 1)
             {
-                var rot = target.rotation * Quaternion.Inverse(TargetStartRotation) * StartRotations[i];
-                Debug.Log(rot.eulerAngles);
-                
-                Bones[i].rotation = target.rotation * Quaternion.Inverse(TargetStartRotation) * StartRotations[i];
+             //   Bones[i].rotation = target.rotation * Quaternion.Inverse(TargetStartRotation) * StartRotations[i];
             }
+           
             else
             {
                var rot = Quaternion.FromToRotation(StartDirections[i], Positions[i + 1] - Positions[i]) * StartRotations[i];
-               Debug.Log(rot.eulerAngles);
-                Bones[i].rotation = Quaternion.FromToRotation(StartDirections[i], Positions[i + 1] - Positions[i]) * StartRotations[i];
+               var clampY = Mathf.Clamp(rot.eulerAngles.y, -45, 45);
+               var eul = rot.eulerAngles;
+               // Bones[i].rotation = Quaternion.Euler(eul.x, clampY, eul.z);
+                Bones[i].rotation = rot;
             }
+
+           // Bones[i].position = Positions[i];
         }
+        
+        
 
     }
 
