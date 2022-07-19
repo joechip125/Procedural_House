@@ -14,8 +14,6 @@ public class NodeView : Node
 
     public Port input;
     public Port output;
-
-    
     
     public NodeView(BaseNode node) : base("Assets/NodeView.uxml")
     {
@@ -29,8 +27,28 @@ public class NodeView : Node
 
         CreateInputPorts();
         CreateOutputPorts();
-        var styleSheet = (StyleSheet) EditorGUIUtility.Load("NodeStyle.uss");
-        //  mainContainer.styleSheets.Add(styleSheet);
+       // var styleSheet = (StyleSheet) EditorGUIUtility.Load("NodeStyle.uss");
+
+        SetupClasses();
+    }
+
+    private void SetupClasses()
+    {
+        switch (Node)
+        {
+            case ActionNode:
+                AddToClassList("action");
+                break;
+            case CompositeNode:
+                AddToClassList("composite");
+                break;
+            case DecoratorNode:
+                AddToClassList("decorator");
+                break;
+            case RootNode:
+                AddToClassList("root");
+                break;
+        }    
     }
 
     private void CreateInputPorts()
@@ -40,15 +58,12 @@ public class NodeView : Node
         {
             case ActionNode:
                 input = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(bool));
-                //mainContainer.style.backgroundColor = new StyleColor(Color.red);
                 break;
             case CompositeNode:
-                input = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(bool)); 
-                //mainContainer.style.backgroundColor = new StyleColor(Color.green);
+                input = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(bool));
                 break;
             case DecoratorNode:
                 input = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(bool));
-                //mainContainer.style.backgroundColor = new StyleColor(Color.blue);
                 break;
         }
         

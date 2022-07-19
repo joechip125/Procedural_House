@@ -1,5 +1,5 @@
 #node-border {
-    background-color: rgb(149, 65, 22);
+    background-color: rgb(52, 53, 55);
     border-left-width: 1px;
     border-right-width: 1px;
     border-top-width: 1px;
@@ -12,18 +12,6 @@
 
 #input {
     align-items: center;
-}
-
-#output {
-    align-items: center;
-    border-left-width: 2px;
-    border-right-width: 2px;
-    border-top-width: 2px;
-    border-bottom-width: 2px;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
 }
 
 #selection-border {
@@ -74,5 +62,48 @@
 }
 
 #title {
+    align-items: center;
+    -unity-font-style: bold;
+    font-size: 14px;
+}
+
+#description {
+    font-size: 10px;
+    align-items: center;
+    justify-content: flex-end;
+    flex-direction: column-reverse;
+    flex-wrap: nowrap;
+}
+
+#divider {
+    min-height: 1px;
+    border-left-color: rgba(27, 29, 14, 255);
+    border-right-color: rgba(27, 29, 14, 255);
+    border-top-color: rgba(27, 29, 14, 255);
+    border-bottom-color: rgba(27, 29, 14, 255);
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+}
+
+.action #input {
+    background-color: rgba(144, 31, 31, 255);
+}
+
+.composite #input {
+    background-color: rgba(16, 22, 149, 255);
+}
+
+.decorator #input {
+    background-color: rgba(34, 140, 15, 255);
+}
+
+.root #input {
+    min-height: 20px;
+    background-color: rgba(188, 143, 13, 255);
+}
+
+#output {
     align-items: center;
 }
