@@ -1,5 +1,75 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7702826975984096708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c583fc6889a5df41bb5db8c510953ac, type: 3}
+  m_Name: RepeatNode
+  m_EditorClassIdentifier: 
+  state: 1
+  started: 0
+  guid: 23507e958bd5ce44c9b0b4f44f0e67e1
+  position: {x: 0.00010108948, y: 236.2262}
+  child: {fileID: -5741819059574979950}
+--- !u!114 &-7381746489854037125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dab16fad0c71f544d8bd0dd952a71e6d, type: 3}
+  m_Name: RootNode
+  m_EditorClassIdentifier: 
+  state: 1
+  started: 0
+  guid: 30406be7ad556ac42a4f985658a271f8
+  position: {x: -7.7398815, y: 14.205061}
+  child: {fileID: -7702826975984096708}
+--- !u!114 &-5741819059574979950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95b3a67299306d946993bd31dc8e7e5a, type: 3}
+  m_Name: SelectNode
+  m_EditorClassIdentifier: 
+  state: 1
+  started: 0
+  guid: eb45bad4eccee2c439690cde8ed366b9
+  position: {x: 0, y: 422.7199}
+  children: []
+  choiceMade: 0
+  theChoice: 0
+--- !u!114 &-1810708276870386744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d16d04755aeb59c41821ea4e3824a83e, type: 3}
+  m_Name: MoveNode
+  m_EditorClassIdentifier: 
+  state: 1
+  started: 0
+  guid: c6fdd3f2d4f39b64e925c4d3eea54bf0
+  position: {x: 0, y: 0}
+  stop: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12,6 +82,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 762c148f0962d0c4785f724d0a4bffd9, type: 3}
   m_Name: New Behaviour Tree 1
   m_EditorClassIdentifier: 
-  rootNode: {fileID: 0}
+  rootNode: {fileID: -7381746489854037125}
   state: 1
-  nodes: []
+  nodes:
+  - {fileID: -7381746489854037125}
+  - {fileID: -7702826975984096708}
+  - {fileID: -5741819059574979950}
+  - {fileID: 1616112642959830382}
+  - {fileID: -1810708276870386744}
+--- !u!114 &1616112642959830382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d16d04755aeb59c41821ea4e3824a83e, type: 3}
+  m_Name: MoveNode
+  m_EditorClassIdentifier: 
+  state: 1
+  started: 0
+  guid: 28477fc325d4b0945909c91940445c5b
+  position: {x: 0, y: 592}
+  stop: 0

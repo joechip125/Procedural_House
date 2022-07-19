@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-9109778381135273277
+--- !u!114 &-6263759506291613288
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9,14 +9,68 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c65377a83545324a9dfc0ac71d195c2, type: 3}
-  m_Name: DebugLogNode
+  m_Script: {fileID: 11500000, guid: 95b3a67299306d946993bd31dc8e7e5a, type: 3}
+  m_Name: SelectNode
   m_EditorClassIdentifier: 
   state: 1
   started: 0
-  guid: 407bf991235e0b74281e8035f4054407
-  position: {x: 343.4, y: -98.29599}
-  message: 
+  guid: c6ee658cc56b1d943ab39dabdcb8bd67
+  position: {x: 89.6, y: -66.68115}
+  children:
+  - {fileID: -966279842786885887}
+  choiceMade: 0
+  theChoice: 0
+--- !u!114 &-1528503746398098772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d16d04755aeb59c41821ea4e3824a83e, type: 3}
+  m_Name: MoveNode
+  m_EditorClassIdentifier: 
+  state: 1
+  started: 0
+  guid: e9a195a5d7bb93b46994e316c1d749b5
+  position: {x: -104.80002, y: 144.79996}
+  stop: 0
+--- !u!114 &-1085789596285286707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c583fc6889a5df41bb5db8c510953ac, type: 3}
+  m_Name: RepeatNode
+  m_EditorClassIdentifier: 
+  state: 1
+  started: 0
+  guid: 3e84827579447df4e9167ecfe8ac763a
+  position: {x: 0, y: 0}
+  child: {fileID: 0}
+--- !u!114 &-966279842786885887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d16d04755aeb59c41821ea4e3824a83e, type: 3}
+  m_Name: MoveNode
+  m_EditorClassIdentifier: 
+  state: 1
+  started: 0
+  guid: f66f800dac54a2a4783d0e3883115a36
+  position: {x: 69.600006, y: 162.27997}
+  stop: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29,13 +83,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 762c148f0962d0c4785f724d0a4bffd9, type: 3}
   m_Name: New Behaviour Tree
   m_EditorClassIdentifier: 
-  rootNode: {fileID: 714413776023055654}
+  rootNode: {fileID: 0}
   state: 1
   nodes:
-  - {fileID: -9109778381135273277}
-  - {fileID: 2076224662253756678}
-  - {fileID: 714413776023055654}
---- !u!114 &714413776023055654
+  - {fileID: -1528503746398098772}
+  - {fileID: 685281506008528508}
+  - {fileID: -966279842786885887}
+  - {fileID: -6263759506291613288}
+  - {fileID: 2263954357527843954}
+  - {fileID: -1085789596285286707}
+--- !u!114 &685281506008528508
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,15 +101,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dab16fad0c71f544d8bd0dd952a71e6d, type: 3}
-  m_Name: RootNode
+  m_Script: {fileID: 11500000, guid: d16d04755aeb59c41821ea4e3824a83e, type: 3}
+  m_Name: MoveNode
   m_EditorClassIdentifier: 
   state: 1
   started: 0
-  guid: 0b39b591b3d17f94ba6238669363cdb7
-  position: {x: 0, y: 0}
-  child: {fileID: 0}
---- !u!114 &2076224662253756678
+  guid: fc8d55aaa95278146a19d948b0e68823
+  position: {x: 303.31497, y: 62.302505}
+  stop: 0
+--- !u!114 &2263954357527843954
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -61,12 +118,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20a9d60dd060c7a4e8c533efeb46d7b0, type: 3}
-  m_Name: SequencerNode
+  m_Script: {fileID: 11500000, guid: d16d04755aeb59c41821ea4e3824a83e, type: 3}
+  m_Name: MoveNode
   m_EditorClassIdentifier: 
   state: 1
   started: 0
-  guid: fe7ef26211a137140bc790dfc970366f
-  position: {x: 27.007996, y: -3}
-  children:
-  - {fileID: -9109778381135273277}
+  guid: 5c2479fdce7c62b49b20d33b7d0ccecf
+  position: {x: 269.03732, y: 169.60004}
+  stop: 0

@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class NodeView : Node
 {
@@ -13,7 +15,9 @@ public class NodeView : Node
     public Port input;
     public Port output;
 
-    public NodeView(BaseNode node)
+    
+    
+    public NodeView(BaseNode node) : base("Assets/NodeView.uxml")
     {
         Node = node;
         title = node.name;
@@ -25,6 +29,8 @@ public class NodeView : Node
 
         CreateInputPorts();
         CreateOutputPorts();
+        var styleSheet = (StyleSheet) EditorGUIUtility.Load("NodeStyle.uss");
+        //  mainContainer.styleSheets.Add(styleSheet);
     }
 
     private void CreateInputPorts()
@@ -33,19 +39,23 @@ public class NodeView : Node
         switch (Node)
         {
             case ActionNode:
-                input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
+                input = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(bool));
+                //mainContainer.style.backgroundColor = new StyleColor(Color.red);
                 break;
             case CompositeNode:
-                input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
+                input = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(bool)); 
+                //mainContainer.style.backgroundColor = new StyleColor(Color.green);
                 break;
             case DecoratorNode:
-                input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
+                input = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(bool));
+                //mainContainer.style.backgroundColor = new StyleColor(Color.blue);
                 break;
         }
         
         if (input != default)
         {
             input.portName = "";
+            input.style.flexDirection = FlexDirection.Column;
             inputContainer.Add(input);
         }
     }
@@ -57,13 +67,13 @@ public class NodeView : Node
             case ActionNode:
                 break;
             case CompositeNode:
-                output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(bool));
+                output = InstantiatePort(Orientation.Vertical, Direction.Output, Port.Capacity.Multi, typeof(bool));
                 break;
             case DecoratorNode:
-                output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
+                output = InstantiatePort(Orientation.Vertical, Direction.Output, Port.Capacity.Single, typeof(bool));
                 break;
             case RootNode:
-                output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
+                output = InstantiatePort(Orientation.Vertical, Direction.Output, Port.Capacity.Single, typeof(bool));
                 break;
         }
         
@@ -71,6 +81,7 @@ public class NodeView : Node
         if (output != default)
         {
             output.portName = "";
+            output.style.flexDirection = FlexDirection.ColumnReverse;
             outputContainer.Add(output);
         }
     }

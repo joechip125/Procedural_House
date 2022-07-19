@@ -4,11 +4,11 @@ using UnityEngine;
 
 public abstract class BaseNode : ScriptableObject
 {
-    public State state = State.Update;
-    public bool started;
-    public string guid;
+    [HideInInspector] public State state = State.Update;
+    [HideInInspector] public bool started;
+    [HideInInspector] public string guid;
 
-    public Vector2 position;
+    [HideInInspector] public Vector2 position;
 
     public enum State
     {

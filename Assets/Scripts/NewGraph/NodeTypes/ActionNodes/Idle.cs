@@ -2,15 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum STATE
+public class Idle : ActionNode
 {
-    Idle, Patrol, Pursue, Attack, Rest, Jump
-}
-
-public class MoveNode : ActionNode
-{
-    private Transform parent;
-    public bool stop;
+    private float time;
     
     public override void OnStart()
     {
@@ -24,8 +18,12 @@ public class MoveNode : ActionNode
 
     public override State OnUpdate()
     {
-        
-        
-        return stop ? State.Success : State.Update;
+        time += Time.deltaTime * Random.Range(0, 11);
+        if (time > 10)
+        {
+            return State.Success;
+        }
+
+        return State.Update;
     }
 }

@@ -21,6 +21,7 @@ public class RootNode : BaseNode
         return child.Update();
     }
 
+    
     public override BaseNode Clone()
     {
        var node = Instantiate(this);
