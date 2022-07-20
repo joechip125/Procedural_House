@@ -13,11 +13,6 @@ public class InspectorView : VisualElement
 
     private Editor _editor;
     
-    public InspectorView()
-    {
-        
-    }
-
     public void UpdateSelection(NodeView nodeView)
     {
        Clear();
@@ -25,7 +20,13 @@ public class InspectorView : VisualElement
        Object.DestroyImmediate(_editor);
        _editor = Editor.CreateEditor(nodeView.Node);
 
-       var container = new IMGUIContainer(() => { _editor.OnInspectorGUI(); });
+       var container = new IMGUIContainer(() =>
+       {
+           if (_editor.target)
+           {
+               _editor.OnInspectorGUI();
+           }
+       });
        Add(container);
     }
 }

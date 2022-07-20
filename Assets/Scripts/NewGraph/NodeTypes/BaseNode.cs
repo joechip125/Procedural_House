@@ -7,8 +7,10 @@ public abstract class BaseNode : ScriptableObject
     [HideInInspector] public State state = State.Update;
     [HideInInspector] public bool started;
     [HideInInspector] public string guid;
-
     [HideInInspector] public Vector2 position;
+
+    [HideInInspector] public CustomBlackboard blackboard;
+    [HideInInspector] public AiAgent agent;
 
     public enum State
     {

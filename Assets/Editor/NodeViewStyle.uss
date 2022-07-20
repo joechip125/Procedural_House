@@ -107,3 +107,56 @@
 #output {
     align-items: center;
 }
+
+#node-state {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-left-color: rgba(192, 0, 0, 255);
+    border-right-color: rgba(192, 0, 0, 255);
+    border-top-color: rgba(192, 0, 0, 255);
+    border-bottom-color: rgba(192, 0, 0, 255);
+}
+
+.update #node-state {
+    border-left-color: rgba(212, 156, 39, 255);
+    border-right-color: rgba(212, 156, 39, 255);
+    border-top-color: rgba(212, 156, 39, 255);
+    border-bottom-color: rgba(212, 156, 39, 255);
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+}
+
+.success #node-state {
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-left-color: rgba(8, 192, 4, 255);
+    border-right-color: rgba(8, 192, 4, 255);
+    border-top-color: rgba(8, 192, 4, 255);
+    border-bottom-color: rgba(8, 192, 4, 255);
+}
+
+.failure #node-state {
+    border-left-color: rgba(195, 4, 4, 255);
+    border-right-color: rgba(195, 4, 4, 255);
+    border-top-color: rgba(195, 4, 4, 255);
+    border-bottom-color: rgba(195, 4, 4, 255);
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+}

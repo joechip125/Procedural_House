@@ -110,8 +110,13 @@ public class NodeView : Node
     public override void SetPosition(Rect newPos)
     {
         base.SetPosition(newPos);
+        
+        Undo.RecordObject(Node, "Behavior tree (set position)");
+        
         Node.position.x = newPos.xMin;
         Node.position.y = newPos.yMin;
+        
+        EditorUtility.SetDirty(Node);
     }
 
     public override void OnSelected()
@@ -121,6 +126,37 @@ public class NodeView : Node
         OnNodeSelected?.Invoke(this);
 
     }
-    
-    
+
+    private void SortChildren()
+    {
+        var composite = Node as CompositeNode;
+        
+    }
+
+    public void UpdateState()
+    {
+        if (!Application.isPlaying) return;
+        
+        RemoveFromClassList("update");
+        RemoveFromClassList("failure");
+        RemoveFromClassList("success");
+        
+        switch (Node.state)
+        {
+            case BaseNode.State.Failure:
+                AddToClassList("failure");
+                break;
+            case BaseNode.State.Update:
+                if (Node.started)
+                {
+                    AddToClassList("update");
+                }
+                break;
+            case BaseNode.State.Success:
+                AddToClassList("success");
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
 }

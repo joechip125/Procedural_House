@@ -15,7 +15,7 @@ MonoBehaviour:
   state: 1
   started: 0
   guid: 23507e958bd5ce44c9b0b4f44f0e67e1
-  position: {x: 0.00010108948, y: 236.2262}
+  position: {x: 6.479008, y: 187.27913}
   child: {fileID: -5741819059574979950}
 --- !u!114 &-7381746489854037125
 MonoBehaviour:
@@ -32,7 +32,7 @@ MonoBehaviour:
   state: 1
   started: 0
   guid: 30406be7ad556ac42a4f985658a271f8
-  position: {x: -7.7398815, y: 14.205061}
+  position: {x: 14.400072, y: 2.7457886}
   child: {fileID: -7702826975984096708}
 --- !u!114 &-5741819059574979950
 MonoBehaviour:
@@ -49,8 +49,10 @@ MonoBehaviour:
   state: 1
   started: 0
   guid: eb45bad4eccee2c439690cde8ed366b9
-  position: {x: 0, y: 422.7199}
-  children: []
+  position: {x: 15.600037, y: 366.17596}
+  children:
+  - {fileID: 1616112642959830382}
+  - {fileID: -1810708276870386744}
   choiceMade: 0
   theChoice: 0
 --- !u!114 &-1810708276870386744
@@ -68,7 +70,7 @@ MonoBehaviour:
   state: 1
   started: 0
   guid: c6fdd3f2d4f39b64e925c4d3eea54bf0
-  position: {x: 0, y: 0}
+  position: {x: 167.79999, y: 590.208}
   stop: 0
 --- !u!114 &11400000
 MonoBehaviour:
@@ -105,5 +107,5 @@ MonoBehaviour:
   state: 1
   started: 0
   guid: 28477fc325d4b0945909c91940445c5b
-  position: {x: 0, y: 592}
+  position: {x: -55.200012, y: 597.6}
   stop: 0
