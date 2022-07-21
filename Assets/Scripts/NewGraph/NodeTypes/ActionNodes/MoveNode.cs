@@ -9,7 +9,6 @@ public enum STATE
 
 public class MoveNode : ActionNode
 {
-    private Transform parent;
     public bool stop;
     
     public override void OnStart()
@@ -24,7 +23,7 @@ public class MoveNode : ActionNode
 
     public override State OnUpdate()
     {
-        
+        agent.enemyTransform.position += new Vector3(1 * (Time.deltaTime * 3), 0);
         
         return stop ? State.Success : State.Update;
     }

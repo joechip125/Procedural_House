@@ -12,7 +12,8 @@ public class BehaviourTreeRunner : MonoBehaviour
         tree = tree.Clone();
         tree.Bind(new AiAgent()
         {
-            
+            enemyTransform = transform,
+            enemyEyes = GetComponentInChildren<TracerEyes>()
         });
     }
     

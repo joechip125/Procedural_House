@@ -21,6 +21,7 @@ public class TracerEyes : MonoBehaviour
     private float traceInterval = 0.4f;
     private float timeSinceTrace;
     private Vector3 currentDir;
+    public bool PlayerSeen { get; private set; }
 
     private void Awake()
     {

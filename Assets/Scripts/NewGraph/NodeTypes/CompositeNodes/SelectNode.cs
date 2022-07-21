@@ -6,10 +6,12 @@ public class SelectNode : CompositeNode
 {
     [HideInInspector] public bool choiceMade;
     [HideInInspector] public int theChoice;
+    [HideInInspector] public STATE nextState;
     
     public override void OnStart()
     {
-        
+        theChoice = 1;
+        choiceMade = true;
     }
 
     public override void OnExit()
