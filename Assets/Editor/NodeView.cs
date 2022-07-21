@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -27,9 +28,13 @@ public class NodeView : Node
 
         CreateInputPorts();
         CreateOutputPorts();
-       // var styleSheet = (StyleSheet) EditorGUIUtility.Load("NodeStyle.uss");
-
         SetupClasses();
+        
+        var descriptionLabel = this.Q<Label>("description");
+        descriptionLabel.bindingPath = "description";
+        descriptionLabel.Bind(new SerializedObject(node));
+
+        // var styleSheet = (StyleSheet) EditorGUIUtility.Load("NodeStyle.uss");
     }
 
     private void SetupClasses()

@@ -15,10 +15,14 @@ MonoBehaviour:
   state: 1
   started: 0
   guid: 23507e958bd5ce44c9b0b4f44f0e67e1
-  position: {x: 8220.8, y: -1.6000121}
+  position: {x: 8424.479, y: -11.0900135}
   blackboard:
     moveToPos: {x: 0, y: 0, z: 0}
     moveToObject: {fileID: 0}
+  agent:
+    enemyEyes: {fileID: 0}
+    enemyTransform: {fileID: 0}
+  description: 
   child: {fileID: -5741819059574979950}
 --- !u!114 &-7381746489854037125
 MonoBehaviour:
@@ -35,10 +39,14 @@ MonoBehaviour:
   state: 1
   started: 0
   guid: 30406be7ad556ac42a4f985658a271f8
-  position: {x: 8228.8, y: -170.0046}
+  position: {x: 8432.479, y: -179.08998}
   blackboard:
     moveToPos: {x: 0, y: 0, z: 0}
     moveToObject: {fileID: 0}
+  agent:
+    enemyEyes: {fileID: 0}
+    enemyTransform: {fileID: 0}
+  description: 
   child: {fileID: -7702826975984096708}
 --- !u!114 &-5741819059574979950
 MonoBehaviour:
@@ -55,10 +63,14 @@ MonoBehaviour:
   state: 1
   started: 0
   guid: eb45bad4eccee2c439690cde8ed366b9
-  position: {x: 8228.8, y: 149.32278}
+  position: {x: 8432.479, y: 140.10999}
   blackboard:
     moveToPos: {x: 0, y: 0, z: 0}
     moveToObject: {fileID: 0}
+  agent:
+    enemyEyes: {fileID: 0}
+    enemyTransform: {fileID: 0}
+  description: 
   children:
   - {fileID: 1616112642959830382}
   - {fileID: -1810708276870386744}
@@ -79,10 +91,14 @@ MonoBehaviour:
   state: 1
   started: 0
   guid: c6fdd3f2d4f39b64e925c4d3eea54bf0
-  position: {x: 8379.59, y: 336.26355}
+  position: {x: 8582.879, y: 327.31}
   blackboard:
     moveToPos: {x: 0, y: 0, z: 0}
     moveToObject: {fileID: 0}
+  agent:
+    enemyEyes: {fileID: 0}
+    enemyTransform: {fileID: 0}
+  description: 
   stop: 0
 --- !u!114 &11400000
 MonoBehaviour:
@@ -122,8 +138,12 @@ MonoBehaviour:
   state: 1
   started: 0
   guid: 28477fc325d4b0945909c91940445c5b
-  position: {x: 8108.8, y: 344}
+  position: {x: 8312.479, y: 334.51004}
   blackboard:
     moveToPos: {x: 0, y: 0, z: 0}
     moveToObject: {fileID: 0}
+  agent:
+    enemyEyes: {fileID: 0}
+    enemyTransform: {fileID: 0}
+  description: 
   stop: 0

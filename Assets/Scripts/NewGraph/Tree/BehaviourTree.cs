@@ -9,6 +9,8 @@ using UnityEngine;
 [Serializable]
 public class AiAgent
 {
+    public TracerEyes enemyEyes;
+    public Transform enemyTransform;
     
 }
 
