@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using NewGraph.NodeTypes.CompositeNodes;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -60,7 +61,6 @@ public class BehaviourTree : ScriptableObject
     {
         Undo.RecordObject(this, "Behaviour tree (DeleteNode)");
         nodes.Remove(node);
-        //AssetDatabase.RemoveObjectFromAsset(node);
         Undo.DestroyObjectImmediate(node);
         AssetDatabase.SaveAssets();
     }
@@ -90,6 +90,16 @@ public class BehaviourTree : ScriptableObject
             composite.children.Add(child);
             EditorUtility.SetDirty(composite);
         }
+
+        var stateComposite = parent as StateComposite;
+        var child2 = child as ActionNode;
+        if (stateComposite)
+        {
+            Undo.RecordObject(stateComposite, "Behaviour tree (AddChild)");
+            stateComposite.children.Add(child2.stateType,child);
+            EditorUtility.SetDirty(stateComposite);
+        }
+        
     }
     public void RemoveChild(BaseNode parent, BaseNode child)
     {

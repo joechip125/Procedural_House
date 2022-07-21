@@ -6,7 +6,8 @@ using UnityEngine;
 public class BehaviourTreeRunner : MonoBehaviour
 {
     public BehaviourTree tree;
-    
+ //   public Dictionary<STATE, BehaviourTree>  trees;
+
     void Start()
     {
         tree = tree.Clone();
