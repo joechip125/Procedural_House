@@ -10,6 +10,12 @@ public class BehaviourTreeEditor : EditorWindow
 {
     private BehaviorTreeView _treeView;
     private InspectorView _inspectorView;
+    private IMGUIContainer _blackboardView;
+
+    private SerializedObject _treeObject;
+    private SerializedProperty _blackboardProperty;
+    
+    
     
     [MenuItem("BehaviourTreeEditor/Editor...")]
     public static void OpenWindow()
@@ -77,6 +83,19 @@ public class BehaviourTreeEditor : EditorWindow
 
         _treeView = root.Q<BehaviorTreeView>();
         _inspectorView = root.Q<InspectorView>();
+        _blackboardView = root.Q<IMGUIContainer>();
+        
+        
+        _blackboardView.onGUIHandler = () =>
+        {
+            if (_blackboardProperty != null)
+            {
+                _treeObject.Update();
+                EditorGUILayout.PropertyField(_blackboardProperty);
+                 _treeObject.ApplyModifiedProperties();
+            }
+        };
+        
         _treeView.OnNodeSelected = OnNodeSelectionChanged;
         
         OnSelectionChange();
@@ -112,6 +131,14 @@ public class BehaviourTreeEditor : EditorWindow
             {
                 _treeView.PopulateView(tree);
             }
+        }
+
+        if (tree != null)
+        {
+            _treeObject = new SerializedObject(tree);
+            _blackboardProperty = _treeObject.FindProperty("blackboard");
+            
+            if(_blackboardProperty == null) Debug.Log("no blackboard found");
         }
     }
 

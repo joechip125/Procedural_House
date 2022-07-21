@@ -12,11 +12,10 @@ public class AiAgent
     
 }
 
-
 [CreateAssetMenu]
 public class BehaviourTree : ScriptableObject
 {
-    public CustomBlackboard blackBoard = new();
+    public CustomBlackboard blackboard = new();
     public BaseNode rootNode;
     
     public BaseNode.State state = BaseNode.State.Update;
@@ -177,6 +176,7 @@ public class BehaviourTree : ScriptableObject
         Traverse(rootNode, n =>
         {
             n.agent = agent;
+            n.blackboard = blackboard;
         });
     }
 }

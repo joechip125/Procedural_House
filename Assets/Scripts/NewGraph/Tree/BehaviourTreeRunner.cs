@@ -10,6 +10,7 @@ public class BehaviourTreeRunner : MonoBehaviour
     void Start()
     {
         tree = tree.Clone();
+        tree.Bind(new AiAgent());
     }
     
     void Update()
