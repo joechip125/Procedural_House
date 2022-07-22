@@ -12,7 +12,7 @@ public class AiAgent
 {
     public TracerEyes enemyEyes;
     public Transform enemyTransform;
-    
+    public Transform lookAtTarget;
 }
 
 [CreateAssetMenu]
@@ -91,15 +91,6 @@ public class BehaviourTree : ScriptableObject
             EditorUtility.SetDirty(composite);
         }
 
-        var stateComposite = parent as StateComposite;
-        var child2 = child as ActionNode;
-        if (stateComposite)
-        {
-            Undo.RecordObject(stateComposite, "Behaviour tree (AddChild)");
-            stateComposite.children.Add(child2.stateType,child);
-            EditorUtility.SetDirty(stateComposite);
-        }
-        
     }
     public void RemoveChild(BaseNode parent, BaseNode child)
     {

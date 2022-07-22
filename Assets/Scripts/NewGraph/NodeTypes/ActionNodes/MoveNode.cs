@@ -23,7 +23,12 @@ public class MoveNode : ActionNode
 
     public override State OnUpdate()
     {
-        agent.enemyTransform.position += new Vector3(1 * (Time.deltaTime * 3), 0);
+        if (agent.enemyEyes.DistanceToWall < 2f)
+        {
+            return State.Success;
+        }
+        
+      //  agent.enemyTransform.position += agent.enemyTransform.up * (Time.deltaTime * 2);
         
         return stop ? State.Success : State.Update;
     }

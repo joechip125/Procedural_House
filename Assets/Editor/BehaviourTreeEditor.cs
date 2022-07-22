@@ -77,7 +77,8 @@ public class BehaviourTreeEditor : EditorWindow
         visualTree.CloneTree(root);
 
         // A stylesheet can be added to a VisualElement.
-        // The style will be applied to the VisualElement and all of its children.
+        // The style will be applied to the VisualElement and all of it
+        // s children.
         var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Editor/BehaviourTreeEditor.uss");
         root.styleSheets.Add(styleSheet);
 

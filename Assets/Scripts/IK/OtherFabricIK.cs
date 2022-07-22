@@ -15,10 +15,9 @@ public class OtherFabricIK : MonoBehaviour
     float accuracy = 0.001f;
     
     // Target the affector will attempt to move to
-    [SerializeField]
-    Transform target;
+    public Transform target;
     
-    [SerializeField] Transform control;
+    public Transform control;
 
     // List of bones
     Transform[] Bones;
@@ -186,45 +185,7 @@ public class OtherFabricIK : MonoBehaviour
                // Bones[i].rotation = Quaternion.Euler(eul.x, clampY, eul.z);
                 Bones[i].rotation = rot;
             }
-
-           // Bones[i].position = Positions[i];
         }
-        
-        
-
-    }
-
-    private bool flip = true;
-    private float counter;
-    private Vector3 start =new Vector3(-0.33f, 0.88f, 0);
-    
-    private void Update()
-    {
-       
-    }
-
-    private void MoveTest()
-    {
-        if (flip)
-        {
-            target.transform.position += target.transform.forward * (Time.deltaTime * 1.5f);
-
-            if (Vector3.Distance(target.transform.position, targetStart + new Vector3(0,0,1)) < 0.01f)
-            {
-                flip = !flip;
-            }
-        }
-        else
-        {
-            target.transform.position += -target.transform.forward * (Time.deltaTime * 1.5f);
-            
-            if (Vector3.Distance(target.transform.position, targetStart - new Vector3(0,0,1)) < 0.01f)
-            {
-                flip = !flip;
-            }
-        }
-        
-        counter += Time.deltaTime;
     }
     
     // Update is called once per frame

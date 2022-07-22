@@ -22,6 +22,7 @@ MonoBehaviour:
   agent:
     enemyEyes: {fileID: 0}
     enemyTransform: {fileID: 0}
+    lookAtTarget: {fileID: 0}
   description: 
   stateType: 0
 --- !u!114 &-3798029718764121064
@@ -39,16 +40,18 @@ MonoBehaviour:
   state: 1
   started: 0
   guid: 1af92d71d9eee1d40bd055a520f918ae
-  position: {x: 434.40002, y: 216}
+  position: {x: 447.2, y: 206.24176}
   blackboard:
     moveToPos: {x: 0, y: 0, z: 0}
     moveToObject: {fileID: 0}
   agent:
     enemyEyes: {fileID: 0}
     enemyTransform: {fileID: 0}
+    lookAtTarget: {fileID: 0}
   description: 
   children:
   - {fileID: -5640732442159900575}
+  - {fileID: -1937164412623952758}
   choiceMade: 0
   theChoice: 0
   nextState: 0
@@ -67,13 +70,14 @@ MonoBehaviour:
   state: 1
   started: 0
   guid: c651a9e6860cc654a8578c7563c68de2
-  position: {x: 0, y: 0}
+  position: {x: 530.40015, y: 415.20004}
   blackboard:
     moveToPos: {x: 0, y: 0, z: 0}
     moveToObject: {fileID: 0}
   agent:
     enemyEyes: {fileID: 0}
     enemyTransform: {fileID: 0}
+    lookAtTarget: {fileID: 0}
   description: 
   stateType: 0
   stop: 0
@@ -99,6 +103,7 @@ MonoBehaviour:
   - {fileID: -5640732442159900575}
   - {fileID: -3798029718764121064}
   - {fileID: -1937164412623952758}
+  - {fileID: 8875050182864249574}
 --- !u!114 &6959703738773164484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,5 +126,31 @@ MonoBehaviour:
   agent:
     enemyEyes: {fileID: 0}
     enemyTransform: {fileID: 0}
+    lookAtTarget: {fileID: 0}
   description: 
   child: {fileID: -3798029718764121064}
+--- !u!114 &8875050182864249574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20a9d60dd060c7a4e8c533efeb46d7b0, type: 3}
+  m_Name: SequencerNode
+  m_EditorClassIdentifier: 
+  state: 1
+  started: 0
+  guid: 8d8c8c1c77bc18744933b163ed7e0058
+  position: {x: 0, y: 0}
+  blackboard:
+    moveToPos: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  agent:
+    enemyEyes: {fileID: 0}
+    enemyTransform: {fileID: 0}
+    lookAtTarget: {fileID: 0}
+  description: 
+  children: []

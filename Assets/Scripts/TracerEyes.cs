@@ -22,10 +22,14 @@ public class TracerEyes : MonoBehaviour
     private float timeSinceTrace;
     private Vector3 currentDir;
     public bool PlayerSeen { get; private set; }
+    public bool WallSeen { get; private set; }
+    
+    public float DistanceToWall { get; private set; }
 
     private void Awake()
     {
-        multiMask = 1 << 6 | 1 << 8;
+        DistanceToWall = 999;
+        multiMask = 1 << 7 | 1 << 6;
     }
 
     // Update is called once per frame
@@ -36,23 +40,13 @@ public class TracerEyes : MonoBehaviour
         if (timeSinceTrace >= traceInterval)
         {
             timeSinceTrace -= traceInterval;
-
-            DoMultiTrace();
-            currentDir = transform.forward + new Vector3(-1,-1);
+            DoSingleTrace(transform.forward, transform.position, 34f);
         }
     }
 
     private void DoMultiTrace()
     {
-        for (int i = 0; i < 5; i++)
-        {
-            for (int j = 0; j < 5; j++)
-            {
-                DoSingleTrace(currentDir, transform.position, 23);
-                currentDir += transform.forward + new Vector3(0, 0f, 0.3f);
-            }
-            currentDir += transform.forward + new Vector3(0, 0.2f);
-        }
+        
     }
 
     private TraceType DoSingleTrace(Vector3 dir, Vector3 pos, float traceDistance)
@@ -65,12 +59,15 @@ public class TracerEyes : MonoBehaviour
 
             switch (layer)
             {
-                case 6:
+                case 7:
                     Debug.DrawRay(pos, dir *hit.distance, Color.green, traceInterval);
+                    DistanceToWall = hit.distance;
+                    WallSeen = true;
                     return TraceType.Ground | TraceType.Wall;
                 
-                case 8:
+                case 6:
                     Debug.DrawRay(pos, dir *hit.distance, Color.blue, traceInterval);
+                    PlayerSeen = true;
                     return TraceType.Player;
             }
         }
@@ -78,7 +75,6 @@ public class TracerEyes : MonoBehaviour
         else
         {
             Debug.DrawRay(pos, dir *traceDistance, Color.red, traceInterval);
-            
             return TraceType.None;
         }
         
