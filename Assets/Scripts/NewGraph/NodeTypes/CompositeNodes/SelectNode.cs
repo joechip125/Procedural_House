@@ -6,18 +6,32 @@ using UnityEngine;
 public class SelectNode : CompositeNode
 {
     [HideInInspector] public bool choiceMade;
-    [HideInInspector] public int theChoice;
+    [HideInInspector] public CurrentCommand currentCommand;
     [HideInInspector] public STATE nextState;
     
     public override void OnStart()
     {
-        theChoice = 1;
+        currentCommand = CurrentCommand.None;
         choiceMade = true;
+        
+        agent.enemyEyes.objectHit -= OnObjectSeen;
+        agent.enemyEyes.objectHit += OnObjectSeen;
+    }
+
+    private void OnObjectSeen(TraceType obj)
+    {
+        if (currentCommand == CurrentCommand.None)
+        {
+            if (obj == TraceType.Commander)
+            {
+                
+            }
+        }
     }
 
     public override void OnExit()
     {
-        
+        agent.enemyEyes.objectHit -= OnObjectSeen;
     }
 
     private void FindRightChoice(STATE stateChoice)
@@ -32,7 +46,7 @@ public class SelectNode : CompositeNode
     
     public override State OnUpdate()
     {
-        var child = children[theChoice];
+        var child = children[(int)currentCommand];
 
         if (!choiceMade) return State.Update;
         

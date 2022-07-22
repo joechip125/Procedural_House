@@ -9,6 +9,7 @@ public enum TraceType
     Ground,
     Wall,
     Player,
+    Commander,
     Platform,
     Enemy,
     None
@@ -22,14 +23,17 @@ public class TracerEyes : MonoBehaviour
     private float timeSinceTrace;
     private Vector3 currentDir;
     public bool PlayerSeen { get; private set; }
+    public bool CommanderSeen { get; private set; }
     public bool WallSeen { get; private set; }
     
     public float DistanceToWall { get; private set; }
 
+    public event Action<TraceType> objectHit;
+
     private void Awake()
     {
         DistanceToWall = 999;
-        multiMask = 1 << 7 | 1 << 6;
+        multiMask = 1 << 7 | 1 << 6 | 1 << 8;
     }
 
     // Update is called once per frame
@@ -40,13 +44,17 @@ public class TracerEyes : MonoBehaviour
         if (timeSinceTrace >= traceInterval)
         {
             timeSinceTrace -= traceInterval;
-            DoSingleTrace(transform.forward, transform.position, 34f);
+            DoMultiTrace();
         }
     }
 
     private void DoMultiTrace()
     {
-        
+       var some = DoSingleTrace(transform.forward, transform.position, 34f);
+       if (some != TraceType.None)
+       {
+           objectHit?.Invoke(some);
+       }
     }
 
     private TraceType DoSingleTrace(Vector3 dir, Vector3 pos, float traceDistance)
@@ -62,13 +70,15 @@ public class TracerEyes : MonoBehaviour
                 case 7:
                     Debug.DrawRay(pos, dir *hit.distance, Color.green, traceInterval);
                     DistanceToWall = hit.distance;
-                    WallSeen = true;
                     return TraceType.Ground | TraceType.Wall;
                 
                 case 6:
                     Debug.DrawRay(pos, dir *hit.distance, Color.blue, traceInterval);
-                    PlayerSeen = true;
                     return TraceType.Player;
+                
+                case 8:
+                    Debug.DrawRay(pos, dir *hit.distance, Color.black, traceInterval);
+                    return TraceType.Commander;
             }
         }
 

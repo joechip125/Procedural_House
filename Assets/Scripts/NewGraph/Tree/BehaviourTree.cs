@@ -7,14 +7,6 @@ using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-[Serializable]
-public class AiAgent
-{
-    public TracerEyes enemyEyes;
-    public Transform enemyTransform;
-    public Transform lookAtTarget;
-}
-
 [CreateAssetMenu]
 public class BehaviourTree : ScriptableObject
 {

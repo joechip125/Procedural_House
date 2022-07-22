@@ -10,6 +10,7 @@ public enum STATE
 public class MoveNode : ActionNode
 {
     public bool stop;
+    public int numberRot;
     
     public override void OnStart()
     {
@@ -23,12 +24,12 @@ public class MoveNode : ActionNode
 
     public override State OnUpdate()
     {
-        if (agent.enemyEyes.DistanceToWall < 2f)
+        if (numberRot < 45)
         {
-            return State.Success;
+            agent.enemyTransform.Rotate(new Vector3(1, 0, 0), 2 * Time.deltaTime);
+            numberRot++;
         }
-        
-      //  agent.enemyTransform.position += agent.enemyTransform.up * (Time.deltaTime * 2);
+        //  agent.enemyTransform.position += agent.enemyTransform.up * (Time.deltaTime * 2);
         
         return stop ? State.Success : State.Update;
     }

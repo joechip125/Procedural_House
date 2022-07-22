@@ -1,5 +1,34 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8046154269725548064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95b3a67299306d946993bd31dc8e7e5a, type: 3}
+  m_Name: SelectNode
+  m_EditorClassIdentifier: 
+  state: 1
+  started: 0
+  guid: 55db23a9c7e301e419c91478348c139f
+  position: {x: 93.6, y: 238.39998}
+  blackboard:
+    moveToPos: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  agent:
+    enemyEyes: {fileID: 0}
+    enemyTransform: {fileID: 0}
+    destination: {fileID: 0}
+    currentCommand: 0
+  description: 
+  children: []
+  choiceMade: 0
+  currentCommand: 0
+  nextState: 0
 --- !u!114 &-5640732442159900575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15,46 +44,17 @@ MonoBehaviour:
   state: 1
   started: 0
   guid: a61986bf37bcaa241ad949cc23c55cbb
-  position: {x: 288.8, y: 407.19998}
+  position: {x: 31.01123, y: 656.1767}
   blackboard:
     moveToPos: {x: 0, y: 0, z: 0}
     moveToObject: {fileID: 0}
   agent:
     enemyEyes: {fileID: 0}
     enemyTransform: {fileID: 0}
-    lookAtTarget: {fileID: 0}
+    destination: {fileID: 0}
+    currentCommand: 0
   description: 
   stateType: 0
---- !u!114 &-3798029718764121064
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95b3a67299306d946993bd31dc8e7e5a, type: 3}
-  m_Name: SelectNode
-  m_EditorClassIdentifier: 
-  state: 1
-  started: 0
-  guid: 1af92d71d9eee1d40bd055a520f918ae
-  position: {x: 447.2, y: 206.24176}
-  blackboard:
-    moveToPos: {x: 0, y: 0, z: 0}
-    moveToObject: {fileID: 0}
-  agent:
-    enemyEyes: {fileID: 0}
-    enemyTransform: {fileID: 0}
-    lookAtTarget: {fileID: 0}
-  description: 
-  children:
-  - {fileID: -5640732442159900575}
-  - {fileID: -1937164412623952758}
-  choiceMade: 0
-  theChoice: 0
-  nextState: 0
 --- !u!114 &-1937164412623952758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,17 +70,19 @@ MonoBehaviour:
   state: 1
   started: 0
   guid: c651a9e6860cc654a8578c7563c68de2
-  position: {x: 530.40015, y: 415.20004}
+  position: {x: 455.2, y: 455.88132}
   blackboard:
     moveToPos: {x: 0, y: 0, z: 0}
     moveToObject: {fileID: 0}
   agent:
     enemyEyes: {fileID: 0}
     enemyTransform: {fileID: 0}
-    lookAtTarget: {fileID: 0}
+    destination: {fileID: 0}
+    currentCommand: 0
   description: 
   stateType: 0
   stop: 0
+  numberRot: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,7 +93,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 762c148f0962d0c4785f724d0a4bffd9, type: 3}
-  m_Name: New Behaviour Tree
+  m_Name: MoveTest
   m_EditorClassIdentifier: 
   blackboard:
     moveToPos: {x: 0, y: 0, z: 0}
@@ -101,9 +103,9 @@ MonoBehaviour:
   nodes:
   - {fileID: 6959703738773164484}
   - {fileID: -5640732442159900575}
-  - {fileID: -3798029718764121064}
   - {fileID: -1937164412623952758}
   - {fileID: 8875050182864249574}
+  - {fileID: -8046154269725548064}
 --- !u!114 &6959703738773164484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,9 +128,10 @@ MonoBehaviour:
   agent:
     enemyEyes: {fileID: 0}
     enemyTransform: {fileID: 0}
-    lookAtTarget: {fileID: 0}
+    destination: {fileID: 0}
+    currentCommand: 0
   description: 
-  child: {fileID: -3798029718764121064}
+  child: {fileID: 8875050182864249574}
 --- !u!114 &8875050182864249574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,13 +147,15 @@ MonoBehaviour:
   state: 1
   started: 0
   guid: 8d8c8c1c77bc18744933b163ed7e0058
-  position: {x: 0, y: 0}
+  position: {x: 447.19998, y: 230.46812}
   blackboard:
     moveToPos: {x: 0, y: 0, z: 0}
     moveToObject: {fileID: 0}
   agent:
     enemyEyes: {fileID: 0}
     enemyTransform: {fileID: 0}
-    lookAtTarget: {fileID: 0}
+    destination: {fileID: 0}
+    currentCommand: 0
   description: 
-  children: []
+  children:
+  - {fileID: -1937164412623952758}

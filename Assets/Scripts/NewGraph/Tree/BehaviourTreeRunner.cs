@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -16,6 +17,17 @@ public class BehaviourTreeRunner : MonoBehaviour, IEnemyCommands
             enemyTransform = transform,
             enemyEyes = GetComponentInChildren<TracerEyes>()
         });
+        GetComponentInChildren<TracerEyes>().objectHit += OnObjectSeen;
+    }
+
+    private void OnDisable()
+    {
+        GetComponentInChildren<TracerEyes>().objectHit -= OnObjectSeen;
+    }
+
+    private void OnObjectSeen(TraceType obj)
+    {
+        
     }
 
     public Transform GetTopParent(Transform pTrans)
@@ -36,7 +48,12 @@ public class BehaviourTreeRunner : MonoBehaviour, IEnemyCommands
 
     public void MoveToDestination(Vector3 destination)
     {
-        throw new System.NotImplementedException();
+       
+    }
+
+    public void SetNextCommand(CurrentCommand command)
+    {
+       
     }
 }
 
