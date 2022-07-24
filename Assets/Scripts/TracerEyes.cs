@@ -26,13 +26,13 @@ public class TracerEyes : MonoBehaviour
     public bool CommanderSeen { get; private set; }
     public bool WallSeen { get; private set; }
     
-    public float DistanceToWall { get; private set; }
+    public float DistanceToObject { get; private set; }
 
     public event Action<TraceType> objectHit;
 
     private void Awake()
     {
-        DistanceToWall = 999;
+        DistanceToObject = 999;
         multiMask = 1 << 7 | 1 << 6 | 1 << 8;
     }
 
@@ -69,7 +69,7 @@ public class TracerEyes : MonoBehaviour
             {
                 case 7:
                     Debug.DrawRay(pos, dir *hit.distance, Color.green, traceInterval);
-                    DistanceToWall = hit.distance;
+                    DistanceToObject = hit.distance;
                     return TraceType.Ground | TraceType.Wall;
                 
                 case 6:

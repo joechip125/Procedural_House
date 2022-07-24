@@ -1,6 +1,11 @@
 ﻿using System;
 using UnityEngine;
 
+public enum STATE
+{
+    Idle, Patrol, Pursue, Attack, Rest, Jump
+}
+
 public enum CurrentCommand
 {
     None,
@@ -15,4 +20,6 @@ public class AiAgent
     public Transform enemyTransform;
     public Transform destination;
     public CurrentCommand currentCommand;
+
+    public Vector3 currentDestination;
 }

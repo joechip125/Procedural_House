@@ -2,16 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum STATE
-{
-    Idle, Patrol, Pursue, Attack, Rest, Jump
-}
-
 public class MoveNode : ActionNode
 {
-    public bool stop;
-    public int numberRot;
-    
     public override void OnStart()
     {
         
@@ -21,16 +13,33 @@ public class MoveNode : ActionNode
     {
         
     }
+    
+    private bool CheckIfLookingAtTarget()
+    {
+        var dirFromAtoB = (agent.enemyTransform.position - agent.currentDestination).normalized;
+        var dotProd = Vector3.Dot(dirFromAtoB, agent.enemyTransform.forward);
+            
+        return dotProd > 0.95f;
+    }
+
+    private bool ArrivedAtTarget()
+    {
+        return Vector3.Distance(agent.enemyTransform.position, agent.currentDestination) < 2;
+    }
 
     public override State OnUpdate()
     {
-        if (numberRot < 45)
+        if (!CheckIfLookingAtTarget())
         {
-            agent.enemyTransform.Rotate(new Vector3(1, 0, 0), 2 * Time.deltaTime);
-            numberRot++;
+            var singleStep = Time.deltaTime * 2;
+            Vector3 newDirection = Vector3.RotateTowards(agent.enemyTransform.forward, agent.currentDestination, singleStep, 0.0f);
+            agent.enemyTransform.rotation = Quaternion.LookRotation(newDirection);
         }
-        //  agent.enemyTransform.position += agent.enemyTransform.up * (Time.deltaTime * 2);
-        
-        return stop ? State.Success : State.Update;
+
+        agent.enemyTransform.position += agent.enemyTransform.forward * (Time.deltaTime * 2);
+
+        if (ArrivedAtTarget()) return State.Success;
+
+        return State.Update;
     }
 }
