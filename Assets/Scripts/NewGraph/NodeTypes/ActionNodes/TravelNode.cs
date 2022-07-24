@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveNode : ActionNode
+public class TravelNode : ActionNode
 {
     public override void OnStart()
     {
@@ -18,8 +18,7 @@ public class MoveNode : ActionNode
     {
         var dirFromAtoB = (agent.enemyTransform.position - agent.currentDestination).normalized;
         var dotProd = Vector3.Dot(dirFromAtoB, agent.enemyTransform.forward);
-            
-        return dotProd > 0.95f;
+        return dotProd > 0.98f;
     }
 
     private bool ArrivedAtTarget()
@@ -27,16 +26,19 @@ public class MoveNode : ActionNode
         return Vector3.Distance(agent.enemyTransform.position, agent.currentDestination) < 2;
     }
 
+    
+    
     public override State OnUpdate()
     {
         if (!CheckIfLookingAtTarget())
         {
-            var singleStep = Time.deltaTime * 2;
-            Vector3 newDirection = Vector3.RotateTowards(agent.enemyTransform.forward, agent.currentDestination, singleStep, 0.0f);
+            Vector3 targetDirection = agent.currentDestination - agent.enemyTransform.position;
+            var singleStep = Time.deltaTime * 1;
+            Vector3 newDirection = Vector3.RotateTowards(agent.enemyTransform.forward, targetDirection, singleStep, 0.0f);
             agent.enemyTransform.rotation = Quaternion.LookRotation(newDirection);
         }
 
-        agent.enemyTransform.position += agent.enemyTransform.forward * (Time.deltaTime * 2);
+        agent.enemyTransform.position += agent.enemyTransform.forward * (Time.deltaTime * 1);
 
         if (ArrivedAtTarget()) return State.Success;
 

@@ -14,8 +14,9 @@ public class BehaviourTreeRunner : MonoBehaviour, IEnemyCommands
         tree = tree.Clone();
         tree.Bind(new AiAgent()
         {
-            enemyTransform = transform,
-            enemyEyes = GetComponentInChildren<TracerEyes>()
+            enemyTransform = gameObject.transform,
+            enemyEyes = GetComponentInChildren<TracerEyes>(),
+            currentDestination = GameObject.Find("EnemyCommander").transform.position
         });
         GetComponentInChildren<TracerEyes>().objectHit += OnObjectSeen;
     }

@@ -22,4 +22,9 @@ public class AiAgent
     public CurrentCommand currentCommand;
 
     public Vector3 currentDestination;
+
+    public AiAgent()
+    {
+        currentDestination = new Vector3(0, 0, 0);
+    }
 }
