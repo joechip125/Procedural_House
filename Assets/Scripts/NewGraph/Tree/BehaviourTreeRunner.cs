@@ -56,5 +56,10 @@ public class BehaviourTreeRunner : MonoBehaviour, IEnemyCommands
     {
        
     }
+
+    public void GetNextDestination(Action<CurrentCommand> callBack)
+    {
+        
+    }
 }
 

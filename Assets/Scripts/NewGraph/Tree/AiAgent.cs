@@ -10,7 +10,8 @@ public enum CurrentCommand
 {
     None,
     Gather,
-    Hunt
+    Hunt,
+    Find
 }
 
 [Serializable]

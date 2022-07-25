@@ -40,8 +40,6 @@ public class TravelNode : ActionNode
 
         agent.enemyTransform.position += agent.enemyTransform.forward * (Time.deltaTime * 1);
 
-        if (ArrivedAtTarget()) return State.Success;
-
-        return State.Update;
+        return ArrivedAtTarget() ? State.Success : State.Update;
     }
 }

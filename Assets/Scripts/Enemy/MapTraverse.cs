@@ -105,7 +105,7 @@ public class MapTraverse : MonoBehaviour
 
         while(count < 76)
         {
-            if (currentTraverseCell.DistanceFromGoal < 2)
+            if (currentTraverseCell.DistanceFromGoal < 1)
             {
                 Debug.Log("Destination reached");
                 break;

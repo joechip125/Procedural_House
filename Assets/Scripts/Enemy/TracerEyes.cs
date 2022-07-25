@@ -70,17 +70,15 @@ public class TracerEyes : MonoBehaviour
     {
         
         var hits = Physics.BoxCastAll(transform.position + transform.forward * 1,
-            cubeSize / 2, transform.forward, transform.rotation, 1).ToList();
+            cubeSize / 2, transform.forward, transform.rotation, 0.5f).ToList();
 
        var somet = hits.Where(h => h.collider.gameObject.layer == 8).ToList();
 
-       if (somet.Count > 0)
+       m_HitDetect = somet.Count > 0;
+       
+       if (m_HitDetect)
        {
-           m_HitDetect = true;
-       }
-       else
-       {
-           m_HitDetect = false;
+           
        }
 
     }
