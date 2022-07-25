@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [Flags]
@@ -22,10 +23,13 @@ public class TracerEyes : MonoBehaviour
     private float traceInterval = 0.4f;
     private float timeSinceTrace;
     private Vector3 currentDir;
+    private object m_Hit;
     public bool PlayerSeen { get; private set; }
     public bool CommanderSeen { get; private set; }
     public bool WallSeen { get; private set; }
-    
+    private Vector3 cubeSize = new Vector3(2, 2, 2);
+    private bool m_HitDetect;
+
     public float DistanceToObject { get; private set; }
 
     public event Action<TraceType> objectHit;
@@ -46,6 +50,7 @@ public class TracerEyes : MonoBehaviour
             timeSinceTrace -= traceInterval;
             DoMultiTrace();
         }
+        DoBoxTrace();
     }
 
     private void DoMultiTrace()
@@ -55,6 +60,43 @@ public class TracerEyes : MonoBehaviour
        {
            objectHit?.Invoke(some);
        }
+    }
+
+    private void LateUpdate()
+    {
+    }
+
+    private void DoBoxTrace()
+    {
+        
+        var hits = Physics.BoxCastAll(transform.position + transform.forward * 1,
+            cubeSize / 2, transform.forward, transform.rotation, 1).ToList();
+
+       var somet = hits.Where(h => h.collider.gameObject.layer == 8).ToList();
+
+       if (somet.Count > 0)
+       {
+           m_HitDetect = true;
+       }
+       else
+       {
+           m_HitDetect = false;
+       }
+
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (m_HitDetect)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireCube(transform.position + transform.forward * 1, cubeSize);
+        }
+        else
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireCube(transform.position + transform.forward * 1, cubeSize);
+        }
     }
 
     private TraceType DoSingleTrace(Vector3 dir, Vector3 pos, float traceDistance)
