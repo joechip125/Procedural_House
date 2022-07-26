@@ -24,6 +24,8 @@ public class AiAgent
 
     public Vector3 currentDestination;
 
+    public Transform currentCommander;
+
     public AiAgent()
     {
         currentDestination = new Vector3(0, 0, 0);

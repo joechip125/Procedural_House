@@ -7,6 +7,7 @@ public class EnemyCommander : MonoBehaviour, IEnemyCommands
 {
 
     [SerializeField] private CurrentCommand command;
+    [SerializeField] private List<Transform> goals;
     
     void Start()
     {
@@ -28,8 +29,11 @@ public class EnemyCommander : MonoBehaviour, IEnemyCommands
         
     }
 
-    public void GetNextDestination(Action<CurrentCommand> callBack)
+    public void GetNextDestination(Action<CurrentCommand, Vector3> callBack)
     {
-        throw new NotImplementedException();
+        if (goals.Count > 0)
+        {
+            callBack?.Invoke(CurrentCommand.Find, goals[0].position);
+        }
     }
 }

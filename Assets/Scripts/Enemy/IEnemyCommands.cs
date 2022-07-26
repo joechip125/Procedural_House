@@ -8,5 +8,5 @@ public interface IEnemyCommands
 
     public void SetNextCommand(CurrentCommand command);
 
-    public void GetNextDestination(Action<CurrentCommand> callBack);
+    public void GetNextDestination(Action<CurrentCommand, Vector3> callBack);
 }

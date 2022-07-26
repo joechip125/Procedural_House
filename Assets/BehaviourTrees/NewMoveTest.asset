@@ -21,6 +21,35 @@ MonoBehaviour:
   - {fileID: 1741674282431785511}
   - {fileID: 8861766169774194908}
   - {fileID: 6279100606350537532}
+  - {fileID: 712133013567634796}
+--- !u!114 &712133013567634796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 829614cd83d04261bc7d4299363afc68, type: 3}
+  m_Name: InteractNode
+  m_EditorClassIdentifier: 
+  state: 1
+  started: 0
+  guid: be4d085392b33604f917a65865040b3b
+  position: {x: 211.61714, y: 470.4001}
+  blackboard:
+    moveToPos: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  agent:
+    enemyEyes: {fileID: 0}
+    enemyTransform: {fileID: 0}
+    destination: {fileID: 0}
+    currentCommand: 0
+    currentDestination: {x: 0, y: 0, z: 0}
+    currentCommander: {fileID: 0}
+  description: 
+  stateType: 0
 --- !u!114 &1741674282431785511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46,6 +75,7 @@ MonoBehaviour:
     destination: {fileID: 0}
     currentCommand: 0
     currentDestination: {x: 0, y: 0, z: 0}
+    currentCommander: {fileID: 0}
   description: 
   child: {fileID: 8861766169774194908}
 --- !u!114 &6279100606350537532
@@ -73,6 +103,7 @@ MonoBehaviour:
     destination: {fileID: 0}
     currentCommand: 0
     currentDestination: {x: 0, y: 0, z: 0}
+    currentCommander: {fileID: 0}
   description: 
   stateType: 0
 --- !u!114 &8861766169774194908
@@ -90,7 +121,7 @@ MonoBehaviour:
   state: 1
   started: 0
   guid: 335b2c84c0e73494c93fdaf2c2f291dd
-  position: {x: -9.600002, y: 208.75552}
+  position: {x: -11.199982, y: 173.59999}
   blackboard:
     moveToPos: {x: 0, y: 0, z: 0}
     moveToObject: {fileID: 0}
@@ -100,6 +131,8 @@ MonoBehaviour:
     destination: {fileID: 0}
     currentCommand: 0
     currentDestination: {x: 0, y: 0, z: 0}
+    currentCommander: {fileID: 0}
   description: 
   children:
   - {fileID: 6279100606350537532}
+  - {fileID: 712133013567634796}

@@ -17,6 +17,12 @@ public enum TraceType
 }
 
 
+public class Memory
+{
+    public TraceType type;
+    public Transform Transform;
+}
+
 public class TracerEyes : MonoBehaviour
 {
     private int multiMask;
@@ -29,6 +35,8 @@ public class TracerEyes : MonoBehaviour
     public bool WallSeen { get; private set; }
     private Vector3 cubeSize = new Vector3(2, 2, 2);
     private bool m_HitDetect;
+
+    public List<Memory> Memories;
 
     public float DistanceToObject { get; private set; }
 
@@ -61,10 +69,7 @@ public class TracerEyes : MonoBehaviour
            objectHit?.Invoke(some);
        }
     }
-
-    private void LateUpdate()
-    {
-    }
+    
 
     private void DoBoxTrace()
     {
@@ -73,8 +78,26 @@ public class TracerEyes : MonoBehaviour
             cubeSize / 2, transform.forward, transform.rotation, 0.5f).ToList();
 
        var somet = hits.Where(h => h.collider.gameObject.layer == 8).ToList();
-
        m_HitDetect = somet.Count > 0;
+
+       somet.ForEach(x =>
+       {
+           if (x.collider.gameObject.layer == 8)
+           {
+               if (Memories.SingleOrDefault(y => y.type == TraceType.Commander) != default)
+               {
+                   
+               }
+               else
+               {
+                   Memories.Add(new Memory()
+                   {
+                       Transform = x.transform,
+                       type = TraceType.Commander
+                   });
+               }
+           }
+       });
        
        if (m_HitDetect)
        {
