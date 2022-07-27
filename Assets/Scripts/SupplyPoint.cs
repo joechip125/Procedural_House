@@ -1,16 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using Enemy;
 using UnityEngine;
 
-public class SupplyPoint : MonoBehaviour
+public class SupplyPoint : MonoBehaviour, IInteract
 {
     [SerializeField] private GameObject Spawnable;
     [SerializeField] private int numberToSpawn;
+    private int numberSpawned;
+    private int numberItemsLeft;
     
     void Start()
     {
         SpawnStuff();
         GetComponentsInChildren<MeshRenderer>()[^1].transform.parent.gameObject.SetActive(false);
+        numberItemsLeft = numberSpawned;
     }
 
 
@@ -33,8 +37,32 @@ public class SupplyPoint : MonoBehaviour
                 Instantiate(Spawnable, next, Quaternion.identity, transform);
                 
                 numberToSpawn--;
+                numberSpawned++;
             }
         }
     }
+
+    public void Stack()
+    {
+        
+    }
     
+    public void SetInstruction(AiAgent agent)
+    {
+        
+    }
+
+    public GameObject GetItem()
+    {
+        if (numberItemsLeft < 1) return null;
+        
+        GetComponentsInChildren<MeshRenderer>()[^1].transform.parent.gameObject.SetActive(false);
+        numberItemsLeft--;
+        return Spawnable;
+    }
+
+    public void GiveItem(GameObject theItem)
+    {
+        throw new System.NotImplementedException();
+    }
 }

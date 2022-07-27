@@ -59,4 +59,14 @@ public class EnemyCommander : MonoBehaviour, IEnemyCommands, IInteract
         agent.commandQueue.Enqueue(CurrentCommand.DropOfItem);
         
     }
+
+    public GameObject GetItem()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void GiveItem(GameObject theItem)
+    {
+        throw new NotImplementedException();
+    }
 }

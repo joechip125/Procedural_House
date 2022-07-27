@@ -15,6 +15,7 @@ public enum CurrentCommand
     Interact,
     PickupItem,
     DropOfItem,
+    GetInstructions,
     Gather,
     Hunt,
     Find
@@ -46,6 +47,8 @@ public class AiAgent
     public bool pathBlocked;
 
     public bool commanderReached;
+
+    public GameObject heldItem;
 
     public AiAgent()
     {

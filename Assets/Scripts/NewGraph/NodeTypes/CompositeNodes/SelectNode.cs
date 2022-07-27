@@ -15,15 +15,22 @@ public class SelectNode : CompositeNode
 
     public override void OnStart()
     {
+        choiceMade = false;
         SetPossibleNodes();
+        currentCommand = agent.commandQueue.Dequeue();
         
-        if (currentCommand == CurrentCommand.None)
-            currentCommand = CurrentCommand.FindCommander;
-        
-        agent.enemyEyes.objectHit -= OnObjectSeen;
-        agent.enemyEyes.objectHit += OnObjectSeen;
     }
 
+    private void ChooseNode()
+    {
+        switch (currentCommand)
+        {
+            case CurrentCommand.MoveToPosition:
+                
+                break;
+        }
+    }
+    
     private void OnObjectSeen(TraceType obj)
     {
         if (currentCommand == CurrentCommand.None)

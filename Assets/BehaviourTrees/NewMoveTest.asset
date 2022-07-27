@@ -1,5 +1,38 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-2743986516602219211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d16d04755aeb59c41821ea4e3824a83e, type: 3}
+  m_Name: TravelNode
+  m_EditorClassIdentifier: 
+  state: 1
+  started: 0
+  guid: 49a968e66634b204489f663eb0a16839
+  position: {x: -247.44235, y: 130.85371}
+  blackboard:
+    moveToPos: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  agent:
+    enemyEyes: {fileID: 0}
+    enemyTransform: {fileID: 0}
+    destination: {fileID: 0}
+    currentCommand: 0
+    currentDestination: {x: 0, y: 0, z: 0}
+    currentInstruction:
+      finalDestination: {x: 0, y: 0, z: 0}
+    currentCommander: {fileID: 0}
+    pathBlocked: 0
+    commanderReached: 0
+    heldItem: {fileID: 0}
+  description: 
+  stateType: 0
 --- !u!114 &-687968193114663529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15,7 +48,7 @@ MonoBehaviour:
   state: 1
   started: 0
   guid: f102163f7121d644d9f60b006856394b
-  position: {x: 0, y: 0}
+  position: {x: -62.788635, y: 227.92679}
   blackboard:
     moveToPos: {x: 0, y: 0, z: 0}
     moveToObject: {fileID: 0}
@@ -30,6 +63,7 @@ MonoBehaviour:
     currentCommander: {fileID: 0}
     pathBlocked: 0
     commanderReached: 0
+    heldItem: {fileID: 0}
   description: 
   stateType: 0
 --- !u!114 &11400000
@@ -52,6 +86,7 @@ MonoBehaviour:
   nodes:
   - {fileID: 1741674282431785511}
   - {fileID: -687968193114663529}
+  - {fileID: -2743986516602219211}
 --- !u!114 &1741674282431785511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,5 +117,6 @@ MonoBehaviour:
     currentCommander: {fileID: 0}
     pathBlocked: 0
     commanderReached: 0
+    heldItem: {fileID: 0}
   description: 
-  child: {fileID: 0}
+  child: {fileID: -687968193114663529}

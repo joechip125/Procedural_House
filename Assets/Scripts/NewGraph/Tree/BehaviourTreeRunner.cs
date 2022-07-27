@@ -7,20 +7,34 @@ using UnityEngine;
 public class BehaviourTreeRunner : MonoBehaviour, IEnemyCommands
 {
     public BehaviourTree tree;
+    public Transform commanderTrans;
  //   public Dictionary<STATE, BehaviourTree>  trees;
 
     void Start()
     {
+        Setup();
+        GetComponentInChildren<TracerEyes>().objectHit += OnObjectSeen;
+    }
+
+    private void Setup()
+    {
+        Queue<CurrentCommand> commands = new Queue<CurrentCommand>();
+        commands.Enqueue(CurrentCommand.MoveToPosition);
+        commands.Enqueue(CurrentCommand.GetInstructions);
+        Queue<Vector3> goals = new Queue<Vector3>();
+        goals.Enqueue(commanderTrans.position);
+        
         tree = tree.Clone();
         tree.Bind(new AiAgent()
         {
             enemyTransform = gameObject.transform,
             enemyEyes = GetComponentInChildren<TracerEyes>(),
-            currentDestination = GameObject.Find("EnemyCommander").transform.position
+            currentDestination = GameObject.Find("EnemyCommander").transform.position,
+            commandQueue = commands,
+            TargetQueue = goals
         });
-        GetComponentInChildren<TracerEyes>().objectHit += OnObjectSeen;
     }
-
+    
     private void OnDisable()
     {
         GetComponentInChildren<TracerEyes>().objectHit -= OnObjectSeen;
