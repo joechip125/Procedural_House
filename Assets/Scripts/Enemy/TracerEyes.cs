@@ -38,6 +38,8 @@ public class TracerEyes : MonoBehaviour
 
     public List<Memory> Memories;
 
+    public Memory currentMem;
+
     public float DistanceToObject { get; private set; }
 
     public event Action<TraceType> objectHit;
@@ -84,6 +86,11 @@ public class TracerEyes : MonoBehaviour
        {
            if (x.collider.gameObject.layer == 8)
            {
+               currentMem = new Memory()
+               {
+                    type = TraceType.Commander,
+                    Transform = x.transform
+               };
                if (Memories.SingleOrDefault(y => y.type == TraceType.Commander) != default)
                {
                    

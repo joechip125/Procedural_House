@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class TravelNode : ActionNode
 {
+    private Vector3 nextDestination;
+    
     public override void OnStart()
     {
-        
+        nextDestination = agent.targets.Dequeue();
     }
 
     public override void OnExit()

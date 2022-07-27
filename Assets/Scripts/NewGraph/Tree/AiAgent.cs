@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum STATE
@@ -9,9 +10,16 @@ public enum STATE
 public enum CurrentCommand
 {
     None,
+    FindCommander,
     Gather,
     Hunt,
     Find
+}
+
+[Serializable]
+public class Instruction
+{
+    public Vector3 finalDestination;
 }
 
 [Serializable]
@@ -24,7 +32,10 @@ public class AiAgent
 
     public Vector3 currentDestination;
 
+    public Instruction currentInstruction;
     public Transform currentCommander;
+
+    public Queue<Vector3> targets = new();
 
     public AiAgent()
     {

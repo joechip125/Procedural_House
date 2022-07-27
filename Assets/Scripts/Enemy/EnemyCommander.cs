@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Enemy;
 using UnityEngine;
 
-public class EnemyCommander : MonoBehaviour, IEnemyCommands
+public class EnemyCommander : MonoBehaviour, IEnemyCommands, IInteract
 {
 
     [SerializeField] private CurrentCommand command;
@@ -29,11 +30,22 @@ public class EnemyCommander : MonoBehaviour, IEnemyCommands
         
     }
 
-    public void GetNextDestination(Action<CurrentCommand, Vector3> callBack)
+    public void GetNextDestination(Action<Instruction> callBack)
     {
         if (goals.Count > 0)
         {
-            callBack?.Invoke(CurrentCommand.Find, goals[0].position);
+            callBack?.Invoke(new Instruction()
+            {
+                finalDestination =  goals[0].position
+            });
         }
+    }
+
+    public void GetInstruction(Action<Instruction> instruction)
+    {
+        instruction?.Invoke(new Instruction()
+        {
+            finalDestination = goals[0].position
+        });
     }
 }

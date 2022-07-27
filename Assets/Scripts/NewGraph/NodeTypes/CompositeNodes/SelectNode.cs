@@ -11,8 +11,8 @@ public class SelectNode : CompositeNode
     
     public override void OnStart()
     {
-        currentCommand = CurrentCommand.None;
-        choiceMade = true;
+        if (currentCommand == CurrentCommand.None)
+            currentCommand = CurrentCommand.FindCommander;
         
         agent.enemyEyes.objectHit -= OnObjectSeen;
         agent.enemyEyes.objectHit += OnObjectSeen;
@@ -33,6 +33,12 @@ public class SelectNode : CompositeNode
     {
         agent.enemyEyes.objectHit -= OnObjectSeen;
     }
+
+    private void ChooseNode(int tryThis)
+    {
+        
+    }
+    
 
     private void FindRightChoice(STATE stateChoice)
     {

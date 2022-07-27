@@ -57,7 +57,7 @@ public class BehaviourTreeRunner : MonoBehaviour, IEnemyCommands
        
     }
 
-    public void GetNextDestination(Action<CurrentCommand, Vector3> callBack)
+    public void GetNextDestination(Action<Instruction> callBack)
     {
         
     }
