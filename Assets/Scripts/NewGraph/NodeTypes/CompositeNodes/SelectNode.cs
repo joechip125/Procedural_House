@@ -17,17 +17,29 @@ public class SelectNode : CompositeNode
     {
         choiceMade = false;
         SetPossibleNodes();
-        currentCommand = agent.commandQueue.Dequeue();
-        
+        currentCommand = agent.commandQueue.Peek();
+        choiceMade = true;
     }
 
     private void ChooseNode()
     {
-        switch (currentCommand)
+        foreach (var n in children)
         {
-            case CurrentCommand.MoveToPosition:
+            var traveler = n as TravelNode;
+            
+            if (currentCommand == CurrentCommand.MoveToPosition)
+            {
                 
-                break;
+                continue;
+            }
+
+            var interact = n as InteractNode;
+            
+            if (interact)
+            {
+                
+                continue;
+            }
         }
     }
     
@@ -59,6 +71,7 @@ public class SelectNode : CompositeNode
             if (interact)
             {
                 ownedNodes.Add(CurrentCommand.Interact, interact);
+                ownedNodes.Add(CurrentCommand.GetInstructions, interact);
                 continue;
             }
         }
@@ -90,10 +103,10 @@ public class SelectNode : CompositeNode
     
     public override State OnUpdate()
     {
-        var child = children[(int)currentCommand];
-
-        if (!choiceMade) return State.Update;
+        if (!choiceMade || agent.commandQueue.Count < 1) return State.Update;
         
+        var child = ownedNodes[currentCommand];
+
         switch (child.Update())
         {
             case State.Failure:
@@ -103,7 +116,7 @@ public class SelectNode : CompositeNode
                 return State.Update;
 
             case State.Success:
-                choiceMade = false;
+                currentCommand = agent.commandQueue.Peek();
                 break;
         }
 

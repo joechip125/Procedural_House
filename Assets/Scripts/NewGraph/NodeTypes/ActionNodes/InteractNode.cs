@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Enemy;
+using UnityEngine;
 
 namespace NewGraph.NodeTypes.ActionNodes
 {
@@ -10,6 +11,8 @@ namespace NewGraph.NodeTypes.ActionNodes
         private CurrentCommand command;
         public override void OnStart()
         {
+            command = agent.commandQueue.Dequeue();
+            Debug.Log("interacting");
             Interact();
         }
 
@@ -20,9 +23,10 @@ namespace NewGraph.NodeTypes.ActionNodes
            
         }
 
+        // ReSharper disable Unity.PerformanceAnalysis
         private void Interact()
         {
-           var interact = agent.enemyEyes.currentMem?.Transform.GetComponent<IInteract>();
+            var interact = agent.enemyEyes.currentInteractable.GetComponentInParent<IInteract>();
             
             if (interact != null)
             {
@@ -32,12 +36,17 @@ namespace NewGraph.NodeTypes.ActionNodes
                         agent.heldItem = interact.GetItem();
                         break;
                     case CurrentCommand.GetInstructions:
+                        Debug.Log("Getting instructions");
                         interact.SetInstruction(agent);
                         break;
                     case CurrentCommand.DropOfItem:
                         interact.GiveItem(agent.heldItem);
                         break;
                 }
+            }
+            else
+            {
+                Debug.Log("not Getting instructions");
             }
             
             interactDone = true;

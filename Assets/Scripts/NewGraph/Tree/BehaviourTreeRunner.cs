@@ -8,6 +8,8 @@ public class BehaviourTreeRunner : MonoBehaviour, IEnemyCommands
 {
     public BehaviourTree tree;
     public Transform commanderTrans;
+
+    public bool readyToRun;
  //   public Dictionary<STATE, BehaviourTree>  trees;
 
     void Start()
@@ -33,6 +35,8 @@ public class BehaviourTreeRunner : MonoBehaviour, IEnemyCommands
             commandQueue = commands,
             TargetQueue = goals
         });
+
+        readyToRun = true;
     }
     
     private void OnDisable()
@@ -58,6 +62,8 @@ public class BehaviourTreeRunner : MonoBehaviour, IEnemyCommands
     
     void Update()
     {
+        if (!readyToRun) return;
+        
         tree.Update();
     }
 

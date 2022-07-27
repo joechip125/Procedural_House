@@ -38,9 +38,11 @@ public class TracerEyes : MonoBehaviour
 
     public bool somethingHit;
 
-    public List<Memory> Memories;
+    public List<Memory> Memories = new();
 
     public Memory currentMem;
+
+    public GameObject currentInteractable;
 
     public float DistanceToObject { get; private set; }
 
@@ -93,6 +95,7 @@ public class TracerEyes : MonoBehaviour
        {
            if (x.collider.gameObject.layer == 8)
            {
+               currentInteractable = x.transform.gameObject;
                currentMem = new Memory()
                {
                     type = TraceType.Commander,

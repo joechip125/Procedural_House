@@ -15,7 +15,7 @@ MonoBehaviour:
   state: 1
   started: 0
   guid: 49a968e66634b204489f663eb0a16839
-  position: {x: -247.44235, y: 130.85371}
+  position: {x: -119.9999, y: 446.42062}
   blackboard:
     moveToPos: {x: 0, y: 0, z: 0}
     moveToObject: {fileID: 0}
@@ -33,7 +33,7 @@ MonoBehaviour:
     heldItem: {fileID: 0}
   description: 
   stateType: 0
---- !u!114 &-687968193114663529
+--- !u!114 &-840500140448952078
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,13 +42,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1a0fa6c97d74d6582623b3ea0bc1428, type: 3}
-  m_Name: LookAtCurrentTargetNode
+  m_Script: {fileID: 11500000, guid: 829614cd83d04261bc7d4299363afc68, type: 3}
+  m_Name: InteractNode
   m_EditorClassIdentifier: 
   state: 1
   started: 0
-  guid: f102163f7121d644d9f60b006856394b
-  position: {x: -62.788635, y: 227.92679}
+  guid: 74ce2b9c8853ec749aa575b4dfd675e4
+  position: {x: 144.7723, y: 454.40002}
   blackboard:
     moveToPos: {x: 0, y: 0, z: 0}
     moveToObject: {fileID: 0}
@@ -66,6 +66,9 @@ MonoBehaviour:
     heldItem: {fileID: 0}
   description: 
   stateType: 0
+  instruct:
+    finalDestination: {x: 0, y: 0, z: 0}
+  interactDone: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,8 +88,9 @@ MonoBehaviour:
   state: 1
   nodes:
   - {fileID: 1741674282431785511}
-  - {fileID: -687968193114663529}
   - {fileID: -2743986516602219211}
+  - {fileID: 7107316694408094651}
+  - {fileID: -840500140448952078}
 --- !u!114 &1741674282431785511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,7 +106,7 @@ MonoBehaviour:
   state: 1
   started: 1
   guid: 5231e19665b924a4281b03b0e20f5497
-  position: {x: -1.5999527, y: -120.79987}
+  position: {x: 14.400013, y: -110.78865}
   blackboard:
     moveToPos: {x: 0, y: 0, z: 0}
     moveToObject: {fileID: 0}
@@ -119,4 +123,42 @@ MonoBehaviour:
     commanderReached: 0
     heldItem: {fileID: 0}
   description: 
-  child: {fileID: -687968193114663529}
+  child: {fileID: 7107316694408094651}
+--- !u!114 &7107316694408094651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95b3a67299306d946993bd31dc8e7e5a, type: 3}
+  m_Name: SelectNode
+  m_EditorClassIdentifier: 
+  state: 1
+  started: 0
+  guid: dbbbb9c4276427d47b786dd9a2e3066a
+  position: {x: 22.400042, y: 139.15457}
+  blackboard:
+    moveToPos: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  agent:
+    enemyEyes: {fileID: 0}
+    enemyTransform: {fileID: 0}
+    destination: {fileID: 0}
+    currentCommand: 0
+    currentDestination: {x: 0, y: 0, z: 0}
+    currentInstruction:
+      finalDestination: {x: 0, y: 0, z: 0}
+    currentCommander: {fileID: 0}
+    pathBlocked: 0
+    commanderReached: 0
+    heldItem: {fileID: 0}
+  description: 
+  children:
+  - {fileID: -2743986516602219211}
+  - {fileID: -840500140448952078}
+  choiceMade: 0
+  currentCommand: 0
+  nextState: 0
