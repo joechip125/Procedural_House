@@ -8,7 +8,7 @@ public class TravelNode : ActionNode
     
     public override void OnStart()
     {
-        nextDestination = agent.targets.Dequeue();
+        agent.currentDestination = agent.TargetQueue.Dequeue();
     }
 
     public override void OnExit()
@@ -38,6 +38,13 @@ public class TravelNode : ActionNode
             var singleStep = Time.deltaTime * 1;
             Vector3 newDirection = Vector3.RotateTowards(agent.enemyTransform.forward, targetDirection, singleStep, 0.0f);
             agent.enemyTransform.rotation = Quaternion.LookRotation(newDirection);
+
+            agent.pathBlocked = agent.enemyEyes.somethingHit;
+
+            if (agent.pathBlocked)
+            {
+                return State.Failure;
+            }
         }
 
         agent.enemyTransform.position += agent.enemyTransform.forward * (Time.deltaTime * 1);

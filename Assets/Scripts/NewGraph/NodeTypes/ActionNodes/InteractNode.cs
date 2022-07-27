@@ -9,6 +9,7 @@ namespace NewGraph.NodeTypes.ActionNodes
         public bool interactDone;
         public override void OnStart()
         {
+            stateType = ActionNodeFunction.Interact;
             Interact();
         }
 
@@ -23,10 +24,7 @@ namespace NewGraph.NodeTypes.ActionNodes
         {
             if (agent.enemyEyes.currentMem?.Transform.GetComponent<IInteract>() != null)
             {
-                agent.enemyEyes.currentMem?.Transform.GetComponent<IInteract>().GetInstruction(x =>
-                {
-                    instruct = x;
-                });            
+                agent.enemyEyes.currentMem?.Transform.GetComponent<IInteract>().SetInstruction(agent);
             }
 
             agent.currentDestination = instruct.finalDestination;

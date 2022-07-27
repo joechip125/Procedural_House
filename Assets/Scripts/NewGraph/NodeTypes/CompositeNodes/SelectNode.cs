@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using NewGraph.NodeTypes.ActionNodes;
+using UnityEditor;
 using UnityEngine;
 
 public class SelectNode : CompositeNode
@@ -8,9 +11,12 @@ public class SelectNode : CompositeNode
     [HideInInspector] public bool choiceMade;
     [HideInInspector] public CurrentCommand currentCommand;
     [HideInInspector] public STATE nextState;
-    
+    private Dictionary<CurrentCommand, BaseNode> ownedNodes = new();
+
     public override void OnStart()
     {
+        SetPossibleNodes();
+        
         if (currentCommand == CurrentCommand.None)
             currentCommand = CurrentCommand.FindCommander;
         
@@ -29,6 +35,29 @@ public class SelectNode : CompositeNode
         }
     }
 
+    public void SetPossibleNodes()
+    {
+        foreach (var n in children)
+        {
+            var traveler = n as TravelNode;
+
+            if (traveler)
+            {
+                ownedNodes.Add(CurrentCommand.MoveToPosition, traveler);
+                continue;
+            }
+
+            var interact = n as InteractNode;
+            
+            if (interact)
+            {
+                ownedNodes.Add(CurrentCommand.Interact, interact);
+                continue;
+            }
+        }
+
+    }
+
     public override void OnExit()
     {
         agent.enemyEyes.objectHit -= OnObjectSeen;
@@ -40,7 +69,7 @@ public class SelectNode : CompositeNode
     }
     
 
-    private void FindRightChoice(STATE stateChoice)
+    private BaseNode FindRightChoice(ActionNodeFunction stateChoice)
     {
         var choice = children.SingleOrDefault(x =>
         {
@@ -48,6 +77,8 @@ public class SelectNode : CompositeNode
             if (!y) return false;
             return y.stateType == stateChoice;
         });
+
+        return choice;
     }
     
     public override State OnUpdate()

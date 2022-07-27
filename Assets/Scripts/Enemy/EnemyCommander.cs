@@ -48,4 +48,15 @@ public class EnemyCommander : MonoBehaviour, IEnemyCommands, IInteract
             finalDestination = goals[0].position
         });
     }
+
+    public void SetInstruction(AiAgent agent)
+    {
+        agent.TargetQueue.Enqueue(goals[0].position);
+        agent.TargetQueue.Enqueue(transform.position);
+        agent.commandQueue.Enqueue(CurrentCommand.MoveToPosition);
+        agent.commandQueue.Enqueue(CurrentCommand.PickupItem);
+        agent.commandQueue.Enqueue(CurrentCommand.MoveToPosition);
+        agent.commandQueue.Enqueue(CurrentCommand.DropOfItem);
+        
+    }
 }

@@ -11,6 +11,10 @@ public enum CurrentCommand
 {
     None,
     FindCommander,
+    MoveToPosition,
+    Interact,
+    PickupItem,
+    DropOfItem,
     Gather,
     Hunt,
     Find
@@ -35,7 +39,13 @@ public class AiAgent
     public Instruction currentInstruction;
     public Transform currentCommander;
 
-    public Queue<Vector3> targets = new();
+    public Queue<Vector3> TargetQueue = new();
+
+    public Queue<CurrentCommand> commandQueue = new();
+
+    public bool pathBlocked;
+
+    public bool commanderReached;
 
     public AiAgent()
     {

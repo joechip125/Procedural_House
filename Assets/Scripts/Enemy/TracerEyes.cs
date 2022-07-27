@@ -36,6 +36,8 @@ public class TracerEyes : MonoBehaviour
     private Vector3 cubeSize = new Vector3(2, 2, 2);
     private bool m_HitDetect;
 
+    public bool somethingHit;
+
     public List<Memory> Memories;
 
     public Memory currentMem;
@@ -65,10 +67,15 @@ public class TracerEyes : MonoBehaviour
 
     private void DoMultiTrace()
     {
-       var some = DoSingleTrace(transform.forward, transform.position, 34f);
+       var some = DoSingleTrace(transform.forward, transform.position, 70f);
        if (some != TraceType.None)
        {
            objectHit?.Invoke(some);
+           somethingHit = false;
+       }
+       else
+       {
+           somethingHit = true;
        }
     }
     

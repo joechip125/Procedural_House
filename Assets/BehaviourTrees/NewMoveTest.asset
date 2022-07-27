@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-687968193114663529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1a0fa6c97d74d6582623b3ea0bc1428, type: 3}
+  m_Name: LookAtCurrentTargetNode
+  m_EditorClassIdentifier: 
+  state: 1
+  started: 0
+  guid: f102163f7121d644d9f60b006856394b
+  position: {x: 0, y: 0}
+  blackboard:
+    moveToPos: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  agent:
+    enemyEyes: {fileID: 0}
+    enemyTransform: {fileID: 0}
+    destination: {fileID: 0}
+    currentCommand: 0
+    currentDestination: {x: 0, y: 0, z: 0}
+    currentInstruction:
+      finalDestination: {x: 0, y: 0, z: 0}
+    currentCommander: {fileID: 0}
+    pathBlocked: 0
+    commanderReached: 0
+  description: 
+  stateType: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19,37 +51,7 @@ MonoBehaviour:
   state: 1
   nodes:
   - {fileID: 1741674282431785511}
-  - {fileID: 8861766169774194908}
-  - {fileID: 6279100606350537532}
-  - {fileID: 712133013567634796}
---- !u!114 &712133013567634796
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 829614cd83d04261bc7d4299363afc68, type: 3}
-  m_Name: InteractNode
-  m_EditorClassIdentifier: 
-  state: 1
-  started: 0
-  guid: be4d085392b33604f917a65865040b3b
-  position: {x: 211.61714, y: 470.4001}
-  blackboard:
-    moveToPos: {x: 0, y: 0, z: 0}
-    moveToObject: {fileID: 0}
-  agent:
-    enemyEyes: {fileID: 0}
-    enemyTransform: {fileID: 0}
-    destination: {fileID: 0}
-    currentCommand: 0
-    currentDestination: {x: 0, y: 0, z: 0}
-    currentCommander: {fileID: 0}
-  description: 
-  stateType: 0
+  - {fileID: -687968193114663529}
 --- !u!114 &1741674282431785511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,7 +65,7 @@ MonoBehaviour:
   m_Name: RootNode
   m_EditorClassIdentifier: 
   state: 1
-  started: 0
+  started: 1
   guid: 5231e19665b924a4281b03b0e20f5497
   position: {x: -1.5999527, y: -120.79987}
   blackboard:
@@ -75,64 +77,10 @@ MonoBehaviour:
     destination: {fileID: 0}
     currentCommand: 0
     currentDestination: {x: 0, y: 0, z: 0}
+    currentInstruction:
+      finalDestination: {x: 0, y: 0, z: 0}
     currentCommander: {fileID: 0}
+    pathBlocked: 0
+    commanderReached: 0
   description: 
-  child: {fileID: 8861766169774194908}
---- !u!114 &6279100606350537532
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d16d04755aeb59c41821ea4e3824a83e, type: 3}
-  m_Name: TravelNode
-  m_EditorClassIdentifier: 
-  state: 1
-  started: 0
-  guid: b4970489bae278a438e8367c06a93cc0
-  position: {x: -1.5999527, y: 462.44965}
-  blackboard:
-    moveToPos: {x: 0, y: 0, z: 0}
-    moveToObject: {fileID: 0}
-  agent:
-    enemyEyes: {fileID: 0}
-    enemyTransform: {fileID: 0}
-    destination: {fileID: 0}
-    currentCommand: 0
-    currentDestination: {x: 0, y: 0, z: 0}
-    currentCommander: {fileID: 0}
-  description: 
-  stateType: 0
---- !u!114 &8861766169774194908
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20a9d60dd060c7a4e8c533efeb46d7b0, type: 3}
-  m_Name: SequencerNode
-  m_EditorClassIdentifier: 
-  state: 1
-  started: 0
-  guid: 335b2c84c0e73494c93fdaf2c2f291dd
-  position: {x: -11.199982, y: 173.59999}
-  blackboard:
-    moveToPos: {x: 0, y: 0, z: 0}
-    moveToObject: {fileID: 0}
-  agent:
-    enemyEyes: {fileID: 0}
-    enemyTransform: {fileID: 0}
-    destination: {fileID: 0}
-    currentCommand: 0
-    currentDestination: {x: 0, y: 0, z: 0}
-    currentCommander: {fileID: 0}
-  description: 
-  children:
-  - {fileID: 6279100606350537532}
-  - {fileID: 712133013567634796}
+  child: {fileID: 0}
