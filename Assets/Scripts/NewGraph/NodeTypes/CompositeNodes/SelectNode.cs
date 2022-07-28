@@ -20,27 +20,15 @@ public class SelectNode : CompositeNode
         currentCommand = agent.commandQueue.Peek();
         choiceMade = true;
     }
-
-    private void ChooseNode()
+    
+    private void OutOfCommands()
     {
-        foreach (var n in children)
-        {
-            var traveler = n as TravelNode;
-            
-            if (currentCommand == CurrentCommand.MoveToPosition)
-            {
-                
-                continue;
-            }
-
-            var interact = n as InteractNode;
-            
-            if (interact)
-            {
-                
-                continue;
-            }
-        }
+        var closestPos = GameObject.FindGameObjectsWithTag("EnemyCommander")
+            .OrderBy(x => Vector3.Distance(agent.enemyTransform.position, x.transform.position)).ToArray()[0].transform.position;
+        
+        agent.TargetQueue.Enqueue(closestPos);
+        agent.commandQueue.Enqueue(CurrentCommand.MoveToPosition);
+        agent.commandQueue.Enqueue(CurrentCommand.GetInstructions);
     }
     
     private void OnObjectSeen(TraceType obj)
@@ -82,28 +70,13 @@ public class SelectNode : CompositeNode
     {
         agent.enemyEyes.objectHit -= OnObjectSeen;
     }
-
-    private void ChooseNode(int tryThis)
-    {
-        
-    }
-    
-
-    private BaseNode FindRightChoice(ActionNodeFunction stateChoice)
-    {
-        var choice = children.SingleOrDefault(x =>
-        {
-            var y = x as ActionNode;
-            if (!y) return false;
-            return y.stateType == stateChoice;
-        });
-
-        return choice;
-    }
     
     public override State OnUpdate()
     {
-        if (!choiceMade || agent.commandQueue.Count < 1) return State.Update;
+        if(agent.commandQueue.Count < 1)
+            OutOfCommands();
+        
+        if (!choiceMade) return State.Update;
         
         var child = ownedNodes[currentCommand];
 

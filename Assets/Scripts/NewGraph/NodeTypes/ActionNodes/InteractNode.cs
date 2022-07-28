@@ -12,7 +12,6 @@ namespace NewGraph.NodeTypes.ActionNodes
         public override void OnStart()
         {
             command = agent.commandQueue.Dequeue();
-            Debug.Log("interacting");
             Interact();
         }
 
@@ -23,7 +22,7 @@ namespace NewGraph.NodeTypes.ActionNodes
            
         }
 
-        // ReSharper disable Unity.PerformanceAnalysis
+   
         private void Interact()
         {
             var interact = agent.enemyEyes.currentInteractable.GetComponentInParent<IInteract>();
@@ -36,7 +35,6 @@ namespace NewGraph.NodeTypes.ActionNodes
                         agent.heldItem = interact.GetItem();
                         break;
                     case CurrentCommand.GetInstructions:
-                        Debug.Log("Getting instructions");
                         interact.SetInstruction(agent);
                         break;
                     case CurrentCommand.DropOfItem:
@@ -46,7 +44,7 @@ namespace NewGraph.NodeTypes.ActionNodes
             }
             else
             {
-                Debug.Log("not Getting instructions");
+              
             }
             
             interactDone = true;

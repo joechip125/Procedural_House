@@ -1001,7 +1001,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   command: 3
   goals:
-  - {fileID: 1091191011}
+  - {fileID: 2112465985}
 --- !u!1 &1575479440
 GameObject:
   m_ObjectHideFlags: 0
@@ -1365,6 +1365,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &2112465985 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 289738532569830680, guid: 38d977ab4afc460468193561c763a7b2, type: 3}
+  m_PrefabInstance: {fileID: 3040588146037088368}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3040588146037088368
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1416,6 +1421,14 @@ PrefabInstance:
     - target: {fileID: 289738532569830680, guid: 38d977ab4afc460468193561c763a7b2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 769057525326340300, guid: 38d977ab4afc460468193561c763a7b2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 769057525326340300, guid: 38d977ab4afc460468193561c763a7b2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.84
       objectReference: {fileID: 0}
     - target: {fileID: 2530655956642696592, guid: 38d977ab4afc460468193561c763a7b2, type: 3}
       propertyPath: numberToSpawn

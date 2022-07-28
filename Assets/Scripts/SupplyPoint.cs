@@ -13,7 +13,6 @@ public class SupplyPoint : MonoBehaviour, IInteract
     void Start()
     {
         SpawnStuff();
-        GetComponentsInChildren<MeshRenderer>()[^1].transform.parent.gameObject.SetActive(false);
         numberItemsLeft = numberSpawned;
     }
 
@@ -63,6 +62,13 @@ public class SupplyPoint : MonoBehaviour, IInteract
 
     public void GiveItem(GameObject theItem)
     {
-        throw new System.NotImplementedException();
+        var some = GetComponentInChildren<MeshRenderer>().bounds;
+        var objSize = Spawnable.GetComponentInChildren<MeshRenderer>().bounds.size;
+        var firstPos = new Vector3(some.min.x, some.max.y, some.min.z) + objSize / 2;
+        var pos = firstPos + new Vector3();
+        
+        var maxX = some.size.x / objSize.x;
+        var maxZ = some.size.z / objSize.z;
+
     }
 }

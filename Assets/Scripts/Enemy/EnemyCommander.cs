@@ -9,17 +9,6 @@ public class EnemyCommander : MonoBehaviour, IEnemyCommands, IInteract
 
     [SerializeField] private CurrentCommand command;
     [SerializeField] private List<Transform> goals;
-    
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void MoveToDestination(Vector3 destination)
     {
