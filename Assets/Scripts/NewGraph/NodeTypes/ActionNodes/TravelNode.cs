@@ -28,17 +28,7 @@ public class TravelNode : ActionNode
     {
         return Vector3.Distance(agent.enemyTransform.position, agent.currentDestination) < 2;
     }
-
-    private void LookAtThis()
-    {
-        Vector3 targetDirection = (agent.currentDestination - agent.enemyTransform.position).normalized;
-        Debug.Log(targetDirection);
-        Debug.Log(agent.enemyTransform.forward);
-        var singleStep = Time.deltaTime * 1;
-        Vector3 newDirection = Vector3.RotateTowards(agent.enemyTransform.forward, targetDirection, singleStep, 0.0f);
-        agent.enemyTransform.rotation = Quaternion.LookRotation(newDirection);
-        agent.pathBlocked = agent.enemyEyes.somethingHit;
-    }
+    
     
     public override State OnUpdate()
     {
