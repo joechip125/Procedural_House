@@ -11,6 +11,19 @@ public enum AssetTypes
     Wall,
 }
 
+public enum CompassPoints
+{
+    E,
+    SE,
+    S,
+    SW,
+    W,
+    NW,
+    N,
+    Center
+}
+
+
 [Serializable]
 public class CubeFacts
 {
@@ -25,6 +38,20 @@ public class ExtraCubes
     public Vector3 location;
     public Color color;
     public Vector3 size;
+}
+
+[Serializable]
+public class PointFacts
+{
+    public Vector3 location;
+    public bool pointInSearchArea;
+    public Vector2 coordinate;
+}
+
+[Serializable]
+public class GridPaths
+{
+    public List<Vector3> travelPoints = new();
 }
 
 public class AreaControl : MonoBehaviour
@@ -58,7 +85,6 @@ public class AreaControl : MonoBehaviour
 
     private void InitiateList()
     {
-        
         for (var i = 0; i < 10; i++)
         {
             for (var j = 0; j < 10; j++)
@@ -70,7 +96,6 @@ public class AreaControl : MonoBehaviour
                     color = Color.red,
                     coordinate = new Vector2(j, i)
                 });
-               
             }
         }
         
@@ -104,9 +129,7 @@ public class AreaControl : MonoBehaviour
         if (area == default) return;
 
         var hits =  Physics.BoxCastAll(area.location, new Vector3(cubeSize.x / 2, 6, cubeSize.z / 2), Vector3.up);
-        var tileSize = new Vector3(cubeSize.x, 3, cubeSize.z);
-        var tileMin = new Vector3(area.location.x - cubeSize.x / 2, area.location.y, area.location.z - cubeSize.z / 2);
-        var tileMax = new Vector3(area.location.x + cubeSize.x / 2, area.location.y + 3, area.location.z + cubeSize.z  / 2);
+        var tileMinMax = GetMinMax(area.location, cubeSize);
         var color = new Color(1, 1, 1);
         
         foreach (var h in hits)
@@ -117,10 +140,6 @@ public class AreaControl : MonoBehaviour
             if (layer == 9)
             {
                 color = Color.black;
-                if (objectSize.x > tileSize.x)
-                {
-                    
-                }
             }
             else
             {
@@ -138,18 +157,59 @@ public class AreaControl : MonoBehaviour
             });
         }
     }
-    
-    
-    
-    private void OnTriggerEnter(Collider other)
+
+    private void GetPointInBoxAtCompassPoint(Vector2 boxCoordinate, CompassPoints point)
     {
-        if (!_checkCollider) return;
+        var center = GetCubeAtCoordinates(boxCoordinate).location;
         
-        
-        _searchFinished = true;
+        var minMax =
+            GetMinMax(center, cubeSize);
     }
 
-    // Update is called once per frame
+    private void DoLineTrace(Vector2 boxCoordinate, Vector3 direction)
+    {
+        var cube = GetCubeAtCoordinates(boxCoordinate);
+
+        var tracePoint = cube.location + new Vector3(0, 0.4f, 0);
+        var ray = new Ray(tracePoint, direction);
+        var distance = 5f;
+
+        Physics.Raycast(ray, out var hit, distance);
+        
+
+    }
+
+    private CubeFacts GetCubeAtCoordinates(Vector2 boxCoordinate)
+    {
+        return _cubeFacts
+            .SingleOrDefault(x => x.coordinate == boxCoordinate);
+    }
+    
+    public Vector2 GetAssetQuadrant(Vector3 sizeOfCube, Vector3 assetLoc, Vector3 cubeCenter)
+    {
+        var minMax  = GetMinMax(cubeCenter, sizeOfCube);
+        var outVec = new Vector2();
+
+        if (assetLoc.x > cubeCenter.x)
+        {
+            outVec.x = 1f;
+        }
+        
+        if (assetLoc.z > cubeCenter.z)
+        {
+            outVec.y = 1f;
+        }
+        
+        return outVec;
+    }
+
+    private bool DoesItBlock()
+    {
+       // var point1 = new Vector3()
+
+       return false;
+    }
+    
     void Update()
     {
         if (_timeSinceUpdate > delayUpdate)
@@ -168,22 +228,40 @@ public class AreaControl : MonoBehaviour
         
         foreach (var c in _cubeFacts)
         {
-            var location = c.location;
-            var min = location - new Vector3(cubeSize.x  / 2, 0, cubeSize.z  / 2);
-            var max = location + new Vector3(cubeSize.x  / 2, 0, cubeSize.z  / 2);
-
-            if (playerPos.x > min.x && playerPos.z > min.z && playerPos.x < max.x && playerPos.x < max.z)
+            if (IsPointInSquare(playerPos, c.location, cubeSize))
             {
                 c.color = Color.green;
             }
+            else
+            {
+                c.color = Color.red;
+            }
         }
-        
-       // Debug.Log($"first index: {maxX}, /n  last index: {minX}");
+    }
+
+    private Tuple<Vector3, Vector3> GetMinMax(Vector3 location, Vector3 size)
+    {
+        var min = location - new Vector3(size.x  / 2, 0, size.z  / 2);
+        var max = location + new Vector3(size.x  / 2, size.y, size.z  / 2);
+
+        return new Tuple<Vector3, Vector3>(min, max);
+    }
+
+    private bool IsPointInSquare(Vector3 point, Vector3 squareLocation, Vector3 squareSize)
+    {
+        var minAndMax = GetMinMax(squareLocation, squareSize);
+
+        if (point.x < minAndMax.Item1.x || point.x > minAndMax.Item2.x) return false;
+
+        if (point.z < minAndMax.Item1.z || point.z > minAndMax.Item2.z) return false;
+
+        return true;
     }
     
-
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
+
         Gizmos.color = Color.blue;
         for (var i = 0; i < 10; i++)
         {
@@ -209,4 +287,5 @@ public class AreaControl : MonoBehaviour
             Gizmos.DrawWireCube(c.location, c.size);
         }
     }
+#endif
 }
