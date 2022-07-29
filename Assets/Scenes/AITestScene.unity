@@ -475,6 +475,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyTrans: {fileID: 1152430405}
+  sizeX: 10
+  sizeZ: 10
+  delayUpdate: 0.5
 --- !u!4 &718024062
 Transform:
   m_ObjectHideFlags: 0
