@@ -3,37 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class ConeEyes : MonoBehaviour
 {
-    public List<Vector3> TracepointsList = new();
+    public List<Vector3> tracePointsList = new();
 
     [Header("Cone Values")]
-    [Range(30f, 180f),SerializeField] private float angle;
-    [Range(1f, 60f),SerializeField] private float maxDistance;
-    // Start is called before the first frame update
-    
-    void Start()
-    {
-        
-    }
+    [Range(30f, 180f),SerializeField] public float angle;
+    [Range(1f, 60f),SerializeField] public float maxDistance;
 
     public void SetTraceList(bool overwriteOrExtend, List<Vector3> newPoints)
     {
         if (overwriteOrExtend)
         {
-            TracepointsList.Clear();
+            tracePointsList.Clear();
         }
         
-        TracepointsList.AddRange(newPoints);
-       
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        tracePointsList.AddRange(newPoints);
     }
 
     public enum ObjectTypes
@@ -43,7 +31,8 @@ public class ConeEyes : MonoBehaviour
         PickupPoint,
         DropOffPoint,
         DownedEnemy,
-        DownedPlayer
+        DownedPlayer,
+        Building
     }
 
     public ObjectInteractions objInt;
@@ -61,40 +50,93 @@ public class ConeEyes : MonoBehaviour
 
     public void AddAttributeToItem(bool addORemove, ObjectInteractions interaction)
     {
-        if(interaction.HasFlag(interaction)) return;
+       var hasFlag = objInt.HasFlag(interaction);
 
         if (addORemove)
         {
-            
-        }
-        
-        if (!interaction.HasFlag(interaction))
-        {
+            if (hasFlag) return;
             objInt |= interaction;
         }
+        else
+        {
+            if (!hasFlag) return;
+            objInt &= ~interaction;
+        }
         
-        if(interaction is ObjectInteractions.CanBuild and interaction is ObjectInteractions.CanDestroy)
     }
     
     public void RegisterWithObject()
     {
-        
+        if ((int) objInt == 0)
+        {
+            
+        }
+
+        if (objInt.HasFlag(ObjectInteractions.CanBuild))
+        {
+            
+        }
     }
     
-    public bool CheckVisibilityToPoint(Vector3 worldPoint)
+    public bool CheckVisibilityToPoint(Vector3 worldPoint, Transform target)
     {
-        
-        var directionToTarget = worldPoint - transform.position;
+        var thisPos = transform.position;
+        var directionToTarget = worldPoint - thisPos;
         
         var degreesToTarget =
             Vector3.Angle(transform.forward, directionToTarget);
-        
         var withinArc = degreesToTarget < (angle / 2);
+
+        if (!withinArc) return false;
         
         var distanceToTarget = directionToTarget.magnitude;
-        
         var rayDistance = Mathf.Min(maxDistance, distanceToTarget);
+        var ray = new Ray(thisPos, directionToTarget);
 
-        return withinArc;
+        if (Physics.Raycast(ray, out var hit, rayDistance))
+        {
+            if (hit.collider.transform == target)
+            {
+                return true;
+            }
+
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+        
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(ConeEyes))]
+public class EnemyVisibilityEditor : Editor 
+{
+    private void OnSceneGUI()
+    {
+        var visibility = target as ConeEyes;
+        Handles.color = new Color(1, 1, 1, 0.1f);
+        var visPos = visibility.transform.position;
+        
+        var forwardPointMinusHalfAngle =
+            // rotate around the y-axis by half the angle
+            Quaternion.Euler(0, -visibility.angle / 2, 0)
+            // rotate the forward direction by this
+            * visibility.transform.forward;
+        
+        var arcStart = forwardPointMinusHalfAngle * visibility.maxDistance;
+        
+        Handles.DrawSolidArc(visPos,Vector3.up,arcStart,
+            visibility.angle, visibility.maxDistance);
+        Handles.color = Color.white;
+        
+        var handlePosition = visPos + visibility.transform.forward * visibility.maxDistance;
+        
+        visibility.maxDistance 
+            = Handles.ScaleValueHandle(visibility.maxDistance, handlePosition,               
+            visibility.transform.rotation,1, Handles.ConeHandleCap, 0.25f);                      
+    }
+}
+#endif
