@@ -14,12 +14,13 @@ public enum AssetTypes
 public enum CompassPoints
 {
     E,
-    SE,
-    S,
-    SW,
-    W,
-    NW,
+    NE,
     N,
+    NW,
+    W,
+    SW,
+    S,
+    SE,
     Center
 }
 
@@ -29,7 +30,8 @@ public class CubeFacts
 {
     public Vector3 location;
     public Color color;
-    public Vector2 coordinate;
+    public Vector3 min;
+    public Vector3 max;
 }
 
 [Serializable]
@@ -56,12 +58,14 @@ public class GridPaths
 
 public class AreaControl : MonoBehaviour
 {
+    [Header("Input values")]
     [SerializeField] private Transform enemyTrans;
     [SerializeField] private Vector3 cubeSize;
-    private Rectangle _rectangle;
+    [SerializeField] private Vector2 numberCubes;
+    [Range(0, 1),SerializeField] private float delayUpdate;
+
     private List<CubeFacts> _cubeFacts = new ();
     private List<ExtraCubes> _extraCubesList = new();
-    [SerializeField] private float delayUpdate;
     private float _timeSinceUpdate;
 
     private Vector3 _min;
@@ -80,7 +84,7 @@ public class AreaControl : MonoBehaviour
 
     void Start()
     {
-        _rectangle = new Rectangle();
+        
     }
 
     private void InitiateList()
@@ -90,11 +94,13 @@ public class AreaControl : MonoBehaviour
             for (var j = 0; j < 10; j++)
             {
                 var next = transform.position + new Vector3(j * cubeSize.x,0,i * cubeSize.z);
+                var minMax = GetMinMax(next, cubeSize);
                 _cubeFacts.Add(new CubeFacts()
                 {
                     location = next,
                     color = Color.red,
-                    coordinate = new Vector2(j, i)
+                    min = minMax.Item1,
+                    max = minMax.Item2,
                 });
             }
         }
@@ -107,6 +113,58 @@ public class AreaControl : MonoBehaviour
         
     }
 
+    private void GetCubeAtPoint(Vector3 thePoint)
+    {
+        if (!IsPointInMinMaxOfSquare(thePoint, _min, _max)) return;
+        var currMin = _min;
+        var currMax = _min;
+        var size = new Vector3(_max.x - _min.x, _max.y - _min.y, _max.z - _min.z);
+        var center = new Vector3(_min.x + size.x / 2, _min.y, _min.z + size.z / 2);
+        var minMaxIndexX = new Vector2(0, numberCubes.x);
+        var minMaxIndexZ = new Vector2(0, numberCubes.y);
+
+        
+       var retVal = _cubeFacts.SingleOrDefault(c => thePoint.x > c.min.x && thePoint.x < c.max.x && 
+                              thePoint.z < c.min.z && thePoint.z > c.max.z);
+
+      //  size = size / 2;
+
+        var smallerThanCenterX = thePoint.x < center.x;
+        var smallerThanCenterZ = thePoint.z < center.z;
+        
+        
+        if (smallerThanCenterX)
+        {
+            currMax.x = currMin.x + size.x / 2;
+            minMaxIndexX.y = numberCubes.x / 2;
+        }
+        else 
+        {
+            currMin.x += size.x / 2;
+            minMaxIndexX.x =  numberCubes.x / 2;
+        }
+
+        if (smallerThanCenterZ)
+        {
+            currMax.z = currMin.z + size.z / 2;
+            minMaxIndexZ.y = numberCubes.y / 2;
+        }
+        else
+        {
+            currMin.z += size.z / 2;
+            minMaxIndexX.x =  numberCubes.y / 2;
+        }
+    }
+    private void GatherCubes(Vector3 position)
+    {
+        
+    }
+
+    public CubeFacts GetCubeFromCompass(CompassPoints point, Vector2 currentIndex)
+    {
+        
+    }
+    
     public void AddCube(Vector3 location, Vector3 size, Color color)
     {
         _extraCubesList.Add(new ExtraCubes()
@@ -125,7 +183,7 @@ public class AreaControl : MonoBehaviour
 
     private void TraceTest(Vector2 coordinate)
     {
-        var area = _cubeFacts.SingleOrDefault(x => x.coordinate == coordinate);
+        var area = _cubeFacts[(int)coordinate.x + (int)coordinate.y];
         if (area == default) return;
 
         var hits =  Physics.BoxCastAll(area.location, new Vector3(cubeSize.x / 2, 6, cubeSize.z / 2), Vector3.up);
@@ -181,8 +239,7 @@ public class AreaControl : MonoBehaviour
 
     private CubeFacts GetCubeAtCoordinates(Vector2 boxCoordinate)
     {
-        return _cubeFacts
-            .SingleOrDefault(x => x.coordinate == boxCoordinate);
+        return _cubeFacts[(int) boxCoordinate.x + (int) boxCoordinate.y];
     }
     
     public Vector2 GetAssetQuadrant(Vector3 sizeOfCube, Vector3 assetLoc, Vector3 cubeCenter)
@@ -257,6 +314,16 @@ public class AreaControl : MonoBehaviour
 
         return true;
     }
+
+    private bool IsPointInMinMaxOfSquare(Vector3 point, Vector3 min, Vector3 max)
+    {
+        if (point.x < min.x || point.x > max.x) return false;
+        
+        if (point.z < min.z || point.z > max.z) return false;
+
+        return true;
+    }
+    
     
 #if UNITY_EDITOR
     private void OnDrawGizmos()
