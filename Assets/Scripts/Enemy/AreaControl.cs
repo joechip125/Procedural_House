@@ -56,6 +56,16 @@ public class GridPaths
     public List<Vector3> travelPoints = new();
 }
 
+[Flags]
+public enum ScanChoices
+{
+    None = 0,
+    Walls = 1,
+    OtherEnemies = 2,
+    Player = 4,
+    All = 1 + 2 + 4,
+}
+
 public class AreaControl : MonoBehaviour
 {
     [Header("Input values")]
@@ -68,6 +78,8 @@ public class AreaControl : MonoBehaviour
     private List<ExtraCubes> _extraCubesList = new();
     private float _timeSinceUpdate;
 
+    private List<List<CubeFacts>> _gridList = new();
+
     private Vector3 _min;
     private Vector3 _max;
 
@@ -79,19 +91,50 @@ public class AreaControl : MonoBehaviour
 
     private void Awake()
     {
-        InitiateList();
+       
     }
 
     void Start()
     {
+        SetNewList();
+    }
+
+    public void GetCubeInfos(Vector2 index)
+    {
         
     }
 
+    private void SetNewList()
+    {
+        _gridList = new List<List<CubeFacts>>((int)numberCubes.y);
+
+        for (var i = 0; i < numberCubes.y; i++)
+        {
+            var newList = new List<CubeFacts>((int)numberCubes.x);
+            for (var j = 0; j < numberCubes.x; j++)
+            {
+                var next = transform.position + new Vector3(j * cubeSize.x,0,i * cubeSize.z);
+                var minMax = GetMinMax(next, cubeSize);
+                newList.Add( new CubeFacts()
+                {
+                    color = Color.red,
+                    location = next,
+                    min = minMax.Item1,
+                    max = minMax.Item2,
+                });
+            }
+            _gridList.Add(newList);
+        }
+ 
+        _max = _gridList[^1][^1].location + cubeSize / 2;
+        _min = _gridList[0][0].location - cubeSize / 2;
+    }
+    
     private void InitiateList()
     {
-        for (var i = 0; i < 10; i++)
+        for (var i = 0; i < numberCubes.y; i++)
         {
-            for (var j = 0; j < 10; j++)
+            for (var j = 0; j < numberCubes.x; j++)
             {
                 var next = transform.position + new Vector3(j * cubeSize.x,0,i * cubeSize.z);
                 var minMax = GetMinMax(next, cubeSize);
@@ -107,64 +150,19 @@ public class AreaControl : MonoBehaviour
         
         var xArray = _cubeFacts.OrderBy(x => x.location.x).ToArray();
         var zArray = _cubeFacts.OrderBy(x => x.location.z).ToArray();
-
         _max = Vector3.Max(xArray[^1].location, zArray[^1].location);
         _min = Vector3.Min(xArray[0].location, zArray[0].location);
-        
     }
 
-    private void GetCubeAtPoint(Vector3 thePoint)
+    private Vector2 GetIndexFromPoint(Vector3 thePoint)
     {
-        if (!IsPointInMinMaxOfSquare(thePoint, _min, _max)) return;
-        var currMin = _min;
-        var currMax = _min;
-        var size = new Vector3(_max.x - _min.x, _max.y - _min.y, _max.z - _min.z);
-        var center = new Vector3(_min.x + size.x / 2, _min.y, _min.z + size.z / 2);
-        var minMaxIndexX = new Vector2(0, numberCubes.x);
-        var minMaxIndexZ = new Vector2(0, numberCubes.y);
+        var mag = thePoint - _min;
+        var indexX = (mag.x - (mag.x % cubeSize.x)) / cubeSize.x;
+        var indexZ = (mag.z - (mag.z % cubeSize.z)) / cubeSize.z;
 
-        
-       var retVal = _cubeFacts.SingleOrDefault(c => thePoint.x > c.min.x && thePoint.x < c.max.x && 
-                              thePoint.z < c.min.z && thePoint.z > c.max.z);
-
-      //  size = size / 2;
-
-        var smallerThanCenterX = thePoint.x < center.x;
-        var smallerThanCenterZ = thePoint.z < center.z;
-        
-        
-        if (smallerThanCenterX)
-        {
-            currMax.x = currMin.x + size.x / 2;
-            minMaxIndexX.y = numberCubes.x / 2;
-        }
-        else 
-        {
-            currMin.x += size.x / 2;
-            minMaxIndexX.x =  numberCubes.x / 2;
-        }
-
-        if (smallerThanCenterZ)
-        {
-            currMax.z = currMin.z + size.z / 2;
-            minMaxIndexZ.y = numberCubes.y / 2;
-        }
-        else
-        {
-            currMin.z += size.z / 2;
-            minMaxIndexX.x =  numberCubes.y / 2;
-        }
-    }
-    private void GatherCubes(Vector3 position)
-    {
-        
+        return new Vector2(indexZ, indexX);
     }
 
-    public CubeFacts GetCubeFromCompass(CompassPoints point, Vector2 currentIndex)
-    {
-        
-    }
-    
     public void AddCube(Vector3 location, Vector3 size, Color color)
     {
         _extraCubesList.Add(new ExtraCubes()
@@ -174,74 +172,101 @@ public class AreaControl : MonoBehaviour
             color = color
         });
     }
-    
+
     private IEnumerator DelayStopCheck()
     {
         yield return new WaitUntil(() => _searchFinished);
         _checkCollider = false;
     }
 
-    private void TraceTest(Vector2 coordinate)
+    private void GatherCubes(Vector2 index, float extent, Transform characterTrans)
     {
-        var area = _cubeFacts[(int)coordinate.x + (int)coordinate.y];
-        if (area == default) return;
-
-        var hits =  Physics.BoxCastAll(area.location, new Vector3(cubeSize.x / 2, 6, cubeSize.z / 2), Vector3.up);
-        var tileMinMax = GetMinMax(area.location, cubeSize);
-        var color = new Color(1, 1, 1);
+        var charPos = characterTrans.position;
+        var firstIndex = GetIndexFromPoint(charPos);
+        var forward = characterTrans.forward;
+        var right = Vector3.Cross(enemyTrans.forward, -enemyTrans.up);
+        Debug.DrawLine(charPos, charPos + forward * extent, Color.green, 1);
+        var forwardRotatePlus =
+            Quaternion.Euler(0, 50, 0) * forward;
+        var forwardRotateMinus =
+            Quaternion.Euler(0, -50, 0) * forward;
         
-        foreach (var h in hits)
+        Debug.DrawLine(charPos, charPos+ forwardRotatePlus * extent, Color.green, 1);
+        Debug.DrawLine(charPos, charPos+ forwardRotateMinus * extent, Color.green, 1);
+        var indices = new List<Vector2> {firstIndex};
+        var offCenterMax = 50;
+        var degreeMod = 1.0f;
+        degreeMod = Mathf.Clamp(degreeMod, 0f, 1f);
+        
+        for (var i = 0; i < 4; i++)
         {
-            var layer = h.collider.transform.gameObject.layer;
-            var objectSize = h.collider.bounds.size;
-
-            if (layer == 9)
-            {
-                color = Color.black;
-            }
-            else
-            {
-                color = Color.yellow;
-            }
+            var anIndex = GetIndexFromPoint(charPos + forward * (i * 5));
+            var anIndex2 = GetIndexFromPoint(charPos + 
+                                             (Quaternion.Euler(0, offCenterMax * degreeMod, 0) * forward) * (i * 5));
+            var anIndex3 = GetIndexFromPoint(charPos + 
+                                             (Quaternion.Euler(0, offCenterMax * -degreeMod, 0) * forward) * (i * 5));
             
-            _extraCubesList.Add(new ExtraCubes()
+            if(indices.Contains(anIndex)) continue;
+            indices.Add(anIndex);
+            if(indices.Contains(anIndex2)) continue;
+            indices.Add(anIndex2);
+            if(indices.Contains(anIndex3)) continue;
+            indices.Add(anIndex3);
+        }
+
+        foreach (var i in indices)
+        {
+            ScanCubeAtIndex(i, ScanChoices.All);
+        }
+        
+        ChangeColorsAtIndices(indices, Color.yellow);
+    }
+
+    private void ChangeColorsAtIndices(List<Vector2> indices, Color newColor)
+    {
+        for (int i = 0; i < numberCubes.y; i++)
+        {
+            for (int j = 0; j < numberCubes.x; j++)
             {
-                
-                
-                color = color,
-                location = h.collider.bounds.center,
-                size = objectSize
-                
-            });
+                if (indices.Contains(new Vector2(i, j)))
+                {
+                    _gridList[i][j].color = newColor;
+                }
+                else
+                {
+                    _gridList[i][j].color = Color.red;
+                }
+            }    
         }
     }
 
-    private void GetPointInBoxAtCompassPoint(Vector2 boxCoordinate, CompassPoints point)
+    private void ScanCubeAtIndex(Vector2 index, ScanChoices choices)
     {
-        var center = GetCubeAtCoordinates(boxCoordinate).location;
+        var cube = _gridList[(int) index.y][(int) index.x];
+        var hits =  Physics.BoxCastAll(cube.location, 
+            new Vector3(cubeSize.x / 2, 6, cubeSize.z / 2), Vector3.up);
+        //Physics.BoxCastNonAlloc();
+        foreach (var h in hits)
+        {
+            if (choices.HasFlag(ScanChoices.Walls))
+            {
+                
+            }
+            
+            if (choices.HasFlag(ScanChoices.OtherEnemies))
+            {
+            
+            }
+            
+            if (choices.HasFlag(ScanChoices.Player))
+            {
+            
+            }
+        }
         
-        var minMax =
-            GetMinMax(center, cubeSize);
-    }
-
-    private void DoLineTrace(Vector2 boxCoordinate, Vector3 direction)
-    {
-        var cube = GetCubeAtCoordinates(boxCoordinate);
-
-        var tracePoint = cube.location + new Vector3(0, 0.4f, 0);
-        var ray = new Ray(tracePoint, direction);
-        var distance = 5f;
-
-        Physics.Raycast(ray, out var hit, distance);
-        
-
-    }
-
-    private CubeFacts GetCubeAtCoordinates(Vector2 boxCoordinate)
-    {
-        return _cubeFacts[(int) boxCoordinate.x + (int) boxCoordinate.y];
     }
     
+
     public Vector2 GetAssetQuadrant(Vector3 sizeOfCube, Vector3 assetLoc, Vector3 cubeCenter)
     {
         var minMax  = GetMinMax(cubeCenter, sizeOfCube);
@@ -272,8 +297,8 @@ public class AreaControl : MonoBehaviour
         if (_timeSinceUpdate > delayUpdate)
         {
             _timeSinceUpdate -= delayUpdate;
-            UpdateColors();
-            TraceTest(new Vector2(0,0));
+            //UpdateColors();
+            GatherCubes(new Vector2(0,2),16, enemyTrans);
         }
         
         _timeSinceUpdate += Time.deltaTime;
@@ -281,11 +306,11 @@ public class AreaControl : MonoBehaviour
 
     private void UpdateColors()
     {
-        var playerPos = enemyTrans.position;
+        var enemyPos = enemyTrans.position;
         
         foreach (var c in _cubeFacts)
         {
-            if (IsPointInSquare(playerPos, c.location, cubeSize))
+            if (IsPointInSquare(enemyPos, c.location, cubeSize))
             {
                 c.color = Color.green;
             }
@@ -342,10 +367,13 @@ public class AreaControl : MonoBehaviour
 
         if (!Application.isPlaying) return;
         
-        foreach (var c in _cubeFacts)
+        foreach (var c in _gridList)
         {
-            Gizmos.color = c.color;
-            Gizmos.DrawWireCube(c.location, new Vector3(cubeSize.x ,3,cubeSize.z));
+            foreach (var c2 in c)
+            {
+                Gizmos.color = c2.color;
+                Gizmos.DrawWireCube(c2.location, new Vector3(cubeSize.x ,3,cubeSize.z));
+            }
         }
 
         foreach (var c in _extraCubesList)

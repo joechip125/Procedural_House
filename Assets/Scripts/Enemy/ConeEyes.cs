@@ -77,6 +77,16 @@ public class ConeEyes : MonoBehaviour
             
         }
     }
+
+    private void Update()
+    {
+       
+    }
+
+    public void CheckManyPoints(List<Transform> targets)
+    {
+        
+    }
     
     public bool CheckVisibilityToPoint(Vector3 worldPoint, Transform target)
     {
@@ -107,6 +117,12 @@ public class ConeEyes : MonoBehaviour
             return true;
         }
         
+    }
+
+    private void OnDrawGizmos()
+    {
+       // var pos = transform.forward * maxDistance;
+       // Gizmos.DrawSphere(pos, 1f);
     }
 }
 
