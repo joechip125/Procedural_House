@@ -40,6 +40,17 @@ public class ExtraCubes
     public Vector3 location;
     public Color color;
     public Vector3 size;
+    public Vector3 min;
+    public Vector3 max;
+    
+}
+
+[Serializable]
+public class TravelPoints
+{
+    public List<TravelPoints> children = new ();
+    public Vector3 position;
+    public bool available = true;
 }
 
 [Serializable]
@@ -73,12 +84,15 @@ public class AreaControl : MonoBehaviour
     [SerializeField] private Vector3 cubeSize;
     [SerializeField] private Vector2 numberCubes;
     [Range(0, 1),SerializeField] private float delayUpdate;
-
-    private List<CubeFacts> _cubeFacts = new ();
+    
     private List<ExtraCubes> _extraCubesList = new();
     private float _timeSinceUpdate;
 
     private List<List<CubeFacts>> _gridList = new();
+
+    private List<Vector2> _indexList = new();
+
+    private List<TravelPoints> _travelPoints = new();
 
     private Vector3 _min;
     private Vector3 _max;
@@ -99,6 +113,11 @@ public class AreaControl : MonoBehaviour
         SetNewList();
     }
 
+    public void RegisterEnemyWithArea()
+    {
+        
+    }
+    
     public void GetCubeInfos(Vector2 index)
     {
         
@@ -130,29 +149,6 @@ public class AreaControl : MonoBehaviour
         _min = _gridList[0][0].location - cubeSize / 2;
     }
     
-    private void InitiateList()
-    {
-        for (var i = 0; i < numberCubes.y; i++)
-        {
-            for (var j = 0; j < numberCubes.x; j++)
-            {
-                var next = transform.position + new Vector3(j * cubeSize.x,0,i * cubeSize.z);
-                var minMax = GetMinMax(next, cubeSize);
-                _cubeFacts.Add(new CubeFacts()
-                {
-                    location = next,
-                    color = Color.red,
-                    min = minMax.Item1,
-                    max = minMax.Item2,
-                });
-            }
-        }
-        
-        var xArray = _cubeFacts.OrderBy(x => x.location.x).ToArray();
-        var zArray = _cubeFacts.OrderBy(x => x.location.z).ToArray();
-        _max = Vector3.Max(xArray[^1].location, zArray[^1].location);
-        _min = Vector3.Min(xArray[0].location, zArray[0].location);
-    }
 
     private Vector2 GetIndexFromPoint(Vector3 thePoint)
     {
@@ -179,11 +175,22 @@ public class AreaControl : MonoBehaviour
         _checkCollider = false;
     }
 
+    private void SphereTrace()
+    {
+        
+    }
     private void GatherCubes(Vector2 index, float extent, Transform characterTrans)
     {
+        _indexList.Clear();
         var charPos = characterTrans.position;
         var firstIndex = GetIndexFromPoint(charPos);
         var forward = characterTrans.forward;
+        var roundedForward = new Vector3(Mathf.Round(forward.x), 0, Mathf.Round(forward.z));
+        var roundedRight = new Vector3(Mathf.Round(characterTrans.right.x), 0, Mathf.Round(characterTrans.right.z));
+        var secondIndex = firstIndex + new Vector2();
+        Debug.Log(roundedForward);
+        Debug.Log(roundedRight);
+        
         var right = Vector3.Cross(enemyTrans.forward, -enemyTrans.up);
         Debug.DrawLine(charPos, charPos + forward * extent, Color.green, 1);
         var forwardRotatePlus =
@@ -193,42 +200,45 @@ public class AreaControl : MonoBehaviour
         
         Debug.DrawLine(charPos, charPos+ forwardRotatePlus * extent, Color.green, 1);
         Debug.DrawLine(charPos, charPos+ forwardRotateMinus * extent, Color.green, 1);
-        var indices = new List<Vector2> {firstIndex};
+        _indexList.Add(firstIndex);
         var offCenterMax = 50;
         var degreeMod = 1.0f;
         degreeMod = Mathf.Clamp(degreeMod, 0f, 1f);
         
+        Debug.DrawLine(charPos, charPos + forward * extent, Color.green, 1);
         for (var i = 0; i < 4; i++)
         {
+            var plusRot = (Quaternion.Euler(0, offCenterMax * degreeMod, 0) * forward);
+            var minusRot = (Quaternion.Euler(0, offCenterMax * -degreeMod, 0) * forward);
+            Debug.DrawLine(charPos, charPos+ plusRot * extent, Color.green, 1);
+            Debug.DrawLine(charPos, charPos+ minusRot * extent, Color.green, 1);
             var anIndex = GetIndexFromPoint(charPos + forward * (i * 5));
-            var anIndex2 = GetIndexFromPoint(charPos + 
-                                             (Quaternion.Euler(0, offCenterMax * degreeMod, 0) * forward) * (i * 5));
-            var anIndex3 = GetIndexFromPoint(charPos + 
-                                             (Quaternion.Euler(0, offCenterMax * -degreeMod, 0) * forward) * (i * 5));
+            var anIndex2 = GetIndexFromPoint(charPos + plusRot * (i * 5));
+            var anIndex3 = GetIndexFromPoint(charPos + minusRot * (i * 5));
             
-            if(indices.Contains(anIndex)) continue;
-            indices.Add(anIndex);
-            if(indices.Contains(anIndex2)) continue;
-            indices.Add(anIndex2);
-            if(indices.Contains(anIndex3)) continue;
-            indices.Add(anIndex3);
+            if(_indexList.Contains(anIndex)) continue;
+            _indexList.Add(anIndex);
+            if(_indexList.Contains(anIndex2)) continue;
+            _indexList.Add(anIndex2);
+            if(_indexList.Contains(anIndex3)) continue;
+            _indexList.Add(anIndex3);
         }
 
-        foreach (var i in indices)
+        foreach (var i in _indexList)
         {
             ScanCubeAtIndex(i, ScanChoices.All);
         }
         
-        ChangeColorsAtIndices(indices, Color.yellow);
+        ChangeColorsAtIndices(Color.yellow);
     }
 
-    private void ChangeColorsAtIndices(List<Vector2> indices, Color newColor)
+    private void ChangeColorsAtIndices(Color newColor)
     {
         for (int i = 0; i < numberCubes.y; i++)
         {
             for (int j = 0; j < numberCubes.x; j++)
             {
-                if (indices.Contains(new Vector2(i, j)))
+                if (_indexList.Contains(new Vector2(i, j)))
                 {
                     _gridList[i][j].color = newColor;
                 }
@@ -240,6 +250,30 @@ public class AreaControl : MonoBehaviour
         }
     }
 
+    private void ScanCustomCube(Vector3 position, Vector3 size, ScanChoices choices)
+    {
+        var hits =  Physics.BoxCastAll(position, 
+            new Vector3(size.x / 2, size.y, size.z / 2), Vector3.up);
+        
+        foreach (var h in hits)
+        {
+            if (choices.HasFlag(ScanChoices.Walls))
+            {
+                
+            }
+            
+            if (choices.HasFlag(ScanChoices.OtherEnemies))
+            {
+            
+            }
+            
+            if (choices.HasFlag(ScanChoices.Player))
+            {
+            
+            }
+        }
+    }
+    
     private void ScanCubeAtIndex(Vector2 index, ScanChoices choices)
     {
         var cube = _gridList[(int) index.y][(int) index.x];
@@ -308,15 +342,18 @@ public class AreaControl : MonoBehaviour
     {
         var enemyPos = enemyTrans.position;
         
-        foreach (var c in _cubeFacts)
+        foreach (var z in _gridList)
         {
-            if (IsPointInSquare(enemyPos, c.location, cubeSize))
+            foreach (var x in z)
             {
-                c.color = Color.green;
-            }
-            else
-            {
-                c.color = Color.red;
+                if (IsPointInSquare(enemyPos, x.location, cubeSize))
+                {
+                    x.color = Color.green;
+                }
+                else
+                {
+                    x.color = Color.red;
+                }
             }
         }
     }

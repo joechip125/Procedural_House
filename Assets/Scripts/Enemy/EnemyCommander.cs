@@ -9,6 +9,7 @@ public class EnemyCommander : MonoBehaviour, IEnemyCommands, IInteract
 
     [SerializeField] private CurrentCommand command;
     [SerializeField] private List<Transform> goals;
+    [SerializeField] private AreaControl areaControl;
 
     public void MoveToDestination(Vector3 destination)
     {

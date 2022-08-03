@@ -1,0 +1,26 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class EnemyBrain : MonoBehaviour
+{
+    private EnemyMemory _memory;
+    private ConeEyes _eyes;
+
+    private void Awake()
+    {
+        
+    }
+
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+}

@@ -14,6 +14,11 @@ public class ConeEyes : MonoBehaviour
     [Range(30f, 180f),SerializeField] public float angle;
     [Range(1f, 60f),SerializeField] public float maxDistance;
 
+    [Header("Trace Values")] 
+    [Range(0, 2), SerializeField] public float traceInterval;
+
+    private float _timeSinceTrace;
+
     public void SetTraceList(bool overwriteOrExtend, List<Vector3> newPoints)
     {
         if (overwriteOrExtend)
@@ -80,12 +85,46 @@ public class ConeEyes : MonoBehaviour
 
     private void Update()
     {
-       
+        if (_timeSinceTrace >= traceInterval)
+        {
+            SphereCaster();
+            _timeSinceTrace -= traceInterval;
+        }
+
+        _timeSinceTrace += Time.deltaTime;
     }
 
     public void CheckManyPoints(List<Transform> targets)
     {
         
+    }
+
+    private void SphereCaster()
+    {
+        var thisPos = transform.position;
+        var hits = Physics.SphereCastAll(thisPos, maxDistance, transform.forward);
+
+        foreach (var h in hits)
+        {
+            var directionToTarget = h.collider.transform.position - thisPos;
+            
+            var degreesToTarget =
+                Vector3.Angle(transform.forward, directionToTarget);
+            var withinArc = degreesToTarget < (angle / 2);
+            
+            if (!withinArc) continue;
+            
+            var distanceToTarget = directionToTarget.magnitude;
+            var rayDistance = Mathf.Min(maxDistance, distanceToTarget);
+            var ray = new Ray(thisPos, directionToTarget);
+            
+            if (Physics.Raycast(ray, out var hit, rayDistance))
+            {
+            }
+            else
+            {
+            }
+        }
     }
     
     public bool CheckVisibilityToPoint(Vector3 worldPoint, Transform target)
