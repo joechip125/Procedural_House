@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Enemy;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -18,6 +19,8 @@ public class ConeEyes : MonoBehaviour
     [Range(0, 2), SerializeField] public float traceInterval;
 
     private float _timeSinceTrace;
+    public GameObject CurrentInteractable { get; private set; }
+    public IInteract InteractInterface;
 
     public void SetTraceList(bool overwriteOrExtend, List<Vector3> newPoints)
     {
@@ -113,6 +116,12 @@ public class ConeEyes : MonoBehaviour
             var withinArc = degreesToTarget < (angle / 2);
             
             if (!withinArc) continue;
+            var layer = h.collider.transform.gameObject.layer;
+            
+            if (layer == 8)
+            {
+               InteractInterface = h.collider.transform.gameObject.GetComponent<IInteract>();
+            }
             
             var distanceToTarget = directionToTarget.magnitude;
             var rayDistance = Mathf.Min(maxDistance, distanceToTarget);

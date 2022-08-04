@@ -38,7 +38,6 @@ public class TravelNode : ActionNode
             var singleStep = Time.deltaTime * 1;
             Vector3 newDirection = Vector3.RotateTowards(agent.enemyTransform.forward, targetDirection, singleStep, 0.0f);
             agent.enemyTransform.rotation = Quaternion.LookRotation(newDirection);
-            agent.pathBlocked = agent.enemyEyes.somethingHit;
         }
 
         agent.enemyTransform.position += agent.enemyTransform.forward * (Time.deltaTime * 1);

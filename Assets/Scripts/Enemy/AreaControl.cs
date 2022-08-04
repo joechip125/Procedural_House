@@ -9,6 +9,8 @@ using Color = UnityEngine.Color;
 public enum AssetTypes
 {
     Wall,
+    Door,
+    Treasure
 }
 
 public enum CompassPoints
@@ -35,14 +37,15 @@ public class CubeFacts
 }
 
 [Serializable]
-public class ExtraCubes
+public class AssetCube
 {
     public Vector3 location;
     public Color color;
     public Vector3 size;
     public Vector3 min;
     public Vector3 max;
-    
+    public AssetTypes assetType;
+
 }
 
 [Serializable]
@@ -77,7 +80,7 @@ public enum ScanChoices
     All = 1 + 2 + 4,
 }
 
-public class AreaControl : MonoBehaviour
+public class AreaControl : MonoBehaviour, IEnemyArea
 {
     [Header("Input values")]
     [SerializeField] private Transform enemyTrans;
@@ -85,7 +88,7 @@ public class AreaControl : MonoBehaviour
     [SerializeField] private Vector2 numberCubes;
     [Range(0, 1),SerializeField] private float delayUpdate;
     
-    private List<ExtraCubes> _extraCubesList = new();
+    private List<AssetCube> _extraCubesList = new();
     private float _timeSinceUpdate;
 
     private List<List<CubeFacts>> _gridList = new();
@@ -114,6 +117,11 @@ public class AreaControl : MonoBehaviour
     }
 
     public void RegisterEnemyWithArea()
+    {
+        
+    }
+
+    public void RegisterObjectWithArea()
     {
         
     }
@@ -161,7 +169,7 @@ public class AreaControl : MonoBehaviour
 
     public void AddCube(Vector3 location, Vector3 size, Color color)
     {
-        _extraCubesList.Add(new ExtraCubes()
+        _extraCubesList.Add(new AssetCube()
         {
             location = location,
             size = size,
@@ -188,9 +196,7 @@ public class AreaControl : MonoBehaviour
         var roundedForward = new Vector3(Mathf.Round(forward.x), 0, Mathf.Round(forward.z));
         var roundedRight = new Vector3(Mathf.Round(characterTrans.right.x), 0, Mathf.Round(characterTrans.right.z));
         var secondIndex = firstIndex + new Vector2();
-        Debug.Log(roundedForward);
-        Debug.Log(roundedRight);
-        
+
         var right = Vector3.Cross(enemyTrans.forward, -enemyTrans.up);
         Debug.DrawLine(charPos, charPos + forward * extent, Color.green, 1);
         var forwardRotatePlus =
@@ -385,9 +391,15 @@ public class AreaControl : MonoBehaviour
 
         return true;
     }
-    
-    
+
+    public void TransferData()
+    {
+        
+    }
+
+
 #if UNITY_EDITOR
+
     private void OnDrawGizmos()
     {
 

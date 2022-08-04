@@ -15,7 +15,6 @@ public class BehaviourTreeRunner : MonoBehaviour, IEnemyCommands
     void Start()
     {
         Setup();
-        GetComponentInChildren<TracerEyes>().objectHit += OnObjectSeen;
     }
 
     private void Setup()
@@ -30,7 +29,7 @@ public class BehaviourTreeRunner : MonoBehaviour, IEnemyCommands
         tree.Bind(new AiAgent()
         {
             enemyTransform = gameObject.transform,
-            enemyEyes = GetComponentInChildren<TracerEyes>(),
+            coneEyes = GetComponentInChildren<ConeEyes>(),
             currentDestination = GameObject.Find("EnemyCommander").transform.position,
             commandQueue = commands,
             TargetQueue = goals
@@ -41,7 +40,6 @@ public class BehaviourTreeRunner : MonoBehaviour, IEnemyCommands
     
     private void OnDisable()
     {
-        GetComponentInChildren<TracerEyes>().objectHit -= OnObjectSeen;
     }
 
     private void OnObjectSeen(TraceType obj)

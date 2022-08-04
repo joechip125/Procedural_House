@@ -8,10 +8,8 @@ namespace NewGraph.NodeTypes.ActionNodes
     {
         public Instruction instruct;
         public bool interactDone;
-        private CurrentCommand command;
         public override void OnStart()
         {
-            command = agent.commandQueue.Dequeue();
             Interact();
         }
 
@@ -25,11 +23,11 @@ namespace NewGraph.NodeTypes.ActionNodes
    
         private void Interact()
         {
-            var interact = agent.enemyEyes.currentInteractable.GetComponentInParent<IInteract>();
+            var interact = agent.coneEyes.InteractInterface;
             
             if (interact != null)
             {
-                switch (command)
+                switch (agent.commandQueue.Dequeue())
                 {
                     case CurrentCommand.PickupItem:
                         agent.heldItem = interact.GetItem();
@@ -39,6 +37,7 @@ namespace NewGraph.NodeTypes.ActionNodes
                         break;
                     case CurrentCommand.DropOfItem:
                         interact.GiveItem(agent.heldItem);
+                        agent.heldItem = null;
                         break;
                 }
             }

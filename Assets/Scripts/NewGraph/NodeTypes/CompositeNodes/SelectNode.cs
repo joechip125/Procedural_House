@@ -68,7 +68,7 @@ public class SelectNode : CompositeNode
 
     public override void OnExit()
     {
-        agent.enemyEyes.objectHit -= OnObjectSeen;
+       
     }
     
     public override State OnUpdate()

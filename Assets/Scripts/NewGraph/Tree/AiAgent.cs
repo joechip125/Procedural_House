@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Enemy;
 using UnityEngine;
 
 public enum STATE
@@ -16,6 +17,7 @@ public enum CurrentCommand
     PickupItem,
     DropOfItem,
     GetInstructions,
+    SearchArea,
     Gather,
     Hunt,
     Find
@@ -30,8 +32,8 @@ public class Instruction
 [Serializable]
 public class AiAgent
 {
-    public TracerEyes enemyEyes;
     public Transform enemyTransform;
+    public ConeEyes coneEyes;
     public Transform destination;
     public CurrentCommand currentCommand;
 
@@ -44,11 +46,15 @@ public class AiAgent
 
     public Queue<CurrentCommand> commandQueue = new();
 
+    public IEnemyArea EnemyArea;
+
     public bool pathBlocked;
 
     public bool commanderReached;
 
     public GameObject heldItem;
+
+    public IInteract InteractInterface;
 
     public AiAgent()
     {

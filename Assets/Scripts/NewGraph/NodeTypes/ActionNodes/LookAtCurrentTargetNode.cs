@@ -32,8 +32,6 @@ namespace NewGraph.NodeTypes.ActionNodes
             }
             else
             {
-                agent.pathBlocked = agent.enemyEyes.somethingHit;
-                
                 return State.Success;
             }
             
