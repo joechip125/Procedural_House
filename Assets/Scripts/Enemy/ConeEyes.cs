@@ -22,6 +22,14 @@ public class ConeEyes : MonoBehaviour
     public GameObject CurrentInteractable { get; private set; }
     public IInteract InteractInterface;
 
+    [SerializeField] private AreaControl control;
+
+
+    private void Awake()
+    {
+        
+    }
+
     public void SetTraceList(bool overwriteOrExtend, List<Vector3> newPoints)
     {
         if (overwriteOrExtend)
@@ -102,10 +110,15 @@ public class ConeEyes : MonoBehaviour
         
     }
 
+    private void RegisterObjectWithArea(Vector3 position, Vector3 size, AssetTypes assetType)
+    {
+        control.RegisterObjectWithArea(position, size, assetType);
+    }
+
     private void SphereCaster()
     {
         var thisPos = transform.position;
-        var hits = Physics.SphereCastAll(thisPos, maxDistance, transform.forward);
+        var hits = Physics.SphereCastAll(thisPos, maxDistance, transform.up);
 
         foreach (var h in hits)
         {
@@ -117,12 +130,19 @@ public class ConeEyes : MonoBehaviour
             
             if (!withinArc) continue;
             var layer = h.collider.transform.gameObject.layer;
-            
-            if (layer == 8)
+
+            switch (layer)
             {
-               InteractInterface = h.collider.transform.gameObject.GetComponent<IInteract>();
+                //commander
+                case 8:
+                    InteractInterface = h.collider.transform.gameObject.GetComponentInParent<IInteract>();
+                    break;
+                //Walls
+                case 9:
+                    RegisterObjectWithArea(h.collider.transform.position, h.collider.bounds.size, AssetTypes.Wall);
+                    break;
             }
-            
+
             var distanceToTarget = directionToTarget.magnitude;
             var rayDistance = Mathf.Min(maxDistance, distanceToTarget);
             var ray = new Ray(thisPos, directionToTarget);

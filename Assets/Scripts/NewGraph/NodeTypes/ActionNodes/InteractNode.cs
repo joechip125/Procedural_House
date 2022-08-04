@@ -43,7 +43,7 @@ namespace NewGraph.NodeTypes.ActionNodes
             }
             else
             {
-              
+                Debug.Log("no interaction");
             }
             
             interactDone = true;

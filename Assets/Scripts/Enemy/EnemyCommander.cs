@@ -48,15 +48,12 @@ public class EnemyCommander : MonoBehaviour, IEnemyCommands, IInteract
     
     public void SetInstruction(AiAgent agent)
     {
-        
-        
-        agent.TargetQueue.Enqueue(goals[0].position);
-        agent.TargetQueue.Enqueue(transform.position);
-        agent.commandQueue.Enqueue(CurrentCommand.MoveToPosition);
-        agent.commandQueue.Enqueue(CurrentCommand.PickupItem);
-        agent.commandQueue.Enqueue(CurrentCommand.MoveToPosition);
-        agent.commandQueue.Enqueue(CurrentCommand.DropOfItem);
-        
+        agent.commandQueue.Enqueue(CurrentCommand.SearchArea);
+
+        if (agent.area == default)
+        {
+            agent.area = areaControl;
+        }
     }
 
     public GameObject GetItem()

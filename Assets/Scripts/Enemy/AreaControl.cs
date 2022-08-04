@@ -34,6 +34,7 @@ public class CubeFacts
     public Color color;
     public Vector3 min;
     public Vector3 max;
+    public List<AssetCube> assets = new();
 }
 
 [Serializable]
@@ -42,10 +43,7 @@ public class AssetCube
     public Vector3 location;
     public Color color;
     public Vector3 size;
-    public Vector3 min;
-    public Vector3 max;
     public AssetTypes assetType;
-
 }
 
 [Serializable]
@@ -104,6 +102,8 @@ public class AreaControl : MonoBehaviour, IEnemyArea
 
     private bool _searchFinished;
     
+    
+    
    // public event Action<>
 
     private void Awake()
@@ -121,9 +121,37 @@ public class AreaControl : MonoBehaviour, IEnemyArea
         
     }
 
-    public void RegisterObjectWithArea()
+    public Vector3 GetCloseDestination(Vector3 currentPos)
     {
+        var index = GetIndexFromPoint(currentPos);
+        if ((int) index.x == (int) numberCubes.x - 1)
+        {
+            index.y += 1;
+        }
         
+        
+        return _gridList[(int) index.x][(int) index.y].location;
+    }
+
+    public void RegisterObjectWithArea(Vector3 position, Vector3 size, AssetTypes assetType)
+    {
+        var index = GetIndexFromPoint(position);
+        _gridList[(int)index.x][(int)index.y].color = Color.green;
+        _gridList[(int)index.x][(int)index.y].assets.Add(new AssetCube()
+        {
+            location = position,
+            size =  size,
+            color = Color.yellow,
+            assetType = assetType
+        });
+        
+        _extraCubesList.Add(new AssetCube()
+        {
+            location = position,
+            size =  size,
+            color = Color.yellow,
+            assetType = assetType
+        });
     }
     
     public void GetCubeInfos(Vector2 index)
@@ -338,7 +366,7 @@ public class AreaControl : MonoBehaviour, IEnemyArea
         {
             _timeSinceUpdate -= delayUpdate;
             //UpdateColors();
-            GatherCubes(new Vector2(0,2),16, enemyTrans);
+            //GatherCubes(new Vector2(0,2),16, enemyTrans);
         }
         
         _timeSinceUpdate += Time.deltaTime;

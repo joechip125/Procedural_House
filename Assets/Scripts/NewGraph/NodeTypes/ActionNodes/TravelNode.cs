@@ -26,7 +26,7 @@ public class TravelNode : ActionNode
 
     private bool ArrivedAtTarget()
     {
-        return Vector3.Distance(agent.enemyTransform.position, agent.currentDestination) < 2;
+        return Vector3.Distance(agent.enemyTransform.position, agent.currentDestination) < 1.5f;
     }
     
     
@@ -41,7 +41,6 @@ public class TravelNode : ActionNode
         }
 
         agent.enemyTransform.position += agent.enemyTransform.forward * (Time.deltaTime * 1);
-
         return ArrivedAtTarget() ? State.Success : State.Update;
     }
 }

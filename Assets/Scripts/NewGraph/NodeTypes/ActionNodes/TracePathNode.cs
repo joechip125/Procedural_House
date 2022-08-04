@@ -86,7 +86,6 @@ namespace NewGraph.NodeTypes.ActionNodes
             {
                 if (currentTraverseCell.DistanceFromGoal < 1)
                 {
-                    Debug.Log("Destination reached");
                     break;
                 }
             

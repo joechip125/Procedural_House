@@ -56,6 +56,8 @@ public class AiAgent
 
     public IInteract InteractInterface;
 
+    public AreaControl area;
+
     public AiAgent()
     {
         currentDestination = new Vector3(0, 0, 0);
