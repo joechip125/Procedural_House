@@ -6,6 +6,7 @@ namespace NewGraph.NodeTypes.ActionNodes
     {
         private Vector3 _destination;
         private CurrentCommand _command;
+        private bool _exitOkay;
         
         public override void OnStart()
         {
@@ -13,7 +14,8 @@ namespace NewGraph.NodeTypes.ActionNodes
 
            if (_command == CurrentCommand.SearchArea)
            {
-               agent.area.GetCloseDestination(agent.enemyTransform.position);
+              agent.currentDestination = agent.area.GetCloseDestination(agent.enemyTransform.position);
+              _exitOkay = true;
            }
         }
 
@@ -24,7 +26,7 @@ namespace NewGraph.NodeTypes.ActionNodes
 
         public override State OnUpdate()
         {
-            throw new System.NotImplementedException();
+            return _exitOkay ? State.Success : State.Update;
         }
     }
 }

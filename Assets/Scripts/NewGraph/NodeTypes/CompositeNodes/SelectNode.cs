@@ -62,6 +62,13 @@ public class SelectNode : CompositeNode
                 ownedNodes.Add(CurrentCommand.GetInstructions, interact);
                 continue;
             }
+
+            var findPath = n as FindPathNode;
+
+            if (findPath)
+            {
+                ownedNodes.Add(CurrentCommand.SearchArea, findPath);
+            }
         }
 
     }
