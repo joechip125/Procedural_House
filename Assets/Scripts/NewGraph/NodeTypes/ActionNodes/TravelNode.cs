@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TravelNode : ActionNode
 {
-    private Vector3 nextDestination;
+    private Vector3 _nextDestination;
     
     public override void OnStart()
     {
@@ -34,9 +34,9 @@ public class TravelNode : ActionNode
     {
         if (!CheckIfLookingAtTarget())
         {
-            Vector3 targetDirection = (agent.currentDestination - agent.enemyTransform.position).normalized;
+            var targetDirection = (agent.currentDestination - agent.enemyTransform.position).normalized;
             var singleStep = Time.deltaTime * 1;
-            Vector3 newDirection = Vector3.RotateTowards(agent.enemyTransform.forward, targetDirection, singleStep, 0.0f);
+            var newDirection = Vector3.RotateTowards(agent.enemyTransform.forward, targetDirection, singleStep, 0.0f);
             agent.enemyTransform.rotation = Quaternion.LookRotation(newDirection);
         }
 

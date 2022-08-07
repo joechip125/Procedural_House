@@ -8,10 +8,8 @@ public class BehaviourTreeRunner : MonoBehaviour, IEnemyCommands
 {
     public BehaviourTree tree;
     public Transform commanderTrans;
-
     public bool readyToRun;
- //   public Dictionary<STATE, BehaviourTree>  trees;
-
+    
     void Start()
     {
         Setup();
