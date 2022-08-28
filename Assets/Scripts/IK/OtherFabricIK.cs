@@ -132,6 +132,8 @@ public class OtherFabricIK : MonoBehaviour
                     {
                         // Just set the effector to the target position
                         Positions[i] = target.position;
+                        Bones[i].rotation = StartRotations[i];
+
                     }
                     else
                     {
@@ -202,7 +204,6 @@ public class OtherFabricIK : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        
         ResolveIK();
     }
 

@@ -6,10 +6,7 @@ public class ControlPoint : MonoBehaviour
 {
     [SerializeField] private Transform targetLimb;
     public float DistanceFromTarget { get; private set; }
-    void Start()
-    {
-        
-    }
+  
 
     private float GroundTrace()
     {
@@ -32,7 +29,15 @@ public class ControlPoint : MonoBehaviour
     {
         var thePos = transform.position;
         var groundY = GroundTrace();
-        transform.position = new Vector3(thePos.x, groundY, thePos.z);
-        TargetTrace();
+        transform.position = new Vector3(thePos.x, groundY + 0.1f, thePos.z);
+      //  TargetTrace();
     }
+    
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(transform.position, 0.1f);
+    }
+#endif
 }
