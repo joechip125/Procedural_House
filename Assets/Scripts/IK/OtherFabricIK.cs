@@ -45,12 +45,14 @@ public class OtherFabricIK : MonoBehaviour
     Quaternion[] StartRotations;
     Quaternion TargetStartRotation;
     
-    private Vector3 targetStart;
+    private Vector3 _targetStart;
     
     
     void Start()
     {
+        _targetStart = target.position;
         Init();
+        
     }
 
     private void Init()
@@ -58,7 +60,7 @@ public class OtherFabricIK : MonoBehaviour
         Bones = new Transform[numberBones + 1];
         Positions = new Vector3[numberBones + 1];
         BoneLengths = new float[numberBones];
-        targetStart = target.transform.position;
+        _targetStart = target.transform.position;
         
         // Init rotation information
         StartDirections = new Vector3[numberBones + 1]; // NEW initialize bone start directions array
@@ -200,6 +202,7 @@ public class OtherFabricIK : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
+        
         ResolveIK();
     }
 
