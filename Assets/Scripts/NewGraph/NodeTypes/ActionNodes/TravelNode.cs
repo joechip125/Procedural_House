@@ -8,8 +8,8 @@ public class TravelNode : ActionNode
     
     public override void OnStart()
     {
-        agent.commandQueue.Dequeue();
-        agent.currentDestination = agent.TargetQueue.Dequeue();
+    //    agent.commandQueue.Dequeue();
+    //    agent.currentDestination = agent.TargetQueue.Dequeue();
     }
 
     public override void OnExit()

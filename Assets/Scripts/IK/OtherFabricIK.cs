@@ -4,9 +4,18 @@ using System.Collections.Generic;
 using UnityEditor.Timeline.Actions;
 using UnityEngine;
 
+public enum LimbType
+{
+    RightArm,
+    LeftArm,
+    RightLeg,
+    LeftLeg
+}
+
 public class OtherFabricIK : MonoBehaviour
 {
     [SerializeField] private int numberBones;
+    [SerializeField] private LimbType limbType;
     
     // How many times to run the algorithm
     int iterations = 10;

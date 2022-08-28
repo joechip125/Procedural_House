@@ -21,7 +21,7 @@ public class BehaviourTreeRunner : MonoBehaviour, IEnemyCommands
         commands.Enqueue(CurrentCommand.MoveToPosition);
         commands.Enqueue(CurrentCommand.GetInstructions);
         Queue<Vector3> goals = new Queue<Vector3>();
-        goals.Enqueue(commanderTrans.position);
+    //    goals.Enqueue(commanderTrans.position);
         
         tree = tree.Clone();
         tree.Bind(new AiAgent()
