@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ControlPoint : MonoBehaviour
+public class LegControlPoint : MonoBehaviour
 {
-    [SerializeField] private Transform targetLimb;
+    [SerializeField] private Transform distanceTarget;
     public float DistanceFromTarget { get; private set; }
 
     [HideInInspector] public bool movePoint;
@@ -14,11 +14,15 @@ public class ControlPoint : MonoBehaviour
     private Vector3 _keepPos;
     private MathParabola _parabola = new MathParabola();
     
-    private float _timer;
+    public float Timer { get; private set; }
     private Vector3 _targetStart;
     private Vector3 _targetEnd;
     
 
+    public void IncrementTimer(float addAmount)
+    {
+        Timer += addAmount;
+    }
 
     private void Start()
     {
@@ -42,7 +46,7 @@ public class ControlPoint : MonoBehaviour
     private void TargetTrace()
     {
         var pos = transform.position;
-        var tarPos = targetLimb.position;
+        var tarPos = distanceTarget.position;
         DistanceFromTarget = Vector3.Distance(pos, tarPos);
         Debug.DrawLine(pos, tarPos);
     }
@@ -78,11 +82,11 @@ public class ControlPoint : MonoBehaviour
                 _setNewTarget = true;
             }
             
-            _timer += Time.deltaTime * 0.5f;
-            MoveTarget(_timer);
-            if (_timer >= 1)
+            //_timer += Time.deltaTime * 0.5f;
+            MoveTarget(Timer);
+            if (Timer >= 1)
             {
-                _timer --;
+                Timer --;
                 movePoint = false;
                 _setNewTarget = false;
             }
@@ -95,6 +99,10 @@ public class ControlPoint : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(transform.position, 0.1f);
+        if (distanceTarget)
+        {
+            Gizmos.DrawSphere(distanceTarget.position, 0.1f);
+        }
     }
 #endif
 }

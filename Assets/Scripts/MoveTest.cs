@@ -15,7 +15,8 @@ public class MoveTest : MonoBehaviour
     private Vector3 _starter;
 
     private MathParabola _parabola = new MathParabola();
-    private ControlPoint _rightControl;
+    private LegControlPoint _rightLegControl;
+    private LegControlPoint _leftLegControl;
 
     private Vector3 _rightStart;
     private Vector3 _rightEnd;
@@ -25,11 +26,10 @@ public class MoveTest : MonoBehaviour
 
     private void Start()
     {
-        _rightControl = rightLegTarget.GetComponent<ControlPoint>();
+        _rightLegControl = rightLegTarget.GetComponent<LegControlPoint>();
+        _leftLegControl = leftLegTarget.GetComponent<LegControlPoint>();
         _starter = rightLegTarget.position;
         SetNewTargets();
-        _rightControl.movePoint = true;
-        MoveLeg();
     }
 
     private bool CheckIfLookingAtTarget()
@@ -52,7 +52,7 @@ public class MoveTest : MonoBehaviour
 
     private void MoveLeg()
     {
-        _rightControl.SetNewPos(transform.forward, 0.5f);
+        _rightLegControl.SetNewPos(transform.forward, 0.5f);
     }
     
     private void SetNewTargets()
@@ -74,6 +74,11 @@ public class MoveTest : MonoBehaviour
         
     }
 
+    public void IncrementTimer(float addAmount)
+    {
+        _timer += addAmount;
+    }
+    
     private void Update()
     {
         if (!CheckIfLookingAtTarget())
@@ -84,26 +89,15 @@ public class MoveTest : MonoBehaviour
            // enemyTransform.rotation = Quaternion.LookRotation(newDirection);
         }
 
-        _timer += Time.deltaTime * 0.3f;
-
-        if (_rightControl.DistanceFromTarget > 0.3f && !_moveRight)
+        if (Input.GetKey(KeyCode.W))
         {
-            _moveRight = true;
-            _rightStart = rightLegTarget.position;
-            _rightEnd = rightTargetZone.position;
-        }
-
-        if (_moveRight)
-        {
-         //   MoveTarget(_timer);
-
-            if (_timer >= 1)
+            enemyTransform.position += enemyTransform.forward * (Time.deltaTime * 1);
+            if (_rightLegControl.Timer < 1)
             {
-                _timer --;
-                _moveRight = false;
+                _rightLegControl.movePoint = true;
+                _rightLegControl.IncrementTimer(Time.deltaTime * 4.5f);
             }
         }
-        
         
         
         if (!ArrivedAtTarget())
