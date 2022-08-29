@@ -1001,6 +1001,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetLimb: {fileID: 968598175}
+  stick: 0
 --- !u!1 &861836276 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2146733627707886716, guid: c8abe9d9ecc7c4f44859d7dc1f1d86fe, type: 3}
@@ -1515,6 +1516,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetLimb: {fileID: 1921518211}
+  stick: 0
 --- !u!1 &1121899422
 GameObject:
   m_ObjectHideFlags: 0
@@ -2086,7 +2088,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8416785229414764848, guid: 0f7d2af55eea4a34b9e152500b58e869, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -18.373
+      value: -18.721
       objectReference: {fileID: 0}
     - target: {fileID: 8416785229414764848, guid: 0f7d2af55eea4a34b9e152500b58e869, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2641,6 +2643,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetLimb: {fileID: 404838883}
+  stick: 0
 --- !u!4 &2112465985 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 289738532569830680, guid: 38d977ab4afc460468193561c763a7b2, type: 3}

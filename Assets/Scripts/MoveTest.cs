@@ -25,9 +25,11 @@ public class MoveTest : MonoBehaviour
 
     private void Start()
     {
-        _rightControl = rightTargetZone.GetComponent<ControlPoint>();
+        _rightControl = rightLegTarget.GetComponent<ControlPoint>();
         _starter = rightLegTarget.position;
         SetNewTargets();
+        _rightControl.movePoint = true;
+        MoveLeg();
     }
 
     private bool CheckIfLookingAtTarget()
@@ -45,11 +47,14 @@ public class MoveTest : MonoBehaviour
     private void MoveTarget(float time)
     {
         var pos = _parabola.Parabola(_rightStart, _rightEnd, 0.3f, time);
-
         rightLegTarget.position = pos;
-
     }
 
+    private void MoveLeg()
+    {
+        _rightControl.SetNewPos(transform.forward, 0.5f);
+    }
+    
     private void SetNewTargets()
     {
         _rightStart = rightLegTarget.position;
@@ -98,6 +103,8 @@ public class MoveTest : MonoBehaviour
                 _moveRight = false;
             }
         }
+        
+        
         
         if (!ArrivedAtTarget())
         {
