@@ -301,8 +301,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controlTarget: {fileID: 0}
+  mainTransform: {fileID: 0}
   cosOrSin: 0
   maxExtent: 0.4
+  speed: 2
 --- !u!1 &316228472
 GameObject:
   m_ObjectHideFlags: 0
@@ -373,8 +375,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controlTarget: {fileID: 0}
+  mainTransform: {fileID: 1899739824}
   cosOrSin: 0
-  maxExtent: 0.4
+  maxExtent: 12
+  speed: 2
 --- !u!1 &507149394
 GameObject:
   m_ObjectHideFlags: 0
@@ -860,8 +864,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controlTarget: {fileID: 0}
+  mainTransform: {fileID: 0}
   cosOrSin: 1
   maxExtent: 0.5
+  speed: 2
 --- !u!1 &694098640 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2234638337879791144, guid: 0f7d2af55eea4a34b9e152500b58e869, type: 3}
@@ -880,8 +886,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controlTarget: {fileID: 0}
+  mainTransform: {fileID: 1899739824}
   cosOrSin: 1
-  maxExtent: 0.4
+  maxExtent: 12
+  speed: 2
 --- !u!1 &699682034
 GameObject:
   m_ObjectHideFlags: 0

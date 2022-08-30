@@ -102,7 +102,7 @@ public class MoveTest : MonoBehaviour
         
         if (!ArrivedAtTarget())
         {
-          //  enemyTransform.position += enemyTransform.forward * (Time.deltaTime * 1);
+            enemyTransform.position += enemyTransform.forward * (Time.deltaTime * 1);
         }
     }
     
