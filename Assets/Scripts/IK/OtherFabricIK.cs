@@ -132,7 +132,7 @@ public class OtherFabricIK : MonoBehaviour
                     {
                         // Just set the effector to the target position
                         Positions[i] = target.position;
-                        Bones[i].rotation = StartRotations[i];
+                       // Bones[i].rotation = StartRotations[i];
 
                     }
                     else

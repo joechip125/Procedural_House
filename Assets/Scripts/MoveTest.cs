@@ -41,7 +41,7 @@ public class MoveTest : MonoBehaviour
     
     private bool ArrivedAtTarget()
     {
-        return Vector3.Distance(enemyTransform.position, moveTarget.position) < 0.4f;
+        return Vector3.Distance(enemyTransform.position, moveTarget.position) < 0.1f;
     }
 
     private void MoveTarget(float time)
@@ -91,21 +91,24 @@ public class MoveTest : MonoBehaviour
 
         if (Input.GetKey(KeyCode.W))
         {
-            enemyTransform.position += enemyTransform.forward * (Time.deltaTime * 1);
-            if (_rightLegControl.Timer < 1)
-            {
-                _rightLegControl.movePoint = true;
-                _rightLegControl.IncrementTimer(Time.deltaTime * 4.5f);
-            }
+           // enemyTransform.position += enemyTransform.forward * (Time.deltaTime * 1);
+           // if (_rightLegControl.Timer < 1)
+           // {
+           //     _rightLegControl.movePoint = true;
+           //     _rightLegControl.IncrementTimer(Time.deltaTime * 4.5f);
+           // }
         }
         
         
         if (!ArrivedAtTarget())
         {
-         //   enemyTransform.position += enemyTransform.forward * (Time.deltaTime * 1);
+            enemyTransform.position += enemyTransform.forward * (Time.deltaTime * 1);
         }
     }
-
+    
+    
+    
+    
     #if UNITY_EDITOR
     private void OnDrawGizmos()
     {

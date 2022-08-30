@@ -64,25 +64,33 @@ public class LegControlPoint : MonoBehaviour
         var fwd = transform.forward;
         _targetEnd = _targetStart +new Vector3(fwd.x * 0.3f, 0, fwd.z * 0.3f);
     }
+
+    private void SetDistanceTarget()
+    {
+        _targetStart = transform.position;
+        _targetEnd = distanceTarget.position;
+    }
     
     void LateUpdate()
     {
         var thePos = transform.position;
         var groundY = GroundTrace();
+        TargetTrace();
 
         if (!movePoint)
         {
             transform.position = new Vector3(_keepPos.x, groundY + 0.1f, _keepPos.z);
         }
-        else
+
+        if (DistanceFromTarget > 0.4f)
         {
             if (!_setNewTarget)
             {
-                SetNewTargets();
+                SetDistanceTarget();
                 _setNewTarget = true;
             }
-            
-            //_timer += Time.deltaTime * 0.5f;
+
+            Timer += Time.deltaTime * 3f;
             MoveTarget(Timer);
             if (Timer >= 1)
             {
@@ -90,8 +98,25 @@ public class LegControlPoint : MonoBehaviour
                 movePoint = false;
                 _setNewTarget = false;
             }
-            
         }
+       // else
+       // {
+       //     if (!_setNewTarget)
+       //     {
+       //         SetNewTargets();
+       //         _setNewTarget = true;
+       //     }
+       //     
+       //     //_timer += Time.deltaTime * 0.5f;
+       //     MoveTarget(Timer);
+       //     if (Timer >= 1)
+       //     {
+       //         Timer --;
+       //         movePoint = false;
+       //         _setNewTarget = false;
+       //     }
+       //     
+       // }
     }
     
 #if UNITY_EDITOR
