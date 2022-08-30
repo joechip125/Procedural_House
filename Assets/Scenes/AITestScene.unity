@@ -281,7 +281,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 316228472}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -20.93, y: 0, z: -18.33}
+  m_LocalPosition: {x: -20.93, y: 0, z: -18.486}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -691,6 +691,7 @@ GameObject:
   - component: {fileID: 655361681}
   - component: {fileID: 655361680}
   - component: {fileID: 655361679}
+  - component: {fileID: 655361683}
   m_Layer: 6
   m_Name: Capsule (1)
   m_TagString: Untagged
@@ -777,6 +778,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &655361683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 655361678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e54a4576f7975314da908cb9f551629c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controlTarget: {fileID: 0}
+  cosOrSin: 1
+  maxExtent: 0.4
 --- !u!1 &699682034
 GameObject:
   m_ObjectHideFlags: 0

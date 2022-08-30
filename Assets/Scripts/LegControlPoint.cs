@@ -7,6 +7,8 @@ public class LegControlPoint : MonoBehaviour
 {
     [SerializeField] private Transform distanceTarget;
     public float DistanceFromTarget { get; private set; }
+    
+    
 
     [HideInInspector] public bool movePoint;
     private bool _setNewTarget;
@@ -53,7 +55,7 @@ public class LegControlPoint : MonoBehaviour
     
     private void MoveTarget(float time)
     {
-        var pos = _parabola.Parabola(_targetStart, _targetEnd, 0.3f, time);
+        var pos = _parabola.Parabola(_targetStart, _targetEnd, 0.4f, time);
         _keepPos = pos;
         transform.position = pos;
     }
@@ -71,9 +73,8 @@ public class LegControlPoint : MonoBehaviour
         _targetEnd = distanceTarget.position;
     }
     
-    void LateUpdate()
+    void Update()
     {
-        var thePos = transform.position;
         var groundY = GroundTrace();
         TargetTrace();
 
@@ -82,7 +83,7 @@ public class LegControlPoint : MonoBehaviour
             transform.position = new Vector3(_keepPos.x, groundY + 0.1f, _keepPos.z);
         }
 
-        if (DistanceFromTarget > 0.4f)
+        if (DistanceFromTarget > 0.3f)
         {
             if (!_setNewTarget)
             {
@@ -90,7 +91,7 @@ public class LegControlPoint : MonoBehaviour
                 _setNewTarget = true;
             }
 
-            Timer += Time.deltaTime * 3f;
+            Timer += Time.deltaTime * 2f;
             MoveTarget(Timer);
             if (Timer >= 1)
             {
@@ -99,24 +100,6 @@ public class LegControlPoint : MonoBehaviour
                 _setNewTarget = false;
             }
         }
-       // else
-       // {
-       //     if (!_setNewTarget)
-       //     {
-       //         SetNewTargets();
-       //         _setNewTarget = true;
-       //     }
-       //     
-       //     //_timer += Time.deltaTime * 0.5f;
-       //     MoveTarget(Timer);
-       //     if (Timer >= 1)
-       //     {
-       //         Timer --;
-       //         movePoint = false;
-       //         _setNewTarget = false;
-       //     }
-       //     
-       // }
     }
     
 #if UNITY_EDITOR
