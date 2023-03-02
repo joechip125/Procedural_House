@@ -13,7 +13,7 @@ public class NewMeshTest : MonoBehaviour
 {
     private AdvancedMesh mesh;
     public Material aMaterial;
-    public List<Vector3> points = new List<Vector3>();
+    public List<Vector3> points = new ();
 
     private void Awake()
     {
@@ -23,37 +23,38 @@ public class NewMeshTest : MonoBehaviour
        AddSomePoints2();
     }
     
-    private void SetPoints(Directions direction, Vector2 size)
+    private void SetPoints(Directions direction, Vector2 size, Vector3 startPoint)
     {
         points.Clear();
-        var startPoint = transform.localPosition;
-        points.Add(startPoint);
+        
         if (direction == Directions.Up)
         {
-            points.Add(startPoint + new Vector3(0, size.y));
-            points.Add(startPoint + new Vector3(0, size.y, size.x));
+            points.Add(startPoint);
             points.Add(startPoint + new Vector3(0, 0, size.x));
+            points.Add(startPoint + new Vector3(0, size.y,0));
+            points.Add(startPoint + new Vector3(0, size.y, size.x));
         }
         else
         {
-            points.Add(startPoint + new Vector3(size.x,0,0));
             points.Add(startPoint + new Vector3(size.x, 0, size.y));
             points.Add(startPoint + new Vector3(0, 0, size.x));
+            points.Add(startPoint + new Vector3(size.x,0,0));
+            points.Add(startPoint);
         }
     }
     
     private void AddSomePoints()
     {
-        SetPoints(Directions.Down, new Vector2(100,100));
+        SetPoints(Directions.Down, new Vector2(100,100), transform.localPosition);
         mesh.AddQuadWithPointList(points);
     }
     
     private void AddSomePoints2()
     {
-        var aPoint = transform.localPosition;
-        var aPoint2 = aPoint + new Vector3(0, 100, 0);
-        var aPoint3 = aPoint + new Vector3(0, 100, 100);
-        var aPoint4 = aPoint + new Vector3(0, 0, 100);
-        mesh.AddQuad(aPoint, aPoint2, aPoint4, aPoint3);
+        SetPoints(Directions.Up, new Vector2(25,50),transform.localPosition);
+        mesh.AddQuadWithPointList(points);
+        
+        SetPoints(Directions.Up, new Vector2(25,50),transform.localPosition + new Vector3(0,0, 75));
+        mesh.AddQuadWithPointList(points);
     }
 }
