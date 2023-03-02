@@ -14,10 +14,10 @@ public class AdvancedMesh_Floor : AdvancedMesh
         var theTile = FloorTiles[tileIndex];
         List<Vector3> pos = new List<Vector3>()
         {
-            theMesh.vertices[theTile.startTriangleIndex],
-            theMesh.vertices[theTile.startTriangleIndex + 1],
-            theMesh.vertices[theTile.startTriangleIndex + 2],
-            theMesh.vertices[theTile.startTriangleIndex + 3],
+            TheMesh.vertices[theTile.startTriangleIndex],
+            TheMesh.vertices[theTile.startTriangleIndex + 1],
+            TheMesh.vertices[theTile.startTriangleIndex + 2],
+            TheMesh.vertices[theTile.startTriangleIndex + 3],
         };
 
         return pos;
@@ -30,10 +30,10 @@ public class AdvancedMesh_Floor : AdvancedMesh
         
         List<Vector3> positions = new List<Vector3>()
         {
-            theMesh.vertices[theTile],
-            theMesh.vertices[theTile + 1],
-            theMesh.vertices[theTile + 3],
-            theMesh.vertices[theTile + 2],
+            TheMesh.vertices[theTile],
+            TheMesh.vertices[theTile + 1],
+            TheMesh.vertices[theTile + 3],
+            TheMesh.vertices[theTile + 2],
         };
         return positions;
         
@@ -53,31 +53,31 @@ public class AdvancedMesh_Floor : AdvancedMesh
     
     private Vector3 GetNewFloorPos(Vector3 directions, Vector3 newSize, Vector3 floorIndex)
     {
-        var min = theMesh.bounds.min;
-        var max = theMesh.bounds.max;
+        var min = TheMesh.bounds.min;
+        var max = TheMesh.bounds.max;
 
         var ex = new Vector3(max.x, min.y, max.z);
         
         var panel = FloorTiles[floorIndex];
-        var newStart = theMesh.vertices[panel.startTriangleIndex];
+        var newStart = TheMesh.vertices[panel.startTriangleIndex];
 
         if (directions == Vector3.right)
         {
-            newStart = theMesh.vertices[panel.startTriangleIndex +  1];
+            newStart = TheMesh.vertices[panel.startTriangleIndex +  1];
         }
         
         else if (directions == Vector3.left)
         {
-            newStart = theMesh.vertices[panel.startTriangleIndex] - new Vector3(newSize.x,0,0);
+            newStart = TheMesh.vertices[panel.startTriangleIndex] - new Vector3(newSize.x,0,0);
         }
         else if (directions == Vector3.forward)
         {
-            newStart = theMesh.vertices[panel.startTriangleIndex + 2];
+            newStart = TheMesh.vertices[panel.startTriangleIndex + 2];
         }
         
         else if (directions == Vector3.back)
         {
-            newStart = theMesh.vertices[panel.startTriangleIndex ] - new Vector3(0,0, newSize.z);
+            newStart = TheMesh.vertices[panel.startTriangleIndex ] - new Vector3(0,0, newSize.z);
         }
         
         return newStart;

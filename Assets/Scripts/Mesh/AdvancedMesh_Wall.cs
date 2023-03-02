@@ -10,16 +10,16 @@ public class AdvancedMesh_Wall : AdvancedMesh
     public Dictionary<int, MeshPanel> WallTiles = new ();
 
     public Vector3 GetPositionAtIndex(int panelIndex, int addIndex = 0) 
-        => theMesh.vertices[WallTiles[panelIndex].startTriangleIndex + addIndex];
+        => TheMesh.vertices[WallTiles[panelIndex].startTriangleIndex + addIndex];
     
     public Vector3 GetNormalAtIndex(int panelIndex, int addIndex = 0) 
-        => theMesh.normals[WallTiles[panelIndex].startTriangleIndex + addIndex];
+        => TheMesh.normals[WallTiles[panelIndex].startTriangleIndex + addIndex];
 
 
     public void ShrinkAllWallTiles(bool startEnd, float totalShrink)
     {
-        var t1 = theMesh.vertices[0];
-        var t2 = theMesh.vertices[3];
+        var t1 = TheMesh.vertices[0];
+        var t2 = TheMesh.vertices[3];
         var tileSize = new Vector3(Mathf.Abs(t2.x - t1.x), t2.y, Mathf.Abs(t2.z - t1.z));
         var totalSize = ((tileSize.z * 3) - totalShrink) / 3;
         
@@ -27,8 +27,8 @@ public class AdvancedMesh_Wall : AdvancedMesh
         var numberTiles = 3;
         var wallShrink = totalShrink / numberTiles;
         
-        var start = theMesh.vertices[0];
-        var moveDir = Vector3.Cross(new Vector3(0, -1, 0), theMesh.normals[0]);
+        var start = TheMesh.vertices[0];
+        var moveDir = Vector3.Cross(new Vector3(0, -1, 0), TheMesh.normals[0]);
         Debug.Log(moveDir);
         if (startEnd)
         {
@@ -125,7 +125,7 @@ public class AdvancedMesh_Wall : AdvancedMesh
             crossMod = 1;
         }
         
-        var moveDir = Vector3.Cross(new Vector3(0, crossMod, 0), theMesh.normals[startTri]);
+        var moveDir = Vector3.Cross(new Vector3(0, crossMod, 0), TheMesh.normals[startTri]);
         Vector3 shrink = new Vector3(shrinkAmount * moveDir.x, 0, shrinkAmount * moveDir.z);
 
         MoveTwoVerts(firstVert, secondVert, shrink);
@@ -148,13 +148,13 @@ public class AdvancedMesh_Wall : AdvancedMesh
         if (!startEnd)
         {
             var maxKey = WallTiles.Keys.Max();
-            theStart = theMesh.vertices[WallTiles[maxKey].startTriangleIndex + 1];
+            theStart = TheMesh.vertices[WallTiles[maxKey].startTriangleIndex + 1];
             theIndex = maxKey + 1;
         }
         else
         {
             var minKey = WallTiles.Keys.Min();
-            theStart = theMesh.vertices[WallTiles[minKey].startTriangleIndex];
+            theStart = TheMesh.vertices[WallTiles[minKey].startTriangleIndex];
             theStart -= new Vector3(theSize.x * theDirection.x, 0, theSize.z * theDirection.z);
 
             theIndex = minKey - 1;
@@ -177,14 +177,14 @@ public class AdvancedMesh_Wall : AdvancedMesh
         var direction = panelOne.direction;
         var addVec = new Vector3(panelOne.direction.x * openingSize / 2, 0, direction.z * openingSize / 2);
 
-        var theNormal = theMesh.normals[panelOne.startTriangleIndex + 1];
+        var theNormal = TheMesh.normals[panelOne.startTriangleIndex + 1];
 
 
-        theMesh.vertices[panelOne.startTriangleIndex + 1] -= addVec;
-        theMesh.vertices[panelOne.startTriangleIndex + 3] -= addVec;
+        TheMesh.vertices[panelOne.startTriangleIndex + 1] -= addVec;
+        TheMesh.vertices[panelOne.startTriangleIndex + 3] -= addVec;
 
-        theMesh.vertices[panelTwo.startTriangleIndex] += addVec;
-        theMesh.vertices[panelTwo.startTriangleIndex + 2] += addVec;
+        TheMesh.vertices[panelTwo.startTriangleIndex] += addVec;
+        TheMesh.vertices[panelTwo.startTriangleIndex + 2] += addVec;
      
         var theNormal2 = new Vector3(-theNormal.x,1, -theNormal.z);
         
@@ -197,14 +197,14 @@ public class AdvancedMesh_Wall : AdvancedMesh
     {
         var wallThick = MeshStatic.InnerWallThickness;
         var wallDirection = WallTiles[panelIndex].direction;
-        var wallNormal = theMesh.normals[WallTiles[panelIndex].startTriangleIndex];
-        var aNewStart = theMesh.vertices[WallTiles[panelIndex].startTriangleIndex + 1];
+        var wallNormal = TheMesh.normals[WallTiles[panelIndex].startTriangleIndex];
+        var aNewStart = TheMesh.vertices[WallTiles[panelIndex].startTriangleIndex + 1];
         
         var xzSize = new Vector3(size.x * wallDirection.x, 0, size.x * wallDirection.z) 
                      + new Vector3(wallThick * Mathf.Abs(wallNormal.x), 0, wallThick * Mathf.Abs(wallNormal.z));
         var xySize = new  Vector3(wallThick * Mathf.Abs(wallNormal.x), size.y, wallThick * Mathf.Abs(wallNormal.z));
 
-        var totalH = theMesh.vertices[WallTiles[panelIndex].startTriangleIndex + 3].y - aNewStart.y;
+        var totalH = TheMesh.vertices[WallTiles[panelIndex].startTriangleIndex + 3].y - aNewStart.y;
 
         var topSize = new Vector3(size.x * wallDirection.x, totalH - size.y, size.x * wallDirection.z);
         
@@ -215,12 +215,12 @@ public class AdvancedMesh_Wall : AdvancedMesh
         CreateNewPanel(aNewStart, xzSize, new Vector3(1,0,1), wallIndex++);
         var index = WallTiles[panelIndex + 50].startTriangleIndex;
         
-        CreateNewPanel(theMesh.vertices[index + 1] + new Vector3(0,size.y,0), xzSize, aDirection2, wallIndex++);
+        CreateNewPanel(TheMesh.vertices[index + 1] + new Vector3(0,size.y,0), xzSize, aDirection2, wallIndex++);
 
-        CreateNewPanel(theMesh.vertices[index], xySize, new Vector3(-wallNormal.x,1, -wallNormal.z), wallIndex++);
-        CreateNewPanel(theMesh.vertices[index + 3], xySize, new Vector3(wallNormal.x,1, wallNormal.z), wallIndex++);
+        CreateNewPanel(TheMesh.vertices[index], xySize, new Vector3(-wallNormal.x,1, -wallNormal.z), wallIndex++);
+        CreateNewPanel(TheMesh.vertices[index + 3], xySize, new Vector3(wallNormal.x,1, wallNormal.z), wallIndex++);
                        
-        CreateNewPanel(theMesh.vertices[index] + new Vector3(0,size.y,0), topSize, aDirection3, wallIndex);
+        CreateNewPanel(TheMesh.vertices[index] + new Vector3(0,size.y,0), topSize, aDirection3, wallIndex);
         
     }
 }

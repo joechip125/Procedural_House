@@ -76,12 +76,12 @@ public class CylinderMesh : AdvancedMesh
     {
      
         
-        for (int i = 0; i < vertices.Count; i+= 4)
+        for (int i = 0; i < Vertices.Count; i+= 4)
         {
-            if (i + 3 >= vertices.Count) break;
+            if (i + 3 >= Vertices.Count) break;
             
-            vertices[i + 1] -= new Vector3(0, moveAmount, 0);
-            vertices[i + 3] -= new Vector3(0, moveAmount, 0);
+            Vertices[i + 1] -= new Vector3(0, moveAmount, 0);
+            Vertices[i + 3] -= new Vector3(0, moveAmount, 0);
         }
         UpdateMesh();
     }

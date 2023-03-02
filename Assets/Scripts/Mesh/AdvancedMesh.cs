@@ -11,16 +11,16 @@ public enum VectorTypes
 
 public class AdvancedMesh : MonoBehaviour
 {
-    protected Mesh theMesh;
+    protected Mesh TheMesh;
     MeshCollider meshCollider;
-    [NonSerialized] protected List<Vector3> vertices = new ();
-    [NonSerialized] protected List<int> triangles = new ();
+    [NonSerialized] protected List<Vector3> Vertices = new ();
+    [NonSerialized] protected List<int> Triangles = new ();
     
     
     private void Awake()
     {
-        GetComponent<MeshFilter>().mesh = theMesh = new Mesh();
-        theMesh.name = "TheMesh";
+        GetComponent<MeshFilter>().mesh = TheMesh = new Mesh();
+        TheMesh.name = "TheMesh";
     }
 
     public void ApplyMaterial(Material material)
@@ -31,55 +31,55 @@ public class AdvancedMesh : MonoBehaviour
     
     protected int AddQuadWithPointList(List<Vector3> pointList)
     {
-        var vertexIndex = vertices.Count;
+        var vertexIndex = Vertices.Count;
         
-        vertices.Add(pointList[0]);
-        vertices.Add(pointList[1]);
-        vertices.Add(pointList[2]);
-        vertices.Add(pointList[3]);
-        triangles.Add(vertexIndex);
-        triangles.Add(vertexIndex + 2);
-        triangles.Add(vertexIndex + 1);
-        triangles.Add(vertexIndex + 1);
-        triangles.Add(vertexIndex + 2);
-        triangles.Add(vertexIndex + 3);
+        Vertices.Add(pointList[0]);
+        Vertices.Add(pointList[1]);
+        Vertices.Add(pointList[2]);
+        Vertices.Add(pointList[3]);
+        Triangles.Add(vertexIndex);
+        Triangles.Add(vertexIndex + 2);
+        Triangles.Add(vertexIndex + 1);
+        Triangles.Add(vertexIndex + 1);
+        Triangles.Add(vertexIndex + 2);
+        Triangles.Add(vertexIndex + 3);
         UpdateMesh();
 
         return vertexIndex;
     }
 
-    protected void AddQuad(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4) 
+    public void AddQuad(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4) 
     {
-        var vertexIndex = vertices.Count;
-        vertices.Add(v1);
-        vertices.Add(v2);
-        vertices.Add(v3);
-        vertices.Add(v4);
-        triangles.Add(vertexIndex);
-        triangles.Add(vertexIndex + 2);
-        triangles.Add(vertexIndex + 1);
-        triangles.Add(vertexIndex + 1);
-        triangles.Add(vertexIndex + 2);
-        triangles.Add(vertexIndex + 3);
+        var vertexIndex = Vertices.Count;
+        Vertices.Add(v1);
+        Vertices.Add(v2);
+        Vertices.Add(v3);
+        Vertices.Add(v4);
+        Triangles.Add(vertexIndex);
+        Triangles.Add(vertexIndex + 2);
+        Triangles.Add(vertexIndex + 1);
+        Triangles.Add(vertexIndex + 1);
+        Triangles.Add(vertexIndex + 2);
+        Triangles.Add(vertexIndex + 3);
         
         UpdateMesh();
     }
 
     protected void UpdateMesh()
     {
-        theMesh.Clear();
-        theMesh.SetVertices(vertices);
-        theMesh.SetTriangles(triangles, 0);
-        theMesh.RecalculateNormals();
+        TheMesh.Clear();
+        TheMesh.SetVertices(Vertices);
+        TheMesh.SetTriangles(Triangles, 0);
+        TheMesh.RecalculateNormals();
     }
 
 
     public void ClearMesh()
     {
-        vertices.Clear();
-        triangles.Clear();
-        theMesh.SetVertices(vertices);
-        theMesh.SetTriangles(triangles, 0);
+        Vertices.Clear();
+        Triangles.Clear();
+        TheMesh.SetVertices(Vertices);
+        TheMesh.SetTriangles(Triangles, 0);
     }
 
 
@@ -87,7 +87,7 @@ public class AdvancedMesh : MonoBehaviour
     {
         foreach (var p in pointsAndMove)
         {
-            vertices[p.Key] += p.Value;
+            Vertices[p.Key] += p.Value;
         }
         UpdateMesh();
     }
@@ -96,7 +96,7 @@ public class AdvancedMesh : MonoBehaviour
     {
         foreach (var i in indexes)
         {
-            vertices[i] += moveAmount;
+            Vertices[i] += moveAmount;
         }
         
         UpdateMesh();
@@ -104,8 +104,8 @@ public class AdvancedMesh : MonoBehaviour
 
     protected void MoveTwoVerts(int indexOne, int indexTwo, Vector3 moveAmount)
     {
-        vertices[indexOne] += moveAmount;
-        vertices[indexTwo] += moveAmount;
+        Vertices[indexOne] += moveAmount;
+        Vertices[indexTwo] += moveAmount;
         
         UpdateMesh();
     }
@@ -113,34 +113,34 @@ public class AdvancedMesh : MonoBehaviour
     protected void SetTwoVerts(int indexOne, int indexTwo, Vector3 setVector, float offset)
     {
         
-        vertices[indexOne] = setVector;
-        vertices[indexTwo] = setVector + new Vector3(0, offset, 0);
+        Vertices[indexOne] = setVector;
+        Vertices[indexTwo] = setVector + new Vector3(0, offset, 0);
         
         UpdateMesh();
     }
 
     protected void AddTriangle(Vector3 v1,Vector3 v2, Vector3 v3)
     {
-        var vertexIndex = vertices.Count;
-        vertices.Add(v1);
-        vertices.Add(v2);
-        vertices.Add(v3);
-        triangles.Add(vertexIndex);
-        triangles.Add(vertexIndex + 1);
-        triangles.Add(vertexIndex + 2);
+        var vertexIndex = Vertices.Count;
+        Vertices.Add(v1);
+        Vertices.Add(v2);
+        Vertices.Add(v3);
+        Triangles.Add(vertexIndex);
+        Triangles.Add(vertexIndex + 1);
+        Triangles.Add(vertexIndex + 2);
         
         UpdateMesh();
     }
 
     protected int AddTriangleWithPointList(List<Vector3> pointList)
     {
-        var vertexIndex = vertices.Count;
-        vertices.Add(pointList[0]);
-        vertices.Add(pointList[1]);
-        vertices.Add(pointList[2]);
-        triangles.Add(vertexIndex);
-        triangles.Add(vertexIndex + 1);
-        triangles.Add(vertexIndex + 2);
+        var vertexIndex = Vertices.Count;
+        Vertices.Add(pointList[0]);
+        Vertices.Add(pointList[1]);
+        Vertices.Add(pointList[2]);
+        Triangles.Add(vertexIndex);
+        Triangles.Add(vertexIndex + 1);
+        Triangles.Add(vertexIndex + 2);
         
         UpdateMesh();
 
@@ -151,13 +151,13 @@ public class AdvancedMesh : MonoBehaviour
     private void RemoveQuad(int firstIndex)
     {
 
-        var tris = triangles.FindAll(x => x == firstIndex);
-        triangles.RemoveAt(firstIndex + 5);
-        triangles.RemoveAt(firstIndex + 4);
-        triangles.RemoveAt(firstIndex + 3);
-        triangles.RemoveAt(firstIndex + 2);
-        triangles.RemoveAt(firstIndex + 1);
-        triangles.RemoveAt(firstIndex);
+        var tris = Triangles.FindAll(x => x == firstIndex);
+        Triangles.RemoveAt(firstIndex + 5);
+        Triangles.RemoveAt(firstIndex + 4);
+        Triangles.RemoveAt(firstIndex + 3);
+        Triangles.RemoveAt(firstIndex + 2);
+        Triangles.RemoveAt(firstIndex + 1);
+        Triangles.RemoveAt(firstIndex);
         UpdateMesh();
     }
     
