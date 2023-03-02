@@ -15,20 +15,27 @@ public class NewMeshTest : MonoBehaviour
     public Material aMaterial;
     public List<Vector3> points = new ();
 
+    private Vector3[] arrayPoints;
+
     private void Awake()
     {
-       mesh = gameObject.AddComponent<AdvancedMesh>();
-       mesh.ApplyMaterial(aMaterial);
-       AddSomePoints();
-       AddSomePoints2();
+        arrayPoints = new Vector3[4];
+        mesh = gameObject.AddComponent<AdvancedMesh>();
+        mesh.ApplyMaterial(aMaterial);
+        AddSomePoints();
+        AddSomePoints2();
     }
     
     private void SetPoints(Directions direction, Vector2 size, Vector3 startPoint)
     {
         points.Clear();
-        
+
         if (direction == Directions.Up)
         {
+            arrayPoints[0] = startPoint;
+            arrayPoints[1] = startPoint + new Vector3(0, 0, size.x);
+            arrayPoints[2] = startPoint + new Vector3(0, size.y,0);
+            arrayPoints[3] = startPoint + new Vector3(0, size.y, size.x);
             points.Add(startPoint);
             points.Add(startPoint + new Vector3(0, 0, size.x));
             points.Add(startPoint + new Vector3(0, size.y,0));
@@ -41,6 +48,13 @@ public class NewMeshTest : MonoBehaviour
             points.Add(startPoint + new Vector3(size.x,0,0));
             points.Add(startPoint);
         }
+    }
+
+    private void AddPoints()
+    {
+        points.Clear();
+        
+        
     }
     
     private void AddSomePoints()
