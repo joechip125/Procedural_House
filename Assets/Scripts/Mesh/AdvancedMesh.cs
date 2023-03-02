@@ -29,7 +29,7 @@ public class AdvancedMesh : MonoBehaviour
         UpdateMesh();
     }
     
-    protected int AddQuadWithPointList(List<Vector3> pointList)
+    public int AddQuadWithPointList(List<Vector3> pointList)
     {
         var vertexIndex = Vertices.Count;
         
@@ -150,7 +150,6 @@ public class AdvancedMesh : MonoBehaviour
 
     private void RemoveQuad(int firstIndex)
     {
-
         var tris = Triangles.FindAll(x => x == firstIndex);
         Triangles.RemoveAt(firstIndex + 5);
         Triangles.RemoveAt(firstIndex + 4);
