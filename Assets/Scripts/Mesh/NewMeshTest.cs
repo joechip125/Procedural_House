@@ -23,7 +23,8 @@ public class NewMeshTest : MonoBehaviour
     {
         if (!Application.isEditor) return;
         arrayPoints = new Vector3[4];
-        mesh = gameObject.AddComponent<AdvancedMesh>();
+        mesh = gameObject.GetComponent<AdvancedMesh>() == null ? 
+            gameObject.AddComponent<AdvancedMesh>() : gameObject.GetComponent<AdvancedMesh>();
         mesh.InstanceMesh();
         mesh.ApplyMaterial(aMaterial);
         AddSomePoints2();
@@ -38,12 +39,12 @@ public class NewMeshTest : MonoBehaviour
 
         if (direction.z != 0)
         {
-            points.Add(startPoint + new Vector3(0, 0, size.z));
+            points.Add(startPoint + new Vector3(0, 0, size.z * direction.z));
         }
         
         if (direction.x != 0)
         {
-            points.Add(startPoint + new Vector3(size.x, 0,0));
+            points.Add(startPoint + new Vector3(size.x * direction.x, 0,0));
         }
 
         if (direction.y != 0)
@@ -77,14 +78,22 @@ public class NewMeshTest : MonoBehaviour
     {
         var pos = transform.localPosition;
         
-        SetPoints(new Vector3(1,0,1), new Vector3(100,100, 100), pos);
+        SetPoints(new Vector3(0,1,1), new Vector3(100,100, 50), pos, true);
         mesh.AddQuadWithPointList(points);
         
-        SetPoints(new Vector3(0,1,1), new Vector3(100,100, 100), pos, true);
+        SetPoints(new Vector3(0,1,1), new Vector3(100,100, 50), pos + new Vector3(-10,0,0));
         mesh.AddQuadWithPointList(points);
         
-        SetPoints(new Vector3(1,1,0), new Vector3(100,100, 100), pos);
+        SetPoints(new Vector3(1,1,0), new Vector3(10,80, 50), pos + new Vector3(-10,0,50));
         mesh.AddQuadWithPointList(points);
         
+        SetPoints(new Vector3(1,0,1), new Vector3(10,10, 30), pos + new Vector3(-10,80,50), true);
+        mesh.AddQuadWithPointList(points);
+        
+        SetPoints(new Vector3(0,1,1), new Vector3(10,20, 30), pos + new Vector3(-10,80,50), false);
+        mesh.AddQuadWithPointList(points);
+        
+        SetPoints(new Vector3(0,1,1), new Vector3(10,20, 30), pos + new Vector3(0,80,50), true);
+        mesh.AddQuadWithPointList(points);
     }
 }
