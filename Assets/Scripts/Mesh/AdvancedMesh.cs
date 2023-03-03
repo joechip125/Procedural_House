@@ -23,6 +23,12 @@ public class AdvancedMesh : MonoBehaviour
         TheMesh.name = "TheMesh";
     }
 
+    public void InstanceMesh()
+    {
+        GetComponent<MeshFilter>().mesh = TheMesh = new Mesh();
+        TheMesh.name = "TheMesh";
+    }
+    
     public void ApplyMaterial(Material material)
     {
         GetComponent<MeshRenderer>().material = material;
