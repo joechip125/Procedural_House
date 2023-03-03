@@ -18,7 +18,8 @@ public class NewMeshTest : MonoBehaviour
     private Matrix4x4 aMatrix;
 
     private Vector3[] arrayPoints;
-    
+    private Vector3[] vertices;
+
     private void Awake()
     {
         if (!Application.isEditor) return;
@@ -98,5 +99,25 @@ public class NewMeshTest : MonoBehaviour
         
         SetPoints(new Vector3(0,1,1), new Vector3(10,20, 30), pos + new Vector3(0,80,50), true);
         mesh.AddQuadWithPointList(points);
+    }
+    
+    
+    private void OnDrawGizmos () 
+    {
+        if (vertices == null) return;
+        
+        Gizmos.color = Color.black;
+        
+        for (int i = 0; i < vertices.Length; i++) 
+        {
+            Gizmos.color = Color.black;
+            Gizmos.DrawSphere(vertices[i], 0.1f);
+            if (i > 0)
+            {
+                Gizmos.color = Color.red;
+                var prev = vertices[i - 1];
+                Gizmos.DrawLine(prev, vertices[i]);
+            }
+        }
     }
 }
