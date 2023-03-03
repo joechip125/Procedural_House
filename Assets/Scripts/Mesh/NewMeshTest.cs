@@ -90,6 +90,9 @@ public class NewMeshTest : MonoBehaviour
         SetPoints(new Vector3(1,0,1), new Vector3(10,10, 30), pos + new Vector3(-10,80,50), true);
         mesh.AddQuadWithPointList(points);
         
+        SetPoints(new Vector3(1,0,1), new Vector3(10,10, 30), pos + new Vector3(-10,0,50), false);
+        mesh.AddQuadWithPointList(points);
+        
         SetPoints(new Vector3(0,1,1), new Vector3(10,20, 30), pos + new Vector3(-10,80,50), false);
         mesh.AddQuadWithPointList(points);
         
