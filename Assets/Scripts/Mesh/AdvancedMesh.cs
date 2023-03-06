@@ -9,6 +9,7 @@ public enum VectorTypes
     Normal, InvertNormal, Forward, Back
 }
 
+[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class AdvancedMesh : MonoBehaviour
 {
     protected Mesh TheMesh;

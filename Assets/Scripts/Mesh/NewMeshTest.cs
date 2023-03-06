@@ -4,11 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Matrix4x4 = System.Numerics.Matrix4x4;
 
-public enum Directions
-{
-    Up,
-    Down
-}
 [ExecuteInEditMode]
 public class NewMeshTest : MonoBehaviour
 {
@@ -17,13 +12,11 @@ public class NewMeshTest : MonoBehaviour
     public List<Vector3> points = new ();
     private Matrix4x4 aMatrix;
 
-    private Vector3[] arrayPoints;
     private Vector3[] vertices;
 
     private void Awake()
     {
         if (!Application.isEditor) return;
-        arrayPoints = new Vector3[4];
         mesh = gameObject.GetComponent<AdvancedMesh>() == null ? 
             gameObject.AddComponent<AdvancedMesh>() : gameObject.GetComponent<AdvancedMesh>();
         mesh.InstanceMesh();
@@ -78,27 +71,6 @@ public class NewMeshTest : MonoBehaviour
     private void AddSomePoints2()
     {
         var pos = transform.localPosition;
-        
-        SetPoints(new Vector3(0,1,1), new Vector3(100,100, 50), pos, true);
-        mesh.AddQuadWithPointList(points);
-        
-        SetPoints(new Vector3(0,1,1), new Vector3(100,100, 50), pos + new Vector3(-10,0,0));
-        mesh.AddQuadWithPointList(points);
-        
-        SetPoints(new Vector3(1,1,0), new Vector3(10,80, 50), pos + new Vector3(-10,0,50));
-        mesh.AddQuadWithPointList(points);
-        
-        SetPoints(new Vector3(1,0,1), new Vector3(10,10, 30), pos + new Vector3(-10,80,50), true);
-        mesh.AddQuadWithPointList(points);
-        
-        SetPoints(new Vector3(1,0,1), new Vector3(10,10, 30), pos + new Vector3(-10,0,50), false);
-        mesh.AddQuadWithPointList(points);
-        
-        SetPoints(new Vector3(0,1,1), new Vector3(10,20, 30), pos + new Vector3(-10,80,50), false);
-        mesh.AddQuadWithPointList(points);
-        
-        SetPoints(new Vector3(0,1,1), new Vector3(10,20, 30), pos + new Vector3(0,80,50), true);
-        mesh.AddQuadWithPointList(points);
     }
     
     
