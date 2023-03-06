@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class TabTest : MonoBehaviour
 {
-
     public string stringVar1;
-
-
+    
     public int intVar1;
 
     [HideInInspector] public int currentTab;
+
+    public string stringTab;
     
     // Start is called before the first frame update
     void Start()
