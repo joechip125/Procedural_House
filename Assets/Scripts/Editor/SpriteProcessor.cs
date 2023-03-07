@@ -9,7 +9,7 @@ public class SpriteProcessor : AssetPostprocessor
     private void OnPostprocessTexture(Texture2D texture)
     {
         var lowerCaseAssetPath = assetPath.ToLower();
-        var isInSpriteDirectory = lowerCaseAssetPath.IndexOf("/sprites/", StringComparison.Ordinal) != -1;
+        var isInSpriteDirectory = lowerCaseAssetPath.IndexOf("/sprites/", StringComparison.OrdinalIgnoreCase) != -1;
 
         if (!isInSpriteDirectory) return;
         
