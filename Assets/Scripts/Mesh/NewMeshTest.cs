@@ -11,6 +11,7 @@ public class NewMeshTest : MonoBehaviour
     public Material aMaterial;
     public List<Vector3> points = new ();
     private Matrix4x4 aMatrix;
+    [SerializeField] private List<Vector3> vertPos = new();
 
     private Vector3[] vertices;
 
@@ -21,9 +22,15 @@ public class NewMeshTest : MonoBehaviour
             gameObject.AddComponent<AdvancedMesh>() : gameObject.GetComponent<AdvancedMesh>();
         mesh.InstanceMesh();
         mesh.ApplyMaterial(aMaterial);
+        SetVerts();
         AddSomePoints2();
     }
-    
+
+    private void SetVerts()
+    {
+        var pos = transform.localPosition;
+        vertices = new[] { pos, pos + new Vector3(20, 0, 0) };
+    }
     private void SetPoints(Vector3 direction, Vector3 size, Vector3 startPoint, bool backFront = false)
     {
         points.Clear();
@@ -76,19 +83,19 @@ public class NewMeshTest : MonoBehaviour
     
     private void OnDrawGizmos () 
     {
-        if (vertices == null) return;
+        if (vertPos.Count < 1) return;
         
         Gizmos.color = Color.black;
         
-        for (int i = 0; i < vertices.Length; i++) 
+        for (int i = 0; i < vertPos.Count; i++) 
         {
             Gizmos.color = Color.black;
-            Gizmos.DrawSphere(vertices[i], 0.1f);
+            Gizmos.DrawSphere(vertPos[i], 0.1f);
             if (i > 0)
             {
                 Gizmos.color = Color.red;
-                var prev = vertices[i - 1];
-                Gizmos.DrawLine(prev, vertices[i]);
+                var prev = vertPos[i - 1];
+                Gizmos.DrawLine(prev, vertPos[i]);
             }
         }
     }
