@@ -21,11 +21,6 @@ public class Staircase : MonoBehaviour
         mesh.ApplyMaterial(mat);
         Try();
     }
-
-    private void AddPanel()
-    {
-        
-    }
     
     private void Try()
     {
@@ -34,26 +29,21 @@ public class Staircase : MonoBehaviour
         var addW = new Vector3(width,0,0);
         var addL = new Vector3(0,0,-20);
         
-        
         for (int i = 0; i < 8; i++)
         {
             var v1 = start;
+            var v2 = v1 + addH;
+            var v3 = v1 + addW;
+            var v4 = v3 + addH;
+            start += addH;
+            mesh.AddQuad(v1, v2, v3, v4);
+
+            var v5 = start;
+            var v6 = v5 + addL;
+            var v7 = v5 + addW;
+            var v8 = v7 + addL;
+            start += addL;
+            mesh.AddQuad(v5, v6, v7, v8);
         }
-
-        var add = new Vector3(0, height, 0);
-        var t1 = transform.position;
-        var t2 = t1 + addH;
-        var t3 = t1 + addW;
-        var t4 = t3 + addH;
-        mesh.AddQuad(t1, t2, t3, t4);
-
-        var secS = t1 + add;
-        
-        var add2 = new Vector3(0, 0, -20);
-        var t5 =secS;
-        var t6 = t5 + add2;
-        var t7 = t5 + addL;
-        var t8 = t7 + add2;
-        mesh.AddQuad(t5, t6, t7, t8);
     }
 }
