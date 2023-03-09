@@ -282,6 +282,10 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 2513501849286654023, guid: f5de178be391360439b3760d99c701e5, type: 3}
+      propertyPath: height
+      value: 24.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2513501849286654023, guid: f5de178be391360439b3760d99c701e5, type: 3}
       propertyPath: vertPos.Array.size
       value: 4
       objectReference: {fileID: 0}

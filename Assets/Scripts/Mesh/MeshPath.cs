@@ -12,6 +12,7 @@ public class MeshPath : MonoBehaviour
     public List<Vector3> points = new ();
     private Matrix4x4 aMatrix;
     [SerializeField] public List<Vector3> vertPos = new();
+    [Range(1, 50)]public float height;
     
     private void Awake()
     {
@@ -59,6 +60,7 @@ public class MeshPath : MonoBehaviour
     private void OnDrawGizmos () 
     {
         if (vertPos.Count < 1) return;
+        float h = 20;
         
         Gizmos.color = Color.black;
         
@@ -66,17 +68,14 @@ public class MeshPath : MonoBehaviour
         {
             Gizmos.color = Color.black;
             Gizmos.DrawSphere(vertPos[i], 0.1f);
+            Gizmos.DrawSphere(vertPos[i] + new Vector3(0, height,0), 0.1f);
             if (i > 0)
             {
-                var diff = vertPos[i] - vertPos[i - 1];
-                var start = vertPos[i - 1] + diff / 2;
-
-                Gizmos.color = Color.white;
-                Gizmos.DrawCube(start, new Vector3(2,2,2));
                 
                 Gizmos.color = Color.red;
                 var prev = vertPos[i - 1];
                 Gizmos.DrawLine(prev, vertPos[i]);
+                Gizmos.DrawLine(prev + new Vector3(0,height,0), vertPos[i]+ new Vector3(0,height,0));
             }
         }
     }
