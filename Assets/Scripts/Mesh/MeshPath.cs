@@ -81,6 +81,8 @@ public class MeshPath : MonoBehaviour
     private void OnDrawGizmos () 
     {
         if (vertPos.Count < 1) return;
+
+        var pos = transform.position;
         
         for (int i = 0; i < vertPos.Count; i++) 
         {
