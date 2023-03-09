@@ -5,13 +5,13 @@ using UnityEngine;
 using Matrix4x4 = System.Numerics.Matrix4x4;
 
 [ExecuteInEditMode]
-public class NewMeshTest : MonoBehaviour
+public class MeshPath : MonoBehaviour
 {
     private AdvancedMesh mesh;
     public Material aMaterial;
     public List<Vector3> points = new ();
     private Matrix4x4 aMatrix;
-    [SerializeField] private List<Vector3> vertPos = new();
+    [SerializeField] public List<Vector3> vertPos = new();
 
     private Vector3[] vertices;
 
@@ -26,6 +26,14 @@ public class NewMeshTest : MonoBehaviour
         AddSomePoints2();
     }
 
+
+    public void SetControlPoint(int pointIndex, Vector3 position)
+    {
+        if (pointIndex >= vertPos.Count) return;
+
+        vertPos[pointIndex] = position;
+    }
+    
     private void SetVerts()
     {
         var pos = transform.localPosition;
