@@ -12,9 +12,7 @@ public class MeshPath : MonoBehaviour
     public List<Vector3> points = new ();
     private Matrix4x4 aMatrix;
     [SerializeField] public List<Vector3> vertPos = new();
-
-    private Vector3[] vertices;
-
+    
     private void Awake()
     {
         if (!Application.isEditor) return;
@@ -22,8 +20,6 @@ public class MeshPath : MonoBehaviour
             gameObject.AddComponent<AdvancedMesh>() : gameObject.GetComponent<AdvancedMesh>();
         mesh.InstanceMesh();
         mesh.ApplyMaterial(aMaterial);
-        SetVerts();
-        AddSomePoints2();
     }
 
 
@@ -34,11 +30,6 @@ public class MeshPath : MonoBehaviour
         vertPos[pointIndex] = position;
     }
     
-    private void SetVerts()
-    {
-        var pos = transform.localPosition;
-        vertices = new[] { pos, pos + new Vector3(20, 0, 0) };
-    }
     private void SetPoints(Vector3 direction, Vector3 size, Vector3 startPoint, bool backFront = false)
     {
         points.Clear();
@@ -64,30 +55,6 @@ public class MeshPath : MonoBehaviour
         if(!backFront) points.Add(startPoint);
         else points.Add(startPoint + Vector3.Scale(direction, size));
     }
-
-    private void SetFloorCeil(Vector2 size, Vector3 startPoint)
-    {
-        //points.Add(startPoint);
-        //points.Add(startPoint + new Vector3(0, 0, size.x));
-        //points.Add(startPoint + new Vector3(size.x,0,0));
-        //points.Add(startPoint + new Vector3(size.x, 0, size.y));
-
-        points.Add(startPoint + new Vector3(size.x, 0, size.y));
-        points.Add(startPoint + new Vector3(0, 0, size.x));
-        points.Add(startPoint + new Vector3(size.x,0,0));
-        points.Add(startPoint);
-    }
-    
-    private void AddPoints()
-    {
-        points.Clear();
-    }
-
-    private void AddSomePoints2()
-    {
-        var pos = transform.localPosition;
-    }
-    
     
     private void OnDrawGizmos () 
     {
@@ -101,6 +68,12 @@ public class MeshPath : MonoBehaviour
             Gizmos.DrawSphere(vertPos[i], 0.1f);
             if (i > 0)
             {
+                var diff = vertPos[i] - vertPos[i - 1];
+                var start = vertPos[i - 1] + diff / 2;
+
+                Gizmos.color = Color.white;
+                Gizmos.DrawCube(start, new Vector3(2,2,2));
+                
                 Gizmos.color = Color.red;
                 var prev = vertPos[i - 1];
                 Gizmos.DrawLine(prev, vertPos[i]);

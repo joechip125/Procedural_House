@@ -283,11 +283,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2513501849286654023, guid: f5de178be391360439b3760d99c701e5, type: 3}
       propertyPath: vertPos.Array.size
-      value: 2
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2513501849286654023, guid: f5de178be391360439b3760d99c701e5, type: 3}
+      propertyPath: vertPos.Array.data[0].z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2513501849286654023, guid: f5de178be391360439b3760d99c701e5, type: 3}
       propertyPath: vertPos.Array.data[1].x
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2513501849286654023, guid: f5de178be391360439b3760d99c701e5, type: 3}
+      propertyPath: vertPos.Array.data[1].z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2513501849286654023, guid: f5de178be391360439b3760d99c701e5, type: 3}
+      propertyPath: vertPos.Array.data[2].x
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 2513501849286654023, guid: f5de178be391360439b3760d99c701e5, type: 3}
+      propertyPath: vertPos.Array.data[2].z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2513501849286654023, guid: f5de178be391360439b3760d99c701e5, type: 3}
+      propertyPath: vertPos.Array.data[3].x
+      value: 60.02191
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -332,7 +352,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 736370208}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -25.34, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
