@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Matrix4x4 = System.Numerics.Matrix4x4;
 
-[ExecuteInEditMode]
+
 public class MeshPath : MonoBehaviour
 {
     private AdvancedMesh mesh;
@@ -23,6 +23,27 @@ public class MeshPath : MonoBehaviour
         mesh.ApplyMaterial(aMaterial);
     }
 
+
+    private void Start()
+    {
+        DoWhatever();
+    }
+
+    public void DoWhatever()
+    {
+        var add = new Vector3(0, height, 0);
+        for (int i = 0; i < vertPos.Count; i++)
+        {
+            if (i < vertPos.Count - 1)
+            {
+                var first = vertPos[i];
+                var second = vertPos[i] + add;
+                var third = vertPos[i + 1];
+                var fourth = vertPos[i + 1] + add;
+                mesh.AddQuad(first, second, third, fourth);
+            }
+        }
+    }
 
     public void SetControlPoint(int pointIndex, Vector3 position)
     {
@@ -60,9 +81,6 @@ public class MeshPath : MonoBehaviour
     private void OnDrawGizmos () 
     {
         if (vertPos.Count < 1) return;
-        float h = 20;
-        
-        Gizmos.color = Color.black;
         
         for (int i = 0; i < vertPos.Count; i++) 
         {
@@ -71,7 +89,6 @@ public class MeshPath : MonoBehaviour
             Gizmos.DrawSphere(vertPos[i] + new Vector3(0, height,0), 0.1f);
             if (i > 0)
             {
-                
                 Gizmos.color = Color.red;
                 var prev = vertPos[i - 1];
                 Gizmos.DrawLine(prev, vertPos[i]);
