@@ -13,6 +13,7 @@ public class TestRoom : MonoBehaviour
     [SerializeField, Range(10, 300)] private float sizeY;
     private Vector3[] corners;
     private Color color = Color.white;
+    //[HideInInspector] List<Vector3>
 
 
     private void Awake()
@@ -54,7 +55,7 @@ public class TestRoom : MonoBehaviour
         SetCorners();
         var pos = transform.position;
         var add = new Vector3(0, sizeY, 0);
-        Gizmos.color = color;
+        Gizmos.color = Color.gray;
         Gizmos.DrawCube(pos, new Vector3(sizeX, 1, sizeZ));
         
         for (int i = 0; i < 4; i++)
