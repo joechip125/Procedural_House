@@ -11,6 +11,7 @@ public class Staircase : MonoBehaviour
     [SerializeField] private Material mat;
     [Range(2, 40)]public float height;
     [Range(2, 100)]public float width;
+    [Range(-100, 100)]public float length;
     [Range(2, 20)] public int numberStairs;
 
     private void Awake()
@@ -26,31 +27,29 @@ public class Staircase : MonoBehaviour
     {
         var pos = transform.position;
         var w = new Vector3(width, 0, 0);
-        Gizmos.DrawSphere(pos, 2);
-        Gizmos.DrawSphere(pos + new Vector3(width,0,0), 2);
-        
+        var posW = pos + w;
+        var l = new Vector3(0, 0, length);
+        var h = new Vector3(0, height, 0);
+
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(pos, pos + w);
-        
-        for (int i = 0; i < numberStairs - 1; i++)
-        {   
-            Gizmos.color = Color.gray;
-            var first = pos + new Vector3(0, height, 0);
-            var second = pos + new Vector3(0, 0, -20);
-            pos += new Vector3(0, height, 0);
-            Gizmos.DrawSphere(pos, 2);
-            Gizmos.DrawSphere(pos + new Vector3(width,0,0), 2);
-            
-            Gizmos.color = Color.red;
+        //Gizmos.DrawLine(pos, pos + w);
+
+        for (int i = 0; i < numberStairs ; i++)
+        {
             Gizmos.DrawLine(pos, pos + w);
-            
-            Gizmos.color = Color.gray;
-            pos += new Vector3(0, 0, -20);
-            Gizmos.DrawSphere(pos, 2);
-            Gizmos.DrawSphere(pos+ new Vector3(width,0,0), 2);
-            
-            Gizmos.color = Color.red;
+            Gizmos.DrawLine(pos, pos + h);
+            Gizmos.DrawLine(pos + w, pos + w + h);
+            pos += h;
             Gizmos.DrawLine(pos, pos + w);
+            Gizmos.DrawLine(pos, pos +l);
+            Gizmos.DrawLine(pos + w, pos + w + l);
+            pos += l;
+
+            if (i == numberStairs - 1)
+            {
+                Gizmos.DrawLine(pos, pos + w);
+            }
+           
         }
     }
 
