@@ -217,6 +217,53 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &98358880
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 98358882}
+  - component: {fileID: 98358881}
+  m_Layer: 0
+  m_Name: TestDoor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &98358881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 98358880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5aec6bfa31563a54ca4bd6bc6c7d2d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sizeX: 77.3
+  sizeY: 151.8
+  sizeZ: 112.6
+--- !u!4 &98358882
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 98358880}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -149, y: 101.5, z: -276}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &260958045
 Mesh:
   m_ObjectHideFlags: 0
@@ -476,7 +523,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1039697205083986950, guid: 682c0a3c71f802149b63031f4f4947d1, type: 3}
       propertyPath: width
-      value: 64.7
+      value: 42.6
       objectReference: {fileID: 0}
     - target: {fileID: 1039697205083986950, guid: 682c0a3c71f802149b63031f4f4947d1, type: 3}
       propertyPath: height
@@ -504,7 +551,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7487955606454145156, guid: 682c0a3c71f802149b63031f4f4947d1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -187.3
+      value: -145.3
       objectReference: {fileID: 0}
     - target: {fileID: 7487955606454145156, guid: 682c0a3c71f802149b63031f4f4947d1, type: 3}
       propertyPath: m_LocalPosition.y
@@ -768,15 +815,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7958117869593709903, guid: 832c7a222c8b310419908bdf286b627e, type: 3}
       propertyPath: sizeX
-      value: 578
+      value: 524
       objectReference: {fileID: 0}
     - target: {fileID: 7958117869593709903, guid: 832c7a222c8b310419908bdf286b627e, type: 3}
       propertyPath: sizeY
-      value: 293
+      value: 236
       objectReference: {fileID: 0}
     - target: {fileID: 7958117869593709903, guid: 832c7a222c8b310419908bdf286b627e, type: 3}
       propertyPath: sizeZ
-      value: 702
+      value: 509
       objectReference: {fileID: 0}
     - target: {fileID: 8245984300704023922, guid: 832c7a222c8b310419908bdf286b627e, type: 3}
       propertyPath: m_Mesh
