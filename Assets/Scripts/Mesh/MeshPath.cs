@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Matrix4x4 = System.Numerics.Matrix4x4;
 
-
 public class MeshPath : MonoBehaviour
 {
     private AdvancedMesh mesh;
@@ -22,8 +21,7 @@ public class MeshPath : MonoBehaviour
         mesh.InstanceMesh();
         mesh.ApplyMaterial(aMaterial);
     }
-
-
+    
     private void Start()
     {
         DoWhatever();
