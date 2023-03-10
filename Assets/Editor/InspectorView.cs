@@ -11,7 +11,7 @@ public class InspectorView : VisualElement
         
     }
 
-    private Editor _editor;
+    private UnityEditor.Editor _editor;
     
     public void UpdateSelection(NodeView nodeView)
     {

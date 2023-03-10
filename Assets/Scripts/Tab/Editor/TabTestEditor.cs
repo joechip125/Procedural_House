@@ -6,7 +6,7 @@ using UnityEngine;
 using Zenject;
 
 [CustomEditor(typeof(TabTest))]
-public class TabTestEditor : Editor
+public class TabTestEditor : UnityEditor.Editor
 {
     private TabTest myTarget;
     private SerializedObject soTarget;

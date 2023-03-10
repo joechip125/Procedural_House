@@ -16,6 +16,7 @@ public class PathManipulatorTool : EditorTool
         ToolManager.SetActiveTool<PathManipulatorTool>();
     }
     
+    
     public override void OnToolGUI(EditorWindow window)
     {
         if (window is not SceneView) return;
