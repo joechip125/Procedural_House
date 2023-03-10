@@ -11,8 +11,7 @@ public class Staircase : MonoBehaviour
     [SerializeField] private Material mat;
     [Range(2, 40)]public float height;
     [Range(2, 100)]public float width;
-    
-    
+
     private void Awake()
     {
         if (!Application.isEditor) return;
@@ -28,7 +27,7 @@ public class Staircase : MonoBehaviour
         var addH =new Vector3(0, height, 0);
         var addW = new Vector3(width,0,0);
         var addL = new Vector3(0,0,-20);
-        
+
         for (int i = 0; i < 8; i++)
         {
             var v1 = start;

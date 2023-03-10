@@ -51,7 +51,6 @@ public class Cube : MonoBehaviour
         return t;
     }
     
-    
     private int CreateTopFace (int[] triangles, int t, int ring) 
     {
         int v = ring * ySize;
@@ -142,8 +141,6 @@ public class Cube : MonoBehaviour
         
         mesh.vertices = vertices;
     }
-
-    
     
     private void CreateTriangles () 
     {
@@ -165,7 +162,6 @@ public class Cube : MonoBehaviour
         
         mesh.triangles = triangles;
     }
-    
 
     private void Generate () 
     {
@@ -179,10 +175,8 @@ public class Cube : MonoBehaviour
 
     private void OnDrawGizmos () 
     {
-        if (vertices == null) 
-        {
-            return;
-        }
+        if (vertices == null) return;
+        
         Gizmos.color = Color.black;
         
         for (int i = 0; i < vertices.Length; i++) 
