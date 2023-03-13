@@ -42,4 +42,30 @@ public class VoxelMap : MonoBehaviour
         chunk.transform.localPosition = new Vector3(x * chunkSize - halfSize, y * chunkSize - halfSize);
         chunks[i] = chunk;
     }
+    
+    private void Update () 
+    {
+        if (Input.GetMouseButton(0)) 
+        {
+            if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hitInfo)) 
+            {
+                if (hitInfo.collider.gameObject == gameObject) 
+                {
+                    EditVoxels(transform.InverseTransformPoint(hitInfo.point));
+                }
+            }
+        }
+    }
+
+    private void EditVoxels(Vector3 point)
+    {
+        int voxelX = (int)((point.x + halfSize) / voxelSize);
+        int voxelY = (int)((point.y + halfSize) / voxelSize);
+        int chunkX = voxelX / voxelResolution;
+        int chunkY = voxelY / voxelResolution;
+        
+        voxelX -= chunkX * voxelResolution;
+        voxelY -= chunkY * voxelResolution;
+        chunks[chunkY * chunkResolution + chunkX].SetVoxel(voxelX, voxelY, true);
+    }
 }
