@@ -16,12 +16,29 @@ public class Doorway
     }
 }
 
-public class TestWall : MonoBehaviour
+
+[Serializable]
+public class Panel
 {
+    public float theStart;
     [Range(10, 500)]public float sizeX;
     [Range(10, 500)]public float sizeY;
-    public List<Doorway> doors = new ();
+    public Panel(float start)
+    {
+        theStart = start;
+    }
+}
 
+public class TestWall : MonoBehaviour
+{
+    [Range(1, 50)]public float sizeX;
+    [Range(1, 50)]public float sizeY;
+    [Range(1, 50)] public float resolution;
+    
+    public List<Panel> panels = new ();
+    
+    
+    
     public void AddDoor()
     {
         
@@ -39,23 +56,16 @@ public class TestWall : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        var pos = transform.position;
-        var max = pos + new Vector3(sizeX, sizeY, 0);
-        
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(pos, pos + new Vector3(0, sizeY,0));
-        Gizmos.DrawLine(pos, pos + new Vector3(sizeX, 0,0));
-        
-        Gizmos.DrawLine(pos+ new Vector3(0, sizeY,0), pos+ new Vector3(0, sizeY,0) + new Vector3(sizeX, 0,0));
-        
-        Gizmos.DrawLine(pos+ new Vector3(sizeX, 0,0), pos + new Vector3(sizeX, 0,0) + new Vector3(0, sizeY,0));
+        var pos =  transform.position;
 
-        for (int i = 0; i < doors.Count; i++)
+        for (int i = 0; i < sizeY; i++)
         {
-            var start = pos + new Vector3(doors[i].theStart, 0, 0);
-            var theX = doors[i].sizeX;
-            var theY = doors[i].sizeY;
-            Gizmos.DrawLine(start, start + new Vector3(0, theY, 0));
+            for (int y = 0; y < sizeX; y++)
+            {
+                Gizmos.DrawSphere(pos, 2);
+                pos += new Vector3(resolution, 0, 0);
+            }
+            pos = transform.position + new Vector3(0, resolution * i, 0);
         }
         
     }
