@@ -4,6 +4,11 @@ using UnityEngine;
 [SelectionBase]
 public class VoxelGrid : MonoBehaviour
 {
+    private Mesh mesh;
+
+    private List<Vector3> vertices;
+    private List<int> triangles;
+    
     public int resolution;
     
     public GameObject voxelPrefab;
@@ -30,7 +35,23 @@ public class VoxelGrid : MonoBehaviour
                 CreateVoxel(i, x, y);
             }
         }
+
+        GetComponent<MeshFilter>().mesh = mesh = new Mesh();
+        mesh.name = "VoxelGrid Mesh";
+        vertices = new List<Vector3>();
+        triangles = new List<int>();
+        Refresh();
+    }
+
+    private void Refresh()
+    {
         SetVoxelColors();
+        Triangulate();
+    }
+
+    private void Triangulate()
+    {
+        
     }
 
     private void SetVoxelColors()
@@ -75,18 +96,19 @@ public class VoxelGrid : MonoBehaviour
             int i = y * resolution + xStart;
             for (int x = xStart; x <= xEnd; x++, i++) 
             {
-                voxels[i] = stencil.Apply(x, y);
+                voxels[i] = stencil.Apply(x, y, voxels[i]);
             }
         }
-        SetVoxelColors();
+        
+        Refresh();
     }
 
     private void CreateVoxel (int i, int x, int y) 
     {
         GameObject o = Instantiate(voxelPrefab) as GameObject;
         o.transform.parent = transform;
-        o.transform.localPosition = new Vector3((x + 0.5f) * voxelSize, (y + 0.5f) * voxelSize);
-        o.transform.localScale = Vector3.one * voxelSize * 0.9f;
+        o.transform.localPosition = new Vector3((x + 0.5f) * voxelSize, (y + 0.5f) * voxelSize, -0.01f);
+        o.transform.localScale = Vector3.one * voxelSize * 0.1f;
         
         voxelMaterials[i] = o.GetComponent<MeshRenderer>().material;
     }
