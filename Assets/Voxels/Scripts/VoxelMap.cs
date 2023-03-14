@@ -65,6 +65,19 @@ public class VoxelMap : MonoBehaviour
         chunk.transform.parent = transform;
         chunk.transform.localPosition = new Vector3(x * chunkSize - halfSize, y * chunkSize - halfSize);
         chunks[i] = chunk;
+
+        if (x > 0)
+        {
+            chunks[i - 1].xNeighbor = chunk;
+        }
+        if (y > 0) 
+        {
+            chunks[i - chunkResolution].yNeighbor = chunk;
+            if (x > 0) 
+            {
+                chunks[i - chunkResolution - 1].xyNeighbor = chunk;
+            }
+        }
     }
     
     private void Update () 
@@ -86,42 +99,38 @@ public class VoxelMap : MonoBehaviour
         int centerX = (int)((point.x + halfSize) / voxelSize);
         int centerY = (int)((point.y + halfSize) / voxelSize);
         
-        int xStart = (centerX - radiusIndex) / voxelResolution;
-        if (xStart < 0) 
-        {
-            xStart = 0;
-        }
+        int xStart = (centerX - radiusIndex -1) / voxelResolution;
+        
+        if (xStart < 0) xStart = 0;
+        
         int xEnd = (centerX + radiusIndex) / voxelResolution;
-        if (xEnd >= chunkResolution) 
-        {
-            xEnd = chunkResolution - 1;
-        }
-        int yStart = (centerY - radiusIndex) / voxelResolution;
-        if (yStart < 0) 
-        {
-            yStart = 0;
-        }
+        
+        if (xEnd >= chunkResolution) xEnd = chunkResolution - 1;
+        
+        int yStart = (centerY - radiusIndex - 1) / voxelResolution;
+        
+        if (yStart < 0) yStart = 0;
+        
         int yEnd = (centerY + radiusIndex) / voxelResolution;
-        if (yEnd >= chunkResolution) 
-        {
-            yEnd = chunkResolution - 1;
-        }
+        
+        if (yEnd >= chunkResolution) yEnd = chunkResolution - 1;
+        
         
         VoxelStencil activeStencil = stencils[stencilIndex];
         activeStencil.Initialize(fillTypeIndex == 0, radiusIndex);
         
-        int voxelYOffset = yStart * voxelResolution;
-        for (int y = yStart; y <= yEnd; y++) 
+        int voxelYOffset = yEnd * voxelResolution;
+        for (int y = yEnd; y >= yStart; y--) 
         {
-            int i = y * chunkResolution + xStart;
-            int voxelXOffset = xStart * voxelResolution;
-            for (int x = xStart; x <= xEnd; x++, i++) 
+            int i = y * chunkResolution + xEnd;
+            int voxelXOffset = xEnd * voxelResolution;
+            for (int x = xEnd; x >= xStart; x--, i--) 
             {
                 activeStencil.SetCenter(centerX - voxelXOffset, centerY - voxelYOffset);
                 chunks[i].Apply(activeStencil);
-                voxelXOffset += voxelResolution;
+                voxelXOffset -= voxelResolution;
             }
-            voxelYOffset += voxelResolution;
+            voxelYOffset -= voxelResolution;
         }
     }
 }
