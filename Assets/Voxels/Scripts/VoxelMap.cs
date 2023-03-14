@@ -15,6 +15,18 @@ public class VoxelMap : MonoBehaviour
 		
     private float chunkSize, voxelSize, halfSize;
 	
+    private static string[] fillTypeNames = {"Filled", "Empty"};
+	
+    private int fillTypeIndex;
+	
+    private void OnGUI () 
+    {
+        GUILayout.BeginArea(new Rect(4f, 4f, 150f, 500f));
+        GUILayout.Label("Fill Type");
+        fillTypeIndex = GUILayout.SelectionGrid(fillTypeIndex, fillTypeNames, 2);
+        GUILayout.EndArea();
+    }
+    
     private void Awake () 
     {
         halfSize = size * 0.5f;
@@ -66,6 +78,9 @@ public class VoxelMap : MonoBehaviour
         
         voxelX -= chunkX * voxelResolution;
         voxelY -= chunkY * voxelResolution;
-        chunks[chunkY * chunkResolution + chunkX].SetVoxel(voxelX, voxelY, true);
+       // chunks[chunkY * chunkResolution + chunkX].SetVoxel(voxelX, voxelY, true);
+        
+        VoxelStencil activeStencil = new VoxelStencil();
+        chunks[chunkY * chunkResolution + chunkX].Apply(voxelX, voxelY, activeStencil);
     }
 }
