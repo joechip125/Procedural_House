@@ -19,7 +19,8 @@ public class RoomSegments : MonoBehaviour
         mesh = GetComponent<AdvancedMesh>();
         mesh.InstanceMesh();
         currentPos = transform.position;
-        SegTwo();
+        SegOne();
+       // SegTwo();
     }
 
     private void SegTwo()
@@ -34,15 +35,20 @@ public class RoomSegments : MonoBehaviour
 
     private void SegOne()
     {
-        AddWall(AddDirection.East);
+        int mid = 40;
+        int sides = 100;
+        AddWall(AddDirection.North);
         SetFloorTile();
-        currentPos += new Vector3(0, 0, 60);
-        sizeZ = 20;
+        currentPos += new Vector3(0, 0, (mid / 2) + sizeZ / 2);
+        sizeZ = mid;
         SetFloorTile();
-        sizeZ = 100;
-        currentPos += new Vector3(0, 0, 60);
+        var hold = currentPos;
+        sizeZ = sides;
+        currentPos += new Vector3(0, 0, (mid / 2) + sizeZ / 2);
         SetFloorTile();
-        AddWall(AddDirection.East);
+        AddWall(AddDirection.North);
+        currentPos = hold + new Vector3(55,0,0);
+        SegTwo();
     }
     
     

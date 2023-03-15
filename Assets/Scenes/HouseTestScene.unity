@@ -394,6 +394,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sizeX: 100
   sizeZ: 100
+  sizeY: 40
   currentPos: {x: 0, y: 0, z: 0}
 --- !u!114 &1247118070
 MonoBehaviour:
