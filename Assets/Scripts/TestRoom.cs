@@ -60,10 +60,6 @@ public class TestRoom : MonoBehaviour
         
         for (int i = 0; i < 4; i++)
         {
-            Gizmos.color = Color.green;
-            Gizmos.DrawSphere(corners[i], 4);
-            Gizmos.DrawSphere(corners[i] + add, 4);
-            
             Gizmos.color = Color.red;
             Gizmos.DrawLine(corners[i], corners[i] + add);
 
