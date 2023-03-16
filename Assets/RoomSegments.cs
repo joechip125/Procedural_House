@@ -31,6 +31,7 @@ public class RoomSegments : MonoBehaviour
         //AddPanel(currentPos + new Vector3(-sizeX / 2, 0, sizeZ / 2), new Vector3(100,0,0));
         AddGrid();
         MovePanel(0, new Vector2(0,-1), 50);
+        MovePanel(2, new Vector2(0,-1), 50);
     }
 
 
@@ -38,6 +39,9 @@ public class RoomSegments : MonoBehaviour
     {
         var first = 0;
         var second = 0;
+        panelNumber *= 4;
+
+        var moveSide = new Vector2(0, 1);
 
         if (mDir.x != 0)
         {
@@ -49,8 +53,8 @@ public class RoomSegments : MonoBehaviour
             if (mDir.y > 0) first = panelNumber;
             else if (mDir.y < 0)
             {
-                first = panelNumber + 3;
-                second = 0;
+                first = (panelNumber) + 3;
+                second = panelNumber;
             }
         }
         
