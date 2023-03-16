@@ -5,13 +5,13 @@ using UnityEngine;
 
 public enum AddDirection
 {
+    None,
     North,
     East,
     South,
     West,
     NorthSouth,
-    EastWest
-    
+    EastWest,
 }
 
 public enum SegmentTypes

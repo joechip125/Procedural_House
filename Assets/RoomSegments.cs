@@ -29,8 +29,21 @@ public class RoomSegments : MonoBehaviour
         currentPos = transform.position;
         //AddSegment(100, 100);
         //AddPanel(currentPos + new Vector3(-sizeX / 2, 0, sizeZ / 2), new Vector3(100,0,0));
-        AddSquare2();
+        AddGrid();
+        mesh.MoveVertices(new Dictionary<int, Vector3>()
+        {
+            {0,new Vector3(50,0,50)},
+            {1,new Vector3(50,0,0)},
+            {3,new Vector3(0,0,50)}
+        });
     }
+
+
+    private void MovePanel()
+    {
+        
+    }
+    
 
     private void AddPanel(Vector3 start, Vector3 direction)
     {
@@ -43,6 +56,22 @@ public class RoomSegments : MonoBehaviour
     }
 
 
+    private void AddGrid()
+    {
+        var numX = 3;
+        var numZ = 3;
+        for (int i = 0; i < numZ; i++)
+        {
+            currentPos = transform.position + new Vector3(0, 0, sizeZ * i);
+            for (int j = 0; j < numX; j++)
+            {
+                AddFloorTile();
+                currentPos += new Vector3(sizeX, 0, 0);
+            }
+          //  currentPos = transform.position + new Vector3(0, 0, sizeZ * i);
+        }
+    }
+    
     private void AddSquare()
     {
        AddSegment(50,100, AddDirection.West, 3);
@@ -95,7 +124,7 @@ public class RoomSegments : MonoBehaviour
             size = new Vector3(sizeX, sizeY, sizeZ)
         });
         
-        SetFloorTile();
+        AddFloorTile();
 
         switch (numberWalls)
         {
@@ -192,7 +221,7 @@ public class RoomSegments : MonoBehaviour
     {
         sizeX = 10;
         sizeZ = 40;
-        SetFloorTile();
+        AddFloorTile();
         AddWall(AddDirection.East);
         AddWall(AddDirection.West);
         SetCeilingTile();
@@ -203,20 +232,20 @@ public class RoomSegments : MonoBehaviour
         int mid = 40;
         int sides = 100;
         AddWall(AddDirection.North);
-        SetFloorTile();
+        AddFloorTile();
         currentPos += new Vector3(0, 0, (mid / 2) + sizeZ / 2);
         sizeZ = mid;
-        SetFloorTile();
+        AddFloorTile();
         var hold = currentPos;
         sizeZ = sides;
         currentPos += new Vector3(0, 0, (mid / 2) + sizeZ / 2);
-        SetFloorTile();
+        AddFloorTile();
         AddWall(AddDirection.North);
         currentPos = hold + new Vector3(55,0,0);
         SegTwo();
     }
     
-    private void SetFloorTile()
+    private void AddFloorTile()
     {
         var v1 = new Vector3(Min.x, 0, Min.z);
         var v2 = v1 + new Vector3(0, 0, sizeZ);
