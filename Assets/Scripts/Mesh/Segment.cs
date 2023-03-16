@@ -23,7 +23,6 @@ public class Segment
     public Vector3[] positions;
     public Vector3 position;
     public Vector3 size;
-    public AddDirection[] neighbours;
     public SegmentTypes type;
 
     public Segment(int numberPos)

@@ -1,14 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class RoomSegments : MonoBehaviour
 {
     private AdvancedMesh mesh;
-    public float sizeX;
-    public float sizeZ;
-    public float sizeY;
+    public float sizeX, sizeY, sizeZ;
+   
+    public List<Segment> segments = new();
 
     public Vector3 currentPos;
     public Vector3 Max => currentPos + new Vector3(sizeX / 2, sizeY, sizeZ/ 2);
@@ -21,16 +22,29 @@ public class RoomSegments : MonoBehaviour
         mesh = GetComponent<AdvancedMesh>();
         mesh.InstanceMesh();
         currentPos = transform.position;
-
-        var v1 = currentPos;
-        var v2 = v1 + new Vector3(0,40,0);
-        var v3 = v1 + new Vector3(0, 40, 40);
-        var v4 = v1 + new Vector3(0, 0, 40);
-        //mesh.AddTriangle2(v1, v2, v3);
-        mesh.AddQuad2(v1, v2, v3, v4);
+        SetFloorTile();
+        AddWall(AddDirection.East);
+        var mid = 20;
+        var edge = 100;
+        currentPos += new Vector3(sizeX / 2 + (mid / 2), 0, 0);
+        sizeX = mid;
+        SetFloorTile();
+        sizeX = edge;
+        currentPos += new Vector3(sizeX / 2 + (mid / 2), 0, 0);
+        SetFloorTile();
+        AddWall(AddDirection.East);
         //SegOne();
         //SegTwo();
     }
+
+    public void AddSegment(float xSize, float zSize)
+    {
+        segments.Add(new Segment(3)
+        {
+            
+        });
+    }
+    
 
     private void SegTwo()
     {
@@ -64,58 +78,55 @@ public class RoomSegments : MonoBehaviour
     
     private void SetFloorTile()
     {
-        var top =  new Vector3(Min.x, 0, Max.z);
-        var left = new Vector3(Max.x, 0, Min.z);
-        var other = new Vector3(Max.x, 0, Max.z);
-        mesh.AddQuad(Min, left, top, other);
+        var v1 = new Vector3(Min.x, 0, Min.z);
+        var v2 = v1 + new Vector3(0, 0, sizeZ);
+        var v3 = v1 + new Vector3(sizeX, 0, sizeZ);
+        var v4 = v1 + new Vector3(sizeX, 0, 0);
+        
+        mesh.AddQuad2(v1, v2, v3, v4);
     }
 
     private void SetCeilingTile()
     {
-        var first = new Vector3(Min.x, Max.y, Min.z);
-        var top =  new Vector3(Max.x, Max.y, Min.z);
-        var left = new Vector3(Min.x, Max.y, Max.z);
-        var other = new Vector3(Max.x, Max.y, Max.z);
-        mesh.AddQuad(first, left, top, other);
+        var v1 = new Vector3(Min.x, currentPos.y, Min.z);
+        var v2 = v1 + new Vector3(sizeX, 0, 0);
+        var v3 = v1 + new Vector3(sizeX, 0, sizeZ);
+        var v4 = v1 + new Vector3(0, 0, sizeZ);
+        
+        mesh.AddQuad2(v1, v2, v3, v4);
     }
     
     
 
     private void AddWall(AddDirection direction)
     {
-        var min = new Vector3(Max.x, 0, Min.z);
-        var top = new Vector3(Max.x, Max.y, Min.z);
-        var left = new Vector3(Max.x, 0, Max.z);
-        var other = new Vector3(Max.x, Max.y, Max.z);
+        var v1 = new Vector3(Min.x, 0, Min.z);
+        var max = new Vector3(0, sizeY, sizeZ);
         
         switch (direction)
         {
             case AddDirection.North:
-                min = new Vector3(Max.x, 0, Min.z);
-                top = new Vector3(Max.x, Max.y, Min.z);
-                left = new Vector3(Max.x, 0, Max.z);
-                other = new Vector3(Max.x, Max.y, Max.z);
+                v1 = new Vector3(Min.x, 0, Min.z);
+                max = new Vector3(0, sizeY, sizeZ);
                 break;
             case AddDirection.East:
-                min = new Vector3(Min.x, 0, Min.z);   
-                left = new Vector3(Max.x, 0, Min.z);  
-                top = new Vector3(Min.x, Max.y, Min.z);  
-                other = new Vector3(Max.x, Max.y, Min.z);
+                v1 = new Vector3(Min.x, 0, Max.z);
+                max = new Vector3(sizeX, sizeY, 0);
                 break;
             case AddDirection.South:
+                v1 = new Vector3(Max.x, 0, Max.z);
+                max = new Vector3(0, sizeY, -sizeZ);
                 break;
             case AddDirection.West:
-                min = new Vector3(Min.x, 0, Max.z);   
-                top = new Vector3(Max.x, 0, Max.z);  
-                left = new Vector3(Min.x, Max.y, Max.z);  
-                other = new Vector3(Max.x, Max.y, Max.z);
+                v1 = new Vector3(Max.x, 0, Min.z);
+                max = new Vector3(-sizeX, sizeY, 0);
                 break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
         }
+        var v2 = v1 + new Vector3(0, sizeY, 0);
+        var v4 = v1 + new Vector3(max.x, 0, max.z);
+        var v3 = v1 + max;
         
-       
-        mesh.AddQuad(min, top, left, other);
+        mesh.AddQuad2(v1, v2, v3, v4);
     }
 
 }
