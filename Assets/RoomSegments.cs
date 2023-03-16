@@ -14,35 +14,63 @@ public class RoomSegments : MonoBehaviour
     public Vector3 currentPos;
     public Vector3 Max => currentPos + new Vector3(sizeX / 2, sizeY, sizeZ/ 2);
     public Vector3 Min => currentPos - new Vector3(sizeX / 2, 0, sizeZ / 2);
+
+    public Vector3[] corners = new[]
+        {   new Vector3(1, 0, 1), 
+            new Vector3(1, 0, -1),
+            new Vector3(-1, 0, -1), 
+            new Vector3(-1, 0, 1) };
     
-
-
+    
     private void Start()
     {
         mesh = GetComponent<AdvancedMesh>();
         mesh.InstanceMesh();
         currentPos = transform.position;
-        SetFloorTile();
+        AddSegment(100, 100);
+        AddPanel(currentPos + new Vector3(-sizeX / 2, 0, sizeZ / 2), new Vector3(1,0,0));
+        //SimpleRoom();
+    }
+
+    private void AddPanel(Vector3 start, Vector3 direction)
+    {
+        var v1 = start;
+        var v2 = v1 + new Vector3(0, sizeY, 0);
+        var v3 = v1 + new Vector3(direction.x * sizeX, sizeY, direction.z * sizeZ);
+        var v4 = v1 + new Vector3(direction.x * sizeX, 0, direction.z * sizeZ);
+
+        mesh.AddQuad2(v1, v2, v3, v4);
+    }
+    
+    private void SimpleRoom()
+    {
+        AddSegment(100, 100);
         AddWall(AddDirection.East);
-        var mid = 20;
-        var edge = 100;
-        currentPos += new Vector3(sizeX / 2 + (mid / 2), 0, 0);
-        sizeX = mid;
-        SetFloorTile();
-        sizeX = edge;
-        currentPos += new Vector3(sizeX / 2 + (mid / 2), 0, 0);
-        SetFloorTile();
+        AddWall(AddDirection.North);
+        AddWall(AddDirection.West);
+        var next = 30;
+        currentPos += new Vector3(segments[^1].size.x / 2 + next / 2, 0, 0);
+        AddSegment(next, 100);
+        AddWall(AddDirection.West);
+        next = 100;
+        currentPos += new Vector3(segments[^1].size.x / 2 + next / 2, 0, 0);
+        AddSegment(next, 100);
         AddWall(AddDirection.East);
-        //SegOne();
-        //SegTwo();
+        AddWall(AddDirection.South);
+        AddWall(AddDirection.West);
     }
 
     public void AddSegment(float xSize, float zSize)
     {
+        sizeX = xSize;
+        sizeZ = zSize;
         segments.Add(new Segment(3)
         {
-            
+            position = currentPos,
+            size = new Vector3(sizeX, sizeY, sizeZ)
         });
+        
+        SetFloorTile();
     }
     
 
@@ -58,7 +86,6 @@ public class RoomSegments : MonoBehaviour
 
     private void SegOne()
     {
-        Debug.Log("started");
         int mid = 40;
         int sides = 100;
         AddWall(AddDirection.North);
@@ -74,7 +101,6 @@ public class RoomSegments : MonoBehaviour
         currentPos = hold + new Vector3(55,0,0);
         SegTwo();
     }
-    
     
     private void SetFloorTile()
     {
@@ -96,8 +122,6 @@ public class RoomSegments : MonoBehaviour
         mesh.AddQuad2(v1, v2, v3, v4);
     }
     
-    
-
     private void AddWall(AddDirection direction)
     {
         var v1 = new Vector3(Min.x, 0, Min.z);
