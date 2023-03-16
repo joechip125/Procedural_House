@@ -30,18 +30,35 @@ public class RoomSegments : MonoBehaviour
         //AddSegment(100, 100);
         //AddPanel(currentPos + new Vector3(-sizeX / 2, 0, sizeZ / 2), new Vector3(100,0,0));
         AddGrid();
-        mesh.MoveVertices(new Dictionary<int, Vector3>()
-        {
-            {0,new Vector3(50,0,50)},
-            {1,new Vector3(50,0,0)},
-            {3,new Vector3(0,0,50)}
-        });
+        MovePanel(0, new Vector2(0,-1), 50);
     }
 
 
-    private void MovePanel()
+    private void MovePanel(int panelNumber, Vector2 mDir, float mAmount)
     {
+        var first = 0;
+        var second = 0;
+
+        if (mDir.x != 0)
+        {
+            if (mDir.x > 0) first = panelNumber;
+            else if(mDir.x < 0)first = panelNumber + 2;
+        }
+        else if (mDir.y != 0)
+        {
+            if (mDir.y > 0) first = panelNumber;
+            else if (mDir.y < 0)
+            {
+                first = panelNumber + 3;
+                second = 0;
+            }
+        }
         
+        mesh.MoveVertices(new Dictionary<int, Vector3>()
+        {
+            {first,new Vector3( mDir.x * mAmount,0,mDir.y *mAmount)},
+            {second,new Vector3(mDir.x *mAmount,0,mDir.y *mAmount)},
+        });
     }
     
 
