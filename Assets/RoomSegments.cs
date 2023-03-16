@@ -27,40 +27,49 @@ public class RoomSegments : MonoBehaviour
         mesh = GetComponent<AdvancedMesh>();
         mesh.InstanceMesh();
         currentPos = transform.position;
-        AddSegment(100, 100);
-        AddPanel(currentPos + new Vector3(-sizeX / 2, 0, sizeZ / 2), new Vector3(1,0,0));
-        //SimpleRoom();
+        //AddSegment(100, 100);
+        //AddPanel(currentPos + new Vector3(-sizeX / 2, 0, sizeZ / 2), new Vector3(100,0,0));
+        SimpleRoom();
     }
 
     private void AddPanel(Vector3 start, Vector3 direction)
     {
         var v1 = start;
         var v2 = v1 + new Vector3(0, sizeY, 0);
-        var v3 = v1 + new Vector3(direction.x * sizeX, sizeY, direction.z * sizeZ);
-        var v4 = v1 + new Vector3(direction.x * sizeX, 0, direction.z * sizeZ);
+        var v3 = v1 + new Vector3(direction.x * 1, sizeY, direction.z * 1);
+        var v4 = v1 + new Vector3(direction.x * 1, 0, direction.z * 1);
 
         mesh.AddQuad2(v1, v2, v3, v4);
+    }
+
+
+    private void AddSquare()
+    {
+        AddSegment(100, 100, AddDirection.West, 3);
+    }
+
+    private void AddDoorway()
+    {
+        
+    }
+    
+    private void CreateSegment()
+    {
+        
     }
     
     private void SimpleRoom()
     {
-        AddSegment(100, 100);
-        AddWall(AddDirection.East);
-        AddWall(AddDirection.North);
-        AddWall(AddDirection.West);
+        AddSegment(100, 100, AddDirection.West, 3);
         var next = 30;
         currentPos += new Vector3(segments[^1].size.x / 2 + next / 2, 0, 0);
-        AddSegment(next, 100);
-        AddWall(AddDirection.West);
+        AddSegment(next, 100, AddDirection.West, 1);
         next = 100;
         currentPos += new Vector3(segments[^1].size.x / 2 + next / 2, 0, 0);
-        AddSegment(next, 100);
-        AddWall(AddDirection.East);
-        AddWall(AddDirection.South);
-        AddWall(AddDirection.West);
+        AddSegment(next, 100, AddDirection.East, 3);
     }
 
-    public void AddSegment(float xSize, float zSize)
+    public void AddSegment(float xSize, float zSize, AddDirection wallChoice, int numberWalls)
     {
         sizeX = xSize;
         sizeZ = zSize;
@@ -71,6 +80,95 @@ public class RoomSegments : MonoBehaviour
         });
         
         SetFloorTile();
+
+        switch (numberWalls)
+        {
+            case 1:
+                switch (wallChoice)
+                {
+                    case AddDirection.North:
+                        AddWall(AddDirection.North);
+                        break;
+                    case AddDirection.East:
+                        AddWall(AddDirection.East);
+                        break;
+                    case AddDirection.South:
+                        AddWall(AddDirection.South);
+                        break;
+                    case AddDirection.West:
+                        AddWall(AddDirection.West);
+                        break;
+                }
+                break;
+            
+            case 2:
+                switch (wallChoice)
+                {
+                    case AddDirection.North:
+                        AddWall(AddDirection.North);
+                        AddWall(AddDirection.East);
+                        break;
+                    case AddDirection.East:
+                        AddWall(AddDirection.East);
+                        AddWall(AddDirection.South);
+                        break;
+                    case AddDirection.South:
+                        AddWall(AddDirection.South);
+                        AddWall(AddDirection.West);
+                        break;
+                    case AddDirection.West:
+                        AddWall(AddDirection.West);
+                        AddWall(AddDirection.North);
+                        break;
+                    case AddDirection.NorthSouth:
+                        AddWall(AddDirection.North);
+                        AddWall(AddDirection.South);
+                        break;
+                    case AddDirection.EastWest:
+                        AddWall(AddDirection.West);
+                        AddWall(AddDirection.East);
+                        break;
+                }
+                break;
+            
+            case 3:
+                switch (wallChoice)
+                {
+                    case AddDirection.North:
+                        AddWall(AddDirection.North);
+                        AddWall(AddDirection.East);
+                        AddWall(AddDirection.South);
+                        break;
+                    case AddDirection.East:
+                        AddWall(AddDirection.East);
+                        AddWall(AddDirection.South);
+                        AddWall(AddDirection.West);
+                        break;
+                    case AddDirection.South:
+                        AddWall(AddDirection.South);
+                        AddWall(AddDirection.West);
+                        AddWall(AddDirection.North);
+                        break;
+                    case AddDirection.West:
+                        AddWall(AddDirection.West);
+                        AddWall(AddDirection.North);
+                        AddWall(AddDirection.East);
+                        break;
+                }
+                break;
+            
+            case 4:
+                AddWall(AddDirection.North);
+                AddWall(AddDirection.East);
+                AddWall(AddDirection.South);
+                AddWall(AddDirection.West);
+                break;
+        }
+    }
+
+    private void AddSingleWall()
+    {
+        
     }
     
 

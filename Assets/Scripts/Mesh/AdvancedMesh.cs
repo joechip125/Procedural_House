@@ -72,7 +72,7 @@ public class AdvancedMesh : MonoBehaviour
         UpdateMesh();
     }
     
-    public void AddQuad2(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4) 
+    public int AddQuad2(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4) 
     {
         var vertexIndex = Vertices.Count;
         Vertices.Add(v1);
@@ -87,6 +87,8 @@ public class AdvancedMesh : MonoBehaviour
         Triangles.Add(vertexIndex + 3);
         
         UpdateMesh();
+
+        return vertexIndex;
     }
 
     protected void UpdateMesh()

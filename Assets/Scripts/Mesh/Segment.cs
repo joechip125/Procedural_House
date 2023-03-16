@@ -8,7 +8,10 @@ public enum AddDirection
     North,
     East,
     South,
-    West
+    West,
+    NorthSouth,
+    EastWest
+    
 }
 
 public enum SegmentTypes
