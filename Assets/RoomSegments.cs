@@ -14,13 +14,22 @@ public class RoomSegments : MonoBehaviour
     public Vector3 Max => currentPos + new Vector3(sizeX / 2, sizeY, sizeZ/ 2);
     public Vector3 Min => currentPos - new Vector3(sizeX / 2, 0, sizeZ / 2);
     
-    private void Awake()
+
+
+    private void Start()
     {
         mesh = GetComponent<AdvancedMesh>();
         mesh.InstanceMesh();
         currentPos = transform.position;
-        SegOne();
-       // SegTwo();
+
+        var v1 = currentPos;
+        var v2 = v1 + new Vector3(0,40,0);
+        var v3 = v1 + new Vector3(0, 40, 40);
+        var v4 = v1 + new Vector3(0, 0, 40);
+        //mesh.AddTriangle2(v1, v2, v3);
+        mesh.AddQuad2(v1, v2, v3, v4);
+        //SegOne();
+        //SegTwo();
     }
 
     private void SegTwo()
@@ -35,6 +44,7 @@ public class RoomSegments : MonoBehaviour
 
     private void SegOne()
     {
+        Debug.Log("started");
         int mid = 40;
         int sides = 100;
         AddWall(AddDirection.North);
@@ -108,22 +118,4 @@ public class RoomSegments : MonoBehaviour
         mesh.AddQuad(min, top, left, other);
     }
 
-    
-    
-    
-    private void AddAPanel()
-    {
-        
-    }
-
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-            
-    }
 }
