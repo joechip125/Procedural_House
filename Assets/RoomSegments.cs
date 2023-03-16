@@ -29,7 +29,7 @@ public class RoomSegments : MonoBehaviour
         currentPos = transform.position;
         //AddSegment(100, 100);
         //AddPanel(currentPos + new Vector3(-sizeX / 2, 0, sizeZ / 2), new Vector3(100,0,0));
-        SimpleRoom();
+        AddSquare2();
     }
 
     private void AddPanel(Vector3 start, Vector3 direction)
@@ -45,12 +45,28 @@ public class RoomSegments : MonoBehaviour
 
     private void AddSquare()
     {
-        AddSegment(100, 100, AddDirection.West, 3);
+       AddSegment(50,100, AddDirection.West, 3);
+       currentPos += new Vector3(50, 0, 0);
+       AddSegment(50,100, AddDirection.East, 3);
+    }
+    
+    private void AddSquare2()
+    {
+        var pos = transform.position;
+        currentPos = pos + new Vector3(25, 0, 0);
+        AddSegment(25,25, AddDirection.South, 2);
+        currentPos = pos + new Vector3(-25, 0, 0);
+        AddSegment(25,25, AddDirection.West, 2);
+        currentPos = pos + new Vector3(25, 0, 25);
+        AddSegment(25,25, AddDirection.East, 2);
+        currentPos = pos + new Vector3(-25, 0, 25);
+        AddSegment(25,25, AddDirection.North, 2);
     }
 
     private void AddDoorway()
     {
-        
+        AddSegment(20, 10, AddDirection.NorthSouth, 2);
+        SetCeilingTile();
     }
     
     private void CreateSegment()
@@ -212,7 +228,7 @@ public class RoomSegments : MonoBehaviour
 
     private void SetCeilingTile()
     {
-        var v1 = new Vector3(Min.x, currentPos.y, Min.z);
+        var v1 = new Vector3(Min.x, Max.y, Min.z);
         var v2 = v1 + new Vector3(sizeX, 0, 0);
         var v3 = v1 + new Vector3(sizeX, 0, sizeZ);
         var v4 = v1 + new Vector3(0, 0, sizeZ);
