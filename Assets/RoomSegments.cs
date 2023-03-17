@@ -30,10 +30,16 @@ public class RoomSegments : MonoBehaviour
         //AddSegment(100, 100);
         //AddPanel(currentPos + new Vector3(-sizeX / 2, 0, sizeZ / 2), new Vector3(100,0,0));
         AddGrid();
-        MovePanel(0, new Vector2(0,-1), 50);
+        MovePanel(0, new Vector2(0,-1), -50);
         MovePanel(2, new Vector2(0,-1), 50);
+        mesh.GetPanelCenter(0);
     }
 
+
+    private void GetPanels()
+    {
+        
+    }
 
     private void MovePanel(int panelNumber, Vector2 mDir, float mAmount)
     {
@@ -41,20 +47,30 @@ public class RoomSegments : MonoBehaviour
         var second = 0;
         panelNumber *= 4;
 
-        var moveSide = new Vector2(0, 1);
-
         if (mDir.x != 0)
         {
-            if (mDir.x > 0) first = panelNumber;
-            else if(mDir.x < 0)first = panelNumber + 2;
+            if (mDir.x > 0)
+            {
+                first = panelNumber;
+                second = panelNumber + 1;
+            }
+            else if (mDir.x < 0)
+            {
+                first = panelNumber + 2;
+                second = panelNumber + 3;
+            }
         }
         else if (mDir.y != 0)
         {
-            if (mDir.y > 0) first = panelNumber;
+            if (mDir.y > 0)
+            {
+                first = panelNumber + 1;
+                second = panelNumber + 2;
+            }
             else if (mDir.y < 0)
             {
-                first = (panelNumber) + 3;
-                second = panelNumber;
+                first = panelNumber;
+                second = panelNumber + 3;
             }
         }
         

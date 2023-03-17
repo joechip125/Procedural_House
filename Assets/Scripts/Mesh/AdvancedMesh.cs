@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -24,6 +25,28 @@ public class AdvancedMesh : MonoBehaviour
         TheMesh.name = "TheMesh";
     }
 
+    public void GetPanels()
+    {
+      var some =  Vertices.OrderBy(x => x.z).ThenBy(x => x.x).ToArray();
+
+      foreach (var s in some)
+      {
+          Debug.Log(s);
+      }
+      
+    }
+
+    public Vector3 GetPanelCenter(int panel)
+    {
+        panel *= 4;
+        var first = Vertices[panel];
+        var second = Vertices[panel + 2];
+        var size = second - first;
+        var pos = first + size / 2;
+        Debug.Log(pos);
+        return pos;
+    }
+    
     public void InstanceMesh()
     {
         GetComponent<MeshFilter>().mesh = TheMesh = new Mesh();
