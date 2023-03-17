@@ -37,6 +37,8 @@ public class RoomSegments : MonoBehaviour
         currentPos = mesh.GetPanelCenter(1, out size);
         currentPos += new Vector3(0, 0, -size.z);
         mesh.GetPanels();
+        mesh.GetMinMax(out var aMin, out var aMax);
+        
         AddFloorTile();
     }
 

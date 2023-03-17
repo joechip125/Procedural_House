@@ -55,6 +55,16 @@ public class AdvancedMesh : MonoBehaviour
         }
     }
 
+    public void GetMinMax(out Vector3 min, out Vector3 max)
+    {
+        var hold = Vertices
+               .OrderBy(x => x.z)
+               .ThenBy(x => x.x)
+               .ToArray();
+        min = hold[0];
+        max = hold[^1];
+    }
+
     public Vector3 GetPanelCenter(int panel, out Vector3 theSize)
     {
         panel *= 4;
