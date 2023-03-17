@@ -36,13 +36,13 @@ public class AdvancedMesh : MonoBehaviour
       
     }
 
-    public Vector3 GetPanelCenter(int panel)
+    public Vector3 GetPanelCenter(int panel, out Vector3 theSize)
     {
         panel *= 4;
         var first = Vertices[panel];
         var second = Vertices[panel + 2];
-        var size = second - first;
-        var pos = first + size / 2;
+        theSize = second - first;
+        var pos = first + theSize / 2;
         Debug.Log(pos);
         return pos;
     }
@@ -113,7 +113,7 @@ public class AdvancedMesh : MonoBehaviour
 
         return vertexIndex;
     }
-
+    
     protected void UpdateMesh()
     {
         TheMesh.Clear();
@@ -210,7 +210,7 @@ public class AdvancedMesh : MonoBehaviour
     }
 
 
-    private void RemoveQuad(int firstIndex)
+    public void RemoveQuad(int firstIndex)
     {
         var tris = Triangles.FindAll(x => x == firstIndex);
         Triangles.RemoveAt(firstIndex + 5);

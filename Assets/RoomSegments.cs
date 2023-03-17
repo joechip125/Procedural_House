@@ -8,6 +8,7 @@ public class RoomSegments : MonoBehaviour
 {
     private AdvancedMesh mesh;
     public float sizeX, sizeY, sizeZ;
+    private Vector3 size;
    
     public List<Segment> segments = new();
 
@@ -30,9 +31,11 @@ public class RoomSegments : MonoBehaviour
         //AddSegment(100, 100);
         //AddPanel(currentPos + new Vector3(-sizeX / 2, 0, sizeZ / 2), new Vector3(100,0,0));
         AddGrid();
-        MovePanel(0, new Vector2(0,-1), -50);
-        MovePanel(2, new Vector2(0,-1), 50);
-        mesh.GetPanelCenter(0);
+        //MovePanel(0, new Vector2(0,-1), -50);
+        //MovePanel(2, new Vector2(0,-1), 50);
+        currentPos = mesh.GetPanelCenter(1, out size);
+        currentPos += new Vector3(0, 0, -size.z);
+        AddFloorTile();
     }
 
 
@@ -333,4 +336,8 @@ public class RoomSegments : MonoBehaviour
         mesh.AddQuad2(v1, v2, v3, v4);
     }
 
+    private void OnDrawGizmos()
+    {
+        
+    }
 }
