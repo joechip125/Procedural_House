@@ -27,13 +27,32 @@ public class AdvancedMesh : MonoBehaviour
 
     public void GetPanels()
     {
-      var some =  Vertices.OrderBy(x => x.z).ThenBy(x => x.x).ToArray();
+        var some =  Vertices
+                            .OrderBy(x => x.z)
+                            .ThenBy(x => x.x)
+                            .ToArray();
+        var max = 0f;
+        var hold = 0f;
 
-      foreach (var s in some)
-      {
-          Debug.Log(s);
-      }
-      
+        foreach (var s in some)
+        {
+            Debug.Log(s);
+        }
+        
+        foreach (var s in Vertices)
+        {
+            if (s.x < hold)
+            {
+                hold = s.x;
+            }
+        }
+        
+        var test =  Vertices.Where(x => x.x <= hold).ToArray();
+        
+        foreach (var t in test)
+        {
+           // Debug.Log(t);
+        }
     }
 
     public Vector3 GetPanelCenter(int panel, out Vector3 theSize)
@@ -43,7 +62,7 @@ public class AdvancedMesh : MonoBehaviour
         var second = Vertices[panel + 2];
         theSize = second - first;
         var pos = first + theSize / 2;
-        Debug.Log(pos);
+        
         return pos;
     }
     
@@ -105,6 +124,7 @@ public class AdvancedMesh : MonoBehaviour
         Triangles.Add(vertexIndex);
         Triangles.Add(vertexIndex + 1);
         Triangles.Add(vertexIndex + 2);
+        
         Triangles.Add(vertexIndex );
         Triangles.Add(vertexIndex + 2);
         Triangles.Add(vertexIndex + 3);
