@@ -33,11 +33,16 @@ public class RoomSegments : MonoBehaviour
 
         //AddFloorTile();
         GetPanels(new Vector3(-1,0,-1), size, new Vector3(0, 1,0));
-        currentPos += new Vector3(0, 50, 0);
-        GetPanels(new Vector3(-1,-1,-1), size, new Vector3(1, 0,0));
-        GetPanels(new Vector3(-1,-1,1), size, new Vector3(0, 0,-1));
-        GetPanels(new Vector3(1,-1,1), size, new Vector3(-1, 0,0));
-        GetPanels(new Vector3(1,-1,-1), size, new Vector3(0, 0,1));
+   
+        
+        AddSomeWalls(new Vector3(1,0,0));
+        AddSomeWalls(new Vector3(-1,0,0));
+        AddSomeWalls(new Vector3(0,0,1));
+        AddSomeWalls(new Vector3(0,0,-1));
+        //GetPanels(new Vector3(-1,-1,-1), size, new Vector3(1, 0,0));
+        //GetPanels(new Vector3(-1,-1,1), size, new Vector3(0, 0,-1));
+        //GetPanels(new Vector3(1,-1,1), size, new Vector3(-1, 0,0));
+        //GetPanels(new Vector3(1,-1,-1), size, new Vector3(0, 0,1));
     }
 
 
@@ -54,9 +59,23 @@ public class RoomSegments : MonoBehaviour
         mesh.AddQuad2(corners[0], corners[1], corners[2], corners[3]);
     }
 
-    private void AddSomeWalls()
+    private void AddSomeWalls(Vector3 startDir)
     {
-        
+        var start = currentPos;
+        currentPos = start + new Vector3(50, 0, 0);
+
+        if (startDir.x != 0)
+        {
+            currentPos = start + new Vector3((size.x / 2) * startDir.x, size.y / 2, 0);
+            GetPanels(new Vector3(0,-1,startDir.x), size, new Vector3(-startDir.x, 0,0));
+        }
+        else if (startDir.z != 0)
+        {
+            currentPos = start + new Vector3(0, size.y / 2, (size.z / 2) * startDir.z);
+            GetPanels(new Vector3(startDir.z,-1,0), size, new Vector3(0, 0,-startDir.z));
+        }
+
+        currentPos = start;
     }
     
 
