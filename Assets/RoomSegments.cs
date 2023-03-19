@@ -15,6 +15,8 @@ public class RoomSegments : MonoBehaviour
    
     public List<Segment> segments = new();
 
+    private int lastVert;
+
     public Vector3 currentPos;
     public Vector3 Max => currentPos + new Vector3(sizeX / 2, sizeY, sizeZ/ 2);
     public Vector3 Min => currentPos - new Vector3(sizeX / 2, 0, sizeZ / 2);
@@ -36,6 +38,7 @@ public class RoomSegments : MonoBehaviour
         currentPos = transform.position;
         HasNe();
         //AddFloorTile();
+        MoveStuff();
     }
 
     private void InitSegment()
@@ -53,6 +56,21 @@ public class RoomSegments : MonoBehaviour
         }
     }
 
+    private void MoveStuff()
+    {
+        foreach (var s in segArray)
+        {
+            if (s.wallStarts.Count > 0)
+            {
+                var first = s.wallStarts[0];
+                mesh.MoveVertices(new Dictionary<int, Vector3>()
+                {
+                    {first,new Vector3( 0,49,0)},
+                    {first + 3,new Vector3( 0,49,0)}
+                });
+            }
+        }
+    }
 
     private void HasNe()
     {
@@ -69,17 +87,37 @@ public class RoomSegments : MonoBehaviour
             for (int j = 0; j < numberX; j++)
             {
                 SetAPanel(direction, size, axis);
-                segArray[total++] = new Segment()
+                segArray[total] = new Segment()
                 {
                     position = currentPos
                 };
-                
-                if(j == 0) AddSomeWalls(new Vector3(-1,0,0));
-                if(j == numberX - 1) AddSomeWalls(new Vector3(1,0,0));
-                if(i == 0)AddSomeWalls(new Vector3(0,0,-1));
-                if(i == numberZ - 1)AddSomeWalls(new Vector3(0,0,1));
-                
+
+                if (j == 0)
+                {
+                    AddSomeWalls(new Vector3(-1,0,0));
+                    segArray[total].wallStarts.Add(lastVert);
+                }
+
+                if (j == numberX - 1)
+                {
+                    AddSomeWalls(new Vector3(1,0,0));
+                    segArray[total].wallStarts.Add(lastVert);
+                }
+
+                if (i == 0)
+                {
+                    AddSomeWalls(new Vector3(0,0,-1));
+                    segArray[total].wallStarts.Add(lastVert);
+                }
+
+                if (i == numberZ - 1)
+                {
+                    AddSomeWalls(new Vector3(0,0,1));
+                    segArray[total].wallStarts.Add(lastVert);
+                }
+
                 currentPos += new Vector3(sizeX, 0, 0);
+                total++;
             }    
         }
     }
@@ -96,7 +134,7 @@ public class RoomSegments : MonoBehaviour
             corners[i] = currentPos+ Vector3.Scale(theSize / 2, 
                 Quaternion.AngleAxis(90 * i, axis) * startDir);
         }
-        mesh.AddQuad2(corners[0], corners[1], corners[2], corners[3]);
+        lastVert = mesh.AddQuad2(corners[0], corners[1], corners[2], corners[3]);
     }
 
     private void AddSomeWalls(Vector3 startDir)
@@ -110,7 +148,7 @@ public class RoomSegments : MonoBehaviour
         }
         else if (startDir.z != 0)
         {
-            SetAPanel(new Vector3(startDir.z,-1,0), size, new Vector3(0, 0,-startDir.z));
+            SetAPanel(new Vector3(-startDir.z,-1,0), size, new Vector3(0, 0,-startDir.z));
         }
 
         currentPos = start;
@@ -157,8 +195,6 @@ public class RoomSegments : MonoBehaviour
         });
     }
     
-    
-
     private void AddGrid()
     {
         var numX = 3;
@@ -174,16 +210,12 @@ public class RoomSegments : MonoBehaviour
         }
     }
     
-  
-
     private void AddDoorway()
     {
         AddSegment(20, 10, AddDirection.NorthSouth, 2);
         SetCeilingTile();
     }
     
-   
-
     public void AddSegment(float xSize, float zSize, AddDirection wallChoice, int numberWalls)
     {
         sizeX = xSize;

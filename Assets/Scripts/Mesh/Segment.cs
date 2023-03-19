@@ -25,4 +25,5 @@ public class Segment
 {
     public Vector3 position;
     public Vector3 size;
+    public List<int> wallStarts = new();
 }
