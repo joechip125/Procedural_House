@@ -10,6 +10,8 @@ public class RoomSegments : MonoBehaviour
     private AdvancedMesh mesh;
     public float sizeX, sizeY, sizeZ;
     private Vector3 size = new Vector3(100,100,100);
+
+    public int numberX, numberZ;
    
     public List<Segment> segments = new();
 
@@ -23,6 +25,8 @@ public class RoomSegments : MonoBehaviour
             new Vector3(0, 0, 1),
             new Vector3(1, 0, 1), 
             new Vector3(1, 0, 0) };
+
+    private Segment[] segArray;
     
     
     private void Start()
@@ -30,25 +34,39 @@ public class RoomSegments : MonoBehaviour
         mesh = GetComponent<AdvancedMesh>();
         mesh.InstanceMesh();
         currentPos = transform.position;
-
+        InitSegment();
         //AddFloorTile();
-        GetPanels(new Vector3(-1,0,-1), size, new Vector3(0, 1,0));
+        AddGrid();
    
         
-        AddSomeWalls(new Vector3(1,0,0));
-        AddSomeWalls(new Vector3(-1,0,0));
-        AddSomeWalls(new Vector3(0,0,1));
-        AddSomeWalls(new Vector3(0,0,-1));
+        //AddSomeWalls(new Vector3(1,0,0));
+        //AddSomeWalls(new Vector3(-1,0,0));
+        //AddSomeWalls(new Vector3(0,0,1));
+        //AddSomeWalls(new Vector3(0,0,-1));
         //GetPanels(new Vector3(-1,-1,-1), size, new Vector3(1, 0,0));
         //GetPanels(new Vector3(-1,-1,1), size, new Vector3(0, 0,-1));
         //GetPanels(new Vector3(1,-1,1), size, new Vector3(-1, 0,0));
         //GetPanels(new Vector3(1,-1,-1), size, new Vector3(0, 0,1));
     }
 
+    private void InitSegment()
+    {
+        var num = numberX * numberZ;
+        segArray = new Segment[num];
 
+        for (int i = 0; i < num; i++)
+        {
+            segArray[i] = new Segment(3);
+        }
+    }
+
+   
+    public void Find(int x, int z)
+    {
+        var found = segArray[z * numberX + x];
+    }
     
-    
-    private void GetPanels(Vector3 startDir, Vector3 theSize, Vector3 axis)
+    private void SetAPanel(Vector3 startDir, Vector3 theSize, Vector3 axis)
     {
         for (int i = 0; i < 4; i++)
         {
@@ -67,12 +85,12 @@ public class RoomSegments : MonoBehaviour
         if (startDir.x != 0)
         {
             currentPos = start + new Vector3((size.x / 2) * startDir.x, size.y / 2, 0);
-            GetPanels(new Vector3(0,-1,startDir.x), size, new Vector3(-startDir.x, 0,0));
+            SetAPanel(new Vector3(0,-1,startDir.x), size, new Vector3(-startDir.x, 0,0));
         }
         else if (startDir.z != 0)
         {
             currentPos = start + new Vector3(0, size.y / 2, (size.z / 2) * startDir.z);
-            GetPanels(new Vector3(startDir.z,-1,0), size, new Vector3(0, 0,-startDir.z));
+            SetAPanel(new Vector3(startDir.z,-1,0), size, new Vector3(0, 0,-startDir.z));
         }
 
         currentPos = start;
@@ -143,7 +161,6 @@ public class RoomSegments : MonoBehaviour
                 AddFloorTile();
                 currentPos += new Vector3(sizeX, 0, 0);
             }
-          //  currentPos = transform.position + new Vector3(0, 0, sizeZ * i);
         }
     }
     
@@ -173,21 +190,7 @@ public class RoomSegments : MonoBehaviour
         SetCeilingTile();
     }
     
-    private void CreateSegment()
-    {
-        
-    }
-    
-    private void SimpleRoom()
-    {
-        AddSegment(100, 100, AddDirection.West, 3);
-        var next = 30;
-        currentPos += new Vector3(segments[^1].size.x / 2 + next / 2, 0, 0);
-        AddSegment(next, 100, AddDirection.West, 1);
-        next = 100;
-        currentPos += new Vector3(segments[^1].size.x / 2 + next / 2, 0, 0);
-        AddSegment(next, 100, AddDirection.East, 3);
-    }
+   
 
     public void AddSegment(float xSize, float zSize, AddDirection wallChoice, int numberWalls)
     {

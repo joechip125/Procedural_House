@@ -27,6 +27,7 @@ public class Segment
     public Vector3 position;
     public Vector3 size;
     public SegmentTypes type;
+    public Vector2Int index;
 
     public Segment(int numberPos)
     {
