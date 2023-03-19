@@ -9,13 +9,14 @@ public class RoomSegments : MonoBehaviour
 {
     private AdvancedMesh mesh;
     public float sizeX, sizeY, sizeZ;
-    private Vector3 size;
+    private Vector3 size = new Vector3(100,100,100);
    
     public List<Segment> segments = new();
 
     public Vector3 currentPos;
     public Vector3 Max => currentPos + new Vector3(sizeX / 2, sizeY, sizeZ/ 2);
     public Vector3 Min => currentPos - new Vector3(sizeX / 2, 0, sizeZ / 2);
+    public List<Vector3> tempPos = new();
 
     private readonly Vector3[] corners = new[]
         {   new Vector3(-1, 0, -1), 
@@ -36,15 +37,33 @@ public class RoomSegments : MonoBehaviour
         //MovePanel(2, new Vector2(0,-1), 50);
         currentPos = mesh.GetPanelCenter(1, out size);
         currentPos += new Vector3(0, 0, -size.z);
-        mesh.GetPanels();
         mesh.GetMinMax(out var aMin, out var aMax);
+
+        var stat = new Vector3(-1,0,-1);
+        var vector = Quaternion.AngleAxis(90, Vector3.up) * stat;
+        Debug.Log(vector);
+        vector = Quaternion.AngleAxis(180, Vector3.up) * stat;
+        Debug.Log(vector);
+        vector = Quaternion.AngleAxis(270, Vector3.up) * stat;
+        Debug.Log(vector);
         
         AddFloorTile();
     }
 
 
-    private void GetPanels()
+    
+    
+    private void GetPanels(Vector3 startDir, Vector3 theSize)
     {
+        var direction =  new Vector3(-1,0,-1);
+        tempPos.Clear();
+        
+        for (int i = 0; i < 4; i++)
+        {
+            direction = Quaternion.AngleAxis(90 * i, Vector3.up) * startDir;
+            var pos = currentPos+ Vector3.Scale(theSize / 2, direction);
+            tempPos.Add(pos);
+        }
         
     }
 
@@ -358,17 +377,11 @@ public class RoomSegments : MonoBehaviour
         Gizmos.DrawLine(center, center + other * 40);
         Gizmos.color = Color.red;
         Gizmos.DrawLine(center,center + cross * 40);
-        
+        currentPos = center;
+        GetPanels(new Vector3(-1,0,-1), new Vector3(100,100,100));
         for (int i = 0; i < 4; i++)
         {
-            var cosA =(int) Mathf.Cos((Mathf.PI / 180f) *cos);
-            var sinA = (int)Mathf.Sin((Mathf.PI / 180f) * sin);
-            sin += 90;
-            cos += 90;
-            var corner = corners[i];
-            //Debug.Log($"index{i}, sin{sinA}, cos{cosA}");
-            var add = new Vector3(corner.x * 100, 0, corner.z *  100);
-            Gizmos.DrawSphere(center + add , 3);
+            Gizmos.DrawSphere(tempPos[i], 3);
         }
        
         var aSize = new Vector3(50, 50, 50);
