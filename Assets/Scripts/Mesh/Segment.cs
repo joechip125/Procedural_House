@@ -23,15 +23,6 @@ public enum SegmentTypes
 [Serializable]
 public class Segment
 {
-    public Vector3[] positions;
     public Vector3 position;
     public Vector3 size;
-    public SegmentTypes type;
-    public Vector2Int index;
-
-    public Segment(int numberPos)
-    {
-        
-        positions = new Vector3[numberPos];
-    }
 }
