@@ -30,41 +30,28 @@ public class RoomSegments : MonoBehaviour
         mesh = GetComponent<AdvancedMesh>();
         mesh.InstanceMesh();
         currentPos = transform.position;
-        //AddSegment(100, 100);
-        //AddPanel(currentPos + new Vector3(-sizeX / 2, 0, sizeZ / 2), new Vector3(100,0,0));
-        AddGrid();
-        //MovePanel(0, new Vector2(0,-1), -50);
-        //MovePanel(2, new Vector2(0,-1), 50);
-        currentPos = mesh.GetPanelCenter(1, out size);
-        currentPos += new Vector3(0, 0, -size.z);
-        mesh.GetMinMax(out var aMin, out var aMax);
 
-        var stat = new Vector3(-1,0,-1);
-        var vector = Quaternion.AngleAxis(90, Vector3.up) * stat;
-        Debug.Log(vector);
-        vector = Quaternion.AngleAxis(180, Vector3.up) * stat;
-        Debug.Log(vector);
-        vector = Quaternion.AngleAxis(270, Vector3.up) * stat;
-        Debug.Log(vector);
-        
-        AddFloorTile();
+        //AddFloorTile();
+        GetPanels(new Vector3(-1,0,-1), size, new Vector3(0, 1,0));
+        currentPos += new Vector3(0, 50, 0);
+        GetPanels(new Vector3(-1,-1,-1), size, new Vector3(1, 0,0));
+        GetPanels(new Vector3(-1,-1,1), size, new Vector3(0, 0,-1));
+        GetPanels(new Vector3(1,-1,1), size, new Vector3(-1, 0,0));
+        GetPanels(new Vector3(1,-1,-1), size, new Vector3(0, 0,1));
     }
 
 
     
     
-    private void GetPanels(Vector3 startDir, Vector3 theSize)
+    private void GetPanels(Vector3 startDir, Vector3 theSize, Vector3 axis)
     {
-        var direction =  new Vector3(-1,0,-1);
-        tempPos.Clear();
-        
         for (int i = 0; i < 4; i++)
         {
-            direction = Quaternion.AngleAxis(90 * i, Vector3.up) * startDir;
-            var pos = currentPos+ Vector3.Scale(theSize / 2, direction);
-            tempPos.Add(pos);
+            var pos = currentPos+ Vector3.Scale(theSize / 2, 
+                Quaternion.AngleAxis(90 * i, axis) * startDir);
+            corners[i] = pos;
         }
-        
+        mesh.AddQuad2(corners[0], corners[1], corners[2], corners[3]);
     }
 
     private void AddSomeWalls()
@@ -367,23 +354,9 @@ public class RoomSegments : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        var sin = 0;
-        var cos = 0;
         var center = transform.position;
-        var cross = Vector3.Cross(corners[0], Vector3.up);
-        //Debug.Log(cross);
-        var other = new Vector3(0,0, 1);
-        Gizmos.DrawLine(center, center + Vector3.up * 40);
-        Gizmos.DrawLine(center, center + other * 40);
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(center,center + cross * 40);
-        currentPos = center;
-        GetPanels(new Vector3(-1,0,-1), new Vector3(100,100,100));
-        for (int i = 0; i < 4; i++)
-        {
-            Gizmos.DrawSphere(tempPos[i], 3);
-        }
-       
-        var aSize = new Vector3(50, 50, 50);
+        
+        currentPos = center + new Vector3(0,50,0);
+
     }
 }
