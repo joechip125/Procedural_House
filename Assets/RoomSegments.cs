@@ -12,15 +12,12 @@ public class RoomSegments : MonoBehaviour
     private Vector3 size = new Vector3(100,100,100);
 
     public int numberX, numberZ;
-   
-    public List<Segment> segments = new();
 
     private int lastVert;
 
     public Vector3 currentPos;
     public Vector3 Max => currentPos + new Vector3(sizeX / 2, sizeY, sizeZ/ 2);
     public Vector3 Min => currentPos - new Vector3(sizeX / 2, 0, sizeZ / 2);
-    public List<Vector3> tempPos = new();
 
     private readonly Vector3[] corners = new[]
         {   new Vector3(-1, 0, -1), 
@@ -203,109 +200,6 @@ public class RoomSegments : MonoBehaviour
         }
     }
     
-    private void AddDoorway()
-    {
-        AddSegment(20, 10, AddDirection.NorthSouth, 2);
-        SetCeilingTile();
-    }
-    
-    public void AddSegment(float xSize, float zSize, AddDirection wallChoice, int numberWalls)
-    {
-        sizeX = xSize;
-        sizeZ = zSize;
-        segments.Add(new Segment()
-        {
-            position = currentPos,
-            size = new Vector3(sizeX, sizeY, sizeZ)
-        });
-        
-        AddFloorTile();
-
-        switch (numberWalls)
-        {
-            case 1:
-                switch (wallChoice)
-                {
-                    case AddDirection.North:
-                        AddWall(AddDirection.North);
-                        break;
-                    case AddDirection.East:
-                        AddWall(AddDirection.East);
-                        break;
-                    case AddDirection.South:
-                        AddWall(AddDirection.South);
-                        break;
-                    case AddDirection.West:
-                        AddWall(AddDirection.West);
-                        break;
-                }
-                break;
-            
-            case 2:
-                switch (wallChoice)
-                {
-                    case AddDirection.North:
-                        AddWall(AddDirection.North);
-                        AddWall(AddDirection.East);
-                        break;
-                    case AddDirection.East:
-                        AddWall(AddDirection.East);
-                        AddWall(AddDirection.South);
-                        break;
-                    case AddDirection.South:
-                        AddWall(AddDirection.South);
-                        AddWall(AddDirection.West);
-                        break;
-                    case AddDirection.West:
-                        AddWall(AddDirection.West);
-                        AddWall(AddDirection.North);
-                        break;
-                    case AddDirection.NorthSouth:
-                        AddWall(AddDirection.North);
-                        AddWall(AddDirection.South);
-                        break;
-                    case AddDirection.EastWest:
-                        AddWall(AddDirection.West);
-                        AddWall(AddDirection.East);
-                        break;
-                }
-                break;
-            
-            case 3:
-                switch (wallChoice)
-                {
-                    case AddDirection.North:
-                        AddWall(AddDirection.North);
-                        AddWall(AddDirection.East);
-                        AddWall(AddDirection.South);
-                        break;
-                    case AddDirection.East:
-                        AddWall(AddDirection.East);
-                        AddWall(AddDirection.South);
-                        AddWall(AddDirection.West);
-                        break;
-                    case AddDirection.South:
-                        AddWall(AddDirection.South);
-                        AddWall(AddDirection.West);
-                        AddWall(AddDirection.North);
-                        break;
-                    case AddDirection.West:
-                        AddWall(AddDirection.West);
-                        AddWall(AddDirection.North);
-                        AddWall(AddDirection.East);
-                        break;
-                }
-                break;
-            
-            case 4:
-                AddWall(AddDirection.North);
-                AddWall(AddDirection.East);
-                AddWall(AddDirection.South);
-                AddWall(AddDirection.West);
-                break;
-        }
-    }
-    
     private void AddFloorTile()
     {
         var v1 = new Vector3(Min.x, 0, Min.z);
@@ -326,37 +220,6 @@ public class RoomSegments : MonoBehaviour
         mesh.AddQuad2(v1, v2, v3, v4);
     }
     
-    private void AddWall(AddDirection direction)
-    {
-        var v1 = new Vector3(Min.x, 0, Min.z);
-        var max = new Vector3(0, sizeY, sizeZ);
-        
-        switch (direction)
-        {
-            case AddDirection.North:
-                v1 = new Vector3(Min.x, 0, Min.z);
-                max = new Vector3(0, sizeY, sizeZ);
-                break;
-            case AddDirection.East:
-                v1 = new Vector3(Min.x, 0, Max.z);
-                max = new Vector3(sizeX, sizeY, 0);
-                break;
-            case AddDirection.South:
-                v1 = new Vector3(Max.x, 0, Max.z);
-                max = new Vector3(0, sizeY, -sizeZ);
-                break;
-            case AddDirection.West:
-                v1 = new Vector3(Max.x, 0, Min.z);
-                max = new Vector3(-sizeX, sizeY, 0);
-                break;
-        }
-        var v2 = v1 + new Vector3(0, sizeY, 0);
-        var v4 = v1 + new Vector3(max.x, 0, max.z);
-        var v3 = v1 + max;
-        
-        mesh.AddQuad2(v1, v2, v3, v4);
-    }
-
     private void OnDrawGizmos()
     {
         var center = transform.position;
