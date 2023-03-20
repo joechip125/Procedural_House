@@ -36,43 +36,41 @@ public class RoomSegments : MonoBehaviour
         mesh = GetComponent<AdvancedMesh>();
         mesh.InstanceMesh();
         currentPos = transform.position;
-        HasNe();
+        InitSegment();
+        MoveStuff(new Vector3(1,0,0));
         //AddFloorTile();
-        MoveStuff();
+    }
+    
+
+    private void MoveStuff(Vector3 startDir)
+    {
+        var z = 1;
+        var x = numberX;
+        var arrayNum = z * numberX + x;
+        var arrayNum2 = 2 * numberX + x;
+        var first =  segArray[arrayNum].wallStarts[0];
+        var second =  segArray[arrayNum2].wallStarts[0];
+        if (startDir.x != 0)
+        {
+          first =  segArray[arrayNum].wallStarts[0];
+          second =  segArray[arrayNum2].wallStarts[0];
+        }
+        
+        mesh.MoveVertices(new Dictionary<int, Vector3>()
+        {
+            {first + 2,new Vector3( 0,0,-49)},
+            {first + 3,new Vector3( 0,0,-49)},
+            {second ,new Vector3( 0,0,49)},
+            {second + 1,new Vector3( 0,0,49)}
+        });
+    }
+
+    public void Find(int x, int z)
+    {
+        var found = segArray[z * numberX + x];
     }
 
     private void InitSegment()
-    {
-        var num = numberX * numberZ;
-        segArray = new Segment[num];
-        var pos = transform.position;
-
-        for (int i = 0; i < num; i++)
-        {
-            segArray[i] = new Segment()
-            {
-                position = new Vector3()
-            };
-        }
-    }
-
-    private void MoveStuff()
-    {
-        foreach (var s in segArray)
-        {
-            if (s.wallStarts.Count > 0)
-            {
-                var first = s.wallStarts[0];
-                mesh.MoveVertices(new Dictionary<int, Vector3>()
-                {
-                    {first,new Vector3( 0,49,0)},
-                    {first + 3,new Vector3( 0,49,0)}
-                });
-            }
-        }
-    }
-
-    private void HasNe()
     {
         var num = numberX * numberZ;
         segArray = new Segment[num];
@@ -121,12 +119,7 @@ public class RoomSegments : MonoBehaviour
             }    
         }
     }
-   
-    public void Find(int x, int z)
-    {
-        var found = segArray[z * numberX + x];
-    }
-    
+
     private void SetAPanel(Vector3 startDir, Vector3 theSize, Vector3 axis)
     {
         for (var i = 0; i < 4; i++)
