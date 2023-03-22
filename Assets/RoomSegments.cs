@@ -34,7 +34,7 @@ public class RoomSegments : MonoBehaviour
         mesh.InstanceMesh();
         currentPos = transform.position;
         InitSegment();
-        MoveStuff(new Vector3(1,0,0));
+        MoveStuff(new Vector3(-1,0,0));
         //AddFloorTile();
     }
     
@@ -51,21 +51,39 @@ public class RoomSegments : MonoBehaviour
           second =  Find(0, 2).wallStarts[0];
         }
 
+        var newAx = Quaternion.AngleAxis(90, new Vector3(0,1,0)) * startDir;
+        
         var placePos = mesh.GetPositionAtVert(first + 3);
         AddDoor(placePos, startDir);
         
         mesh.MoveVertices(new Dictionary<int, Vector3>()
         {
-            {first + 2,new Vector3( 0,0,-50)},
-            {first + 3,new Vector3( 0,0,-50)},
-            {second ,new Vector3( 0,0,50)},
-            {second + 1,new Vector3( 0,0,50)}
+            {first + 2,-newAx * 50},
+            {first + 3,-newAx * 50},
+            {second , newAx * 50},
+            {second + 1,newAx * 50}
         });
     }
 
     private void AddDoor(Vector3 start, Vector3 direction)
     {
+        var doorLength = 10;
+        var newAx = Quaternion.AngleAxis(90, new Vector3(0,1,0)) * direction;
+        var currHold = currentPos;
+        currentPos = start + direction * doorLength / 2;
+        SetAPanel(new Vector3(-1, 0, -1), new Vector3(10,0, 100), new Vector3(0, 1, 0));
+
+        currentPos += new Vector3(0, 50, 0);
+        SetAPanel(new Vector3(-1,-1,0), 
+            new Vector3(10,100,0), 
+            new Vector3(0, 0,-1),
+            currentPos + newAx * 50);
         
+        SetAPanel(new Vector3(-1,-1,0), 
+            new Vector3(10,100,0), 
+            new Vector3(0, 0,1),
+            currentPos + -newAx * 50);
+        currentPos = currHold;
     }
     
 
@@ -126,6 +144,11 @@ public class RoomSegments : MonoBehaviour
         mesh.AddCollider();
     }
 
+    private void RotateDirection()
+    {
+        
+    }
+    
     private void SetAPanel(Vector3 startDir, Vector3 theSize, Vector3 axis)
     {
         for (var i = 0; i < 4; i++)
@@ -135,6 +158,17 @@ public class RoomSegments : MonoBehaviour
         }
         lastVert = mesh.AddQuad2(corners[0], corners[1], corners[2], corners[3]);
     }
+    
+    private void SetAPanel(Vector3 startDir, Vector3 theSize, Vector3 axis, Vector3 position)
+    {
+        for (var i = 0; i < 4; i++)
+        {
+            corners[i] = position+ Vector3.Scale(theSize / 2, 
+                Quaternion.AngleAxis(90 * i, axis) * startDir);
+        }
+        lastVert = mesh.AddQuad2(corners[0], corners[1], corners[2], corners[3]);
+    }
+    
 
     private void AddSomeWalls(Vector3 startDir)
     {
