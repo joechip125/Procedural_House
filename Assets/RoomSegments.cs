@@ -280,28 +280,26 @@ public class RoomSegments : MonoBehaviour
         var pos = transform.position;
         var anAngle = transform.eulerAngles;
         Vector3 forward = Quaternion.Euler(anAngle) * Vector3.forward;
-        Vector3 right = Quaternion.Euler(anAngle) * Vector3.right;
         Vector3 up = Quaternion.Euler(anAngle) * Vector3.up;
-        var newAx = Quaternion.AngleAxis(90, forward) * new Vector3(-1,-1,0);
-        var start = pos + forward * 40;
+        Vector3 right = Quaternion.Euler(anAngle) * Vector3.right;
+        var use = right;
         
         var cross = Vector3.Cross(Vector3.up, forward);
 
-        anAngle = transform.eulerAngles;
-        right = Quaternion.Euler(anAngle) * cross;
-        up = Quaternion.Euler(anAngle) * Vector3.up;
-        Gizmos.DrawLine(pos, pos + forward * 40);
-        var forw = pos + forward * 40;
-        var next2 =  Quaternion.AngleAxis(-225, forward) * cross;
-        //var something = forward 
-        var next =  SomethingPanel(forward, -135);
-        Gizmos.DrawLine(forw, forw + next * 60);
-        Gizmos.DrawLine(forw, forw + next2 * 60);
-        Gizmos.color = aColor;
-        Gizmos.DrawSphere(forw + next * 60, 3);
-        Gizmos.DrawSphere(forw + next2 * 60, 3);
+        var start = -135f;
+        var first = pos + use * 40;
         
-        Debug.Log(cross);
+        Gizmos.DrawLine(pos, first);
+
+        for (int i = 0; i < 4; i++)
+        {
+            var next3 =  SomethingPanel(use, start +(-90* i));
+            Gizmos.color = aColor;
+            Gizmos.DrawSphere(first + next3 * 60, 3);
+            Gizmos.DrawLine(first, first + next3 * 60);
+            aColor.r += 0.1f;
+        }
+        
 
     }
 }
