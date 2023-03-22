@@ -273,7 +273,22 @@ public class RoomSegments : MonoBehaviour
         var cross = Vector3.Cross(Vector3.up, direction);
         return Quaternion.AngleAxis(angle, direction)* cross;
     }
-    
+
+    private void DoPanel(Vector3 position)
+    {
+        var anAngle = transform.eulerAngles;
+        Vector3 forward = Quaternion.Euler(anAngle) * Vector3.forward;
+        Vector3 up = Quaternion.Euler(anAngle) * Vector3.up;
+        Vector3 right = Quaternion.Euler(anAngle) * Vector3.right;
+        
+        for (var i = 0; i < 4; i++)
+        {
+            corners[i] = position+ Vector3.Scale(theSize / 2, 
+                Quaternion.AngleAxis(90 * i, axis) * startDir);
+        }
+        lastVert = mesh.AddQuad2(corners[0], corners[1], corners[2], corners[3]);
+    }
+
     private void OnDrawGizmos()
     {
         var aColor = new Color(0.2f,0.2f, 0.2f);
