@@ -36,6 +36,9 @@ public class RoomSegments : MonoBehaviour
         InitSegment();
         MoveStuff(new Vector3(-1,0,0));
         //AddFloorTile();
+        
+        var ang =Quaternion.AngleAxis(90, new Vector3(1,0,0)) * new Vector3(0,1,0);
+        Debug.Log(ang);
     }
     
 
@@ -161,6 +164,8 @@ public class RoomSegments : MonoBehaviour
     
     private void SetAPanel(Vector3 startDir, Vector3 theSize, Vector3 axis, Vector3 position)
     {
+        
+        
         for (var i = 0; i < 4; i++)
         {
             corners[i] = position+ Vector3.Scale(theSize / 2, 

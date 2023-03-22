@@ -49,7 +49,7 @@ public class PlayerControl : MonoBehaviour
         }
 
         rotateValue = new Vector3(x, y * -1, 0);
-        transform.eulerAngles = transform.eulerAngles - rotateValue;
+        transform.eulerAngles -= rotateValue;
     }
     
 }
