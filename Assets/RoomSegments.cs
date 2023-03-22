@@ -9,7 +9,7 @@ public class RoomSegments : MonoBehaviour
 {
     private AdvancedMesh mesh;
     public float sizeX, sizeY, sizeZ;
-    private Vector3 size = new Vector3(100,100,100);
+    [SerializeField]private Vector3 size = new Vector3(100,100,100);
 
     public int numberX, numberZ;
 
@@ -268,11 +268,10 @@ public class RoomSegments : MonoBehaviour
         mesh.AddQuad2(v1, v2, v3, v4);
     }
 
-    private Vector3 SomethingPanel(Vector3 direction, float add)
+    private Vector3 SomethingPanel(Vector3 direction, float angle)
     {
-        Vector3 aDirection = new Vector3(1, 0, 0);
-        var cross = Vector3.Cross(Vector3.up, aDirection);
-        return Quaternion.AngleAxis((90 * add) + 45, direction)* new Vector3(0,1,cross.z);
+        var cross = Vector3.Cross(Vector3.up, direction);
+        return Quaternion.AngleAxis(angle, direction)* cross;
     }
     
     private void OnDrawGizmos()
@@ -286,28 +285,23 @@ public class RoomSegments : MonoBehaviour
         var newAx = Quaternion.AngleAxis(90, forward) * new Vector3(-1,-1,0);
         var start = pos + forward * 40;
         
-        var cross = Vector3.Cross(-Vector3.up, forward);
-        
-        right = Quaternion.Euler(anAngle) * Vector3.right;
+        var cross = Vector3.Cross(Vector3.up, forward);
+
         anAngle = transform.eulerAngles;
+        right = Quaternion.Euler(anAngle) * cross;
         up = Quaternion.Euler(anAngle) * Vector3.up;
         Gizmos.DrawLine(pos, pos + forward * 40);
         var forw = pos + forward * 40;
-        var next = forward + Quaternion.AngleAxis(90, forward) * new Vector3(-1,-1,0);
+        var next2 =  Quaternion.AngleAxis(-225, forward) * cross;
         //var something = forward 
-        Gizmos.DrawLine(forw, forw + forward * 40);
-        Debug.Log(-right - up);
-
-
-        for (int i = 0; i < 4; i++)
-        {
-            newAx = Quaternion.AngleAxis(-90 * i, forward) * new Vector3(-forward.z,-1,0);
-            var some = start+ Vector3.Scale(size / 2, 
-                newAx);
-            Gizmos.color = aColor;
-            Gizmos.DrawSphere(some, 3);
-            aColor.r += 0.1f;
-        }
+        var next =  SomethingPanel(forward, -135);
+        Gizmos.DrawLine(forw, forw + next * 60);
+        Gizmos.DrawLine(forw, forw + next2 * 60);
+        Gizmos.color = aColor;
+        Gizmos.DrawSphere(forw + next * 60, 3);
+        Gizmos.DrawSphere(forw + next2 * 60, 3);
         
+        Debug.Log(cross);
+
     }
 }
