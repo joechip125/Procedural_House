@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -25,34 +26,15 @@ public class AdvancedMesh : MonoBehaviour
         TheMesh.name = "TheMesh";
     }
 
-    public void GetPanels()
-    {
-        var some =  Vertices
-                            .OrderBy(x => x.z)
-                            .ThenBy(x => x.x)
-                            .ToArray();
-        var max = 0f;
-        var hold = 0f;
 
-        foreach (var s in some)
-        {
-            Debug.Log(s);
-        }
-        
-        foreach (var s in Vertices)
-        {
-            if (s.x < hold)
-            {
-                hold = s.x;
-            }
-        }
-        
-        var test =  Vertices.Where(x => x.x <= hold).ToArray();
-        
-        foreach (var t in test)
-        {
-           // Debug.Log(t);
-        }
+    public Vector3 GetPositionAtVert(int vertIndex)
+    {
+        return Vertices[vertIndex];
+    }
+    
+    public void AddCollider()
+    {
+        meshCollider = gameObject.AddComponent<MeshCollider>();
     }
 
     public void GetMinMax(out Vector3 min, out Vector3 max)

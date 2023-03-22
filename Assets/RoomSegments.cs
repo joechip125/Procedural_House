@@ -41,30 +41,37 @@ public class RoomSegments : MonoBehaviour
 
     private void MoveStuff(Vector3 startDir)
     {
-        var z = 1;
+        var z = 0;
         var x = numberX;
-        var arrayNum = z * numberX + x;
-        var arrayNum2 = 2 * numberX + x;
-        var first =  segArray[arrayNum].wallStarts[0];
-        var second =  segArray[arrayNum2].wallStarts[0];
+        var first =  Find(3, 1).wallStarts[0];
+        var second =  Find(3, 2).wallStarts[0];
         if (startDir.x != 0)
         {
-          first =  segArray[arrayNum].wallStarts[0];
-          second =  segArray[arrayNum2].wallStarts[0];
+          first =  Find(0, 1).wallStarts[0];
+          second =  Find(0, 2).wallStarts[0];
         }
+
+        var placePos = mesh.GetPositionAtVert(first + 3);
+        AddDoor(placePos, startDir);
         
         mesh.MoveVertices(new Dictionary<int, Vector3>()
         {
-            {first + 2,new Vector3( 0,0,-49)},
-            {first + 3,new Vector3( 0,0,-49)},
-            {second ,new Vector3( 0,0,49)},
-            {second + 1,new Vector3( 0,0,49)}
+            {first + 2,new Vector3( 0,0,-50)},
+            {first + 3,new Vector3( 0,0,-50)},
+            {second ,new Vector3( 0,0,50)},
+            {second + 1,new Vector3( 0,0,50)}
         });
     }
 
-    public void Find(int x, int z)
+    private void AddDoor(Vector3 start, Vector3 direction)
     {
-        var found = segArray[z * numberX + x];
+        
+    }
+    
+
+    public Segment Find(int x, int z)
+    {
+        return segArray[z * numberX + x];
     }
 
     private void InitSegment()
@@ -78,6 +85,7 @@ public class RoomSegments : MonoBehaviour
         var total = 0;
         for (int i = 0; i < numberZ; i++)
         {
+            
             currentPos = transform.position + new Vector3(0, 0, sizeZ * i);
             for (int j = 0; j < numberX; j++)
             {
@@ -115,6 +123,7 @@ public class RoomSegments : MonoBehaviour
                 total++;
             }    
         }
+        mesh.AddCollider();
     }
 
     private void SetAPanel(Vector3 startDir, Vector3 theSize, Vector3 axis)
