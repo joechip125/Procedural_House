@@ -270,9 +270,9 @@ public class RoomSegments : MonoBehaviour
 
     private Vector3 SomethingPanel(Vector3 direction, float add)
     {
-        var cross = Vector3.Cross(Vector3.up, direction);
-        Debug.Log(cross);
-        return Quaternion.AngleAxis((90 * add) + 45, direction)* cross;
+        Vector3 aDirection = new Vector3(1, 0, 0);
+        var cross = Vector3.Cross(Vector3.up, aDirection);
+        return Quaternion.AngleAxis((90 * add) + 45, direction)* new Vector3(0,1,cross.z);
     }
     
     private void OnDrawGizmos()
@@ -283,15 +283,30 @@ public class RoomSegments : MonoBehaviour
         Vector3 forward = Quaternion.Euler(anAngle) * Vector3.forward;
         Vector3 right = Quaternion.Euler(anAngle) * Vector3.right;
         Vector3 up = Quaternion.Euler(anAngle) * Vector3.up;
-        var newAx = Quaternion.AngleAxis(90, forward) * new Vector3(-1,0,-1);
+        var newAx = Quaternion.AngleAxis(90, forward) * new Vector3(-1,-1,0);
         var start = pos + forward * 40;
+        
+        var cross = Vector3.Cross(-Vector3.up, forward);
+        
+        right = Quaternion.Euler(anAngle) * Vector3.right;
+        anAngle = transform.eulerAngles;
+        up = Quaternion.Euler(anAngle) * Vector3.up;
+        Gizmos.DrawLine(pos, pos + forward * 40);
+        var forw = pos + forward * 40;
+        var next = forward + Quaternion.AngleAxis(90, forward) * new Vector3(-1,-1,0);
+        //var something = forward 
+        Gizmos.DrawLine(forw, forw + forward * 40);
+        Debug.Log(-right - up);
+
 
         for (int i = 0; i < 4; i++)
         {
+            newAx = Quaternion.AngleAxis(-90 * i, forward) * new Vector3(-forward.z,-1,0);
             var some = start+ Vector3.Scale(size / 2, 
-                SomethingPanel(up, i));
-            Gizmos.color = Color.cyan;
+                newAx);
+            Gizmos.color = aColor;
             Gizmos.DrawSphere(some, 3);
+            aColor.r += 0.1f;
         }
         
     }
