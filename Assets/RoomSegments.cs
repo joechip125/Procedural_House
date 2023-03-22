@@ -268,28 +268,28 @@ public class RoomSegments : MonoBehaviour
         mesh.AddQuad2(v1, v2, v3, v4);
     }
 
-    private void SomethingPanel(Vector3 direction)
+    private Vector3 SomethingPanel(Vector3 direction, float add)
     {
-        var startDeg = 45f;
-        
-        
+        var cross = Vector3.Cross(Vector3.up, direction);
+        Debug.Log(cross);
+        return Quaternion.AngleAxis((90 * add) + 45, direction)* cross;
     }
     
     private void OnDrawGizmos()
     {
+        var aColor = new Color(0.2f,0.2f, 0.2f);
         var pos = transform.position;
         var anAngle = transform.eulerAngles;
         Vector3 forward = Quaternion.Euler(anAngle) * Vector3.forward;
+        Vector3 right = Quaternion.Euler(anAngle) * Vector3.right;
         Vector3 up = Quaternion.Euler(anAngle) * Vector3.up;
         var newAx = Quaternion.AngleAxis(90, forward) * new Vector3(-1,0,-1);
-        Gizmos.DrawLine(pos, forward * 40);
-        Debug.Log(anAngle);
         var start = pos + forward * 40;
 
         for (int i = 0; i < 4; i++)
         {
             var some = start+ Vector3.Scale(size / 2, 
-                Quaternion.AngleAxis(90 * i, forward) * up);
+                SomethingPanel(up, i));
             Gizmos.color = Color.cyan;
             Gizmos.DrawSphere(some, 3);
         }
