@@ -33,12 +33,14 @@ public class RoomSegments : MonoBehaviour
         mesh = GetComponent<AdvancedMesh>();
         mesh.InstanceMesh();
         currentPos = transform.position;
-        InitSegment();
-        MoveStuff(new Vector3(-1,0,0));
-        //AddFloorTile();
-        
-        var ang =Quaternion.AngleAxis(90, new Vector3(1,0,0)) * new Vector3(0,1,0);
-        Debug.Log(ang);
+        //InitSegment();
+        //MoveStuff(new Vector3(-1,0,0));
+        ////AddFloorTile();
+        //
+        //var ang =Quaternion.AngleAxis(90, new Vector3(1,0,0)) * new Vector3(0,1,0);
+        DoPanel(currentPos, Vector3.forward);
+        DoPanel(currentPos + new Vector3(0,0,5), -Vector3.forward);
+        DoPanel(currentPos + new Vector3(0,50,0), Vector3.up);
     }
     
 
@@ -245,26 +247,26 @@ public class RoomSegments : MonoBehaviour
 
     private Vector3 PanelRotation(Vector3 direction, float angle)
     {
+
         var cross = Vector3.Cross(Vector3.up, direction);
         return Quaternion.AngleAxis(angle, direction)* cross;
     }
 
-    private void DoPanel(Vector3 position)
+    private void DoPanel(Vector3 position, Vector3 inverseNormal)
     {
         var aSize = new Vector3(100, 100, 100);
-        var axis = new Vector3(1,0,0);
-        var startDir =  new Vector3(1,0,0);
-        var anAngle = transform.eulerAngles;
-        Vector3 forward = Quaternion.Euler(anAngle) * Vector3.forward;
-        Vector3 up = Quaternion.Euler(anAngle) * Vector3.up;
-        Vector3 right = Quaternion.Euler(anAngle) * Vector3.right;
+        var start = -135f;
         
         for (var i = 0; i < 4; i++)
         {
+            var startDir =  PanelRotation(inverseNormal, start +(-90* i));
             corners[i] = position+ Vector3.Scale(aSize / 2, 
-                Quaternion.AngleAxis(90 * i, axis) * startDir);
+                Quaternion.Euler(PanelRotation(inverseNormal, start + (-90 * i))) * startDir);
         }
         lastVert = mesh.AddQuad2(corners[0], corners[1], corners[2], corners[3]);
+        
+        //corners[i] = position+ Vector3.Scale(theSize / 2, 
+        //    Quaternion.AngleAxis(90 * i, axis) * startDir);
     }
 
     private void OnDrawGizmos()
@@ -275,9 +277,11 @@ public class RoomSegments : MonoBehaviour
         Vector3 forward = Quaternion.Euler(anAngle) * Vector3.forward;
         Vector3 up = Quaternion.Euler(anAngle) * Vector3.up;
         Vector3 right = Quaternion.Euler(anAngle) * Vector3.right;
-        var use = right;
+        var use = up;
         
-        var cross = Vector3.Cross(Vector3.up, forward);
+        var cross = Vector3.Cross(-Vector3.up, forward);
+        var cross2= Vector3.Cross(Vector3.forward, up);
+        Debug.Log(cross);
 
         var start = -135f;
         var first = pos + use * 40;
