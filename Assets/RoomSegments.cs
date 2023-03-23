@@ -40,7 +40,7 @@ public class RoomSegments : MonoBehaviour
         //var ang =Quaternion.AngleAxis(90, new Vector3(1,0,0)) * new Vector3(0,1,0);
         DoPanel(currentPos, Vector3.forward);
         DoPanel(currentPos + new Vector3(0,0,5), -Vector3.forward);
-        DoPanel(currentPos + new Vector3(0,50,0), Vector3.up);
+        DoPanel(currentPos + new Vector3(0,50,0), -Vector3.up);
     }
     
 
@@ -247,8 +247,16 @@ public class RoomSegments : MonoBehaviour
 
     private Vector3 PanelRotation(Vector3 direction, float angle)
     {
-
         var cross = Vector3.Cross(Vector3.up, direction);
+        
+      //  Quaternion.AngleAxis(angle, direction)* cross;
+
+        if (direction.y != 0)
+        {
+            cross = Vector3.up.y > 0 ? Vector3.Cross(Vector3.forward, Vector3.right) 
+                : Vector3.Cross(Vector3.forward, -Vector3.right);
+        }
+        Debug.Log($"Panel Rotation: cross {cross}, angle {Quaternion.AngleAxis(angle, direction)* cross}");
         return Quaternion.AngleAxis(angle, direction)* cross;
     }
 
@@ -279,11 +287,14 @@ public class RoomSegments : MonoBehaviour
         Vector3 right = Quaternion.Euler(anAngle) * Vector3.right;
         var use = up;
         
-        var cross = Vector3.Cross(-Vector3.up, forward);
+        var cross = Vector3.Cross(Vector3.forward, Vector3.right);
+        var cross3 = Vector3.Cross(Vector3.forward, -Vector3.right);
         var cross2= Vector3.Cross(Vector3.forward, up);
-        Debug.Log(cross);
 
         var start = -135f;
+        var angg = Quaternion.AngleAxis(-135f, Vector3.up) * cross;
+        var angg2 = Quaternion.AngleAxis(-135f - 90, Vector3.up) * cross;
+        //Debug.Log($"plus {cross} minus{cross3} cross angle {angg}, angle two {angg2}");
         var first = pos + use * 40;
         
         Gizmos.DrawLine(pos, first);
