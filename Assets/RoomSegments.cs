@@ -233,31 +233,6 @@ public class RoomSegments : MonoBehaviour
         });
     }
     
-    private void AddGrid()
-    {
-        var numX = 3;
-        var numZ = 3;
-        for (int i = 0; i < numZ; i++)
-        {
-            currentPos = transform.position + new Vector3(0, 0, sizeZ * i);
-            for (int j = 0; j < numX; j++)
-            {
-                AddFloorTile();
-                currentPos += new Vector3(sizeX, 0, 0);
-            }
-        }
-    }
-    
-    private void AddFloorTile()
-    {
-        var v1 = new Vector3(Min.x, 0, Min.z);
-        var v2 = v1 + new Vector3(0, 0, sizeZ);
-        var v3 = v1 + new Vector3(sizeX, 0, sizeZ);
-        var v4 = v1 + new Vector3(sizeX, 0, 0);
-        
-        mesh.AddQuad2(v1, v2, v3, v4);
-    }
-
     private void SetCeilingTile()
     {
         var v1 = new Vector3(Min.x, Max.y, Min.z);
@@ -268,7 +243,7 @@ public class RoomSegments : MonoBehaviour
         mesh.AddQuad2(v1, v2, v3, v4);
     }
 
-    private Vector3 SomethingPanel(Vector3 direction, float angle)
+    private Vector3 PanelRotation(Vector3 direction, float angle)
     {
         var cross = Vector3.Cross(Vector3.up, direction);
         return Quaternion.AngleAxis(angle, direction)* cross;
@@ -276,6 +251,9 @@ public class RoomSegments : MonoBehaviour
 
     private void DoPanel(Vector3 position)
     {
+        var aSize = new Vector3(100, 100, 100);
+        var axis = new Vector3(1,0,0);
+        var startDir =  new Vector3(1,0,0);
         var anAngle = transform.eulerAngles;
         Vector3 forward = Quaternion.Euler(anAngle) * Vector3.forward;
         Vector3 up = Quaternion.Euler(anAngle) * Vector3.up;
@@ -283,7 +261,7 @@ public class RoomSegments : MonoBehaviour
         
         for (var i = 0; i < 4; i++)
         {
-            corners[i] = position+ Vector3.Scale(theSize / 2, 
+            corners[i] = position+ Vector3.Scale(aSize / 2, 
                 Quaternion.AngleAxis(90 * i, axis) * startDir);
         }
         lastVert = mesh.AddQuad2(corners[0], corners[1], corners[2], corners[3]);
@@ -308,7 +286,7 @@ public class RoomSegments : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            var next3 =  SomethingPanel(use, start +(-90* i));
+            var next3 =  PanelRotation(use, start +(-90* i));
             Gizmos.color = aColor;
             Gizmos.DrawSphere(first + next3 * 60, 3);
             Gizmos.DrawLine(first, first + next3 * 60);
