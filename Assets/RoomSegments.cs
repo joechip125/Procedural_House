@@ -90,9 +90,9 @@ public class RoomSegments : MonoBehaviour
             currentPos + -newAx * 50);
         currentPos = currHold;
     }
-    
 
-    public Segment Find(int x, int z)
+
+    private Segment Find(int x, int z)
     {
         return segArray[z * numberX + x];
     }
@@ -256,7 +256,7 @@ public class RoomSegments : MonoBehaviour
             cross = Vector3.up.y > 0 ? Vector3.Cross(Vector3.forward, Vector3.right) 
                 : Vector3.Cross(Vector3.forward, -Vector3.right);
         }
-        Debug.Log($"Panel Rotation: cross {cross}, angle {Quaternion.AngleAxis(angle, direction)* cross}");
+//        Debug.Log($"Panel Rotation: cross {cross}, angle {Quaternion.AngleAxis(angle, direction)* cross}");
         return Quaternion.AngleAxis(angle, direction)* cross;
     }
 
@@ -285,8 +285,10 @@ public class RoomSegments : MonoBehaviour
         Vector3 forward = Quaternion.Euler(anAngle) * Vector3.forward;
         Vector3 up = Quaternion.Euler(anAngle) * Vector3.up;
         Vector3 right = Quaternion.Euler(anAngle) * Vector3.right;
+        var newAxFor = Quaternion.AngleAxis(90, new Vector3(0,1,0)) * Vector3.forward;
+        var newAxRight = Quaternion.AngleAxis(90, new Vector3(0,1,0)) * Vector3.right;
         var use = up;
-        
+
         var cross = Vector3.Cross(Vector3.forward, Vector3.right);
         var cross3 = Vector3.Cross(Vector3.forward, -Vector3.right);
         var cross2= Vector3.Cross(Vector3.forward, up);
@@ -296,8 +298,18 @@ public class RoomSegments : MonoBehaviour
         var angg2 = Quaternion.AngleAxis(-135f - 90, Vector3.up) * cross;
         //Debug.Log($"plus {cross} minus{cross3} cross angle {angg}, angle two {angg2}");
         var first = pos + use * 40;
+        var second = pos + newAxFor * 40;
+        var third = pos + newAxRight * 40;
+
+        Debug.Log($"up angle {up}, cross {cross}, newAxFor {newAxFor}, newAxRight{newAxRight}");
         
         Gizmos.DrawLine(pos, first);
+        
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawLine(pos, second);
+        
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(pos, third);
 
         for (int i = 0; i < 4; i++)
         {
