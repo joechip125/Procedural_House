@@ -326,90 +326,21 @@ public class RoomSegments : MonoBehaviour
         Vector3 aCrossM = Vector3.Cross(aCross, Vector3.up).normalized;
         Vector3 aCrossP = Vector3.Cross(aCrossM, aCross).normalized;
         Vector3 sumCross = (aCross + aCrossM + aCrossP).normalized;
-        
-        
         var betterAngle = Quaternion.AngleAxis(startAxis, wallDirection) *sumCross;
-        var rotLocal = Rotate90CW(localPos).normalized;
-        
-        var anAngle = transform.eulerAngles;
-        Vector3 forward = Quaternion.Euler(anAngle) * Vector3.forward;
-        Vector3 up = Quaternion.Euler(anAngle) * Vector3.up;
-        Vector3 right = Quaternion.Euler(anAngle) * Vector3.right;
 
-        var startDirection = Vector3.up;
-        var sAngle = 180f;
-
-        var newAxFor = Quaternion.AngleAxis(sAngle, startDirection) * Vector3.forward;
-        var newAxRight = Quaternion.AngleAxis(sAngle, startDirection) * Vector3.right;
-        var use = up;
-        var sumAxis = newAxFor + newAxRight;
-
-        var cross = Vector3.Cross(newAxFor, newAxRight);
-        var cross3 = Vector3.Cross(Vector3.forward, -Vector3.right);
-        var cross2 = Vector3.Cross(Vector3.forward, up);
-
-        var start = -135f;
-        var angg2 = Quaternion.AngleAxis(-135f - 90, Vector3.up) * cross;
-        //Debug.Log($"plus {cross} minus{cross3} cross angle {angg}, angle two {angg2}");
-        var first = pos + use * 40;
-        var second = pos + newAxFor * 40;
-        var third = pos + newAxRight * 40;
-        var fourth = pos + sumAxis * 40;
-        var fifth = pos + wallDirection * 40;
-
-
-        Vector3 dir = fifth - pos;
-        Vector3 left = Vector3.Cross(dir, Vector3.up).normalized;
-        var angg = Quaternion.AngleAxis(startAxis, wallDirection) * left;
-        var sixth = fifth + angg * 40;
-        
         Gizmos.color = Color.yellow;
         Gizmos.DrawLine(pos, pos + betterAngle * 50);
         
         Gizmos.color = Color.black;
         Gizmos.DrawLine(pos, pos +wallDirection * 50);
         
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawLine(pos, pos + aCross * 50);
-        Gizmos.color = Color.green;
-        Gizmos.DrawLine(pos, pos + aCrossM * 50);
-  
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(pos, pos + aCrossP * 50);
-        
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(pos, pos + sumCross * 50);
-        // Gizmos.color = Color.green;
-        // Gizmos.DrawLine(pos, third);
-        // 
-        // Gizmos.color = Color.red;
-        // Gizmos.DrawLine(pos, fourth);
-
-        var deg = startAxis;
-        Vector3 left2 = Vector3.Cross(wallDirection, Vector3.up).normalized;
-        var left3 = new Vector3(-1, 0, -1);
-        var dir2 = RotateVectorAroundAxis(left3, wallDirection, 90);
-        var rotPoint = new Vector3();
-        var aPoint = RotatePointAroundLine(rotPoint, currentPos, currentPos + wallDirection * 50, 90);
-
-        var rotLocal2 = Rotate90CW(rotLocal).normalized;
-        
         for (int i = 0; i < 4; i++)
         {
-           // rotLocal2 = Rotate90CW(rotLocal2).normalized;
-           // aPoint = RotatePointAroundLine(new Vector3(-1,0,-1), pos, pos + wallDirection * 100, i * 90 + 45);
-           // Gizmos.DrawSphere(pos + rotLocal2 * 50 , 4);
-           // angg = Quaternion.AngleAxis(deg, wallDirection) * left;
-           // var newAngle = new Vector3(Mathf.Pow(angg.x, 2), Mathf.Pow(angg.y, 2), Mathf.Pow(angg.z, 2));
-           // sixth =  angg * 40;
-           //// Debug.Log($"current {angg}, sixth {sixth}, newAngle {newAngle}, aPoint {aPoint} total {pos + wallDirection * 100}, local {localPos}");
-           // 
-           // Gizmos.color = Color.red;
-           // Gizmos.DrawLine(pos, sixth);
-           //
-           // deg -= 90f;
+            betterAngle = Quaternion.AngleAxis(startAxis + 90 * i, wallDirection) *sumCross;
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(pos, pos + betterAngle * 50);
         }
         
-        Debug.Log($"length {Vector3.Distance(pos, pos + sumCross * 50)}, rotLocal {rotLocal} rot2 {rotLocal2}, aCross {aCross} ,aCrossM {aCrossM}, better {betterAngle}");
+        Debug.Log($"length {Vector3.Distance(pos, pos + sumCross * 50)}, aCross {aCross} ,aCrossM {aCrossM}, better {betterAngle}");
     }
 }
