@@ -11,6 +11,7 @@ public class RoomSegments : MonoBehaviour
     public float sizeX, sizeY, sizeZ;
     [SerializeField]private Vector3 size = new Vector3(100,100,100);
     [SerializeField] private Vector3 wallDirection;
+    [SerializeField] private float startAxis;
 
     public int numberX, numberZ;
 
@@ -39,9 +40,7 @@ public class RoomSegments : MonoBehaviour
         ////AddFloorTile();
         //
         //var ang =Quaternion.AngleAxis(90, new Vector3(1,0,0)) * new Vector3(0,1,0);
-        DoPanel(currentPos, Vector3.forward);
-        DoPanel(currentPos + new Vector3(0,0,5), -Vector3.forward);
-        DoPanel(currentPos + new Vector3(0,50,0), -Vector3.up);
+        DoPanel(currentPos + new Vector3(50,0,0), Vector3.right, currentPos);
     }
     
 
@@ -259,13 +258,22 @@ public class RoomSegments : MonoBehaviour
         return Quaternion.AngleAxis(angle, direction)* cross;
     }
 
-    private void DoPanel(Vector3 position, Vector3 inverseNormal)
+    private void DoPanel(Vector3 position, Vector3 inverseNormal, Vector3 originalPos)
     {
         var aSize = new Vector3(100, 100, 100);
-        var start = -135f;
+        var start = 45f;
+        
+        Vector3 dir = position-originalPos;
+        
+        Vector3 left = Vector3.Cross(dir, Vector3.up).normalized;
+        var anAngle = Quaternion.AngleAxis(start, wallDirection) * left;
         
         for (var i = 0; i < 4; i++)
         {
+            anAngle = Quaternion.AngleAxis(start +(-90* i), wallDirection) * left;
+            var amount = Vector3.Scale((aSize / 2), anAngle);
+            Debug.Log($"runtime angle {anAngle}, index {i}, amount {amount}");
+            
             var startDir =  PanelRotation(inverseNormal, start +(-90* i));
             corners[i] = position+ Vector3.Scale(aSize / 2, 
                 Quaternion.Euler(PanelRotation(inverseNormal, start + (-90 * i))) * startDir);
@@ -278,7 +286,7 @@ public class RoomSegments : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        var aColor = new Color(0.2f,0.2f, 0.2f);
+        var aColor = new Color(0.2f, 0.2f, 0.2f);
         var pos = transform.position;
         var anAngle = transform.eulerAngles;
         Vector3 forward = Quaternion.Euler(anAngle) * Vector3.forward;
@@ -287,7 +295,7 @@ public class RoomSegments : MonoBehaviour
 
         var startDirection = Vector3.up;
         var sAngle = 180f;
-        
+
         var newAxFor = Quaternion.AngleAxis(sAngle, startDirection) * Vector3.forward;
         var newAxRight = Quaternion.AngleAxis(sAngle, startDirection) * Vector3.right;
         var use = up;
@@ -295,10 +303,9 @@ public class RoomSegments : MonoBehaviour
 
         var cross = Vector3.Cross(newAxFor, newAxRight);
         var cross3 = Vector3.Cross(Vector3.forward, -Vector3.right);
-        var cross2= Vector3.Cross(Vector3.forward, up);
+        var cross2 = Vector3.Cross(Vector3.forward, up);
 
         var start = -135f;
-        var angg = Quaternion.AngleAxis(90f, wallDirection) * wallDirection;
         var angg2 = Quaternion.AngleAxis(-135f - 90, Vector3.up) * cross;
         //Debug.Log($"plus {cross} minus{cross3} cross angle {angg}, angle two {angg2}");
         var first = pos + use * 40;
@@ -306,31 +313,45 @@ public class RoomSegments : MonoBehaviour
         var third = pos + newAxRight * 40;
         var fourth = pos + sumAxis * 40;
         var fifth = pos + wallDirection * 40;
+
+
+        Vector3 dir = fifth - pos;
+        Vector3 left = Vector3.Cross(dir, Vector3.up).normalized;
+        var angg = Quaternion.AngleAxis(startAxis, wallDirection) * left;
         var sixth = fifth + angg * 40;
 
-        Debug.Log($"up angle {up}, cross {cross}, newAxFor {newAxFor}, newAxRight{newAxRight}, angg {angg}");
-        
+        //Vector3 right = -left;
+        //Vector3 right = Vector3.Cross(Vector3.up, dir).normalized;
+        //Vector3 right = Vector3.Cross(-dir, Vector3.up).normalized;
+        //Vector3 right = Vector3.Cross(dir, -Vector3.up).normalized;
+
+       // Debug.Log(
+       //     $"up angle {up}, cross {cross}, newAxFor {newAxFor}, newAxRight{newAxRight}, angg {angg} , left {left}");
+
         //Gizmos.DrawLine(pos, first);
-        
+
         Gizmos.color = Color.cyan;
         Gizmos.DrawLine(pos, fifth);
         Gizmos.DrawLine(fifth, sixth);
-        
-       // Gizmos.color = Color.green;
-       // Gizmos.DrawLine(pos, third);
-       // 
-       // Gizmos.color = Color.red;
-       // Gizmos.DrawLine(pos, fourth);
+
+        // Gizmos.color = Color.green;
+        // Gizmos.DrawLine(pos, third);
+        // 
+        // Gizmos.color = Color.red;
+        // Gizmos.DrawLine(pos, fourth);
+
+        var deg = startAxis;
 
         for (int i = 0; i < 4; i++)
         {
-            //var next3 =  PanelRotation(use, start +(-90* i));
-            //Gizmos.color = aColor;
-            //Gizmos.DrawSphere(first + next3 * 60, 3);
-            //Gizmos.DrawLine(first, first + next3 * 60);
-            //aColor.r += 0.1f;
-        }
-        
+            angg = Quaternion.AngleAxis(deg, wallDirection) * left;
+            sixth = fifth + angg * 40;
+           // Debug.Log($"current {angg}");
+            
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(fifth, sixth);
 
+            deg -= 90f;
+        }
     }
 }
