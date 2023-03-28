@@ -40,7 +40,7 @@ public class RoomSegments : MonoBehaviour
         ////AddFloorTile();
         //
         //var ang =Quaternion.AngleAxis(90, new Vector3(1,0,0)) * new Vector3(0,1,0);
-        DoPanel(currentPos + new Vector3(50,0,0), Vector3.right, currentPos);
+        DoPanel(currentPos + wallDirection * 50, wallDirection, currentPos);
     }
     
 
@@ -258,30 +258,61 @@ public class RoomSegments : MonoBehaviour
         return Quaternion.AngleAxis(angle, direction)* cross;
     }
 
+    static Vector3 RotateVectorAroundAxis(Vector3 vector, Vector3 axis, float degrees)
+    {
+        return Quaternion.AngleAxis(degrees, axis) * vector;
+    }
+     
+    static Vector3 RotatePointAroundLine(Vector3 pointToRotate, Vector3 pointOnLine0, Vector3 pointOnLine1, float degrees)
+    {
+        Vector3 localVector = pointToRotate - pointOnLine0;
+        Vector3 axis = pointOnLine1 - pointOnLine0;
+        Vector3 rotatedVector = RotateVectorAroundAxis(localVector, axis, degrees);
+        return rotatedVector + pointOnLine0;
+    }
+    
     private void DoPanel(Vector3 position, Vector3 inverseNormal, Vector3 originalPos)
     {
         var aSize = new Vector3(100, 100, 100);
-        var start = 45f;
+        var start = startAxis;
+        Vector3 left2 = Rotate90CCW(position-originalPos).normalized;
+        Vector3 right = Rotate90CW(position-originalPos).normalized;
+        Debug.Log($"left2 {left2}, right {right}");
         
         Vector3 dir = position-originalPos;
         
         Vector3 left = Vector3.Cross(dir, Vector3.up).normalized;
-        var anAngle = Quaternion.AngleAxis(start, wallDirection) * left;
+        var anAngle = Quaternion.AngleAxis(start, wallDirection) * left2;
         
         for (var i = 0; i < 4; i++)
         {
-            anAngle = Quaternion.AngleAxis(start +(-90* i), wallDirection) * left;
+            anAngle = Quaternion.AngleAxis(start, wallDirection) * left2;
+            var newAngle = new Vector3(Mathf.Pow(anAngle.x, 2), Mathf.Pow(anAngle.y, 2), Mathf.Pow(anAngle.z, 2));
             var amount = Vector3.Scale((aSize / 2), anAngle);
-            Debug.Log($"runtime angle {anAngle}, index {i}, amount {amount}");
-            
-            var startDir =  PanelRotation(inverseNormal, start +(-90* i));
-            corners[i] = position+ Vector3.Scale(aSize / 2, 
-                Quaternion.Euler(PanelRotation(inverseNormal, start + (-90 * i))) * startDir);
+            Debug.Log($"runtime angle {anAngle}, index {i}, amount {amount}, dir {dir} , left {left}, newAngle {newAngle}");
+            var total = position + amount;
+
+            corners[i] = total;
+            //var startDir =  PanelRotation(inverseNormal, start +(-90* i));
+            //corners[i] = position+ Vector3.Scale(aSize / 2, 
+            //    Quaternion.Euler(PanelRotation(inverseNormal, start + (-90 * i))) * startDir);
+            start += -90f;
         }
         lastVert = mesh.AddQuad2(corners[0], corners[1], corners[2], corners[3]);
         
         //corners[i] = position+ Vector3.Scale(theSize / 2, 
         //    Quaternion.AngleAxis(90 * i, axis) * startDir);
+    }
+    
+    // clockwise
+    Vector3 Rotate90CW(Vector3 aDir)
+    {
+        return new Vector3(aDir.z, 0, -aDir.x);
+    }
+    // counter clockwise
+    Vector3 Rotate90CCW(Vector3 aDir)
+    {
+        return new Vector3(-aDir.z, 0, aDir.x);
     }
 
     private void OnDrawGizmos()
@@ -346,7 +377,7 @@ public class RoomSegments : MonoBehaviour
         {
             angg = Quaternion.AngleAxis(deg, wallDirection) * left;
             sixth = fifth + angg * 40;
-           // Debug.Log($"current {angg}");
+         //   Debug.Log($"current {angg}");
             
             Gizmos.color = Color.red;
             Gizmos.DrawLine(fifth, sixth);
