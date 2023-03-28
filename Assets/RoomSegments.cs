@@ -40,7 +40,7 @@ public class RoomSegments : MonoBehaviour
         ////AddFloorTile();
         //
         //var ang =Quaternion.AngleAxis(90, new Vector3(1,0,0)) * new Vector3(0,1,0);
-        DoPanel(currentPos + wallDirection * 50, wallDirection, currentPos);
+        DoPanel(currentPos + wallDirection * 1, wallDirection, currentPos);
         
     }
     
@@ -274,35 +274,37 @@ public class RoomSegments : MonoBehaviour
     
     private void DoPanel(Vector3 position, Vector3 inverseNormal, Vector3 originalPos)
     {
+        var mag = (position - originalPos).normalized;
+        var pos = transform.position;
+        var localPos = ((wallDirection * 50) - pos).normalized;
+        var normalDir = wallDirection.normalized;
+        Vector3 aCross = Vector3.Cross(localPos, normalDir).normalized;
+        Vector3 aCrossM = Vector3.Cross(aCross, Vector3.up).normalized;
+        Vector3 aCrossP = Vector3.Cross(aCrossM, aCross).normalized;
+        Vector3 sumCross = (aCross + aCrossM + aCrossP).normalized;
+        var betterAngle = Quaternion.AngleAxis(startAxis, wallDirection) *sumCross;
+        
         var aSize = new Vector3(100, 100, 100);
         var start = startAxis;
         Vector3 left2 = Rotate90CCW(position-originalPos).normalized;
-        Vector3 right = Rotate90CW(position-originalPos).normalized;
-        Debug.Log($"left2 {left2}, right {right}");
         
         Vector3 dir = position-originalPos;
         
         Vector3 left = Vector3.Cross(dir, Vector3.up).normalized;
-        var anAngle = Quaternion.AngleAxis(start, wallDirection) * left2;
+       
         
         for (var i = 0; i < 4; i++)
         {
-            anAngle = Quaternion.AngleAxis(start, wallDirection) * left2;
-            var newAngle = new Vector3(Mathf.Pow(anAngle.x, 2), Mathf.Pow(anAngle.y, 2), Mathf.Pow(anAngle.z, 2));
-            var amount = Vector3.Scale((aSize / 2), anAngle);
-            Debug.Log($"runtime angle {anAngle}, index {i}, amount {amount}, dir {dir} , left {left}, newAngle {newAngle}");
+            betterAngle = Quaternion.AngleAxis(start, wallDirection) *sumCross;
+            
+            var amount = Vector3.Scale((aSize / 2), betterAngle);
+            Debug.Log($"runtime angle {betterAngle}, index {i}, amount {amount}, dir {dir} , left {left}");
             var total = position + amount;
 
             corners[i] = total;
-            //var startDir =  PanelRotation(inverseNormal, start +(-90* i));
-            //corners[i] = position+ Vector3.Scale(aSize / 2, 
-            //    Quaternion.Euler(PanelRotation(inverseNormal, start + (-90 * i))) * startDir);
             start += -90f;
         }
         lastVert = mesh.AddQuad2(corners[0], corners[1], corners[2], corners[3]);
-        
-        //corners[i] = position+ Vector3.Scale(theSize / 2, 
-        //    Quaternion.AngleAxis(90 * i, axis) * startDir);
     }
     
     // clockwise
@@ -336,9 +338,14 @@ public class RoomSegments : MonoBehaviour
         
         for (int i = 0; i < 4; i++)
         {
-            betterAngle = Quaternion.AngleAxis(startAxis + 90 * i, wallDirection) *sumCross;
+            betterAngle = Quaternion.AngleAxis(startAxis + -90 * i, wallDirection) *sumCross;
             Gizmos.color = Color.yellow;
             Gizmos.DrawLine(pos, pos + betterAngle * 50);
+
+            Gizmos.color = aColor;
+            Gizmos.DrawSphere(pos + betterAngle * 50, 4);
+
+            aColor += new Color(0.2f,0,0);
         }
         
         Debug.Log($"length {Vector3.Distance(pos, pos + sumCross * 50)}, aCross {aCross} ,aCrossM {aCrossM}, better {betterAngle}");
