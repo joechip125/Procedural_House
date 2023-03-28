@@ -35,13 +35,8 @@ public class RoomSegments : MonoBehaviour
         mesh = GetComponent<AdvancedMesh>();
         mesh.InstanceMesh();
         currentPos = transform.position;
-        //InitSegment();
-        //MoveStuff(new Vector3(-1,0,0));
-        ////AddFloorTile();
-        //
-        //var ang =Quaternion.AngleAxis(90, new Vector3(1,0,0)) * new Vector3(0,1,0);
+       
         DoPanel(currentPos + wallDirection * 1, wallDirection, currentPos);
-        
     }
     
 
@@ -276,30 +271,20 @@ public class RoomSegments : MonoBehaviour
     {
         var mag = (position - originalPos).normalized;
         var pos = transform.position;
-        var localPos = ((wallDirection * 50) - pos).normalized;
-        var normalDir = wallDirection.normalized;
-        Vector3 aCross = Vector3.Cross(localPos, normalDir).normalized;
+        var localPos = ((inverseNormal * 50) - originalPos).normalized;
+        Vector3 aCross = Vector3.Cross(localPos, inverseNormal).normalized;
         Vector3 aCrossM = Vector3.Cross(aCross, Vector3.up).normalized;
         Vector3 aCrossP = Vector3.Cross(aCrossM, aCross).normalized;
         Vector3 sumCross = (aCross + aCrossM + aCrossP).normalized;
-        var betterAngle = Quaternion.AngleAxis(startAxis, wallDirection) *sumCross;
+        var betterAngle = Quaternion.AngleAxis(startAxis, inverseNormal) *sumCross;
         
         var aSize = new Vector3(100, 100, 100);
         var start = startAxis;
-        Vector3 left2 = Rotate90CCW(position-originalPos).normalized;
-        
-        Vector3 dir = position-originalPos;
-        
-        Vector3 left = Vector3.Cross(dir, Vector3.up).normalized;
-       
         
         for (var i = 0; i < 4; i++)
         {
-            betterAngle = Quaternion.AngleAxis(start, wallDirection) *sumCross;
-            
-            var amount = Vector3.Scale((aSize / 2), betterAngle);
-            Debug.Log($"runtime angle {betterAngle}, index {i}, amount {amount}, dir {dir} , left {left}");
-            var total = position + amount;
+            betterAngle = Quaternion.AngleAxis(start, inverseNormal) *sumCross;
+            var total = position +  Vector3.Scale((aSize / 2), betterAngle);
 
             corners[i] = total;
             start += -90f;
