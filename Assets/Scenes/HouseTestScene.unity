@@ -610,6 +610,18 @@ PrefabInstance:
       propertyPath: numberZ
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 2443463109682500871, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
+      propertyPath: wallDirection.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2443463109682500871, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
+      propertyPath: wallDirection.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2443463109682500871, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
+      propertyPath: wallDirection.z
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}

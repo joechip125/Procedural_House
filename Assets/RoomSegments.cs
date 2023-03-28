@@ -10,6 +10,7 @@ public class RoomSegments : MonoBehaviour
     private AdvancedMesh mesh;
     public float sizeX, sizeY, sizeZ;
     [SerializeField]private Vector3 size = new Vector3(100,100,100);
+    [SerializeField] private Vector3 wallDirection;
 
     public int numberX, numberZ;
 
@@ -166,8 +167,6 @@ public class RoomSegments : MonoBehaviour
     
     private void SetAPanel(Vector3 startDir, Vector3 theSize, Vector3 axis, Vector3 position)
     {
-        
-        
         for (var i = 0; i < 4; i++)
         {
             corners[i] = position+ Vector3.Scale(theSize / 2, 
@@ -285,39 +284,51 @@ public class RoomSegments : MonoBehaviour
         Vector3 forward = Quaternion.Euler(anAngle) * Vector3.forward;
         Vector3 up = Quaternion.Euler(anAngle) * Vector3.up;
         Vector3 right = Quaternion.Euler(anAngle) * Vector3.right;
-        var newAxFor = Quaternion.AngleAxis(90, new Vector3(0,1,0)) * Vector3.forward;
-        var newAxRight = Quaternion.AngleAxis(90, new Vector3(0,1,0)) * Vector3.right;
-        var use = up;
 
-        var cross = Vector3.Cross(Vector3.forward, Vector3.right);
+        var startDirection = Vector3.up;
+        var sAngle = 180f;
+        
+        var newAxFor = Quaternion.AngleAxis(sAngle, startDirection) * Vector3.forward;
+        var newAxRight = Quaternion.AngleAxis(sAngle, startDirection) * Vector3.right;
+        var use = up;
+        var sumAxis = newAxFor + newAxRight;
+
+        var cross = Vector3.Cross(newAxFor, newAxRight);
         var cross3 = Vector3.Cross(Vector3.forward, -Vector3.right);
         var cross2= Vector3.Cross(Vector3.forward, up);
 
         var start = -135f;
-        var angg = Quaternion.AngleAxis(-135f, Vector3.up) * cross;
+        var angg = Quaternion.AngleAxis(90f, wallDirection) * wallDirection;
         var angg2 = Quaternion.AngleAxis(-135f - 90, Vector3.up) * cross;
         //Debug.Log($"plus {cross} minus{cross3} cross angle {angg}, angle two {angg2}");
         var first = pos + use * 40;
         var second = pos + newAxFor * 40;
         var third = pos + newAxRight * 40;
+        var fourth = pos + sumAxis * 40;
+        var fifth = pos + wallDirection * 40;
+        var sixth = fifth + angg * 40;
 
-        Debug.Log($"up angle {up}, cross {cross}, newAxFor {newAxFor}, newAxRight{newAxRight}");
+        Debug.Log($"up angle {up}, cross {cross}, newAxFor {newAxFor}, newAxRight{newAxRight}, angg {angg}");
         
-        Gizmos.DrawLine(pos, first);
+        //Gizmos.DrawLine(pos, first);
         
         Gizmos.color = Color.cyan;
-        Gizmos.DrawLine(pos, second);
+        Gizmos.DrawLine(pos, fifth);
+        Gizmos.DrawLine(fifth, sixth);
         
-        Gizmos.color = Color.green;
-        Gizmos.DrawLine(pos, third);
+       // Gizmos.color = Color.green;
+       // Gizmos.DrawLine(pos, third);
+       // 
+       // Gizmos.color = Color.red;
+       // Gizmos.DrawLine(pos, fourth);
 
         for (int i = 0; i < 4; i++)
         {
-            var next3 =  PanelRotation(use, start +(-90* i));
-            Gizmos.color = aColor;
-            Gizmos.DrawSphere(first + next3 * 60, 3);
-            Gizmos.DrawLine(first, first + next3 * 60);
-            aColor.r += 0.1f;
+            //var next3 =  PanelRotation(use, start +(-90* i));
+            //Gizmos.color = aColor;
+            //Gizmos.DrawSphere(first + next3 * 60, 3);
+            //Gizmos.DrawLine(first, first + next3 * 60);
+            //aColor.r += 0.1f;
         }
         
 
