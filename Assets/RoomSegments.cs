@@ -319,7 +319,7 @@ public class RoomSegments : MonoBehaviour
         Gizmos.DrawLine(pos, pos + betterAngle * 50);
         
         Gizmos.color = Color.black;
-        Gizmos.DrawLine(pos, pos +wallDirection * 50);
+        Gizmos.DrawLine(pos, pos -(wallDirection * 50));
         
         for (int i = 0; i < 4; i++)
         {
@@ -333,6 +333,6 @@ public class RoomSegments : MonoBehaviour
             aColor += new Color(0.2f,0,0);
         }
         
-        Debug.Log($"length {Vector3.Distance(pos, pos + sumCross * 50)}, aCross {aCross} ,aCrossM {aCrossM}, better {betterAngle}");
+        Debug.Log($"length {Vector3.Distance(pos, pos + sumCross * 50)}, aCross {aCross} ,aCrossM {aCrossM}, better {betterAngle}, localPos{localPos}");
     }
 }
