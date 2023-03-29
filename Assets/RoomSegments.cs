@@ -36,7 +36,7 @@ public class RoomSegments : MonoBehaviour
         mesh.InstanceMesh();
         currentPos = transform.position;
        
-        DoPanel(currentPos + wallDirection * 1, wallDirection, currentPos);
+        DoPanel(currentPos, wallDirection);
     }
     
 
@@ -267,20 +267,23 @@ public class RoomSegments : MonoBehaviour
         return rotatedVector + pointOnLine0;
     }
     
-    private void DoPanel(Vector3 position, Vector3 inverseNormal, Vector3 originalPos)
+    private void DoPanel(Vector3 position, Vector3 inverseNormal)
     {
-        var mag = (position - originalPos).normalized;
-        var pos = transform.position;
-        var localPos = ((inverseNormal * 50) - originalPos).normalized;
-        Vector3 aCross = Vector3.Cross(localPos, inverseNormal).normalized;
-        Vector3 aCrossM = Vector3.Cross(aCross, Vector3.up).normalized;
-        Vector3 aCrossP = Vector3.Cross(aCrossM, aCross).normalized;
-        Vector3 sumCross = (aCross + aCrossM + aCrossP).normalized;
-        var betterAngle = Quaternion.AngleAxis(startAxis, inverseNormal) *sumCross;
-        
+        Vector3 aCrossForward = Vector3.Cross(inverseNormal, Vector3.up).normalized;
+        Vector3 aCrossUp = Vector3.Cross(aCrossForward, inverseNormal).normalized;
+
+
         var aSize = new Vector3(100, 100, 100);
         var start = startAxis;
-        
+
+        if (wallDirection.y != 0 && wallDirection.x + wallDirection.z == 0)
+        {
+            aCrossForward = Vector3.Cross(inverseNormal, Vector3.forward).normalized;       
+        }
+
+        Vector3 sumCross = (aCrossForward + aCrossUp).normalized;
+        var betterAngle = Quaternion.AngleAxis(startAxis, inverseNormal) *sumCross;
+
         for (var i = 0; i < 4; i++)
         {
             betterAngle = Quaternion.AngleAxis(start, inverseNormal) *sumCross;
@@ -307,16 +310,23 @@ public class RoomSegments : MonoBehaviour
     {
         var aColor = new Color(0.2f, 0.2f, 0.2f);
         var pos = transform.position;
-        var localPos = ((wallDirection * 50) - pos).normalized;
         var normalDir = wallDirection.normalized;
-        Vector3 aCross = Vector3.Cross(localPos, normalDir).normalized;
-        Vector3 aCrossM = Vector3.Cross(aCross, Vector3.up).normalized;
-        Vector3 aCrossP = Vector3.Cross(aCrossM, aCross).normalized;
-        Vector3 sumCross = (aCross + aCrossM + aCrossP).normalized;
+
+        Vector3 aCrossForward = Vector3.Cross(normalDir, Vector3.up).normalized;
+        Vector3 aCrossUp = Vector3.Cross(aCrossForward, normalDir).normalized;
+
+
+        if (wallDirection.y != 0 && wallDirection.x + wallDirection.z == 0)
+        {
+            aCrossForward = Vector3.Cross(normalDir, Vector3.forward).normalized;       
+        }
+
+        
+        Vector3 sumCross = (aCrossForward + aCrossUp).normalized;
         var betterAngle = Quaternion.AngleAxis(startAxis, wallDirection) *sumCross;
 
         Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(pos, pos + betterAngle * 50);
+        Gizmos.DrawLine(pos, pos + aCrossUp * 50);
         
         Gizmos.color = Color.black;
         Gizmos.DrawLine(pos, pos -(wallDirection * 50));
@@ -331,8 +341,9 @@ public class RoomSegments : MonoBehaviour
             Gizmos.DrawSphere(pos + betterAngle * 50, 4);
 
             aColor += new Color(0.2f,0,0);
+            Debug.Log($"angle {betterAngle}, index {i}");
         }
         
-        Debug.Log($"length {Vector3.Distance(pos, pos + sumCross * 50)}, aCross {aCross} ,aCrossM {aCrossM}, better {betterAngle}, localPos{localPos}");
+        Debug.Log($"upCross {aCrossForward}, sumCross {sumCross} better {betterAngle}");
     }
 }
