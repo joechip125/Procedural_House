@@ -324,31 +324,46 @@ public class RoomSegments : MonoBehaviour
         var betterAngle = Quaternion.AngleAxis(startAxis, wallDirection) *sumCross;
         
 
-        Gizmos.color = Color.yellow;
+        Gizmos.color = Color.green;
         Gizmos.DrawLine(pos, pos + aCrossUp * 50);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(pos, pos + aCrossForward * 50);
         
-        Gizmos.color = Color.black;
-        Gizmos.DrawLine(pos, pos -(wallDirection * 50));
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(pos, pos +(wallDirection * 50));
         
         for (int i = 0; i < 4; i++)
         {
             betterAngle = Quaternion.AngleAxis(startAxis + -90 * i, wallDirection) *sumCross;
-            var xAmount = Mathf.Round(size.x * betterAngle.x);
-            var zAmount = Mathf.Round(size.z * betterAngle.z);
-            var amount = Mathf.Sqrt(Mathf.Pow(xAmount, 2) + Mathf.Pow(xAmount, 2)) / 2;
-            var amount2 = Mathf.Sqrt(Mathf.Pow(zAmount, 2) + Mathf.Pow(zAmount, 2)) / 2;
-            Vector3 newSpot = pos + (betterAngle.normalized * 50);
+            var xAmount = Mathf.Round(size.x * Mathf.Pow(betterAngle.x, 2));
+            var zAmount = Mathf.Round(size.z *  Mathf.Pow(betterAngle.z, 2));
+            var yAmount = Mathf.Round(size.y * Mathf.Pow(betterAngle.y, 2));
+            var amount = Mathf.Sqrt(Mathf.Pow(xAmount, 2) + Mathf.Pow(yAmount, 2)) / 2;
+            var amount2 = Mathf.Sqrt(Mathf.Pow(zAmount, 2) + Mathf.Pow(yAmount, 2)) / 2;
+            Vector3 newSpot = pos + (betterAngle.normalized * 70);
+            Vector3 newSpot2 = pos + (betterAngle.normalized * amount);
+            Vector3 newSpot4 = pos + (betterAngle.normalized * amount2);
+            Vector3 newSpot3 = pos + Vector3.Scale(betterAngle, new Vector3(xAmount, yAmount, zAmount));
 
             if (betterAngle.x < 0)
             {
                 amount = -amount;
+                xAmount = -xAmount;
             }
-            
+
+            if (betterAngle.y < 0)
+            {
+                amount = -amount;
+                yAmount = -yAmount;
+            }
+
             if (betterAngle.z < 0)
             {
                 amount2 = -amount2;
+                zAmount = -zAmount;
             }
-            
+
+            var aTotal = new Vector3(xAmount, yAmount, zAmount);
             
             Gizmos.color = Color.yellow;
             var theAmount = new Vector3(amount, 0, amount2);
@@ -356,10 +371,13 @@ public class RoomSegments : MonoBehaviour
             Gizmos.DrawLine(pos, newSpot);
 
             Gizmos.color = aColor;
-            Gizmos.DrawSphere(pos + theAmount, 4);
+            Gizmos.DrawSphere(newSpot, 4);
+            Gizmos.DrawSphere(pos + aTotal, 2);
 
             Debug.Log($"amount {theAmount}, angle {betterAngle} sum {sumCross} " +
-                      $"xAmount {xAmount}, zAmount {zAmount}, hypAmount {amount}, hyp2 {amount2}");
+                      $"xAmount {xAmount}, yAmount{yAmount}, " +
+                      $"zAmount {zAmount}, " +
+                      $"hypAmount {amount}, hyp2 {amount2} , sumTotal{aTotal}, newSpot2 {newSpot2}, newSpot4 {newSpot4}");
             aColor += new Color(0.2f,0,0);
         }
     }
