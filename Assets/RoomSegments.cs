@@ -314,6 +314,10 @@ public class RoomSegments : MonoBehaviour
 
         Vector3 aCrossForward = Vector3.Cross(normalDir, Vector3.up).normalized;
         Vector3 aCrossUp = Vector3.Cross(aCrossForward, normalDir).normalized;
+
+        var upAmount = aCrossUp * sizeY;
+        var forwardAmount = aCrossForward * sizeX;
+        
         
         if (wallDirection.y != 0 && wallDirection.x + wallDirection.z == 0)
         {
@@ -340,11 +344,13 @@ public class RoomSegments : MonoBehaviour
         Gizmos.DrawLine(pos, rightPos);
         Gizmos.DrawLine(rightPos, extraPos);
      
-        Debug.Log($"angelChange {angleChange}, tAmount {tAmount}, angle {betterAngle}, aSin {aSin * size.x / 2}");
+        Debug.Log($"angelChange {angleChange}, tAmount " +
+                  $"{tAmount}, angle {betterAngle}, aSin {aSin * size.x / 2}, upAmount {upAmount}, forAmount {forwardAmount}");
         
         for (int i = 0; i < 4; i++)
         {
             betterAngle = Quaternion.AngleAxis(startAxis + -90 * i, wallDirection) *sumCross;
+            var betterAngle2 = Quaternion.AngleAxis(startAxis + -90 * i, wallDirection) *aCrossForward;
             angleChange = Vector3.Angle(Vector3.right, betterAngle);
             var xAmount = Mathf.Sin(Vector3.Angle(Vector3.right, betterAngle) * (Mathf.PI * 2) / 360)* size.x;
             var zAmount = Mathf.Sin(Vector3.Angle(Vector3.forward, betterAngle) * (Mathf.PI * 2) / 360)* size.z;
@@ -360,7 +366,7 @@ public class RoomSegments : MonoBehaviour
             Gizmos.color = aColor;
             //Gizmos.DrawSphere(newSpot, 4);
             Gizmos.DrawSphere(pos + aTotal, 2);
-            Debug.Log($"yAmount {yAmount}, xAmount {xAmount}, zAmount {zAmount}, angle {betterAngle}, angleChange {angleChange}");
+            Debug.Log($"yAmount {yAmount}, xAmount {xAmount}, zAmount {zAmount}, angle {betterAngle2}, angleChange {angleChange}, total {aTotal}");
             aColor += new Color(0.2f,0,0);
         }
     }
