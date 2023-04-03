@@ -1,9 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Quaternion = UnityEngine.Quaternion;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 public class RoomSegments : MonoBehaviour
 {
@@ -351,6 +355,9 @@ public class RoomSegments : MonoBehaviour
         {
             betterAngle = Quaternion.AngleAxis(startAxis + -90 * i, wallDirection) *sumCross;
             var betterAngle2 = Quaternion.AngleAxis(startAxis + -90 * i, wallDirection) *aCrossForward;
+            var betterAngle3 = Quaternion.AngleAxis(startAxis + -90 * i, wallDirection) *aCrossUp;
+            var pos4 = betterAngle2 * (sizeX / 2) + betterAngle3 * (sizeY / 2);
+            
             angleChange = Vector3.Angle(Vector3.right, betterAngle);
             var xAmount = Mathf.Sin(Vector3.Angle(Vector3.right, betterAngle) * (Mathf.PI * 2) / 360)* size.x;
             var zAmount = Mathf.Sin(Vector3.Angle(Vector3.forward, betterAngle) * (Mathf.PI * 2) / 360)* size.z;
@@ -361,12 +368,16 @@ public class RoomSegments : MonoBehaviour
             var aTotal = new Vector3(xAmount, yAmount, zAmount);
             aTotal = Vector3.Scale(new Vector3(xAmount, yAmount, zAmount), betterAngle);
             Gizmos.color = Color.yellow;
-            Gizmos.DrawLine(pos, pos + aTotal);
+            Gizmos.DrawLine(pos, pos + pos4);
+            
+            Gizmos.color = Color.black;
+            Gizmos.DrawLine(pos, pos + betterAngle2 * 10);
 
             Gizmos.color = aColor;
             //Gizmos.DrawSphere(newSpot, 4);
             Gizmos.DrawSphere(pos + aTotal, 2);
-            Debug.Log($"yAmount {yAmount}, xAmount {xAmount}, zAmount {zAmount}, angle {betterAngle2}, angleChange {angleChange}, total {aTotal}");
+            Debug.Log($"yAmount {yAmount}, xAmount {xAmount}, zAmount {zAmount}, angle1 {betterAngle}, angle2 {betterAngle2 * sizeX} " +
+                      $"angle3 {betterAngle3}, angleChange {angleChange}, total {aTotal}, pos4 {pos4 / 2}");
             aColor += new Color(0.2f,0,0);
         }
     }
