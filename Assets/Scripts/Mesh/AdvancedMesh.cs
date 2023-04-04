@@ -117,12 +117,11 @@ public class AdvancedMesh : MonoBehaviour
         Triangles.Add(vertexIndex + 1);
         Triangles.Add(vertexIndex + 2);
         
-        Triangles.Add(vertexIndex );
+        Triangles.Add(vertexIndex);
         Triangles.Add(vertexIndex + 2);
         Triangles.Add(vertexIndex + 3);
         
         UpdateMesh();
-
         return vertexIndex;
     }
     
@@ -133,17 +132,7 @@ public class AdvancedMesh : MonoBehaviour
         TheMesh.SetTriangles(Triangles, 0);
         TheMesh.RecalculateNormals();
     }
-
-
-    public void ClearMesh()
-    {
-        Vertices.Clear();
-        Triangles.Clear();
-        TheMesh.SetVertices(Vertices);
-        TheMesh.SetTriangles(Triangles, 0);
-    }
-
-
+    
     public void MoveVertices(Dictionary<int, Vector3> pointsAndMove)
     {
         foreach (var p in pointsAndMove)
@@ -152,17 +141,7 @@ public class AdvancedMesh : MonoBehaviour
         }
         UpdateMesh();
     }
-
-    public void MoveVertices(Vector3 moveAmount, List<int> indexes)
-    {
-        foreach (var i in indexes)
-        {
-            Vertices[i] += moveAmount;
-        }
-        
-        UpdateMesh();
-    }
-
+    
     protected void MoveTwoVerts(int indexOne, int indexTwo, Vector3 moveAmount)
     {
         Vertices[indexOne] += moveAmount;

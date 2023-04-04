@@ -348,8 +348,8 @@ public class RoomSegments : MonoBehaviour
         Gizmos.DrawLine(pos, rightPos);
         Gizmos.DrawLine(rightPos, extraPos);
      
-        Debug.Log($"angelChange {angleChange}, tAmount " +
-                  $"{tAmount}, angle {betterAngle}, aSin {aSin * size.x / 2}, upAmount {upAmount}, forAmount {forwardAmount}");
+        //Debug.Log($"angelChange {angleChange}, tAmount " +
+        //          $"{tAmount}, angle {betterAngle}, aSin {aSin * size.x / 2}, upAmount {upAmount}, forAmount {forwardAmount}");
         
         for (int i = 0; i < 4; i++)
         {
@@ -395,9 +395,9 @@ public class RoomSegments : MonoBehaviour
             Gizmos.color = aColor;
             //Gizmos.DrawSphere(newSpot, 4);
             Gizmos.DrawSphere(pos + pos4 / 2, 2);
-            Debug.Log($"yAmount {yAmount}, xAmount {xAmount}, zAmount {zAmount}, angle1 {betterAngle}, angle2 {betterAngle2} " +
-                      $"angle3 {betterAngle3}, angleChange, nextPos {nextPos} " +
-                      $"{angleChange}, total {aTotal}, pos4 {pos4 / 2}, power {power}");
+            //Debug.Log($"yAmount {yAmount}, xAmount {xAmount}, zAmount {zAmount}, angle1 {betterAngle}, angle2 {betterAngle2} " +
+            //          $"angle3 {betterAngle3}, angleChange, nextPos {nextPos} " +
+            //          $"{angleChange}, total {aTotal}, pos4 {pos4 / 2}, power {power}");
             aColor += new Color(0.2f,0,0);
         }
     }
