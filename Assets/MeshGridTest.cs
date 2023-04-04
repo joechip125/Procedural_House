@@ -60,7 +60,6 @@ public class MeshGridTest : MonoBehaviour
 
     private void MakeGrid()
     {
-        var vertexIndex = Vertices.Count;
         var lineCount = Vertices.Count;
         
         var pos = transform.position;
@@ -72,34 +71,23 @@ public class MeshGridTest : MonoBehaviour
             for (int j = 0; j < numberX; j++)
             {
                 Vertices.Add(pos + new Vector3(100 * j,0,0));
-
-                Debug.Log($"index {i} other {lineCount}");
-                if(j == numberX - 1) continue;
-                Triangles.Add(vertexIndex + j);
-                Triangles.Add(vertexIndex + j + numberX);
-                Triangles.Add(vertexIndex + j + numberX + 1);
+                
+                if(j == numberX - 1 || i == numberZ - 1) continue;
+                
+                Triangles.Add(lineCount + j);
+                Triangles.Add(lineCount + j + numberX);
+                Triangles.Add(lineCount + j + numberX + 1);
+                
+                Triangles.Add(lineCount + j);
+                Triangles.Add(lineCount + j + numberX + 1);
+                Triangles.Add(lineCount + j + 1);
             }
 
             lineCount += numberX;
             pos += new Vector3(0, 0, 100);
         }
-        //Triangles.Add(0);
-        //Triangles.Add( 4);
-        //Triangles.Add( 5);
-        //
-        //Triangles.Add(4);
-        //Triangles.Add( 8);
-        //Triangles.Add( 9);
-        //
-        //Triangles.Add(8);
-        //Triangles.Add( 12);
-        //Triangles.Add( 13);
-        //
-        //Triangles.Add(10);
-        //Triangles.Add( 14);
-        //Triangles.Add( 15);
-
-        Debug.Log($"index {vertexIndex}, num vertex {Vertices.Count}");
+     
+        Debug.Log($"num vertex {Vertices.Count}");
 
         UpdateMesh();
     }
