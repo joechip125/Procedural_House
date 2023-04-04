@@ -357,7 +357,7 @@ public class RoomSegments : MonoBehaviour
             var betterAngle2 = Quaternion.AngleAxis(startAxis + -90 * i, wallDirection) *aCrossForward;
             var betterAngle3 = Quaternion.AngleAxis(startAxis + -90 * i, wallDirection) *aCrossUp;
             
-            var pos4 = betterAngle2.normalized * sizeX;// + betterAngle3 * (sizeY / 2);
+            var pos4 = betterAngle2.normalized * sizeX + betterAngle3 * sizeY;
             var power = Mathf.Pow(betterAngle2.normalized.x, 2);
             var posX = Mathf.Pow(betterAngle.normalized.x, 2) * sizeX;
             var posY = Mathf.Pow(betterAngle.y, 2) * sizeY;
@@ -390,11 +390,11 @@ public class RoomSegments : MonoBehaviour
             Gizmos.DrawLine(pos, pos + nextPos);
             
             Gizmos.color = Color.black;
-            Gizmos.DrawLine(pos, pos + betterAngle2 * 10);
+            Gizmos.DrawLine(pos, pos + pos4 / 2);
 
             Gizmos.color = aColor;
             //Gizmos.DrawSphere(newSpot, 4);
-            Gizmos.DrawSphere(pos + aTotal, 2);
+            Gizmos.DrawSphere(pos + pos4 / 2, 2);
             Debug.Log($"yAmount {yAmount}, xAmount {xAmount}, zAmount {zAmount}, angle1 {betterAngle}, angle2 {betterAngle2} " +
                       $"angle3 {betterAngle3}, angleChange, nextPos {nextPos} " +
                       $"{angleChange}, total {aTotal}, pos4 {pos4 / 2}, power {power}");
