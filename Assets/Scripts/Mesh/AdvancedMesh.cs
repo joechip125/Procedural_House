@@ -47,16 +47,7 @@ public class AdvancedMesh : MonoBehaviour
         max = hold[^1];
     }
 
-    public Vector3 GetPanelCenter(int panel, out Vector3 theSize)
-    {
-        panel *= 4;
-        var first = Vertices[panel];
-        var second = Vertices[panel + 2];
-        theSize = second - first;
-        var pos = first + theSize / 2;
-        
-        return pos;
-    }
+
     
     public void InstanceMesh()
     {

@@ -86,9 +86,7 @@ public class MeshGridTest : MonoBehaviour
             lineCount += numberX;
             pos += new Vector3(0, 0, 100);
         }
-     
-        Debug.Log($"num vertex {Vertices.Count}");
-
+   
         UpdateMesh();
     }
 
