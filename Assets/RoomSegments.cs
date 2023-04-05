@@ -45,32 +45,6 @@ public class RoomSegments : MonoBehaviour
     }
     
 
-    private void MoveStuff(Vector3 startDir)
-    {
-        var z = 0;
-        var x = numberX;
-        var first =  Find(3, 1).wallStarts[0];
-        var second =  Find(3, 2).wallStarts[0];
-        if (startDir.x != 0)
-        {
-          first =  Find(0, 1).wallStarts[0];
-          second =  Find(0, 2).wallStarts[0];
-        }
-
-        var newAx = Quaternion.AngleAxis(90, new Vector3(0,1,0)) * startDir;
-        
-        var placePos = mesh.GetPositionAtVert(first + 3);
-        AddDoor(placePos, startDir);
-        
-        mesh.MoveVertices(new Dictionary<int, Vector3>()
-        {
-            {first + 2,-newAx * 50},
-            {first + 3,-newAx * 50},
-            {second , newAx * 50},
-            {second + 1,newAx * 50}
-        });
-    }
-
     private void AddDoor(Vector3 start, Vector3 direction)
     {
         var doorLength = 10;
@@ -91,65 +65,12 @@ public class RoomSegments : MonoBehaviour
             currentPos + -newAx * 50);
         currentPos = currHold;
     }
-
-
+    
     private Segment Find(int x, int z)
     {
         return segArray[z * numberX + x];
     }
-
-    private void InitSegment()
-    {
-        var num = numberX * numberZ;
-        segArray = new Segment[num];
-        var pos = transform.position;
-        var direction = new Vector3(-1, 0, -1);
-        var axis = new Vector3(0, 1, 0);
-        
-        var total = 0;
-        for (int i = 0; i < numberZ; i++)
-        {
-            
-            currentPos = transform.position + new Vector3(0, 0, sizeZ * i);
-            for (int j = 0; j < numberX; j++)
-            {
-                SetAPanel(direction, size, axis);
-                segArray[total] = new Segment()
-                {
-                    position = currentPos
-                };
-
-                if (j == 0)
-                {
-                    AddSomeWalls(new Vector3(-1,0,0));
-                    segArray[total].wallStarts.Add(lastVert);
-                }
-
-                if (j == numberX - 1)
-                {
-                    AddSomeWalls(new Vector3(1,0,0));
-                    segArray[total].wallStarts.Add(lastVert);
-                }
-
-                if (i == 0)
-                {
-                    AddSomeWalls(new Vector3(0,0,-1));
-                    segArray[total].wallStarts.Add(lastVert);
-                }
-
-                if (i == numberZ - 1)
-                {
-                    AddSomeWalls(new Vector3(0,0,1));
-                    segArray[total].wallStarts.Add(lastVert);
-                }
-
-                currentPos += new Vector3(sizeX, 0, 0);
-                total++;
-            }    
-        }
-        mesh.AddCollider();
-    }
-
+    
     private void RotateDirection()
     {
         

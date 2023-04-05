@@ -16,4 +16,10 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         base.InitMesh();
         
     }
+
+    private void OnDrawGizmos()
+    {
+        var pos = transform.position;
+        Gizmos.DrawSphere(pos, 6f);
+    }
 }

@@ -16,7 +16,7 @@ public enum AddDirection
 
 public enum SegmentTypes
 {
-    
+    Square
 }
 
 
@@ -25,5 +25,6 @@ public class Segment
 {
     public Vector3 position;
     public Vector3 size;
-    public List<int> wallStarts = new();
+    public Vector3 min;
+    public Vector3 max;
 }

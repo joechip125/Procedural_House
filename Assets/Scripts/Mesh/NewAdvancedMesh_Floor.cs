@@ -22,6 +22,8 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     private List<Vector3> edgeList = new();
     private Vector3 newStart;
 
+    [SerializeField] private float doorAdd;
+
     public Material aMaterial;
 
     private void Awake()
@@ -61,7 +63,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         UpdateMesh();
     }
 
-    private void GetEdges(Edges edge)
+    private void GetEdges(Edges edge, Vector3 direction)
     {
         edgeList.Clear();
         var numEdge = 0;
@@ -81,7 +83,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
                 break;
         }
 
-        newStart = dots[1];
+        newStart = dots[0];
     }
 
     private void OnDrawGizmos()
@@ -104,10 +106,16 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             }
             pos += new Vector3(0, 0, 100);
         }
-        
-        GetEdges(edgeChoice);
-        var aColor = new Color(0, 0, 0);
 
+        var moveDirection = new Vector3(0,0,1);
+        GetEdges(edgeChoice, moveDirection);
+        var aColor = new Color(0, 0, 0);
+        
+        Gizmos.color = Color.magenta;
+        var aStart = newStart + moveDirection * doorAdd;
+        Gizmos.DrawSphere(aStart, 5);
+        Gizmos.DrawSphere(aStart + moveDirection * 50, 5);
+        
         for (int i = 0; i < numberX; i++)
         {
             var edgePos3 = dots[i];
