@@ -156,6 +156,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numberX: 4
   numberZ: 4
+  edgeChoice: 3
   aMaterial: {fileID: 2100000, guid: a9aa4d682c71a304b87783910b8a6ef1, type: 2}
 --- !u!23 &447272726
 MeshRenderer:
