@@ -28,4 +28,10 @@ public abstract class NewAdvancedMesh : MonoBehaviour
     {
         meshCollider = gameObject.AddComponent<MeshCollider>();
     }
+    
+    public void ApplyMaterial(Material material)
+    {
+        GetComponent<MeshRenderer>().material = material;
+        UpdateMesh();
+    }
 }
