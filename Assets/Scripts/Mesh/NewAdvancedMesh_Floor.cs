@@ -31,6 +31,8 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         InitMesh();
         MakeGrid();
         ApplyMaterial(aMaterial);
+        GetEdges2(new Vector3(1,0,0));
+        AddSomething();
     }
 
     private void MakeGrid()
@@ -63,6 +65,16 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         UpdateMesh();
     }
 
+    private void AddSomething()
+    {
+        var v1 = newStart + new Vector3(0, 0, doorAdd);
+        var v2 = v1 + new Vector3(0,0,50);
+        var v3 = v1 + new Vector3(10,0,50);
+        var v4 = v1 + new Vector3(10,0,0);
+        
+        AddQuad(v1, v2, v3, v4);
+    }
+
     private void GetEdges(Edges edge, Vector3 direction)
     {
         edgeList.Clear();
@@ -86,8 +98,58 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         newStart = dots[0];
     }
 
+
+    private void Pyramid()
+    {
+        var start = 0;
+        var amountX = 12;
+        var amountZ = 12;
+        var end = amountX;
+        var pos = transform.position;
+
+        for (int i = 0; i < amountZ; i++)
+        {
+            for (int j = start; j < end; j++)
+            {
+                Debug.Log($"index i{i} start {start} end {end}");
+                Gizmos.DrawCube(pos + new Vector3(10 * j,0,0), Vector3.one * 10);
+            }
+
+            start++;
+            end--;
+            pos += new Vector3(0, 0, 10);
+        }
+    }
+    
+    private void GetEdges2(Vector3 direction)
+    {
+        edgeList.Clear();
+
+        var right = Vector3.Cross(direction, Vector3.up);
+
+        if (direction.x != 0)
+        {
+            if(direction.x < 0)
+                dots = Vertices.OrderBy(x => x.x).ToList();
+            else if(direction.x > 0)
+                dots = Vertices.OrderByDescending(x => x.x).ToList();
+        }
+        
+        if (direction.z != 0)
+        {
+            if(direction.z < 0)
+                dots = Vertices.OrderBy(x => x.z).ToList();
+            else if(direction.z > 0)
+                dots = Vertices.OrderByDescending(x => x.z).ToList();
+        }
+        
+        newStart = dots[0];
+    }
+
     private void OnDrawGizmos()
     {
+        if (Application.isPlaying) return;
+        
         var pos = transform.position;
         Gizmos.DrawSphere(pos, 3f);
        // Debug.Log($"length {Vector3.Magnitude(new Vector3(50, 0, 50))}");
@@ -123,5 +185,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             Gizmos.DrawLine(edgePos3, edgePos3 + new Vector3(0, 50,0));
             aColor.r += 0.25f;
         }
+        
+        Pyramid();
     }
 }
