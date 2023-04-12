@@ -134,7 +134,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         
         for (int i = 0; i < numberCircle; i++ )
         {
-            
             var sin =Mathf.Cos((Mathf.PI / 180) * start);
             var cos = Mathf.Sin((Mathf.PI / 180) * start);
 
@@ -144,8 +143,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             Vertices.Add(newPos+ new Vector3(0, 50,0));
             
             start += addCircle;
-            Debug.Log($" iPlus{adder}");
-
+            
             if(i > numberCircle - 2) continue;
             Triangles.Add(adder);
             Triangles.Add(adder + 1);
@@ -156,18 +154,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             Triangles.Add(adder + 2);
             adder += 2;
         }
-        
-       // Triangles.Add(0);
-       // Triangles.Add(1);
-       // Triangles.Add(2);
-       // 
-       // Triangles.Add(1);
-       // Triangles.Add(3);
-       // Triangles.Add(2);
-       // 
-       // Triangles.Add(2);
-       // Triangles.Add(3);
-       // Triangles.Add(4);
     }
 
     private void Circle(float radius)
