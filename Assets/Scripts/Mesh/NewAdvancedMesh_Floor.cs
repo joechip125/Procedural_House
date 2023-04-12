@@ -23,6 +23,9 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     private List<Vector3> circleList = new();
     private Vector3 newStart;
 
+    public int numberCircle;
+    public int addCircle;
+
     [SerializeField] private float doorAdd;
 
     public Material aMaterial;
@@ -30,10 +33,12 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     private void Awake()
     {
         InitMesh();
-        MakeGrid();
-        ApplyMaterial(aMaterial);
-        GetEdges2(new Vector3(1,0,0));
-        AddSomething();
+        //MakeGrid();
+        //ApplyMaterial(aMaterial);
+        //GetEdges2(new Vector3(1,0,0));
+        //AddSomething();
+        Circle(100);
+        CircleWall();
     }
 
     private void MakeGrid()
@@ -95,7 +100,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
                 : dots.OrderBy(x => x.z).ToList();
         }
         
-        
         newStart = dots[0];
     }
 
@@ -112,7 +116,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         {
             for (int j = start; j < end; j++)
             {
-                Debug.Log($"index i{i} start {start} end {end}");
                 Gizmos.DrawCube(pos + new Vector3(10 * j,0,0), Vector3.one * 10);
             }
 
@@ -122,14 +125,37 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         }
     }
 
-    private void Circle()
+    private void CircleWall()
+    {
+        for (int i = 0; i < circleList.Count; i++)
+        {
+            Debug.Log(circleList[i]);
+            Vertices.Add(circleList[i]);
+            //if(i == circleList.Count - 4) break;
+            Triangles.Add(i);
+            Triangles.Add(i + 1);
+            Triangles.Add(i + 2);
+        }
+    }
+
+    private void Circle(float radius)
     {
         var pos = transform.position;
         circleList.Clear();
 
-        for (int i = 0; i < 6; i++)
+        var aDir = new Vector3(1, 0, 0);
+        var start = 0;
+
+        for (int i = 0; i < numberCircle; i++)
         {
+            var sin =Mathf.Cos((Mathf.PI / 180) * start);
+            var cos = Mathf.Sin((Mathf.PI / 180) * start);
+
+            var newPos = new Vector3(radius * sin, 0, radius * cos) + pos;
             
+            circleList.Add(newPos);
+            circleList.Add(newPos + new Vector3(0, 50,0));
+            start += addCircle;
         }
         
     }
@@ -199,7 +225,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             aColor.r += 0.25f;
         }
         
-        Circle();
+        Circle(100);
 
         foreach (var c in circleList)
         {
