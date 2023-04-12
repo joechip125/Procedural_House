@@ -20,6 +20,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     [SerializeField] private Edges edgeChoice;
 
     private List<Vector3> edgeList = new();
+    private List<Vector3> circleList = new();
     private Vector3 newStart;
 
     [SerializeField] private float doorAdd;
@@ -75,26 +76,26 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         AddQuad(v1, v2, v3, v4);
     }
 
-    private void GetEdges(Edges edge, Vector3 direction)
+    private void GetEdges(Vector3 direction)
     {
         edgeList.Clear();
         var numEdge = 0;
-        switch (edge)
-        {
-            case Edges.PlusX:
-                dots = dots.OrderByDescending(x => x.x).ToList();
-                break;
-            case Edges.PlusZ:
-                dots = dots.OrderByDescending(x => x.z).ToList();
-                break;
-            case Edges.MinusX:
-                dots = dots.OrderBy(x => x.x).ToList();
-                break;
-            case Edges.MinusZ:
-                dots = dots.OrderBy(x => x.z).ToList();
-                break;
-        }
 
+        if (direction.x != 0)
+        {
+            dots = direction.x > 0 ? 
+                dots.OrderByDescending(x => x.x).ToList() 
+                : dots.OrderBy(x => x.x).ToList();
+        }
+        
+        if (direction.z != 0)
+        {
+            dots = direction.z > 0 ? 
+                dots.OrderByDescending(x => x.z).ToList() 
+                : dots.OrderBy(x => x.z).ToList();
+        }
+        
+        
         newStart = dots[0];
     }
 
@@ -119,6 +120,18 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             end--;
             pos += new Vector3(0, 0, 10);
         }
+    }
+
+    private void Circle()
+    {
+        var pos = transform.position;
+        circleList.Clear();
+
+        for (int i = 0; i < 6; i++)
+        {
+            
+        }
+        
     }
     
     private void GetEdges2(Vector3 direction)
@@ -169,8 +182,8 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             pos += new Vector3(0, 0, 100);
         }
 
-        var moveDirection = new Vector3(0,0,1);
-        GetEdges(edgeChoice, moveDirection);
+        var moveDirection = new Vector3(1,0,0);
+        GetEdges(moveDirection);
         var aColor = new Color(0, 0, 0);
         
         Gizmos.color = Color.magenta;
@@ -186,6 +199,12 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             aColor.r += 0.25f;
         }
         
-        Pyramid();
+        Circle();
+
+        foreach (var c in circleList)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(c, 3);
+        }
     }
 }
