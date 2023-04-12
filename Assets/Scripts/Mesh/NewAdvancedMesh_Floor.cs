@@ -34,11 +34,11 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     {
         InitMesh();
         //MakeGrid();
-        //ApplyMaterial(aMaterial);
+        ApplyMaterial(aMaterial);
         //GetEdges2(new Vector3(1,0,0));
         //AddSomething();
-        Circle(100);
         CircleWall();
+        UpdateMesh();
     }
 
     private void MakeGrid()
@@ -127,22 +127,53 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
 
     private void CircleWall()
     {
-        for (int i = 0; i < circleList.Count; i++)
+        var pos = transform.position;
+        var start = 0;
+        var radius = 100;
+        var adder = 0;
+        
+        for (int i = 0; i < numberCircle; i++ )
         {
-            Debug.Log(circleList[i]);
-            Vertices.Add(circleList[i]);
-            //if(i == circleList.Count - 4) break;
-            Triangles.Add(i);
-            Triangles.Add(i + 1);
-            Triangles.Add(i + 2);
+            
+            var sin =Mathf.Cos((Mathf.PI / 180) * start);
+            var cos = Mathf.Sin((Mathf.PI / 180) * start);
+
+            var newPos = new Vector3(radius * sin, 0, radius * cos) + pos;
+
+            Vertices.Add(newPos);
+            Vertices.Add(newPos+ new Vector3(0, 50,0));
+            
+            start += addCircle;
+            Debug.Log($" iPlus{adder}");
+
+            if(i > numberCircle - 2) continue;
+            Triangles.Add(adder);
+            Triangles.Add(adder + 1);
+            Triangles.Add(adder + 2);
+            
+            Triangles.Add(adder + 1);
+            Triangles.Add(adder + 3);
+            Triangles.Add(adder + 2);
+            adder += 2;
         }
+        
+       // Triangles.Add(0);
+       // Triangles.Add(1);
+       // Triangles.Add(2);
+       // 
+       // Triangles.Add(1);
+       // Triangles.Add(3);
+       // Triangles.Add(2);
+       // 
+       // Triangles.Add(2);
+       // Triangles.Add(3);
+       // Triangles.Add(4);
     }
 
     private void Circle(float radius)
     {
         var pos = transform.position;
         circleList.Clear();
-
         var aDir = new Vector3(1, 0, 0);
         var start = 0;
 
@@ -152,12 +183,11 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             var cos = Mathf.Sin((Mathf.PI / 180) * start);
 
             var newPos = new Vector3(radius * sin, 0, radius * cos) + pos;
-            
             circleList.Add(newPos);
-            circleList.Add(newPos + new Vector3(0, 50,0));
+            circleList.Add(newPos+ new Vector3(0, 50,0));
+
             start += addCircle;
         }
-        
     }
     
     private void GetEdges2(Vector3 direction)
