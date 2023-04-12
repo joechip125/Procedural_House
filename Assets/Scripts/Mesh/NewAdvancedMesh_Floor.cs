@@ -132,13 +132,12 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         var radius = 100;
         var adder = 0;
         
-        for (int i = 0; i < numberCircle; i++ )
+        for (int i = 0; i < numberCircle; i++)
         {
             var sin =Mathf.Cos((Mathf.PI / 180) * start);
             var cos = Mathf.Sin((Mathf.PI / 180) * start);
-
             var newPos = new Vector3(radius * sin, 0, radius * cos) + pos;
-
+            
             Vertices.Add(newPos);
             Vertices.Add(newPos+ new Vector3(0, 50,0));
             
@@ -176,30 +175,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         }
     }
     
-    private void GetEdges2(Vector3 direction)
-    {
-        edgeList.Clear();
-
-        var right = Vector3.Cross(direction, Vector3.up);
-
-        if (direction.x != 0)
-        {
-            if(direction.x < 0)
-                dots = Vertices.OrderBy(x => x.x).ToList();
-            else if(direction.x > 0)
-                dots = Vertices.OrderByDescending(x => x.x).ToList();
-        }
-        
-        if (direction.z != 0)
-        {
-            if(direction.z < 0)
-                dots = Vertices.OrderBy(x => x.z).ToList();
-            else if(direction.z > 0)
-                dots = Vertices.OrderByDescending(x => x.z).ToList();
-        }
-        
-        newStart = dots[0];
-    }
 
     private void OnDrawGizmos()
     {
