@@ -182,8 +182,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         
         var pos = transform.position;
         Gizmos.DrawSphere(pos, 3f);
-       // Debug.Log($"length {Vector3.Magnitude(new Vector3(50, 0, 50))}");
-       
+
         dots.Clear();
     
         var total = numberX * numberZ;

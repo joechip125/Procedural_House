@@ -157,6 +157,8 @@ MonoBehaviour:
   numberX: 4
   numberZ: 4
   edgeChoice: 1
+  numberCircle: 10
+  addCircle: 20
   doorAdd: 125
   aMaterial: {fileID: 2100000, guid: a9aa4d682c71a304b87783910b8a6ef1, type: 2}
 --- !u!23 &447272726
@@ -908,7 +910,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2443463109682500870, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -96
       objectReference: {fileID: 0}
     - target: {fileID: 2443463109682500870, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
       propertyPath: m_LocalRotation.w
