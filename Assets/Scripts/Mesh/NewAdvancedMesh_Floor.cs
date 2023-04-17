@@ -154,6 +154,35 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             adder += 2;
         }
     }
+    
+    private void CircleWall(int startDegree, int radius)
+    {
+        var pos = transform.position;
+        var adder = 0;
+        
+        for (int i = 0; i < numberCircle; i++)
+        {
+            var sin =Mathf.Cos((Mathf.PI / 180) * startDegree);
+            var cos = Mathf.Sin((Mathf.PI / 180) * startDegree);
+            var newPos = new Vector3(radius * sin, 0, radius * cos) + pos;
+            
+            Vertices.Add(newPos);
+            Vertices.Add(newPos+ new Vector3(0, 50,0));
+            
+            startDegree += addCircle;
+            
+            if(i > numberCircle - 2) continue;
+            Triangles.Add(adder);
+            Triangles.Add(adder + 1);
+            Triangles.Add(adder + 2);
+            
+            Triangles.Add(adder + 1);
+            Triangles.Add(adder + 3);
+            Triangles.Add(adder + 2);
+            adder += 2;
+        }
+    }
+    
 
     private void Circle(float radius)
     {
