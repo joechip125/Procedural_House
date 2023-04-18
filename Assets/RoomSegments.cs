@@ -71,11 +71,6 @@ public class RoomSegments : MonoBehaviour
         return segArray[z * numberX + x];
     }
     
-    private void RotateDirection()
-    {
-        
-    }
-    
     private void SetAPanel(Vector3 startDir, Vector3 theSize, Vector3 axis)
     {
         for (var i = 0; i < 4; i++)
@@ -155,16 +150,6 @@ public class RoomSegments : MonoBehaviour
         });
     }
     
-    private void SetCeilingTile()
-    {
-        var v1 = new Vector3(Min.x, Max.y, Min.z);
-        var v2 = v1 + new Vector3(sizeX, 0, 0);
-        var v3 = v1 + new Vector3(sizeX, 0, sizeZ);
-        var v4 = v1 + new Vector3(0, 0, sizeZ);
-        
-        mesh.AddQuad2(v1, v2, v3, v4);
-    }
-
     private Vector3 PanelRotation(Vector3 direction, float angle)
     {
         var cross = Vector3.Cross(Vector3.up, direction);
