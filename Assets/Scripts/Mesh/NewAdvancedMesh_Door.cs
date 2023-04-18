@@ -6,6 +6,8 @@ public class NewAdvancedMesh_Door : NewAdvancedMesh
     [Range(-1, 1)]public float directionX;
     [Range(-1, 1)]public float directionZ;
     [SerializeField] private Vector3 wallDirection;
+    public float sizeX;
+    public float sizeZ;
 
     [SerializeField] private float startAxis;
     private readonly Vector3[] corners = new[]
@@ -73,5 +75,11 @@ public class NewAdvancedMesh_Door : NewAdvancedMesh
         
         Gizmos.color = Color.yellow;
         Gizmos.DrawLine(pos, pos + aCross2 * 50);
+
+        foreach (var c in corners)
+        {
+            var aPos = new Vector3(c.x, 0, c.z);
+            Gizmos.DrawSphere(aPos, 3);
+        }
     }
 }

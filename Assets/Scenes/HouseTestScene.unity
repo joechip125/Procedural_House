@@ -356,6 +356,8 @@ MonoBehaviour:
   directionX: 1
   directionZ: 0
   wallDirection: {x: 0, y: 0, z: 0}
+  sizeX: 0
+  sizeZ: 0
   startAxis: 0
   aMaterial: {fileID: 2100000, guid: a9aa4d682c71a304b87783910b8a6ef1, type: 2}
 --- !u!23 &841665281
@@ -1007,11 +1009,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2443463109682500870, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -33
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2443463109682500870, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -96
+      value: -100.4
       objectReference: {fileID: 0}
     - target: {fileID: 2443463109682500870, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1042,16 +1044,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2443463109682500871, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
-      propertyPath: sizeY
+      propertyPath: sizeX
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2443463109682500871, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
+      propertyPath: sizeY
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 2443463109682500871, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
+      propertyPath: sizeZ
+      value: 101
       objectReference: {fileID: 0}
     - target: {fileID: 2443463109682500871, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
       propertyPath: size.x
-      value: 100
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2443463109682500871, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
       propertyPath: size.y
-      value: 100
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2443463109682500871, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
       propertyPath: size.z
@@ -1067,11 +1077,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2443463109682500871, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
       propertyPath: startAxis
-      value: 90
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 2443463109682500871, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
       propertyPath: wallDirection.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2443463109682500871, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
       propertyPath: wallDirection.y

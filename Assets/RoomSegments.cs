@@ -245,12 +245,16 @@ public class RoomSegments : MonoBehaviour
             betterAngle = Quaternion.AngleAxis(startAxis + -90 * i, wallDirection) *sumCross;
             var betterAngle2 = Quaternion.AngleAxis(startAxis + -90 * i, wallDirection) *aCrossForward;
             var betterAngle3 = Quaternion.AngleAxis(startAxis + -90 * i, wallDirection) *aCrossUp;
+
+            var pos5 = betterAngle2.normalized * sizeX;
+            var pos6 = betterAngle3.normalized * sizeY;
             
             var pos4 = betterAngle2.normalized * sizeX + betterAngle3 * sizeY;
-            var power = Mathf.Pow(betterAngle2.normalized.x, 2);
             var posX = Mathf.Pow(betterAngle.normalized.x, 2) * sizeX;
             var posY = Mathf.Pow(betterAngle.y, 2) * sizeY;
             var posZ = Mathf.Pow(betterAngle.normalized.z, 2) * sizeX;
+            
+            
             if (betterAngle.y < 0)
             {
                 posY = -posY;
@@ -264,15 +268,12 @@ public class RoomSegments : MonoBehaviour
                 posZ = -posZ;
             }
             
-            var xAmount = Mathf.Sin(Vector3.Angle(Vector3.right, betterAngle) * (Mathf.PI * 2) / 360)* size.x;
-            var zAmount = Mathf.Sin(Vector3.Angle(Vector3.forward, betterAngle) * (Mathf.PI * 2) / 360)* size.z;
-            var yAmount = Mathf.Sin(Vector3.Angle(Vector3.up, betterAngle) * (Mathf.PI * 2) / 360)* size.y;
-            
             Gizmos.color = Color.black;
             Gizmos.DrawLine(pos, pos + pos4 / 2);
 
             Gizmos.color = aColor;
-            Gizmos.DrawSphere(pos + pos4 / 2, 2);
+            //Gizmos.DrawSphere(pos + pos5 / 2, 2);
+            Gizmos.DrawSphere(pos + pos6 / 2, 2);
           
             aColor += new Color(0.2f,0,0);
         }
