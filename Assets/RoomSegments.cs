@@ -193,7 +193,12 @@ public class RoomSegments : MonoBehaviour
         for (var i = 0; i < 4; i++)
         {
             var amount = Mathf.Sqrt(Mathf.Pow(aSize.x, 2) + Mathf.Pow(aSize.z, 2)) / 2;
+            
             var betterAngle = Quaternion.AngleAxis(start, inverseNormal) *sumCross;
+            
+            var betterAngle2 = Quaternion.AngleAxis(startAxis + -90 * i, wallDirection) *aCrossForward;
+            var betterAngle3 = Quaternion.AngleAxis(startAxis + -90 * i, wallDirection) *aCrossUp;
+            
             Vector3 newSpot = position + (betterAngle.normalized * amount);
             var total = position +  Vector3.Scale((aSize / 2), betterAngle);
 
