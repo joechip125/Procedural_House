@@ -1077,7 +1077,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2443463109682500871, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
       propertyPath: startAxis
-      value: 45
+      value: 135
       objectReference: {fileID: 0}
     - target: {fileID: 2443463109682500871, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
       propertyPath: wallDirection.x
@@ -1085,11 +1085,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2443463109682500871, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
       propertyPath: wallDirection.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2443463109682500871, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
       propertyPath: wallDirection.z
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []

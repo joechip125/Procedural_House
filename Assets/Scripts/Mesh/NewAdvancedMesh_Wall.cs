@@ -5,6 +5,12 @@ using UnityEngine;
 
 public class NewAdvancedMesh_Wall : NewAdvancedMesh
 {
+
+    [SerializeField] private Vector3 direction;
+    [SerializeField] private int length;
+    [SerializeField] private int numberTiles;
+    
+    
     
     private void Awake()
     {
@@ -17,9 +23,23 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         
     }
 
+
+    private void MakeWall()
+    {
+        
+    }
+
     private void OnDrawGizmos()
     {
         var pos = transform.position;
-        Gizmos.DrawSphere(pos, 6f);
+        var single = length / numberTiles;
+
+        for (int i = 0; i < numberTiles; i++)
+        {
+            Gizmos.DrawSphere(pos, 6f);
+            pos += direction * single;
+        }
+
+
     }
 }
