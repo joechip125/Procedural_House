@@ -257,7 +257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 157c1dbe6def25b439bcbb1d7cbb4a1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  direction: {x: 1, y: 0, z: 0.01}
+  direction: {x: 1, y: 0, z: 0}
   length: 300
   numberTiles: 3
 --- !u!23 &733565766
@@ -318,7 +318,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 733565764}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 304.9}
+  m_LocalPosition: {x: 0, y: 0, z: 314.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -421,7 +421,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 841665279}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 172.4, y: 0, z: -212}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1008,7 +1008,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2443463109682500870, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -49
+      value: -99.4
       objectReference: {fileID: 0}
     - target: {fileID: 2443463109682500870, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1052,11 +1052,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2443463109682500871, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
       propertyPath: sizeY
-      value: 50
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 2443463109682500871, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
       propertyPath: sizeZ
-      value: 101
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 2443463109682500871, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
       propertyPath: size.x
@@ -1084,7 +1084,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2443463109682500871, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
       propertyPath: wallDirection.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2443463109682500871, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
       propertyPath: wallDirection.y
@@ -1092,7 +1092,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2443463109682500871, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
       propertyPath: wallDirection.z
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
