@@ -7,20 +7,12 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 {
 
     [SerializeField] private Vector3 direction;
-    [SerializeField] private int length;
+    [SerializeField] private float length;
     [SerializeField] private int numberTiles;
-    
-    
     
     private void Awake()
     {
         InitMesh();
-    }
-    
-    protected override void InitMesh()
-    {
-        base.InitMesh();
-        
     }
 
 
@@ -33,13 +25,13 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         var pos = transform.position;
         var single = length / numberTiles;
+        Gizmos.DrawSphere(pos, 3f);
+        pos += direction.normalized * single;
 
         for (int i = 0; i < numberTiles; i++)
         {
-            Gizmos.DrawSphere(pos, 6f);
-            pos += direction * single;
+            Gizmos.DrawSphere(pos, 3f);
+            pos += direction.normalized * single;
         }
-
-
     }
 }
