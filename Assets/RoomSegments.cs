@@ -30,6 +30,8 @@ public class RoomSegments : MonoBehaviour
             new Vector3(1, 0, 0) };
 
     private Segment[] segArray;
+
+    public float aDegree;
     
     
     private void Start()
@@ -243,9 +245,19 @@ public class RoomSegments : MonoBehaviour
         
         Gizmos.color = Color.blue;
         Gizmos.DrawLine(pos, pos + aCrossForward * sizeY / 2);
+        
+        aCrossUp = Quaternion.AngleAxis(aDegree, wallDirection) *aCrossForward;
+        var aSum = Mathf.Pow(sizeX, 2) + Mathf.Pow(sizeY, 2);
+        var blah = Mathf.Sqrt(aSum);
+        
+        var sdgf = 
+        
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(pos, pos + aCrossUp * sizeX/ 2);
+        Gizmos.DrawLine(pos, pos + aCrossUp * sizeY/ 2);
 
-        //var thePos = pos + aCrossForward * sizeY + aCrossUp * sizeX;
-        //Gizmos.DrawSphere(thePos, 1);
+        var thePos = pos + aCrossForward * sizeY/ 2 - new Vector3(0,0,1) * sizeX / 2;
+        Gizmos.DrawSphere(thePos, 0.5f);
         //
         //var thePos2 = pos + aCrossForward * -sizeY + aCrossUp * sizeX;
         //Gizmos.DrawSphere(thePos2, 1);

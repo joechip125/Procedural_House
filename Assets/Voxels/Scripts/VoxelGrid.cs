@@ -24,6 +24,7 @@ public class VoxelGrid : MonoBehaviour
     private Material[] voxelMaterials;
     
     
+    
     public void Initialize (int resolution, float size) 
     {
         this.resolution = resolution;
