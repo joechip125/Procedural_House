@@ -37,7 +37,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         ApplyMaterial(aMaterial);
         //GetEdges2(new Vector3(1,0,0));
         //AddSomething();
-        CircleWall();
         UpdateMesh();
     }
 
