@@ -239,20 +239,45 @@ public class RoomSegments : MonoBehaviour
         
         Vector3 sumCross = (aCrossForward + aCrossUp).normalized;
         var betterAngle = Quaternion.AngleAxis(startAxis, wallDirection) *sumCross;
+        var flip = false;
+
+        var theList = new List<Vector3>();
         
-        
-        for (int i = 0; i < 1; i++)
+        for (int i = 0; i < 4; i++)
         {
             aCrossUp = Quaternion.AngleAxis(90 * i, wallDirection) *aCrossForward;
             Gizmos.color = Color.green;
-            Gizmos.DrawLine(pos, pos + aCrossUp * sizeX/ 2);
-        
-            aCrossUp = Quaternion.AngleAxis(0, wallDirection) *aCrossForward;
-            Gizmos.color = Color.blue;
-            Gizmos.DrawLine(pos, pos + aCrossUp * sizeY / 2);
+            var poss = new Vector3();
+            if (flip)
+            {
+                Gizmos.DrawLine(pos, pos + aCrossUp * sizeX/ 2);
+                poss = aCrossUp * sizeX / 2;
+            }
+            else
+            {
+                Gizmos.DrawLine(pos, pos + aCrossUp * sizeY / 2);
+                poss = aCrossUp * sizeY / 2;
+            }
+            
+            theList.Add(poss);
+            
+            flip = !flip;
         }
-        
-        Gizmos.color = Color.green;
+
+        for (int i = 0; i < 4; i++)
+        {
+            Gizmos.color = Color.green;
+            
+            if (i > 2)
+            {
+                Gizmos.DrawSphere(pos +theList[i] + theList[0], 0.5f);
+            }
+            else
+            {
+                Gizmos.DrawSphere(pos +theList[i] + theList[i + 1], 0.5f);
+            }
+        }
+ 
         //Gizmos.DrawLine(pos, pos + aCrossUp * sizeX/ 2);
         //Gizmos.DrawLine(pos, pos + aCrossUp * sizeY/ 2);
         //
