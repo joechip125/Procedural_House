@@ -240,24 +240,24 @@ public class RoomSegments : MonoBehaviour
         Vector3 sumCross = (aCrossForward + aCrossUp).normalized;
         var betterAngle = Quaternion.AngleAxis(startAxis, wallDirection) *sumCross;
         
+        
+        for (int i = 0; i < 1; i++)
+        {
+            aCrossUp = Quaternion.AngleAxis(90 * i, wallDirection) *aCrossForward;
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(pos, pos + aCrossUp * sizeX/ 2);
+        
+            aCrossUp = Quaternion.AngleAxis(0, wallDirection) *aCrossForward;
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(pos, pos + aCrossUp * sizeY / 2);
+        }
+        
         Gizmos.color = Color.green;
-        Gizmos.DrawLine(pos, pos + aCrossUp * sizeX/ 2);
-        
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(pos, pos + aCrossForward * sizeY / 2);
-        
-        aCrossUp = Quaternion.AngleAxis(aDegree, wallDirection) *aCrossForward;
-        var aSum = Mathf.Pow(sizeX, 2) + Mathf.Pow(sizeY, 2);
-        var blah = Mathf.Sqrt(aSum);
-        
-        var sdgf = 
-        
-        Gizmos.color = Color.green;
-        Gizmos.DrawLine(pos, pos + aCrossUp * sizeX/ 2);
-        Gizmos.DrawLine(pos, pos + aCrossUp * sizeY/ 2);
-
-        var thePos = pos + aCrossForward * sizeY/ 2 - new Vector3(0,0,1) * sizeX / 2;
-        Gizmos.DrawSphere(thePos, 0.5f);
+        //Gizmos.DrawLine(pos, pos + aCrossUp * sizeX/ 2);
+        //Gizmos.DrawLine(pos, pos + aCrossUp * sizeY/ 2);
+        //
+        //var thePos = pos + aCrossForward * sizeY/ 2 - new Vector3(0,0,1) * sizeX / 2;
+        //Gizmos.DrawSphere(thePos, 0.5f);
         //
         //var thePos2 = pos + aCrossForward * -sizeY + aCrossUp * sizeX;
         //Gizmos.DrawSphere(thePos2, 1);
