@@ -12,7 +12,7 @@ using Vector3 = UnityEngine.Vector3;
 public class RoomSegments : MonoBehaviour
 {
     private AdvancedMesh mesh;
-    public float sizeX, sizeY;
+    public float sizeX, sizeY, sizeZ;
     [SerializeField]private Vector3 size = new Vector3(100,100,100);
     [SerializeField] private Vector3 wallDirection;
     [SerializeField] private float startAxis;
@@ -30,6 +30,8 @@ public class RoomSegments : MonoBehaviour
             new Vector3(1, 0, 0) };
 
     private Segment[] segArray;
+    
+    
 
     public float aDegree;
     
@@ -39,10 +41,13 @@ public class RoomSegments : MonoBehaviour
         mesh = GetComponent<AdvancedMesh>();
         mesh.InstanceMesh();
         currentPos = transform.position;
-       
-        SimplePanel(new Vector3(-10,0,0), wallDirection);
+
+        var crossDir = Vector3.Cross(wallDirection, Vector3.up);
+        SimplePanel(crossDir * -sizeX / 4, crossDir, new Vector2(sizeZ,sizeY));
+        
+        SimplePanel(crossDir * sizeX / 4, -crossDir,new Vector2(sizeZ, sizeY));
         //SimplePanel(new Vector3(10,0,0), -wallDirection);
-        //SimplePanel(new Vector3(0,-10,0), new Vector3(0,1,0));
+       // SimplePanel(new Vector3(0,-10,0), new Vector3(0,1,0));
         //SimplePanel(new Vector3(0,10,0), new Vector3(0,-1,0));
         //SimplePanel(new Vector3(0,10,-2.5f), new Vector3(0,0,-1));
     }
@@ -180,7 +185,7 @@ public class RoomSegments : MonoBehaviour
     }
     
     
-    private void SimplePanel(Vector3 addPos, Vector3 normalDir)
+    private void SimplePanel(Vector3 addPos, Vector3 normalDir, Vector2 theSize)
     {
         Vector3 aCrossForward = Vector3.Cross(normalDir, Vector3.up).normalized;
         var flip = false;
@@ -191,36 +196,31 @@ public class RoomSegments : MonoBehaviour
             flip = true;
         }
 
-        var theList = new List<Vector3>();
-        
         for (int i = 0; i < 4; i++)
         {
             var aCrossUp = Quaternion.AngleAxis(90 * i, normalDir) *aCrossForward;
             var aCrossUp2 = Quaternion.AngleAxis((90 * i) + 90, normalDir) *aCrossForward;
-            var pos1 =  aCrossUp * (sizeX / 2);
-            var pos2 =  aCrossUp2 * (sizeY / 2);
-            Debug.Log($"up1 {pos1} up2 {pos2}  add {(pos1 +addPos) + (pos2 + addPos)}");
-            corners[i] = pos1 + pos2;
             
             var poss = new Vector3();
-            
-            if (!flip) poss = aCrossUp * sizeX / 2;
-            
-            else poss = aCrossUp * sizeY / 2;
-            
-            theList.Add(poss + addPos);
+            var poss2 = new Vector3();
+
+            if (!flip)
+            {
+                poss = (aCrossUp * (theSize.x / 2)) + addPos;
+                poss2 = aCrossUp2 * (theSize.y / 2) + addPos;
+            }
+
+            else
+            {
+                poss = aCrossUp * theSize.y / 2 + addPos;
+                poss2 = aCrossUp2 * theSize.x / 2 + addPos;
+            }
+
+            corners[i] = poss + poss2;
             
             flip = !flip;
-            
         }
         
-        for (int i = 0; i < 4; i++)
-        {
-            if (i > 2) corners[i] =  theList[i] + theList[0];
-            
-            else corners[i] = theList[i] + theList[i +1];
-            Debug.Log($"corner {corners[i]}");
-        }
         lastVert = mesh.AddQuad2(corners[0], corners[1], corners[2], corners[3]);
     }
     
