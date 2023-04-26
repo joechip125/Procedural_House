@@ -41,10 +41,10 @@ public class RoomSegments : MonoBehaviour
         currentPos = transform.position;
        
         SimplePanel(new Vector3(-10,0,0), wallDirection);
-        SimplePanel(new Vector3(10,0,0), -wallDirection);
-        SimplePanel(new Vector3(0,-10,0), new Vector3(0,1,0));
-        SimplePanel(new Vector3(0,10,0), new Vector3(0,-1,0));
-        SimplePanel(new Vector3(0,10,-2.5f), new Vector3(0,0,-1));
+        //SimplePanel(new Vector3(10,0,0), -wallDirection);
+        //SimplePanel(new Vector3(0,-10,0), new Vector3(0,1,0));
+        //SimplePanel(new Vector3(0,10,0), new Vector3(0,-1,0));
+        //SimplePanel(new Vector3(0,10,-2.5f), new Vector3(0,0,-1));
     }
     
 
@@ -196,6 +196,12 @@ public class RoomSegments : MonoBehaviour
         for (int i = 0; i < 4; i++)
         {
             var aCrossUp = Quaternion.AngleAxis(90 * i, normalDir) *aCrossForward;
+            var aCrossUp2 = Quaternion.AngleAxis((90 * i) + 90, normalDir) *aCrossForward;
+            var pos1 =  aCrossUp * (sizeX / 2);
+            var pos2 =  aCrossUp2 * (sizeY / 2);
+            Debug.Log($"up1 {pos1} up2 {pos2}  add {(pos1 +addPos) + (pos2 + addPos)}");
+            corners[i] = pos1 + pos2;
+            
             var poss = new Vector3();
             
             if (!flip) poss = aCrossUp * sizeX / 2;
@@ -205,6 +211,7 @@ public class RoomSegments : MonoBehaviour
             theList.Add(poss + addPos);
             
             flip = !flip;
+            
         }
         
         for (int i = 0; i < 4; i++)
@@ -212,6 +219,7 @@ public class RoomSegments : MonoBehaviour
             if (i > 2) corners[i] =  theList[i] + theList[0];
             
             else corners[i] = theList[i] + theList[i +1];
+            Debug.Log($"corner {corners[i]}");
         }
         lastVert = mesh.AddQuad2(corners[0], corners[1], corners[2], corners[3]);
     }

@@ -16,6 +16,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
 {
     [SerializeField, Range(0, 30)] private int numberX;
     [SerializeField, Range(0, 30)] private int numberZ;
+    [SerializeField, Range(1, 100)] private float tileSize;
     private List<Vector3> dots = new();
     [SerializeField] private Edges edgeChoice;
 
@@ -33,24 +34,21 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     private void Awake()
     {
         InitMesh();
-        //MakeGrid();
         ApplyMaterial(aMaterial);
-        //GetEdges2(new Vector3(1,0,0));
-        //AddSomething();
-        UpdateMesh();
+        MakeGrid();
     }
 
     private void MakeGrid()
     {
         var lineCount = Vertices.Count;
         
-        var pos = transform.position;
+        var pos = transform.position + new Vector3(numberX, 0, numberZ) * tileSize;
 
         for (int i = 0; i < numberZ; i++)
         {
             for (int j = 0; j < numberX; j++)
             {
-                Vertices.Add(pos + new Vector3(100 * j,0,0));
+                Vertices.Add(pos + new Vector3(tileSize * j,0,0));
                 
                 if(j == numberX - 1 || i == numberZ - 1) continue;
                 
@@ -64,7 +62,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             }
 
             lineCount += numberX;
-            pos += new Vector3(0, 0, 100);
+            pos += new Vector3(0, 0, tileSize);
         }
    
         UpdateMesh();
