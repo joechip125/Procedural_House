@@ -19,6 +19,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     [SerializeField, Range(1, 100)] private float tileSize;
     private List<Vector3> dots = new();
     [SerializeField] private Edges edgeChoice;
+    [SerializeField] private Vector3 totalSize;
 
     private List<Vector3> edgeList = new();
     private List<Vector3> circleList = new();
@@ -36,6 +37,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         InitMesh();
         ApplyMaterial(aMaterial);
         MakeGrid();
+        AddOpen(new Vector3(1,0,0), 0, 40, 10);
     }
 
     private void MakeGrid()
@@ -43,7 +45,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         var lineCount = Vertices.Count;
         
         var pos = -(new Vector3(numberX - 1, 0, numberZ - 1) * tileSize)/ 2;
-        Debug.Log($"aPos {pos}");
+        totalSize = new Vector3(numberX - 1,0, numberZ - 1) * tileSize;
 
         for (int i = 0; i < numberZ; i++)
         {
@@ -69,6 +71,20 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         UpdateMesh();
     }
 
+
+    public void AddOpen(Vector3 primeDir, float position, float length, float width)
+    {
+        var superStart = new Vector3((totalSize.x * primeDir.x), 0, (totalSize.y * primeDir.z)) / 2 
+                         + (primeDir * width) / 2;
+        var crossDir = Vector3.Cross(primeDir, Vector3.up);
+        var max = Vector3.Magnitude(Vector3.Scale(crossDir, totalSize)) / 2;
+        position = Mathf.Clamp(position, -max + length / 2, max - length / 2);
+        var aStart = superStart + crossDir * position;
+        
+    }
+    
+    
+    
     private void AddSomething()
     {
         var v1 = newStart + new Vector3(0, 0, doorAdd);
@@ -207,13 +223,10 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     {
         if (Application.isPlaying) return;
         
-        //var pos = transform.position;
         var pos = transform.position -(new Vector3(numberX - 1, 0, numberZ - 1) * tileSize)/ 2;
         Gizmos.DrawSphere(pos, 3f);
 
         dots.Clear();
-    
-        var total = numberX * numberZ;
         
         for (int i = 0; i < numberZ; i++)
         {
@@ -230,11 +243,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         GetEdges(moveDirection);
         var aColor = new Color(0, 0, 0);
         
-        Gizmos.color = Color.magenta;
-        var aStart = newStart + moveDirection * doorAdd;
-        Gizmos.DrawSphere(aStart, 5);
-        Gizmos.DrawSphere(aStart + moveDirection * 50, 5);
-        
         for (int i = 0; i < numberX; i++)
         {
             var edgePos3 = dots[i];
@@ -243,12 +251,12 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             aColor.r += 0.25f;
         }
         
-        Circle(100);
-
-        foreach (var c in circleList)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawSphere(c, 3);
-        }
+       // Circle(100);
+       //
+       // foreach (var c in circleList)
+       // {
+       //     Gizmos.color = Color.red;
+       //     Gizmos.DrawSphere(c, 3);
+       // }
     }
 }
