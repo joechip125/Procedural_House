@@ -46,8 +46,8 @@ public class RoomSegments : MonoBehaviour
         SimplePanel(crossDir * -sizeX / 4, crossDir, new Vector2(sizeZ,sizeY));
         
         SimplePanel(crossDir * sizeX / 4, -crossDir,new Vector2(sizeZ, sizeY));
-        //SimplePanel(new Vector3(10,0,0), -wallDirection);
-       // SimplePanel(new Vector3(0,-10,0), new Vector3(0,1,0));
+       
+        SimplePanel(new Vector3(0,-sizeY / 4,0), new Vector3(0,1,0), new Vector2(sizeX, sizeZ));
         //SimplePanel(new Vector3(0,10,0), new Vector3(0,-1,0));
         //SimplePanel(new Vector3(0,10,-2.5f), new Vector3(0,0,-1));
     }
