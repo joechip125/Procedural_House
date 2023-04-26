@@ -42,7 +42,8 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     {
         var lineCount = Vertices.Count;
         
-        var pos = transform.position + new Vector3(numberX, 0, numberZ) * tileSize;
+        var pos = -(new Vector3(numberX - 1, 0, numberZ - 1) * tileSize)/ 2;
+        Debug.Log($"aPos {pos}");
 
         for (int i = 0; i < numberZ; i++)
         {
@@ -206,7 +207,8 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     {
         if (Application.isPlaying) return;
         
-        var pos = transform.position;
+        //var pos = transform.position;
+        var pos = transform.position -(new Vector3(numberX - 1, 0, numberZ - 1) * tileSize)/ 2;
         Gizmos.DrawSphere(pos, 3f);
 
         dots.Clear();

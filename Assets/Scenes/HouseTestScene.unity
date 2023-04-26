@@ -154,8 +154,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb4303ba490dd7a4fb9601506eb9dd9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberX: 4
-  numberZ: 4
+  numberX: 5
+  numberZ: 5
+  tileSize: 100
   edgeChoice: 1
   numberCircle: 10
   addCircle: 20
@@ -1072,7 +1073,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2443463109682500871, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
       propertyPath: aDegree
-      value: 76.03
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 2443463109682500871, guid: 6c741b935b0b66346acd9afd76add63b, type: 3}
       propertyPath: numberX
