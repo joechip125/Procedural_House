@@ -31,6 +31,12 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     [SerializeField] private float doorAdd;
 
     public Material aMaterial;
+    
+    private readonly Vector3[] corners = new[]
+    {   new Vector3(-1, 0, -1), 
+        new Vector3(0, 0, 1),
+        new Vector3(1, 0, 1), 
+        new Vector3(1, 0, 0) };
 
     private void Awake()
     {
@@ -70,9 +76,47 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
    
         UpdateMesh();
     }
+    
+    private void SimplePanel(Vector3 addPos, Vector3 normalDir, Vector2 theSize, int addDegree = 0)
+    {
+        Vector3 aCrossForward = Vector3.Cross(normalDir, Vector3.up).normalized;
+        var flip = false;
 
+        if (normalDir.y != 0 && normalDir.x + normalDir.z == 0)
+        {
+            aCrossForward = Vector3.Cross(normalDir, Vector3.forward).normalized;
+            flip = true;
+        }
 
-    public void AddOpen(Vector3 primeDir, float position, float length, float width)
+        for (int i = 0; i < 4; i++)
+        {
+            var aCrossUp = Quaternion.AngleAxis((90 * i) + addDegree , normalDir) *aCrossForward;
+            var aCrossUp2 = Quaternion.AngleAxis((90 * i) + 90 + addDegree, normalDir) *aCrossForward;
+            
+            var poss = new Vector3();
+            var poss2 = new Vector3();
+
+            if (!flip)
+            {
+                poss = (aCrossUp * (theSize.x / 2)) + addPos;
+                poss2 = aCrossUp2 * (theSize.y / 2) + addPos;
+            }
+
+            else
+            {
+                poss = aCrossUp * theSize.y / 2 + addPos;
+                poss2 = aCrossUp2 * theSize.x / 2 + addPos;
+            }
+
+            corners[i] = poss + poss2;
+            
+            flip = !flip;
+        }
+        
+        AddQuad(corners[0], corners[1], corners[2], corners[3]);
+    }
+
+    private void AddOpen(Vector3 primeDir, float position, float length, float width)
     {
         var superStart = new Vector3((totalSize.x * primeDir.x), 0, (totalSize.y * primeDir.z)) / 2 
                          + (primeDir * width) / 2;
@@ -82,8 +126,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         var aStart = superStart + crossDir * position;
         
     }
-    
-    
     
     private void AddSomething()
     {
@@ -116,8 +158,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         
         newStart = dots[0];
     }
-
-
+    
     private void Pyramid()
     {
         var start = 0;
@@ -197,7 +238,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         }
     }
     
-
     private void Circle(float radius)
     {
         var pos = transform.position;
@@ -218,7 +258,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         }
     }
     
-
     private void OnDrawGizmos()
     {
         if (Application.isPlaying) return;
@@ -250,13 +289,5 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             Gizmos.DrawLine(edgePos3, edgePos3 + new Vector3(0, 50,0));
             aColor.r += 0.25f;
         }
-        
-       // Circle(100);
-       //
-       // foreach (var c in circleList)
-       // {
-       //     Gizmos.color = Color.red;
-       //     Gizmos.DrawSphere(c, 3);
-       // }
     }
 }
