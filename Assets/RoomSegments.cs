@@ -185,7 +185,7 @@ public class RoomSegments : MonoBehaviour
     }
     
     
-    private void SimplePanel(Vector3 addPos, Vector3 normalDir, Vector2 theSize)
+    private void SimplePanel(Vector3 addPos, Vector3 normalDir, Vector2 theSize, int addDegree = 0)
     {
         Vector3 aCrossForward = Vector3.Cross(normalDir, Vector3.up).normalized;
         var flip = false;
@@ -198,8 +198,8 @@ public class RoomSegments : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            var aCrossUp = Quaternion.AngleAxis(90 * i, normalDir) *aCrossForward;
-            var aCrossUp2 = Quaternion.AngleAxis((90 * i) + 90, normalDir) *aCrossForward;
+            var aCrossUp = Quaternion.AngleAxis((90 * i) + addDegree , normalDir) *aCrossForward;
+            var aCrossUp2 = Quaternion.AngleAxis((90 * i) + 90 + addDegree, normalDir) *aCrossForward;
             
             var poss = new Vector3();
             var poss2 = new Vector3();
