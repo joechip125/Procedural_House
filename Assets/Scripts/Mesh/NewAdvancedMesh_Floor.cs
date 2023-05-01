@@ -263,8 +263,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         if (Application.isPlaying) return;
         
         var pos = transform.position -(new Vector3(numberX - 1, 0, numberZ - 1) * tileSize)/ 2;
-        Gizmos.DrawSphere(pos, 3f);
-
+        
         dots.Clear();
         
         for (int i = 0; i < numberZ; i++)

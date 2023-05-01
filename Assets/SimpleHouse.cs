@@ -1,16 +1,24 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
+public class MeshHolder
+{
+    public NewAdvancedMesh mesh;
+    public Transform gameObjectTransform;
+}
+
 public class SimpleHouse : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private List<NewAdvancedMesh> meshes = new();
+    
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         
