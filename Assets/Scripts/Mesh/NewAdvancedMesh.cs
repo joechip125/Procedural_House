@@ -15,6 +15,11 @@ public abstract class NewAdvancedMesh : MonoBehaviour
         GetComponent<MeshFilter>().mesh = TheMesh = new Mesh();
         TheMesh.name = "TheMesh";
     }
+
+    public virtual void Activate()
+    {
+        
+    }
     
     protected void UpdateMesh()
     {

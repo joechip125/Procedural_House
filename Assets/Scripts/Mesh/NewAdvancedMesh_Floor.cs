@@ -46,6 +46,13 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         AddOpen(new Vector3(1,0,0), 0, 40, 10);
     }
 
+    public override void Activate()
+    {
+        base.Activate();
+        
+        MakeGrid();
+    }
+
     private void MakeGrid()
     {
         var lineCount = Vertices.Count;
