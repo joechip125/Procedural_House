@@ -41,9 +41,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     private void Awake()
     {
         InitMesh();
-        ApplyMaterial(aMaterial);
-        MakeGrid();
-        AddOpen(new Vector3(1,0,0), 0, 40, 10);
+        Activate();
     }
 
     public override void Activate()
@@ -51,6 +49,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         base.Activate();
         
         MakeGrid();
+        ApplyMaterial(aMaterial);
     }
 
     private void MakeGrid()
@@ -123,6 +122,11 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         AddQuad(corners[0], corners[1], corners[2], corners[3]);
     }
 
+    public void AddAnOpen()
+    {
+        AddOpen(new Vector3(0,-1,0), 0, 40, 10);
+    }
+    
     private void AddOpen(Vector3 primeDir, float position, float length, float width)
     {
         var superStart = new Vector3((totalSize.x * primeDir.x), 0, (totalSize.y * primeDir.z)) / 2 
@@ -132,6 +136,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         position = Mathf.Clamp(position, -max + length / 2, max - length / 2);
         var aStart = superStart + crossDir * position;
         
+        SimplePanel(aStart, primeDir, new Vector2(length, width));
     }
     
     private void AddSomething()

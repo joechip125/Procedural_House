@@ -13,14 +13,18 @@ public class MeshHolder
 public class SimpleHouse : MonoBehaviour
 {
     private List<NewAdvancedMesh> meshes = new();
-    
+    [SerializeField] private List<GameObject> roomTiles = new();
+
     void Start()
     {
-        
+        meshes.Add(Instantiate(roomTiles[0], transform).GetComponent<NewAdvancedMesh>());
+        DoSomething();
     }
-
-    void Update()
+    
+    private void DoSomething()
     {
+        var temp = (NewAdvancedMesh_Floor)meshes[0];
         
+        temp.AddAnOpen();
     }
 }
