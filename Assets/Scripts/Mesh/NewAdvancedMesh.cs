@@ -16,10 +16,16 @@ public abstract class NewAdvancedMesh : MonoBehaviour
         TheMesh.name = "TheMesh";
     }
 
-    public virtual void Activate()
+    protected virtual void Activate()
     {
         
     }
+    
+    protected virtual void Register()
+    {
+        
+    }
+    
     
     protected void UpdateMesh()
     {

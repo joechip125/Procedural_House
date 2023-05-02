@@ -23,6 +23,8 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
 
     private List<Vector3> edgeList = new();
     private List<Vector3> circleList = new();
+
+    public List<Vector3> doors = new();
     private Vector3 newStart;
 
     public int numberCircle;
@@ -31,7 +33,9 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     [SerializeField] private float doorAdd;
 
     public Material aMaterial;
-    
+
+    public Action<Vector3> callback;
+
     private readonly Vector3[] corners = new[]
     {   new Vector3(-1, 0, -1), 
         new Vector3(0, 0, 1),
@@ -42,9 +46,10 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     {
         InitMesh();
         Activate();
+        
     }
-
-    public override void Activate()
+    
+    protected override void Activate()
     {
         base.Activate();
         
@@ -52,7 +57,13 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         ApplyMaterial(aMaterial);
     }
 
-    private void MakeGrid()
+    protected override void Register()
+    {
+        
+    }
+
+
+        private void MakeGrid()
     {
         var lineCount = Vertices.Count;
         
@@ -124,19 +135,21 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
 
     public void AddAnOpen()
     {
-        AddOpen(new Vector3(0,-1,0), 0, 40, 10);
+        AddOpen(new Vector3(1,0,0), 0, 40, 10);
     }
     
     private void AddOpen(Vector3 primeDir, float position, float length, float width)
     {
-        var superStart = new Vector3((totalSize.x * primeDir.x), 0, (totalSize.y * primeDir.z)) / 2 
-                         + (primeDir * width) / 2;
+        var superStart = new Vector3((totalSize.x * primeDir.x), 0, (totalSize.y * primeDir.z)) / 4 
+                         + (primeDir * width) / 4;
         var crossDir = Vector3.Cross(primeDir, Vector3.up);
         var max = Vector3.Magnitude(Vector3.Scale(crossDir, totalSize)) / 2;
         position = Mathf.Clamp(position, -max + length / 2, max - length / 2);
         var aStart = superStart + crossDir * position;
+        doors.Add(aStart);
+        callback?.Invoke(aStart);
         
-        SimplePanel(aStart, primeDir, new Vector2(length, width));
+        SimplePanel(aStart, new Vector3(0,1,0), new Vector2(length, width));
     }
     
     private void AddSomething()

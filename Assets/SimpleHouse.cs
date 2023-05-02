@@ -14,6 +14,7 @@ public class SimpleHouse : MonoBehaviour
 {
     private List<NewAdvancedMesh> meshes = new();
     [SerializeField] private List<GameObject> roomTiles = new();
+    
 
     void Start()
     {
@@ -24,7 +25,10 @@ public class SimpleHouse : MonoBehaviour
     private void DoSomething()
     {
         var temp = (NewAdvancedMesh_Floor)meshes[0];
-        
+        temp.callback = vector3 =>
+        {
+            
+        };
         temp.AddAnOpen();
     }
 }
