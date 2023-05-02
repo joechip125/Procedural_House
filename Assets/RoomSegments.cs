@@ -45,12 +45,9 @@ public class RoomSegments : MonoBehaviour
         var crossDir = Vector3.Cross(wallDirection, Vector3.up);
 
         var anAngle = Vector3.Angle(wallDirection, Vector3.right);
-        Debug.Log($"anAngle {anAngle}");
-        
+
         SimplePanel(crossDir * -sizeX / 4, crossDir, new Vector2(sizeZ,sizeY));
-        
         SimplePanel(crossDir * sizeX / 4, -crossDir,new Vector2(sizeZ, sizeY));
-       
         SimplePanel(new Vector3(0,-sizeY / 4,0), new Vector3(0,1,0), new Vector2(sizeX, sizeZ), -(int)anAngle);
         
     }
