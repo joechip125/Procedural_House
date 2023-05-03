@@ -34,7 +34,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
 
     public Material aMaterial;
 
-    public Action<Vector3> callback;
+    public Action<Vector3, Vector3> callback;
 
     private readonly Vector3[] corners = new[]
     {   new Vector3(-1, 0, -1), 
@@ -147,7 +147,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         position = Mathf.Clamp(position, -max + length / 2, max - length / 2);
         var aStart = superStart + crossDir * position;
         doors.Add(aStart);
-        callback?.Invoke(aStart);
+        callback?.Invoke(aStart, primeDir);
         
         SimplePanel(aStart, new Vector3(0,1,0), new Vector2(length, width));
     }
