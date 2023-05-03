@@ -26,6 +26,12 @@ public abstract class NewAdvancedMesh : MonoBehaviour
         
     }
     
+    protected virtual void GetMinMax(out Vector3 min, out Vector3 max)
+    {
+        min = Vector3.zero;
+        max = Vector3.zero;
+    }
+    
     
     protected void UpdateMesh()
     {

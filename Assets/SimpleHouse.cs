@@ -19,7 +19,7 @@ public class SimpleHouse : MonoBehaviour
     void Start()
     {
         meshes.Add(Instantiate(roomTiles[0], transform).GetComponent<NewAdvancedMesh>());
-        DoSomething();
+        DoSomething(0);
     }
 
     private void AddCallback(Vector3 start, Vector3 direction)
@@ -30,10 +30,11 @@ public class SimpleHouse : MonoBehaviour
             Quaternion.identity, transform).GetComponent<NewAdvancedMesh>());
     }
     
-    private void DoSomething()
+    private void DoSomething(int index)
     {
-        var temp = (NewAdvancedMesh_Floor)meshes[0];
-        temp.callback = AddCallback;
+        var temp = (NewAdvancedMesh_Floor)meshes[index];
+        temp.Callback = AddCallback;
+        temp.SetValuesAndActivate(100, 4,4);
         
         temp.AddAnOpen();
     }

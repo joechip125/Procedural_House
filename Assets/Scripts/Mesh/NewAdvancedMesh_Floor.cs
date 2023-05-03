@@ -21,6 +21,8 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     [SerializeField] private Edges edgeChoice;
     [SerializeField] private Vector3 totalSize;
 
+    public Vector3 TotalSize => totalSize;
+
     private List<Vector3> edgeList = new();
     private List<Vector3> circleList = new();
 
@@ -34,7 +36,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
 
     public Material aMaterial;
 
-    public Action<Vector3, Vector3> callback;
+    public Action<Vector3, Vector3> Callback;
 
     private readonly Vector3[] corners = new[]
     {   new Vector3(-1, 0, -1), 
@@ -45,8 +47,22 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     private void Awake()
     {
         InitMesh();
+    }
+
+    public void SetValuesAndActivate(float size, int tilesX, int tilesZ)
+    {
+        tileSize = size;
+        numberX = tilesX;
+        numberZ = tilesZ;
         Activate();
-        
+    }
+    
+    public void SetValuesAndActivate(Vector3 size, int tilesX, int tilesZ)
+    {
+        totalSize = size;
+        numberX = tilesX;
+        numberZ = tilesZ;
+        Activate();
     }
     
     protected override void Activate()
@@ -62,8 +78,14 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         
     }
 
+    protected override void GetMinMax(out Vector3 min, out Vector3 max)
+    {
+        base.GetMinMax(out min, out max);
+        
+        
+    }
 
-        private void MakeGrid()
+    private void MakeGrid()
     {
         var lineCount = Vertices.Count;
         
@@ -147,7 +169,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         position = Mathf.Clamp(position, -max + length / 2, max - length / 2);
         var aStart = superStart + crossDir * position;
         doors.Add(aStart);
-        callback?.Invoke(aStart, primeDir);
+        Callback?.Invoke(aStart, primeDir);
         
         SimplePanel(aStart, new Vector3(0,1,0), new Vector2(length, width));
     }
