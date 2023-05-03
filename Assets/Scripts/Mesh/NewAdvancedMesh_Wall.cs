@@ -20,7 +20,9 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         
     }
-
+    
+    
+    
     private void OnDrawGizmos()
     {
         var pos = transform.position;

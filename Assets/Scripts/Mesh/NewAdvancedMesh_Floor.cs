@@ -143,7 +143,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
 
             else
             {
-                poss = aCrossUp * theSize.y / 2 + addPos;
+                poss = aCrossUp * theSize.y / 2   + addPos;
                 poss2 = aCrossUp2 * theSize.x / 2 + addPos;
             }
 
@@ -169,7 +169,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         position = Mathf.Clamp(position, -max + length / 2, max - length / 2);
         var aStart = superStart + crossDir * position;
         doors.Add(aStart);
-        Callback?.Invoke(aStart, primeDir);
+        Callback?.Invoke(aStart * 2, primeDir);
         
         SimplePanel(aStart, new Vector3(0,1,0), new Vector2(length, width));
     }
