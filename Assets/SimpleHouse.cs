@@ -14,6 +14,7 @@ public class SimpleHouse : MonoBehaviour
 {
     private List<NewAdvancedMesh> meshes = new();
     [SerializeField] private List<GameObject> roomTiles = new();
+    private Vector3 startSize;
     
 
     void Start()
@@ -24,17 +25,24 @@ public class SimpleHouse : MonoBehaviour
 
     private void AddCallback(Vector3 start, Vector3 direction)
     {
-        var add = direction * 307.5f;
-        var newStart = start + add;
+        //var add = direction * 307.5f;
+        var add = Vector3.Scale(startSize / 2, direction);
+        var newStart = start;
         meshes.Add(Instantiate(roomTiles[0], newStart, 
             Quaternion.identity, transform).GetComponent<NewAdvancedMesh>());
+        
+        var temp = (NewAdvancedMesh_Floor) meshes[^1];
+        temp.SetValuesAndActivate(100, 4,4);
+
     }
     
     private void DoSomething(int index)
     {
         var temp = (NewAdvancedMesh_Floor)meshes[index];
         temp.Callback = AddCallback;
-        temp.SetValuesAndActivate(100, 4,4);
+        temp.SetValuesAndActivate(100, 5,5);
+        startSize = new Vector3(500,100,500);
+        
         
         temp.AddAnOpen();
     }
