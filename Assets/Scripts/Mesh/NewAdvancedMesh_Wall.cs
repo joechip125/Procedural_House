@@ -24,24 +24,33 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         InitMesh();
         Activate();
-        Debug.Log($"verts {Vertices.Count}, tris {Triangles.Count}");
     }
 
 
     private IEnumerator Delay()
     {
-        yield return new WaitForSeconds(3);
-        Activate();
+        yield return new WaitForSeconds(5);
+        ClearMesh();
+    }
+
+    private void NewWall(Vector3 aDirection)
+    {
+        var aSize = 100;
+        var pos = transform.position;
+        MakeWall(aDirection ,pos, aSize);
+
+        pos += direction * (aSize + 40);
+        
+        MakeWall(aDirection ,pos, aSize);
     }
     
-    private void MakeWall()
+    private void MakeWall(Vector3 aDirection, Vector3 position, float size)
     {
-        var pos = transform.position;
-        var pos2 = pos + new Vector3(0, height,0);
-        var pos3 = pos + new Vector3(0, height,0) + direction * length;
-        var pos4 = pos + direction * length;
+        var pos2 = position + new Vector3(0, height,0);
+        var pos3 = position + new Vector3(0, height,0) + aDirection * size;
+        var pos4 = position + aDirection * size;
 
-        AddQuad(pos, pos2, pos3, pos4);
+        AddQuad(position, pos2, pos3, pos4);
     }
 
     protected override void Activate()
@@ -56,7 +65,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             pos += direction.normalized * single;
         }
-        MakeWall();
+        NewWall(direction);
     }
 
 
