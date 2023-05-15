@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class NewAdvancedMesh_Wall : NewAdvancedMesh
@@ -11,6 +12,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     [SerializeField] private float height;
     [SerializeField] private int numberTiles;
     
+    public Material aMaterial;
+    
     private readonly Vector3[] corners = new[]
     {   new Vector3(-1,0,-1), 
         new Vector3(0, 0, 1),
@@ -20,17 +23,32 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void Awake()
     {
         InitMesh();
+        Activate();
+        Debug.Log($"verts {Vertices.Count}, tris {Triangles.Count}");
     }
 
 
+    private IEnumerator Delay()
+    {
+        yield return new WaitForSeconds(3);
+        Activate();
+    }
+    
     private void MakeWall()
     {
-        
+        var pos = transform.position;
+        var pos2 = pos + new Vector3(0, height,0);
+        var pos3 = pos + new Vector3(0, height,0) + direction * length;
+        var pos4 = pos + direction * length;
+
+        AddQuad(pos, pos2, pos3, pos4);
     }
 
     protected override void Activate()
     {
         base.Activate();
+        ApplyMaterial(aMaterial);
+        
         var pos = transform.position;
         var single = length / numberTiles;
        
@@ -38,7 +56,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             pos += direction.normalized * single;
         }
-        
+        MakeWall();
     }
 
 

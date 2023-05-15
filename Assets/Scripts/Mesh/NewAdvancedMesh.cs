@@ -31,7 +31,13 @@ public abstract class NewAdvancedMesh : MonoBehaviour
         min = Vector3.zero;
         max = Vector3.zero;
     }
-    
+
+    protected void ClearMesh()
+    {
+        Vertices.Clear();
+        Triangles.Clear();
+        UpdateMesh();
+    }
     
     protected void UpdateMesh()
     {
@@ -39,6 +45,14 @@ public abstract class NewAdvancedMesh : MonoBehaviour
         TheMesh.SetVertices(Vertices);
         TheMesh.SetTriangles(Triangles, 0);
         TheMesh.RecalculateNormals();
+    }
+
+    protected void RemoveTriangle(int start, int count)
+    {
+        for (int i = start; i < count; i++)
+        {
+            Vertices.RemoveAt(i);
+        }    
     }
     
     protected void AddTriangle(Vector3 v1,Vector3 v2, Vector3 v3)
