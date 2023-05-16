@@ -50,7 +50,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         
         for (int i = 0; i < segments; i++)
         {
-            
+            MakeWall(aDirection, position, singleS);
+            position += aDirection * singleS;
         }
     }
     
@@ -76,7 +77,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             pos += direction.normalized * single;
         }
-        NewWall(direction);
+        MakeWall(direction, transform.position,length, 5);
     }
 
 
