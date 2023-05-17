@@ -4,6 +4,19 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+public enum WallTypes
+{
+    Blank,
+    Door,
+    Window
+}
+
+[Serializable]
+public class WallInfo
+{
+    public WallTypes type;
+}
+
 public class NewAdvancedMesh_Wall : NewAdvancedMesh
 {
 
@@ -11,7 +24,9 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     [SerializeField] private float length;
     [SerializeField] private float height;
     [SerializeField] private int numberTiles;
-    
+
+    private List<WallInfo> wallInfos = new();
+
     public Material aMaterial;
     
     private readonly Vector3[] corners = new[]
