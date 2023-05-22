@@ -38,7 +38,9 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void Awake()
     {
         InitMesh();
-        Activate();
+        ApplyMaterial(aMaterial);
+       // Activate();
+       MakeWall(new Vector3(1,0,0),new Vector3(0,0,1), transform.position, 12);
     }
 
 
@@ -79,6 +81,15 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             position += aDirection * singleS;
            // aDirection += new Vector3(0, 0, 0.1f);
         }
+    }
+    
+    private void MakeWall(Vector3 aDirection, Vector3 dir2, Vector3 position, float size)
+    {
+        var pos2 = position + dir2 * height;
+        var pos3 = position + (dir2 * height) + (aDirection * size);
+        var pos4 = position + aDirection * size;
+
+        AddQuad(position, pos2, pos3, pos4);
     }
     
     
