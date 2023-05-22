@@ -59,6 +59,12 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         MakeWall(aDirection ,pos, aSize);
     }
 
+
+    private void MakeWalls()
+    {
+        
+    }
+    
     private void MakeWall(Vector3 aDirection, Vector3 position, float size, int segments)
     {
         var singleS = size / segments;
