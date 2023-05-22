@@ -62,7 +62,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private void MakeWalls()
     {
-        
+        var directions = new Vector3(1,0,0);
+        for (int i = 0; i < 5; i++)
+        {
+            directions += new Vector3(0, 0, 0.1f);
+        }
     }
     
     private void MakeWall(Vector3 aDirection, Vector3 position, float size, int segments)
@@ -73,6 +77,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             MakeWall(aDirection, position, singleS);
             position += aDirection * singleS;
+           // aDirection += new Vector3(0, 0, 0.1f);
         }
     }
     
