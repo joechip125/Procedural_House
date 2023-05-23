@@ -44,6 +44,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     }
 
 
+    private void AddDoor(Vector3 start)
+    {
+        var dir = -direction;
+    }
+
     private IEnumerator Delay()
     {
         yield return new WaitForSeconds(5);
