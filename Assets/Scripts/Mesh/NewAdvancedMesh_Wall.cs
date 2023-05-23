@@ -40,13 +40,14 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         InitMesh();
         ApplyMaterial(aMaterial);
        // Activate();
-       MakeWall(new Vector3(1,0,0),new Vector3(0,0,1), transform.position, 12);
+       AddDoor(transform.position);
     }
 
 
     private void AddDoor(Vector3 start)
     {
-        var dir = -direction;
+        Debug.Log(Vector3.Cross(direction, Vector3.up));
+        MakeWall(direction,Vector3.Cross(direction, Vector3.up), start, new Vector2(10, 100));
     }
 
     private IEnumerator Delay()
@@ -88,11 +89,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
     
-    private void MakeWall(Vector3 aDirection, Vector3 dir2, Vector3 position, float size)
+    private void MakeWall(Vector3 aDirection, Vector3 dir2, Vector3 position, Vector2 size)
     {
-        var pos2 = position + dir2 * height;
-        var pos3 = position + (dir2 * height) + (aDirection * size);
-        var pos4 = position + aDirection * size;
+        var pos2 = position + dir2 * size.x;
+        var pos3 = position + (dir2 * size.x) + (aDirection * size.y);
+        var pos4 = position + aDirection * size.y;
 
         AddQuad(position, pos2, pos3, pos4);
     }
