@@ -46,7 +46,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private void AddDoor(Vector3 start)
     {
-        Debug.Log(Vector3.Cross(direction, Vector3.up));
+        MakeWall(Vector3.Cross(direction, Vector3.up),Vector3.up, start, new Vector2(100, 10));
         MakeWall(direction,Vector3.Cross(direction, Vector3.up), start, new Vector2(10, 100));
     }
 
