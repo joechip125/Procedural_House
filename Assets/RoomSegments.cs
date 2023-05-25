@@ -21,6 +21,7 @@ public class RoomSegments : MonoBehaviour
 
     private int lastVert;
 
+    
     public Vector3 currentPos;
     
     private readonly Vector3[] corners = new[]
