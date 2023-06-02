@@ -77,33 +77,33 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
     
-    private void MakeWall(Vector3 aDirection, Vector3 position, float size, int segments)
+    private void MakeWall(Vector3 upDir, Vector3 position, float size, int segments)
     {
         var singleS = size / segments;
         
         for (int i = 0; i < segments; i++)
         {
-            MakeWall(aDirection, position, singleS);
-            position += aDirection * singleS;
+            MakeWall(upDir, position, singleS);
+            position += upDir * singleS;
            // aDirection += new Vector3(0, 0, 0.1f);
         }
     }
     
-    private void MakeWall(Vector3 aDirection, Vector3 dir2, Vector3 position, Vector2 size)
+    private void MakeWall(Vector3 upDir, Vector3 rightDir, Vector3 position, Vector2 size)
     {
-        var pos2 = position + dir2 * size.x;
-        var pos3 = position + (dir2 * size.x) + (aDirection * size.y);
-        var pos4 = position + aDirection * size.y;
+        var pos2 = position + rightDir * size.x;
+        var pos3 = position + (rightDir * size.x) + (upDir * size.y);
+        var pos4 = position + upDir * size.y;
 
         AddQuad(position, pos2, pos3, pos4);
     }
     
     
-    private void MakeWall(Vector3 aDirection, Vector3 position, float size)
+    private void MakeWall(Vector3 upDir, Vector3 position, float size)
     {
         var pos2 = position + new Vector3(0, height,0);
-        var pos3 = position + new Vector3(0, height,0) + aDirection * size;
-        var pos4 = position + aDirection * size;
+        var pos3 = position + new Vector3(0, height,0) + upDir * size;
+        var pos4 = position + upDir * size;
 
         AddQuad(position, pos2, pos3, pos4);
     }
