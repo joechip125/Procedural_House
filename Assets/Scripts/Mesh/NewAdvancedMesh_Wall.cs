@@ -126,7 +126,45 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
         MakeWall(direction, transform.position,length, 5);
     }
+    
+    private void SimplePanel(Vector3 addPos, Vector3 normalDir, Vector2 theSize, int addDegree = 0)
+    {
+        Vector3 aCrossForward = Vector3.Cross(normalDir, Vector3.up).normalized;
+        var flip = false;
 
+        if (normalDir.y != 0 && normalDir.x + normalDir.z == 0)
+        {
+            aCrossForward = Vector3.Cross(normalDir, Vector3.forward).normalized;
+            flip = true;
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            var aCrossUp = Quaternion.AngleAxis((90 * i) + addDegree , normalDir) *aCrossForward;
+            var aCrossUp2 = Quaternion.AngleAxis((90 * i) + 90 + addDegree, normalDir) *aCrossForward;
+            
+            var poss = new Vector3();
+            var poss2 = new Vector3();
+
+            if (!flip)
+            {
+                poss = (aCrossUp * (theSize.x / 2)) + addPos;
+                poss2 = aCrossUp2 * (theSize.y / 2) + addPos;
+            }
+
+            else
+            {
+                poss = aCrossUp * theSize.y / 2 + addPos;
+                poss2 = aCrossUp2 * theSize.x / 2 + addPos;
+            }
+
+            corners[i] = poss + poss2;
+            
+            flip = !flip;
+        }
+        
+        var lastVert = AddQuad(corners[0], corners[1], corners[2], corners[3]);
+    }
 
     private void OnDrawGizmos()
     {
