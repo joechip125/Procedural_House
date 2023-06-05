@@ -27,6 +27,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private List<WallInfo> wallInfos = new();
 
+    private int lastVert;
+
     public Material aMaterial;
     
     private readonly Vector3[] corners = new[]
@@ -40,7 +42,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         InitMesh();
         ApplyMaterial(aMaterial);
        // Activate();
-       AddDoor(transform.position);
+       //AddDoor(transform.position);
+       AddSomething();
     }
 
 
@@ -52,6 +55,18 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
        
         MakeWall(Vector3.Cross(-direction, Vector3.up),Vector3.up, place, new Vector2(100, 10));
      
+    }
+
+    private void AddSomething()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            
+        }
+        
+        var size = new Vector2(10, 100);
+        SimplePanel(new Vector3(0, size.y / 4,0), direction, size);
+        SimplePanel(new Vector3(100, size.y / 4,0), -direction, size);
     }
 
     private IEnumerator Delay()
@@ -148,22 +163,22 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
             if (!flip)
             {
-                poss = (aCrossUp * (theSize.x / 2)) + addPos;
-                poss2 = aCrossUp2 * (theSize.y / 2) + addPos;
+                poss = (aCrossUp * (theSize.x / 2));
+                poss2 = aCrossUp2 * (theSize.y / 2);
             }
 
             else
             {
-                poss = aCrossUp * theSize.y / 2 + addPos;
-                poss2 = aCrossUp2 * theSize.x / 2 + addPos;
+                poss = aCrossUp * theSize.y / 2;
+                poss2 = aCrossUp2 * theSize.x / 2;
             }
 
-            corners[i] = poss + poss2;
+            corners[i] = poss + poss2 + addPos;
             
             flip = !flip;
         }
         
-        var lastVert = AddQuad(corners[0], corners[1], corners[2], corners[3]);
+        lastVert = AddQuad(corners[0], corners[1], corners[2], corners[3]);
     }
 
     private void OnDrawGizmos()
