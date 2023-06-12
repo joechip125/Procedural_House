@@ -72,19 +72,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             var aPlace = place + Vector3.Scale(size2 / 2, aCrossUp);
             
             SimplePanel(aPlace, -aCrossUp, size);
-            Debug.Log($"up {aCrossUp}, place {aPlace}");
+            Debug.Log($"up {-aCrossUp}, place {aPlace}, size {size}");
         }
-
-        //SimplePanel(new Vector3(0, size.y / 2,0), direction, size);
-        //SimplePanel(new Vector3(100, size.y / 2,0), -direction, size);
-        //SimplePanel(new Vector3(50,0,0), Vector3.up, size);
-        //SimplePanel(new Vector3(50,100,0), -Vector3.up, size);
-        
         
         SimplePanel(new Vector3(50,125,-5), new Vector3(0,0,-1), new Vector2(100,50));
-        
         SimplePanel(new Vector3(50,125,5), new Vector3(0,0,1), new Vector2(100,50));
-        
     }
 
     private IEnumerator Delay()
@@ -165,7 +157,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         Vector3 aCrossForward = Vector3.Cross(normalDir, Vector3.up).normalized;
         var flip = false;
 
-        if (normalDir.y != 0 && normalDir.x + normalDir.z == 0)
+        if (normalDir.y != 0) //&& normalDir.x + normalDir.z == 0)
         {
             aCrossForward = Vector3.Cross(normalDir, Vector3.forward).normalized;
             flip = true;
