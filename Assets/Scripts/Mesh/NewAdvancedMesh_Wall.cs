@@ -59,14 +59,17 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private void AddSomething()
     {
+        var place = new Vector3();
+        
         for (int i = 0; i < 4; i++)
         {
             
         }
         
         var size = new Vector2(10, 100);
-        SimplePanel(new Vector3(0, size.y / 4,0), direction, size);
-        SimplePanel(new Vector3(100, size.y / 4,0), -direction, size);
+        SimplePanel(new Vector3(0, size.y / 2,0), direction, size);
+        SimplePanel(new Vector3(100, size.y / 2,0), -direction, size);
+        SimplePanel(new Vector3(), Vector3.up, size);
     }
 
     private IEnumerator Delay()
@@ -159,21 +162,12 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             var aCrossUp2 = Quaternion.AngleAxis((90 * i) + 90 + addDegree, normalDir) *aCrossForward;
             
             var poss = new Vector3();
-            var poss2 = new Vector3();
 
-            if (!flip)
-            {
-                poss = (aCrossUp * (theSize.x / 2));
-                poss2 = aCrossUp2 * (theSize.y / 2);
-            }
-
-            else
-            {
-                poss = aCrossUp * theSize.y / 2;
-                poss2 = aCrossUp2 * theSize.x / 2;
-            }
-
-            corners[i] = poss + poss2 + addPos;
+            if (!flip) poss = (aCrossUp * (theSize.x / 2)) + (aCrossUp2 * (theSize.y / 2));
+            
+            else poss = aCrossUp * theSize.y / 2 + (aCrossUp2 * theSize.x / 2);
+            
+            corners[i] = poss + addPos;
             
             flip = !flip;
         }
