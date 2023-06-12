@@ -60,16 +60,25 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void AddSomething()
     {
         var place = new Vector3();
+        var size = new Vector2(10, 100);
         
+        var size2 = new Vector3(100, 100,10);
+
         for (int i = 0; i < 4; i++)
         {
             
         }
-        
-        var size = new Vector2(10, 100);
+
         SimplePanel(new Vector3(0, size.y / 2,0), direction, size);
         SimplePanel(new Vector3(100, size.y / 2,0), -direction, size);
-        SimplePanel(new Vector3(), Vector3.up, size);
+        SimplePanel(new Vector3(50,0,0), Vector3.up, size);
+        SimplePanel(new Vector3(50,100,0), -Vector3.up, size);
+        
+        
+        SimplePanel(new Vector3(50,125,-5), new Vector3(0,0,-1), new Vector2(100,50));
+        
+        SimplePanel(new Vector3(50,125,5), new Vector3(0,0,1), new Vector2(100,50));
+        
     }
 
     private IEnumerator Delay()
