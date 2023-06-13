@@ -155,7 +155,7 @@ dist/
 build/
 
 # Python virtual environment
-python-envs/
+python/
 .mypy_cache/
 
 # Code coverage report
