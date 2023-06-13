@@ -19,26 +19,33 @@ public class SimpleHouse : MonoBehaviour
 
     void Start()
     {
+        var center = new Vector3();
         meshes.Add(Instantiate(roomTiles[0], transform).GetComponent<NewAdvancedMesh>());
-        DoSomething(0);
+        //DoSomething(0);
+        AddWall();
     }
 
     private void AddCallback(Vector3 start, Vector3 direction)
     {
         var add = direction * 155f;
-        //var add = Vector3.Scale(startSize / 2, direction);
+       
         var newStart = start + add;
         meshes.Add(Instantiate(roomTiles[0], newStart, 
             Quaternion.identity, transform).GetComponent<NewAdvancedMesh>());
         
         var temp = (NewAdvancedMesh_Floor) meshes[^1];
         temp.SetValuesAndActivate(100, 4,4);
+        AddWall();
 
     }
 
     private void AddWall()
     {
-        
+        var place = new Vector3(200, 0,200);
+        meshes.Add(Instantiate(roomTiles[1],place, Quaternion.identity, transform )
+            .GetComponent<NewAdvancedMesh>());
+        var temp = (NewAdvancedMesh_Wall)meshes[^1];
+                
     }
     
     private void DoSomething(int index)
