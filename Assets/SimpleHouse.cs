@@ -45,7 +45,7 @@ public class SimpleHouse : MonoBehaviour
             .GetComponent<NewAdvancedMesh>());
         var temp = (NewAdvancedMesh_Wall)meshes[^1];
         temp.BasicWall(4, new Vector3(1, 0, 0), new Vector3(100, 100), place);
-
+        temp.RotateAroundAxis(new Vector3(1,0,0), 4, 45);
     }
     
     private void AddFloor()

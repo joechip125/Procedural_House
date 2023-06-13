@@ -9,6 +9,7 @@ public abstract class NewAdvancedMesh : MonoBehaviour
     MeshCollider meshCollider;
     [NonSerialized] protected List<Vector3> Vertices = new ();
     [NonSerialized] protected List<int> Triangles = new ();
+    protected Vector3[] Directions = new Vector3[4];
 
     protected virtual void InitMesh()
     {
@@ -47,6 +48,22 @@ public abstract class NewAdvancedMesh : MonoBehaviour
         TheMesh.RecalculateNormals();
     }
 
+    public void RotateAroundAxis(Vector3 normalDir, int numberDir, float degreeInc)
+    {
+        if (Directions.Length != numberDir)
+        {
+            Directions = new Vector3[numberDir];
+        }
+        var aCrossForward = Vector3.Cross(normalDir, Vector3.up).normalized;
+
+        for (int i = 0; i < numberDir; i++)
+        {
+            var aCrossUp = Quaternion.AngleAxis((degreeInc * i), normalDir) *aCrossForward;
+            Debug.Log(aCrossUp);
+            Directions[i] = aCrossUp;
+        }
+    }
+    
     protected void RemoveTriangle(int start, int count)
     {
         for (int i = start; i < count; i++)
