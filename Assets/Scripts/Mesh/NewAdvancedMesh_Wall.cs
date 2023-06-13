@@ -70,9 +70,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             var aCrossUp = Quaternion.AngleAxis((90 * i), normalDir) *aCrossForward;
             var aPlace = place + Vector3.Scale(size2 / 2, aCrossUp);
-            
+
             SimplePanel(aPlace, -aCrossUp, size);
-            Debug.Log($"up {-aCrossUp}, place {aPlace}, size {size}");
         }
         
         SimplePanel(new Vector3(50,125,-5), new Vector3(0,0,-1), new Vector2(100,50));
@@ -114,7 +113,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             MakeWall(upDir, position, singleS);
             position += upDir * singleS;
-           // aDirection += new Vector3(0, 0, 0.1f);
         }
     }
     
@@ -126,7 +124,14 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
         AddQuad(position, pos2, pos3, pos4);
     }
-    
+
+    private void BasicWall(int numTiles, Vector3 dir, Vector2 size)
+    {
+        for (int i = 0; i < numTiles; i++)
+        {
+            
+        }
+    }
     
     private void MakeWall(Vector3 upDir, Vector3 position, float size)
     {
@@ -157,7 +162,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         Vector3 aCrossForward = Vector3.Cross(normalDir, Vector3.up).normalized;
         var flip = false;
 
-        if (normalDir.y != 0) //&& normalDir.x + normalDir.z == 0)
+        if (normalDir.y != 0)
         {
             aCrossForward = Vector3.Cross(normalDir, Vector3.forward).normalized;
             flip = true;

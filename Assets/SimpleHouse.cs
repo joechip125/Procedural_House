@@ -20,8 +20,7 @@ public class SimpleHouse : MonoBehaviour
     void Start()
     {
         var center = new Vector3();
-        meshes.Add(Instantiate(roomTiles[0], transform).GetComponent<NewAdvancedMesh>());
-        //DoSomething(0);
+        AddFloor();
         AddWall();
     }
 
@@ -41,21 +40,19 @@ public class SimpleHouse : MonoBehaviour
 
     private void AddWall()
     {
-        var place = new Vector3(200, 0,200);
-        meshes.Add(Instantiate(roomTiles[1],place, Quaternion.identity, transform )
+        var place = new Vector3(-200, 0,205);
+        meshes.Add(Instantiate(roomTiles[1],place, Quaternion.identity, transform)
             .GetComponent<NewAdvancedMesh>());
         var temp = (NewAdvancedMesh_Wall)meshes[^1];
                 
     }
     
-    private void DoSomething(int index)
+    private void AddFloor()
     {
-        var temp = (NewAdvancedMesh_Floor)meshes[index];
+        meshes.Add(Instantiate(roomTiles[0], transform).GetComponent<NewAdvancedMesh>());
+        var temp = (NewAdvancedMesh_Floor)meshes[^1];
         temp.Callback = AddCallback;
         temp.SetValuesAndActivate(100, 5,5);
         startSize = new Vector3(500,100,500);
-        
-        
-        temp.AddAnOpen();
     }
 }
