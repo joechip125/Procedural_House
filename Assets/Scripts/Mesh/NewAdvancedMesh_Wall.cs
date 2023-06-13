@@ -43,7 +43,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         ApplyMaterial(aMaterial);
        // Activate();
        //AddDoor(transform.position);
-       AddSomething();
+       //AddSomething();
     }
 
 
@@ -125,11 +125,15 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         AddQuad(position, pos2, pos3, pos4);
     }
 
-    private void BasicWall(int numTiles, Vector3 dir, Vector2 size)
+    public void BasicWall(int numTiles, Vector3 dir, Vector3 size, Vector3 pos)
     {
         for (int i = 0; i < numTiles; i++)
         {
-            
+            var pos2 = pos + Vector3.up * size.y;
+            var pos3 = pos + (dir * size.x) + (Vector3.up * size.y);
+            var pos4 = pos + dir * size.x;
+            AddQuad(pos, pos2, pos3, pos4);
+            pos += Vector3.Scale(size, dir);
         }
     }
     
