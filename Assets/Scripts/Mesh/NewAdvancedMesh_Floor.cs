@@ -309,31 +309,15 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     {
         if (Application.isPlaying) return;
         
-        var pos = transform.position -(new Vector3(numberX - 1, 0, numberZ - 1) * tileSize)/ 2;
-        
-        dots.Clear();
-        
-        for (int i = 0; i < numberZ; i++)
-        {
-            for (int j = 0; j < numberX; j++)
-            {
-                Gizmos.color = Color.green;
-                Gizmos.DrawSphere(pos + new Vector3(100 * j,0,0), 3);
-                dots.Add(pos + new Vector3(100 * j,0,0));
-            }
-            pos += new Vector3(0, 0, 100);
-        }
+        RotateAroundAxis(new Vector3(0,1,0), 4, 90, 45);
+        var pos = transform.position;
+        var color = 0f;
 
-        var moveDirection = new Vector3(1,0,0);
-        GetEdges(moveDirection);
-        var aColor = new Color(0, 0, 0);
-        
-        for (int i = 0; i < numberX; i++)
+        foreach (var d in Directions)
         {
-            var edgePos3 = dots[i];
-            Gizmos.color = aColor;
-            Gizmos.DrawLine(edgePos3, edgePos3 + new Vector3(0, 50,0));
-            aColor.r += 0.25f;
+            Gizmos.color = new Color(color, 0, 0);
+            Gizmos.DrawSphere((d * 100) + pos, 3);
+            color += 0.2f;
         }
     }
 }

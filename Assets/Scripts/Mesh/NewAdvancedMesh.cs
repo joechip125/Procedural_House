@@ -48,17 +48,21 @@ public abstract class NewAdvancedMesh : MonoBehaviour
         TheMesh.RecalculateNormals();
     }
 
-    public void RotateAroundAxis(Vector3 normalDir, int numberDir, float degreeInc)
+    public void RotateAroundAxis(Vector3 normalDir, int numberDir, float degreeInc, float startDeg = 0)
     {
         if (Directions.Length != numberDir)
         {
             Directions = new Vector3[numberDir];
         }
         var aCrossForward = Vector3.Cross(normalDir, Vector3.up).normalized;
+        if (normalDir.y != 0)
+        {
+            aCrossForward = Vector3.Cross(normalDir, Vector3.forward).normalized;
+        }
 
         for (int i = 0; i < numberDir; i++)
         {
-            var aCrossUp = Quaternion.AngleAxis((degreeInc * i), normalDir) *aCrossForward;
+            var aCrossUp = Quaternion.AngleAxis(startDeg +(degreeInc * i), normalDir) *aCrossForward;
             Debug.Log(aCrossUp);
             Directions[i] = aCrossUp;
         }
