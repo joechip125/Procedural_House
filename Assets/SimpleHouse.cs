@@ -40,11 +40,11 @@ public class SimpleHouse : MonoBehaviour
 
     private void AddWall()
     {
-        var place = new Vector3(-100, 0,100);
+        var place = new Vector3(-200, 0,205);
         meshes.Add(Instantiate(roomTiles[1],place, Quaternion.identity, transform)
             .GetComponent<NewAdvancedMesh>());
         var temp = (NewAdvancedMesh_Wall)meshes[^1];
-        temp.BasicWall(4, new Vector3(1, 0, 0), new Vector3(100, 100), place);
+        //temp.BasicWall(4, new Vector3(1, 0, 0), new Vector3(100, 100), place);
         temp.RotateAroundAxis(new Vector3(1,0,0), 4, 45);
     }
     

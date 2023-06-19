@@ -68,6 +68,19 @@ public abstract class NewAdvancedMesh : MonoBehaviour
         }
     }
     
+    public Vector3 RotateAroundAxisReturn(Vector3 normalDir, float startDeg = 0)
+    {
+        var aCrossForward = Vector3.Cross(normalDir, Vector3.up).normalized;
+        if (normalDir.y != 0)
+        {
+            aCrossForward = Vector3.Cross(normalDir, Vector3.forward).normalized;
+        }
+        var aCrossUp = Quaternion.AngleAxis(startDeg, normalDir) *aCrossForward;
+        Debug.Log(aCrossUp);
+
+        return aCrossUp;
+    }
+    
     protected void RemoveTriangle(int start, int count)
     {
         for (int i = start; i < count; i++)

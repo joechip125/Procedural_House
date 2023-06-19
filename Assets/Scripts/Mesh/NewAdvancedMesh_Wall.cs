@@ -41,6 +41,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         InitMesh();
         ApplyMaterial(aMaterial);
+        AddSomething();
     }
 
 
@@ -71,8 +72,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             SimplePanel(aPlace, -aCrossUp, size);
         }
         
-        SimplePanel(new Vector3(50,125,-5), new Vector3(0,0,-1), new Vector2(100,50));
-        SimplePanel(new Vector3(50,125,5), new Vector3(0,0,1), new Vector2(100,50));
+        SimplePanel(new Vector3(50,125,-5), -normalDir, new Vector2(100,50));
+        SimplePanel(new Vector3(50,125,5), normalDir, new Vector2(100,50));
     }
 
     private IEnumerator Delay()
