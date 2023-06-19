@@ -307,12 +307,18 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         RotateAroundAxis(new Vector3(0,1,0), 4, 90, 45);
         var pos = transform.position;
         var color = 0f;
+        var degree = 180;
 
         foreach (var d in Directions)
         {
+            var other = RotateAroundAxisReturn(Vector3.up, degree);
+            Debug.Log($"other: {other}");
+            var pos2 = (d * 100) + pos;
             Gizmos.color = new Color(color, 0, 0);
-            Gizmos.DrawSphere((d * 100) + pos, 3);
+            Gizmos.DrawSphere(pos2, 3);
+            Gizmos.DrawLine(pos2, pos2 + other * 50);
             color += 0.2f;
+            degree += 90;
         }
     }
 }
