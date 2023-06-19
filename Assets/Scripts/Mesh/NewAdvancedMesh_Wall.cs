@@ -41,9 +41,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         InitMesh();
         ApplyMaterial(aMaterial);
-       // Activate();
-       //AddDoor(transform.position);
-       //AddSomething();
     }
 
 
