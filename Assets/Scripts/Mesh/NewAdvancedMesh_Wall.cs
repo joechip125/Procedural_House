@@ -43,18 +43,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         ApplyMaterial(aMaterial);
         AddSomething();
     }
-
-
-    private void AddDoor(Vector3 start)
-    {
-        var place = start + new Vector3(100, 0, 10);
-        MakeWall(Vector3.Cross(direction, Vector3.up),Vector3.up, start, new Vector2(100, 10));
-        MakeWall(direction,Vector3.Cross(direction, Vector3.up), start, new Vector2(10, 100));
-       
-        MakeWall(Vector3.Cross(-direction, Vector3.up),Vector3.up, place, new Vector2(100, 10));
-     
-    }
-
+    
     private void AddSomething()
     {
         var place = new Vector3(50,50,0);
