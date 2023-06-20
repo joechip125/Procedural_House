@@ -91,6 +91,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var singlePanel = new Vector2(panelSize.x / numTiles, panelSize.y);
         var increment = Vector3.Scale(wallRight + Vector3.up, new Vector3(singlePanel.x, panelSize.y / 2, singlePanel.x));
         var start = wallRight * singlePanel.x / 2 + (Vector3.up * panelSize.y) / 2;
+        var wallSize = new Vector3(100, 100, 10);
       
         for (int i = 0; i < numTiles; i++)
         {
@@ -100,10 +101,10 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             {
                 case WallTypes.Blank:
                     SimplePanel(start, -wallNormal, singlePanel);
-                    SimplePanel(start + wallNormal * 5, wallNormal, singlePanel);
+                    SimplePanel(start + wallNormal * wallSize.z, wallNormal, singlePanel);
                     break;
                 case WallTypes.Door:
-                    AddDoor(start, new Vector3(100, 100, 10), wallNormal);
+                    AddDoor(start, wallSize, wallNormal);
                     break;
             }
             
