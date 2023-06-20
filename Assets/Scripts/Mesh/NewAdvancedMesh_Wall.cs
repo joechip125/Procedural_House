@@ -42,7 +42,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         InitMesh();
         ApplyMaterial(aMaterial);
-        AddSomething();
     }
     
     private void AddSomething()
@@ -67,16 +66,35 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         SimplePanel(new Vector3(size2.x / 2,size2.y + theSize.y / 2,+size2.z / 2), normalDir, theSize);
     }
 
+    private void RebuildWall()
+    {
+        ClearMesh();
+        BuildWall();
+    }
+    
     public void BuildWall()
     {
-        if (wallInfos.Count(x => x.type != WallTypes.Blank) > 0)
+        var wallNormal = new Vector3(0, 0, 1);
+        var wallRight = Vector3.Cross(Vector3.up, wallNormal) +  Vector3.up;
+        var panelSize = new Vector2(400, 100);
+
+        if (wallInfos.Count(x => x.type != WallTypes.Blank) == 0)
         {
-            
+            var aPos = Vector3.Scale(wallRight, new Vector3(panelSize.x, panelSize.y, panelSize.x)) / 2;
+            SimplePanel(aPos, -wallNormal, panelSize);
+            SimplePanel(aPos + wallNormal * 5, wallNormal, panelSize);
         }
 
         for (int i = 0; i < wallInfos.Count(); i++)
         {
             
+            switch (wallInfos[i].type)
+            {
+                case WallTypes.Blank:
+                    break;
+                case WallTypes.Door:
+                    break;
+            }
         }
     }
     
