@@ -45,5 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomTiles:
-  - {fileID: 4710687903862347866, guid: 9e9f5f0dd212d38498a64c55312d4e24, type: 3}
-  - {fileID: 1638415911921875674, guid: 4558952e6c625164d90ea015e3641b49, type: 3}
+  - {fileID: 1970395390617446973, guid: 2cd49f33cd39a2a4da8d9de96c5c0a2e, type: 3}
