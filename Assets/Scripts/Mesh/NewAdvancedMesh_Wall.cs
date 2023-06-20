@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -66,6 +67,19 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         SimplePanel(new Vector3(size2.x / 2,size2.y + theSize.y / 2,+size2.z / 2), normalDir, theSize);
     }
 
+    public void BuildWall()
+    {
+        if (wallInfos.Count(x => x.type != WallTypes.Blank) > 0)
+        {
+            
+        }
+
+        for (int i = 0; i < wallInfos.Count(); i++)
+        {
+            
+        }
+    }
+    
     private IEnumerator Delay()
     {
         yield return new WaitForSeconds(5);
@@ -112,6 +126,15 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         AddQuad(position, pos2, pos3, pos4);
     }
 
+    private void MakeWall(Vector3 upDir, Vector3 position, float size)
+    {
+        var pos2 = position + new Vector3(0, height,0);
+        var pos3 = position + new Vector3(0, height,0) + upDir * size;
+        var pos4 = position + upDir * size;
+
+        AddQuad(position, pos2, pos3, pos4);
+    }
+
     public void BasicWall(int numTiles, Vector3 dir, Vector3 size, Vector3 pos)
     {
         for (int i = 0; i < numTiles; i++)
@@ -122,15 +145,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             AddQuad(pos, pos2, pos3, pos4);
             pos += Vector3.Scale(size, dir);
         }
-    }
-    
-    private void MakeWall(Vector3 upDir, Vector3 position, float size)
-    {
-        var pos2 = position + new Vector3(0, height,0);
-        var pos3 = position + new Vector3(0, height,0) + upDir * size;
-        var pos4 = position + upDir * size;
-
-        AddQuad(position, pos2, pos3, pos4);
     }
 
     protected override void Activate()
