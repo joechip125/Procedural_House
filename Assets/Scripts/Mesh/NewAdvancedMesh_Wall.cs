@@ -42,12 +42,22 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         InitMesh();
         ApplyMaterial(aMaterial);
+        AddSomeNew(new Vector3(1,0,0), new Vector3());
     }
 
     private void AddSomeNew(Vector3 normalDir, Vector3 start)
     {
-        var aSize = new Vector2(100,10);
-        SimplePanel(start, normalDir, aSize);
+        var aSize = new Vector2(10,10);
+        var aCrossForward = Vector3.Cross(normalDir, Vector3.up).normalized;
+        var aCrossUp = Quaternion.AngleAxis(0, normalDir) *aCrossForward;
+        var sides = Mathf.Sqrt(Mathf.Pow(aSize.x, 2) + Mathf.Pow(aSize.y, 2));
+
+        for (int i = 0; i < 4; i++)
+        {
+            var aCrossUp3 = Quaternion.AngleAxis(i * 90, normalDir) *aCrossForward;
+            SimplePanel(start + aCrossUp3 * sides, normalDir, aSize);
+            Debug.Log($"sides {sides}, across {aCrossUp3}");
+        }
     }
     
     private void AddDoor(Vector3 pos, Vector3 size, Vector3 normalDir)
