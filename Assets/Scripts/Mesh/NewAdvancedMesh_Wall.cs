@@ -43,6 +43,12 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         InitMesh();
         ApplyMaterial(aMaterial);
     }
+
+    private void AddSomeNew(Vector3 normalDir, Vector3 start)
+    {
+        var aSize = new Vector2(100,10);
+        SimplePanel(start, normalDir, aSize);
+    }
     
     private void AddDoor(Vector3 pos, Vector3 size, Vector3 normalDir)
     {
@@ -79,7 +85,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var singlePanel = new Vector2(wallSize.x / numTiles, wallSize.y);
         var start = wallRight * singlePanel.x / 2 + (Vector3.up * wallSize.y) / 2;
         
-        var panelSize2 = new Vector3(100, 100, 10);
+        var panelSize2 = new Vector3(singlePanel.x, singlePanel.y, 10);
       
         for (int i = 0; i < numTiles; i++)
         {
@@ -97,33 +103,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             start += wallRight * singlePanel.x;
         }
     }
-    
-    private IEnumerator Delay()
-    {
-        yield return new WaitForSeconds(5);
-        ClearMesh();
-    }
 
-    private void NewWall(Vector3 aDirection)
-    {
-        var aSize = 100;
-        var pos = transform.position;
-        MakeWall(aDirection ,pos, aSize);
-
-        pos += direction * (aSize + 40);
-        
-        MakeWall(aDirection ,pos, aSize);
-    }
-    
-    private void MakeWalls()
-    {
-        var directions = new Vector3(1,0,0);
-        for (int i = 0; i < 5; i++)
-        {
-            directions += new Vector3(0, 0, 0.1f);
-        }
-    }
-    
     private void MakeWall(Vector3 upDir, Vector3 position, float size, int segments)
     {
         var singleS = size / segments;
@@ -134,15 +114,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             position += upDir * singleS;
         }
     }
-    
-    private void MakeWall(Vector3 upDir, Vector3 rightDir, Vector3 position, Vector2 size)
-    {
-        var pos2 = position + rightDir * size.x;
-        var pos3 = position + (rightDir * size.x) + (upDir * size.y);
-        var pos4 = position + upDir * size.y;
-
-        AddQuad(position, pos2, pos3, pos4);
-    }
 
     private void MakeWall(Vector3 upDir, Vector3 position, float size)
     {
@@ -152,19 +123,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
         AddQuad(position, pos2, pos3, pos4);
     }
-
-    public void BasicWall(int numTiles, Vector3 dir, Vector3 size, Vector3 pos)
-    {
-        for (int i = 0; i < numTiles; i++)
-        {
-            var pos2 = pos + Vector3.up * size.y;
-            var pos3 = pos + (dir * size.x) + (Vector3.up * size.y);
-            var pos4 = pos + dir * size.x;
-            AddQuad(pos, pos2, pos3, pos4);
-            pos += Vector3.Scale(size, dir);
-        }
-    }
-
+    
     protected override void Activate()
     {
         base.Activate();
@@ -208,10 +167,5 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
         
         lastVert = AddQuad(corners[0], corners[1], corners[2], corners[3]);
-    }
-
-    private void OnDrawGizmos()
-    {
-       
     }
 }
