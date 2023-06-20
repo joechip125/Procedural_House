@@ -48,6 +48,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         var aCrossForward = Vector3.Cross(normalDir, Vector3.up).normalized;
         pos += normalDir * size.z / 2;
+        var maxHeight = 100f;
         
         for (int i = 0; i < 4; i++)
         {
@@ -59,9 +60,9 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             SimplePanel(aPlace, -aCrossUp, panelSize);
         }
 
-        if (size.y >= 100) return;
+        if (size.y >= maxHeight) return;
         
-        var theSize = new Vector2(size.x, 100 - size.y);
+        var theSize = new Vector2(size.x, maxHeight - size.y);
         var addUp = Vector3.up * (size.y / 2 + theSize.y / 2);
         SimplePanel( pos + addUp + normalDir * (-size.z / 2), -normalDir, theSize);
         SimplePanel(pos + addUp +normalDir * (size.z / 2), normalDir, theSize);
@@ -89,14 +90,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
      
         var singlePanel = new Vector2(panelSize.x / numTiles, panelSize.y);
-        var increment = Vector3.Scale(wallRight + Vector3.up, new Vector3(singlePanel.x, panelSize.y / 2, singlePanel.x));
         var start = wallRight * singlePanel.x / 2 + (Vector3.up * panelSize.y) / 2;
         var wallSize = new Vector3(100, 100, 10);
       
         for (int i = 0; i < numTiles; i++)
         {
-            Debug.Log($"position: {start}, single {singlePanel}, increment {increment}");
-
             switch (wallInfos[i].type)
             {
                 case WallTypes.Blank:
