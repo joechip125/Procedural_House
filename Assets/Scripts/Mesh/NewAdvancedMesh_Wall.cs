@@ -82,8 +82,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         
         MakeWall(aDirection ,pos, aSize);
     }
-
-
+    
     private void MakeWalls()
     {
         var directions = new Vector3(1,0,0);
