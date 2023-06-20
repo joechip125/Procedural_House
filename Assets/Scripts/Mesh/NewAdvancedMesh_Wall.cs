@@ -103,26 +103,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             start += wallRight * singlePanel.x;
         }
     }
-
-    private void MakeWall(Vector3 upDir, Vector3 position, float size, int segments)
-    {
-        var singleS = size / segments;
-        
-        for (int i = 0; i < segments; i++)
-        {
-            MakeWall(upDir, position, singleS);
-            position += upDir * singleS;
-        }
-    }
-
-    private void MakeWall(Vector3 upDir, Vector3 position, float size)
-    {
-        var pos2 = position + new Vector3(0, height,0);
-        var pos3 = position + new Vector3(0, height,0) + upDir * size;
-        var pos4 = position + upDir * size;
-
-        AddQuad(position, pos2, pos3, pos4);
-    }
     
     protected override void Activate()
     {
@@ -136,7 +116,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             pos += direction.normalized * single;
         }
-        MakeWall(direction, transform.position,length, 5);
     }
     
     private void SimplePanel(Vector3 addPos, Vector3 normalDir, Vector2 theSize, int addDegree = 0)

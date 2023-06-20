@@ -20,7 +20,6 @@ public class SingleRoom : MonoBehaviour
         meshes.Add(Instantiate(spawnable[0], transform).GetComponent<NewAdvancedMesh>());
         var temp = (NewAdvancedMesh_Floor)meshes[^1];
         temp.SetValuesAndActivate(roomSize.x, 5,5);
-        
     }
 
     private void AddWalls()
@@ -39,10 +38,11 @@ public class SingleRoom : MonoBehaviour
             temp.BuildWall(aCrossUp2, wallSize);
         }
     }
-
-
+    
     private void OnDrawGizmos()
     {
+        if (Application.isPlaying) return;
+        
         var pos = transform.position;
         var cChange = 0f;
         var add = 45;
