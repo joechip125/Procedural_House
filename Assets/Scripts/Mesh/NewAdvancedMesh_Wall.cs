@@ -26,7 +26,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     [SerializeField] private float height;
     [SerializeField] private int numberTiles;
 
-    private List<WallInfo> wallInfos = new();
+    public List<WallInfo> wallInfos = new();
 
     private int lastVert;
 
@@ -44,26 +44,27 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         ApplyMaterial(aMaterial);
     }
     
-    private void AddSomething()
+    private void AddDoor(Vector3 pos, Vector3 size, Vector3 normalDir)
     {
-        var place = new Vector3(50,50,0);
-        var size = new Vector2(10, 100);
+        var aCrossForward = Vector3.Cross(normalDir, Vector3.up).normalized;
+        pos += normalDir * size.z / 2;
         
-        var size2 = new Vector3(100, 100,10);
-        var normalDir = new Vector3(0,0,1);
-        Vector3 aCrossForward = Vector3.Cross(normalDir, Vector3.up).normalized;
-
         for (int i = 0; i < 4; i++)
         {
-            var aCrossUp = Quaternion.AngleAxis((90 * i), normalDir) *aCrossForward;
-            var aPlace = place + Vector3.Scale(size2 / 2, aCrossUp);
+            var panelSize = i % 2 == 0 ? new Vector2(size.z, size.x) : new Vector2(size.z, size.y);
 
-            SimplePanel(aPlace, -aCrossUp, size);
+            var aCrossUp = Quaternion.AngleAxis((90 * i), normalDir) *aCrossForward;
+            var aPlace = pos + Vector3.Scale(size / 2, aCrossUp);
+
+            SimplePanel(aPlace, -aCrossUp, panelSize);
         }
 
-        var theSize = new Vector2(100, 50);
-        SimplePanel(new Vector3(size2.x / 2,size2.y + theSize.y / 2,-size2.z / 2), -normalDir, theSize);
-        SimplePanel(new Vector3(size2.x / 2,size2.y + theSize.y / 2,+size2.z / 2), normalDir, theSize);
+        if (size.y >= 100) return;
+        
+        var theSize = new Vector2(size.x, 100 - size.y);
+        var addUp = Vector3.up * (size.y / 2 + theSize.y / 2);
+        SimplePanel( pos + addUp + normalDir * (-size.z / 2), -normalDir, theSize);
+        SimplePanel(pos + addUp +normalDir * (size.z / 2), normalDir, theSize);
     }
 
     private void RebuildWall()
@@ -75,11 +76,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     public void BuildWall()
     {
         var wallNormal = new Vector3(0, 0, 1);
-        var wallRight = Vector3.Cross(Vector3.up, wallNormal) +  Vector3.up;
+        var wallRight = Vector3.Cross(Vector3.up, wallNormal);
         var panelSize = new Vector2(400, 100);
         var numTiles = wallInfos.Count();
 
-        if (wallInfos.Count(x => x.type != WallTypes.Blank) == 0)
+        if (wallInfos.Count(x => x.type != WallTypes.Blank) == 0 && numTiles < 2)
         {
             var aPos = Vector3.Scale(wallRight, new Vector3(panelSize.x, panelSize.y, panelSize.x)) / 2;
             SimplePanel(aPos, -wallNormal, panelSize);
@@ -88,20 +89,25 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
      
         var singlePanel = new Vector2(panelSize.x / numTiles, panelSize.y);
+        var increment = Vector3.Scale(wallRight + Vector3.up, new Vector3(singlePanel.x, panelSize.y / 2, singlePanel.x));
+        var start = wallRight * singlePanel.x / 2 + (Vector3.up * panelSize.y) / 2;
       
         for (int i = 0; i < numTiles; i++)
         {
-            var pos2 = Vector3.Scale(wallRight, new Vector3(singlePanel.x * i, panelSize.y, singlePanel.x * i));
-            
+            Debug.Log($"position: {start}, single {singlePanel}, increment {increment}");
+
             switch (wallInfos[i].type)
             {
                 case WallTypes.Blank:
-                    SimplePanel(pos2, -wallNormal, panelSize);
-                    SimplePanel(pos2 + wallNormal * 5, wallNormal, panelSize);
+                    SimplePanel(start, -wallNormal, singlePanel);
+                    SimplePanel(start + wallNormal * 5, wallNormal, singlePanel);
                     break;
                 case WallTypes.Door:
+                    AddDoor(start, new Vector3(100, 100, 10), wallNormal);
                     break;
             }
+            
+            start += wallRight * singlePanel.x;
         }
     }
     
