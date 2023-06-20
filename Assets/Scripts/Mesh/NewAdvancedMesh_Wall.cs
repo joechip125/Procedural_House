@@ -72,19 +72,13 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     public void BuildWall(Vector3 wallNormal, Vector2 wallSize)
     {
         var wallRight = Vector3.Cross(Vector3.up, wallNormal);
+        wallInfos.Add(new WallInfo(){type = WallTypes.Blank});
+        wallInfos.Add(new WallInfo(){type = WallTypes.Blank});
         var numTiles = wallInfos.Count();
-        Debug.Log($"right {wallRight}, normal {wallNormal}");
 
         var singlePanel = new Vector2(wallSize.x / numTiles, wallSize.y);
         var start = wallRight * singlePanel.x / 2 + (Vector3.up * wallSize.y) / 2;
         
-        if (wallInfos.Count(x => x.type != WallTypes.Blank) == 0 && numTiles < 2)
-        {
-            SimplePanel(start, -wallNormal, wallSize);
-            SimplePanel(start + wallNormal * 5, wallNormal, wallSize);
-            return;
-        }
-
         var panelSize2 = new Vector3(100, 100, 10);
       
         for (int i = 0; i < numTiles; i++)
@@ -92,8 +86,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             switch (wallInfos[i].type)
             {
                 case WallTypes.Blank:
-                    SimplePanel(start, -wallNormal, singlePanel);
-                    SimplePanel(start + wallNormal * panelSize2.z, wallNormal, singlePanel);
+                    SimplePanel(start, wallNormal, singlePanel);
+                    SimplePanel(start + -wallNormal * panelSize2.z, -wallNormal, singlePanel);
                     break;
                 case WallTypes.Door:
                     AddDoor(start, panelSize2, wallNormal);
@@ -218,17 +212,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private void OnDrawGizmos()
     {
-        var pos = transform.position;
-        var single = length / numberTiles;
-        Gizmos.DrawSphere(pos, 3f);
-        Gizmos.DrawSphere(pos + new Vector3(0, height,0), 3f);
-        pos += direction.normalized * single;
-
-        for (int i = 0; i < numberTiles; i++)
-        {
-            Gizmos.DrawSphere(pos, 3f);
-            Gizmos.DrawSphere(pos + new Vector3(0, height,0), 3f);
-            pos += direction.normalized * single;
-        }
+       
     }
 }

@@ -312,7 +312,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         foreach (var d in Directions)
         {
             var other = RotateAroundAxisReturn(Vector3.up, degree);
-            Debug.Log($"other: {other}");
             var pos2 = (d * 100) + pos;
             Gizmos.color = new Color(color, 0, 0);
             Gizmos.DrawSphere(pos2, 3);
