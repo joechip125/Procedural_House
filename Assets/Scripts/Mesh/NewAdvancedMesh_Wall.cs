@@ -54,7 +54,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
         for (int i = 0; i < 4; i++)
         {
-            var aCrossUp3 = Quaternion.AngleAxis(i * 90, normalDir) *aCrossForward;
+            var aCrossUp3 = Quaternion.AngleAxis(i * 90 + 45, normalDir) *aCrossForward;
             SimplePanel(start + aCrossUp3 * sides, normalDir, aSize);
             Debug.Log($"sides {sides}, across {aCrossUp3}");
         }
