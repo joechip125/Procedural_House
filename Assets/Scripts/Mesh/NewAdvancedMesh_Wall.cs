@@ -77,20 +77,27 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var wallNormal = new Vector3(0, 0, 1);
         var wallRight = Vector3.Cross(Vector3.up, wallNormal) +  Vector3.up;
         var panelSize = new Vector2(400, 100);
+        var numTiles = wallInfos.Count();
 
         if (wallInfos.Count(x => x.type != WallTypes.Blank) == 0)
         {
             var aPos = Vector3.Scale(wallRight, new Vector3(panelSize.x, panelSize.y, panelSize.x)) / 2;
             SimplePanel(aPos, -wallNormal, panelSize);
             SimplePanel(aPos + wallNormal * 5, wallNormal, panelSize);
+            return;
         }
-
-        for (int i = 0; i < wallInfos.Count(); i++)
+     
+        var singlePanel = new Vector2(panelSize.x / numTiles, panelSize.y);
+      
+        for (int i = 0; i < numTiles; i++)
         {
+            var pos2 = Vector3.Scale(wallRight, new Vector3(singlePanel.x * i, panelSize.y, singlePanel.x * i));
             
             switch (wallInfos[i].type)
             {
                 case WallTypes.Blank:
+                    SimplePanel(pos2, -wallNormal, panelSize);
+                    SimplePanel(pos2 + wallNormal * 5, wallNormal, panelSize);
                     break;
                 case WallTypes.Door:
                     break;
