@@ -63,7 +63,6 @@ public abstract class NewAdvancedMesh : MonoBehaviour
         for (int i = 0; i < numberDir; i++)
         {
             var aCrossUp = Quaternion.AngleAxis(startDeg +(degreeInc * i), normalDir) *aCrossForward;
-            Debug.Log(aCrossUp);
             Directions[i] = aCrossUp;
         }
     }

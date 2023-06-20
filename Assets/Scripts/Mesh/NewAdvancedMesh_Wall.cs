@@ -68,30 +68,24 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         SimplePanel(pos + addUp +normalDir * (size.z / 2), normalDir, theSize);
     }
 
-    private void RebuildWall()
+   
+    public void BuildWall(Vector3 wallNormal, Vector2 wallSize)
     {
-        ClearMesh();
-        BuildWall();
-    }
-    
-    public void BuildWall()
-    {
-        var wallNormal = new Vector3(0, 0, 1);
         var wallRight = Vector3.Cross(Vector3.up, wallNormal);
-        var panelSize = new Vector2(400, 100);
         var numTiles = wallInfos.Count();
+        Debug.Log($"right {wallRight}, normal {wallNormal}");
 
+        var singlePanel = new Vector2(wallSize.x / numTiles, wallSize.y);
+        var start = wallRight * singlePanel.x / 2 + (Vector3.up * wallSize.y) / 2;
+        
         if (wallInfos.Count(x => x.type != WallTypes.Blank) == 0 && numTiles < 2)
         {
-            var aPos = Vector3.Scale(wallRight, new Vector3(panelSize.x, panelSize.y, panelSize.x)) / 2;
-            SimplePanel(aPos, -wallNormal, panelSize);
-            SimplePanel(aPos + wallNormal * 5, wallNormal, panelSize);
+            SimplePanel(start, -wallNormal, wallSize);
+            SimplePanel(start + wallNormal * 5, wallNormal, wallSize);
             return;
         }
-     
-        var singlePanel = new Vector2(panelSize.x / numTiles, panelSize.y);
-        var start = wallRight * singlePanel.x / 2 + (Vector3.up * panelSize.y) / 2;
-        var wallSize = new Vector3(100, 100, 10);
+
+        var panelSize2 = new Vector3(100, 100, 10);
       
         for (int i = 0; i < numTiles; i++)
         {
@@ -99,10 +93,10 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             {
                 case WallTypes.Blank:
                     SimplePanel(start, -wallNormal, singlePanel);
-                    SimplePanel(start + wallNormal * wallSize.z, wallNormal, singlePanel);
+                    SimplePanel(start + wallNormal * panelSize2.z, wallNormal, singlePanel);
                     break;
                 case WallTypes.Door:
-                    AddDoor(start, wallSize, wallNormal);
+                    AddDoor(start, panelSize2, wallNormal);
                     break;
             }
             
