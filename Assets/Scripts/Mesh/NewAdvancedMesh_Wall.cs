@@ -32,12 +32,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     public Material aMaterial;
     
-    private readonly Vector3[] corners = new[]
-    {   new Vector3(-1,0,-1), 
-        new Vector3(0, 0, 1),
-        new Vector3(1, 0, 1), 
-        new Vector3(1, 0, 0)};
-    
     private void Awake()
     {
         InitMesh();
@@ -56,7 +50,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             var aCrossUp3 = Quaternion.AngleAxis(i * 90 + 45, normalDir) *aCrossForward;
             SimplePanel(start + aCrossUp3 * sides, normalDir, aSize);
-            Debug.Log($"sides {sides}, across {aCrossUp3}");
         }
     }
     
@@ -127,33 +120,4 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
     
-    private void SimplePanel(Vector3 addPos, Vector3 normalDir, Vector2 theSize, int addDegree = 0)
-    {
-        Vector3 aCrossForward = Vector3.Cross(normalDir, Vector3.up).normalized;
-        var flip = false;
-
-        if (normalDir.y != 0)
-        {
-            aCrossForward = Vector3.Cross(normalDir, Vector3.forward).normalized;
-            flip = true;
-        }
-
-        for (int i = 0; i < 4; i++)
-        {
-            var aCrossUp = Quaternion.AngleAxis((90 * i) + addDegree , normalDir) *aCrossForward;
-            var aCrossUp2 = Quaternion.AngleAxis((90 * i) + 90 + addDegree, normalDir) *aCrossForward;
-            
-            var poss = new Vector3();
-
-            if (!flip) poss = (aCrossUp * (theSize.x / 2)) + (aCrossUp2 * (theSize.y / 2));
-            
-            else poss = aCrossUp * theSize.y / 2 + (aCrossUp2 * theSize.x / 2);
-            
-            corners[i] = poss + addPos;
-            
-            flip = !flip;
-        }
-        
-        lastVert = AddQuad(corners[0], corners[1], corners[2], corners[3]);
-    }
 }

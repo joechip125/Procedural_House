@@ -10,6 +10,12 @@ public abstract class NewAdvancedMesh : MonoBehaviour
     [NonSerialized] protected List<Vector3> Vertices = new ();
     [NonSerialized] protected List<int> Triangles = new ();
     protected Vector3[] Directions = new Vector3[4];
+    
+    private readonly Vector3[] corners = new[]
+    {   new Vector3(-1,0,-1), 
+        new Vector3(0, 0, 1),
+        new Vector3(1, 0, 1), 
+        new Vector3(1, 0, 0)};
 
     protected virtual void InitMesh()
     {
@@ -67,6 +73,7 @@ public abstract class NewAdvancedMesh : MonoBehaviour
         }
     }
     
+    
     public Vector3 RotateAroundAxisReturn(Vector3 normalDir,float degreeInc, float startDeg = 0)
     {
         var aCrossForward = Vector3.Cross(normalDir, Vector3.up).normalized;
@@ -77,6 +84,36 @@ public abstract class NewAdvancedMesh : MonoBehaviour
         var aCrossUp = Quaternion.AngleAxis(startDeg + degreeInc, normalDir) *aCrossForward;
 
         return aCrossUp;
+    }
+    
+    protected void SimplePanel(Vector3 addPos, Vector3 normalDir, Vector2 theSize, int addDegree = 0)
+    {
+        Vector3 aCrossForward = Vector3.Cross(normalDir, Vector3.up).normalized;
+        var flip = false;
+
+        if (normalDir.y != 0)
+        {
+            aCrossForward = Vector3.Cross(normalDir, Vector3.forward).normalized;
+            flip = true;
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            var aCrossUp = Quaternion.AngleAxis((90 * i) + addDegree , normalDir) *aCrossForward;
+            var aCrossUp2 = Quaternion.AngleAxis((90 * i) + 90 + addDegree, normalDir) *aCrossForward;
+            
+            var poss = new Vector3();
+
+            if (!flip) poss = (aCrossUp * (theSize.x / 2)) + (aCrossUp2 * (theSize.y / 2));
+            
+            else poss = aCrossUp * theSize.y / 2 + (aCrossUp2 * theSize.x / 2);
+            
+            corners[i] = poss + addPos;
+            
+            flip = !flip;
+        }
+        
+        AddQuad(corners[0], corners[1], corners[2], corners[3]);
     }
     
     protected void RemoveTriangle(int start, int count)
