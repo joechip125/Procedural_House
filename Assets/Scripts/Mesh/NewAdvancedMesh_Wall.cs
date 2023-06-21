@@ -103,7 +103,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             {
                 case WallTypes.Blank:
                     SimplePanel(start, wallNormal, singlePanel);
-                    SimplePanel(start + -wallNormal * panelSize2.z, -wallNormal, singlePanel);
                     break;
                 case WallTypes.Door:
                     AddDoor(start, panelSize2, wallNormal);
