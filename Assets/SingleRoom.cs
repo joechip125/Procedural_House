@@ -13,6 +13,7 @@ public class SingleRoom : MonoBehaviour
     {
         InitRoom(new Vector3(100,100,100));
         AddWalls();
+        AddStairs();
     }
 
     private void InitRoom(Vector3 roomSize)
@@ -33,10 +34,19 @@ public class SingleRoom : MonoBehaviour
             var aCrossUp = Quaternion.AngleAxis(add +  90 *i, Vector3.up) *Vector3.right;
             var aCrossUp2 = Quaternion.AngleAxis(add + 135 +  90 *i, Vector3.up) *Vector3.right;
             var next = pos + aCrossUp * distance;
-            meshes.Add(Instantiate(spawnable[1], next, Quaternion.identity, transform).GetComponent<NewAdvancedMesh>());
+            meshes.Add(Instantiate(spawnable[1], next, Quaternion.identity, transform)
+                .GetComponent<NewAdvancedMesh>());
             var temp = (NewAdvancedMesh_Wall)meshes[^1];
             temp.BuildWall(aCrossUp2, wallSize);
         }
+    }
+
+    private void AddStairs()
+    {
+        meshes.Add(Instantiate(spawnable[2], new Vector3(), Quaternion.identity, transform)
+            .GetComponent<NewAdvancedMesh>());
+        var temp = (NewAdvancedMesh_Staircase)meshes[^1];
+        temp.MakeStairs(new Vector3(1,0,0), 5);
     }
     
     private void OnDrawGizmos()

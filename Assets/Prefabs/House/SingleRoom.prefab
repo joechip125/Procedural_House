@@ -48,3 +48,4 @@ MonoBehaviour:
   spawnable:
   - {fileID: 4710687903862347866, guid: 9e9f5f0dd212d38498a64c55312d4e24, type: 3}
   - {fileID: 1638415911921875674, guid: 4558952e6c625164d90ea015e3641b49, type: 3}
+  - {fileID: 6561676948656592839, guid: dda8b55d04fbcba489a5df41c69ddc31, type: 3}
