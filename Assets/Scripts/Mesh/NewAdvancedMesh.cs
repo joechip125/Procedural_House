@@ -11,6 +11,8 @@ public abstract class NewAdvancedMesh : MonoBehaviour
     [NonSerialized] protected List<int> Triangles = new ();
     protected Vector3[] Directions = new Vector3[4];
     
+    protected Vector3[] Positions = new Vector3[4];
+    
     private readonly Vector3[] corners = new[]
     {   new Vector3(-1,0,-1), 
         new Vector3(0, 0, 1),
@@ -70,6 +72,19 @@ public abstract class NewAdvancedMesh : MonoBehaviour
         {
             var aCrossUp = Quaternion.AngleAxis(startDeg +(degreeInc * i), normalDir) *aCrossForward;
             Directions[i] = aCrossUp;
+        }
+    }
+
+    protected void SetPositions(int numPos)
+    {
+        if (numPos >= Positions.Length)
+        {
+            Positions = new Vector3[numPos];
+        }
+
+        for (int i = 0; i < numPos; i++)
+        {
+            
         }
     }
     
