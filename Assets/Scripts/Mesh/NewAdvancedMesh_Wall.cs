@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public enum WallTypes
@@ -25,8 +26,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     [SerializeField] private float length;
     [SerializeField] private float height;
     [SerializeField] private int numberTiles;
-    private Vector2 wallSize;
-    private Vector3 wallNormal;
+    [SerializeField]private Vector2 wallSize;
+    [SerializeField]private Vector3 wallNormal;
 
     public List<WallInfo> wallInfos = new();
 
@@ -60,6 +61,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         pos -= normalDir * size.z / 2;
         var maxHeight = 100f;
         
+        
         for (int i = 0; i < 4; i++)
         {
             var panelSize = i % 2 == 0 ? new Vector2(size.z, size.x) : new Vector2(size.z, size.y);
@@ -88,7 +90,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         wallNormal = normal;
         wallSize = size;
-        Debug.Log($"normal {wallNormal}, size {wallSize}");
         for (int i = 0; i < numTiles; i++)
         {
             wallInfos.Add(new WallInfo(){type = WallTypes.Blank});
@@ -136,5 +137,52 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             pos += direction.normalized * single;
         }
     }
-    
+
+
+    private void OnDrawGizmos()
+    {
+        var aCrossForward = Vector3.Cross(wallNormal, Vector3.up).normalized;
+        Debug.Log(aCrossForward);
+        var theRed = 0f;
+        var addDeg = 45f;
+        Positions = new Vector3[8];
+        var pos = transform.position;
+        var adder = 0;
+
+        for (int i = 0; i < 4; i++)
+        {
+            var aCrossUp = Quaternion.AngleAxis(addDeg +(90 * i), wallNormal) *aCrossForward;
+            Positions[adder] = aCrossUp * 50;
+            Positions[adder + 1] = aCrossUp * 50 + wallNormal * 10;
+            Gizmos.color = new Color(theRed, 0, 0);
+            Gizmos.DrawSphere(aCrossUp * 50, 1.5f);
+            Gizmos.DrawSphere(aCrossUp * 50 + wallNormal * 10, 1.5f);
+            theRed += 0.25f;
+            adder += 2;
+        }
+
+        adder = 0;
+        Gizmos.color = Color.green;
+        
+        
+        var last = 0;
+        for (int i = 0; i < Positions.Length / 2; i++)
+        {
+            if (i == Positions.Length / 2 - 1)
+            {
+                Gizmos.DrawLine(Positions[last], Positions[last + 1]);
+                Gizmos.DrawLine(Positions[last + 1], Positions[1]);
+                Gizmos.DrawLine(Positions[1], Positions[0]);
+            }
+            else
+            {
+                Gizmos.DrawLine(Positions[adder], Positions[adder + 1]);
+                Gizmos.DrawLine(Positions[adder + 1], Positions[adder + 3]);
+                Gizmos.DrawLine(Positions[adder + 3], Positions[adder + 2]);
+                last = adder + 2;
+            }
+            adder += 2;
+        }
+        
+    }
 }

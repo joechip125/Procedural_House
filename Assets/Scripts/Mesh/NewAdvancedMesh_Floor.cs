@@ -78,13 +78,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         
     }
 
-    protected override void GetMinMax(out Vector3 min, out Vector3 max)
-    {
-        base.GetMinMax(out min, out max);
-        
-        
-    }
-
     private void MakeGrid()
     {
         var lineCount = Vertices.Count;
