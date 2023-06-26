@@ -218,13 +218,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
             if (i % 2 == 0)
             {
-                Gizmos.DrawSphere(pos + newPos3, 1.5f);
-                Directions[i] = newPos3;
+                Directions[i] =  aCrossUp2 * size.y / 2;
             }
             else
             {
-                Gizmos.DrawSphere(pos + newPos2, 1.5f);
-                Directions[i] = newPos2;
+                Directions[i] = aCrossUp2 * size.x / 2;
             }
 
             Gizmos.DrawSphere(newPos, 1.5f);
@@ -236,20 +234,21 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
         adder = 0;
         theRed = 0f;
+        var wallPos = new Vector3();
         
         for (int i = 0; i < 4; i++)
         {
             Gizmos.color = new Color(theRed, 0, 0);
             if (i != 3)
             {
-                Gizmos.DrawSphere(Directions[i]+ Directions[i + 1], 1.5f);
-                Gizmos.DrawSphere(Directions[i]+ Directions[i + 1] + wallNormal * -wallThick, 1.5f);
+                wallPos = Directions[i] + Directions[i + 1];
             }
             else
             {
-                Gizmos.DrawSphere(Directions[i]+ Directions[0], 1.5f);
-                Gizmos.DrawSphere(Directions[i]+ Directions[0] + wallNormal * -wallThick, 1.5f);
+                wallPos = Directions[i] + Directions[0];
             }
+            Gizmos.DrawSphere(wallPos, 1.5f);
+            Gizmos.DrawSphere(wallPos + wallNormal * -wallThick, 1.5f);
             theRed += 0.25f;
         }
 
