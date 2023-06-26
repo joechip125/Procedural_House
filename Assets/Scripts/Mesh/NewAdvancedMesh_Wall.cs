@@ -39,6 +39,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         InitMesh();
         ApplyMaterial(aMaterial);
+        BuildBox();
     }
 
     private void AddSomeNew(Vector3 normalDir, Vector3 start)
@@ -138,33 +139,97 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
 
+    private void BuildBox()
+    {
+        var aCrossForward = Vector3.Cross(wallNormal, Vector3.up).normalized;
+        var addDeg = 45f;
+        var adder = 0;
+        var pos = transform.position + wallNormal * 200 + Vector3.up * 50;
+        Positions = new Vector3[8];
+        Vector2 size = new Vector2(100, 200);
+        
+        for (int i = 0; i < 4; i++)
+        {
+            var aCrossUp = Quaternion.AngleAxis(addDeg +(90 * i), wallNormal) *aCrossForward;
+            var aCrossUp2 = Quaternion.AngleAxis(addDeg +(90 * i), wallNormal) *aCrossForward;
+            var newPos = pos + aCrossUp * Mathf.Sqrt(Mathf.Pow(50,2) + Mathf.Pow(50f, 2));
+            Positions[adder] = newPos;
+            Positions[adder + 1] = newPos + wallNormal * 10;
+            adder += 2;
+        }
+  
+        adder = 0;
+        
+        for (int i = 0; i < Positions.Length / 2; i++)
+        {
+            if (i == Positions.Length / 2 - 1)
+            {
+                AddQuad(Positions[adder], Positions[adder + 1], Positions[1], Positions[0]);    
+            }
+            else
+            {
+                AddQuad(Positions[adder], Positions[adder + 1], Positions[adder + 3], Positions[adder + 2]);
+            }
+            adder += 2;
+        }
+    }
 
     private void OnDrawGizmos()
     {
         var aCrossForward = Vector3.Cross(wallNormal, Vector3.up).normalized;
-        Debug.Log(aCrossForward);
         var theRed = 0f;
         var addDeg = 45f;
         Positions = new Vector3[8];
-        var pos = transform.position;
+        Directions = new Vector3[4];
         var adder = 0;
+        Vector2 size = new Vector2(100, 50);
+        var pos = transform.position;
 
         for (int i = 0; i < 4; i++)
         {
             var aCrossUp = Quaternion.AngleAxis(addDeg +(90 * i), wallNormal) *aCrossForward;
-            Positions[adder] = aCrossUp * 50;
-            Positions[adder + 1] = aCrossUp * 50 + wallNormal * 10;
+            var aCrossUp2 = Quaternion.AngleAxis((90 * i), wallNormal) *aCrossForward;
+            var newPos = pos + aCrossUp * 50;
+            var newPos2 = aCrossUp2 * size.x / 2;
+            var newPos3 = aCrossUp2 * size.y / 2;
+            Positions[adder] = newPos;
+            Positions[adder + 1] = newPos + wallNormal * 10;
+
+            if (i % 2 == 0)
+            {
+                Gizmos.DrawSphere(pos + newPos2, 1.5f);
+                Directions[i] = newPos2;
+            }
+            else
+            {
+                Gizmos.DrawSphere(pos + newPos3, 1.5f);
+                Directions[i] = newPos3;
+            }
+            
             Gizmos.color = new Color(theRed, 0, 0);
-            Gizmos.DrawSphere(aCrossUp * 50, 1.5f);
-            Gizmos.DrawSphere(aCrossUp * 50 + wallNormal * 10, 1.5f);
+            Gizmos.DrawSphere(newPos, 1.5f);
+            Gizmos.DrawSphere(newPos + wallNormal * 10, 1.5f);
             theRed += 0.25f;
             adder += 2;
+            Debug.Log($"{aCrossUp2} across2 ");
         }
 
         adder = 0;
         Gizmos.color = Color.green;
         
-        
+        for (int i = 0; i < 4; i++)
+        {
+            if (i != 3)
+            {
+                Gizmos.DrawSphere(Directions[i]+ Directions[i + 1], 3);
+            }
+            else
+            {
+                Gizmos.DrawSphere(Directions[i]+ Directions[0], 3);
+            }
+        }
+
+
         var last = 0;
         for (int i = 0; i < Positions.Length / 2; i++)
         {
