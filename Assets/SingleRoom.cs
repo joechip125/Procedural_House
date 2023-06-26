@@ -13,7 +13,6 @@ public class SingleRoom : MonoBehaviour
     {
         InitRoom(new Vector3(100,100,100));
         AddWalls(4);
-        AddStairs();
         AddDoor(2);
     }
 

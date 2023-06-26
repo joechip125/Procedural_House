@@ -75,7 +75,7 @@ public abstract class NewAdvancedMesh : MonoBehaviour
         }
     }
 
-    protected void SetPositions(int numPos)
+    protected void SetPositionsBox(int numPos, Vector3 boxNormal)
     {
         if (numPos >= Positions.Length)
         {
