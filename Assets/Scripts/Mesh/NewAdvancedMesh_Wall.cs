@@ -25,6 +25,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     [SerializeField] private float length;
     [SerializeField] private float height;
     [SerializeField] private int numberTiles;
+    private Vector3 wallSize;
+    private Vector2 wallNormal;
 
     public List<WallInfo> wallInfos = new();
 
@@ -36,7 +38,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         InitMesh();
         ApplyMaterial(aMaterial);
-        AddSomeNew(new Vector3(1,0,0), new Vector3());
     }
 
     private void AddSomeNew(Vector3 normalDir, Vector3 start)
@@ -77,12 +78,27 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         SimplePanel(pos + addUp +normalDir * (size.z / 2), normalDir, theSize);
     }
 
-   
-    public void BuildWall(Vector3 wallNormal, Vector2 wallSize)
+    public void AddDoor(int place)
     {
+        wallInfos[place].type = WallTypes.Door;
+        BuildWall();
+    }
+
+    public void InitWall(Vector3 normal, Vector2 size, int numTiles)
+    {
+        wallNormal = normal;
+        wallSize = size;
+        for (int i = 0; i < numTiles; i++)
+        {
+            wallInfos.Add(new WallInfo(){type = WallTypes.Blank});
+        }
+        BuildWall();
+    }
+    
+    private void BuildWall()
+    {
+        ClearMesh();
         var wallRight = Vector3.Cross(Vector3.up, wallNormal);
-        wallInfos.Add(new WallInfo(){type = WallTypes.Blank});
-        wallInfos.Add(new WallInfo(){type = WallTypes.Blank});
         var numTiles = wallInfos.Count();
 
         var singlePanel = new Vector2(wallSize.x / numTiles, wallSize.y);

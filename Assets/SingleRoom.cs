@@ -12,7 +12,7 @@ public class SingleRoom : MonoBehaviour
     void Start()
     {
         InitRoom(new Vector3(100,100,100));
-        AddWalls();
+        AddWalls(4);
         AddStairs();
     }
 
@@ -23,7 +23,7 @@ public class SingleRoom : MonoBehaviour
         temp.SetValuesAndActivate(roomSize.x, 5,5);
     }
 
-    private void AddWalls()
+    private void AddWalls(int numWalls)
     {
         var add = 45;
         var pos = transform.position;
@@ -37,8 +37,10 @@ public class SingleRoom : MonoBehaviour
             meshes.Add(Instantiate(spawnable[1], next, Quaternion.identity, transform)
                 .GetComponent<NewAdvancedMesh>());
             var temp = (NewAdvancedMesh_Wall)meshes[^1];
-            temp.BuildWall(aCrossUp2, wallSize);
+            temp.InitWall(aCrossUp2, wallSize, numWalls);
+            temp.AddDoor(2);
         }
+        
     }
 
     private void AddStairs()
