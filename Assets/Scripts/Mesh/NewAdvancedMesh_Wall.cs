@@ -39,22 +39,9 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         InitMesh();
         ApplyMaterial(aMaterial);
-        BuildBox();
+        BuildBox(new Vector3(1,0,0), new Vector3(100,50, 12));
     }
-
-    private void AddSomeNew(Vector3 normalDir, Vector3 start)
-    {
-        var aSize = new Vector2(10,10);
-        var aCrossForward = Vector3.Cross(normalDir, Vector3.up).normalized;
-        var aCrossUp = Quaternion.AngleAxis(0, normalDir) *aCrossForward;
-        var sides = Mathf.Sqrt(Mathf.Pow(aSize.x, 2) + Mathf.Pow(aSize.y, 2));
-
-        for (int i = 0; i < 4; i++)
-        {
-            var aCrossUp3 = Quaternion.AngleAxis(i * 90 + 45, normalDir) *aCrossForward;
-            SimplePanel(start + aCrossUp3 * sides, normalDir, aSize);
-        }
-    }
+    
     
     private void AddDoor(Vector3 pos, Vector3 size, Vector3 normalDir)
     {
@@ -142,7 +129,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void SetPositionsSquare(Vector3 aNormal, Vector2 size)
     {
         var aCrossForward = Vector3.Cross(aNormal, Vector3.up).normalized;
-        Positions = new Vector3[4];
+        
+        if(Positions.Length != 4) Positions = new Vector3[4];
 
         for (int i = 0; i < 4; i++)
         {
@@ -160,14 +148,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }        
     }
     
-    private void BuildBox()
+    private void BuildBox(Vector3 wallDirection, Vector3 size)
     {
-        var wallThick = 10f;
-        var frwAmount = wallNormal * wallThick;
-        Vector2 size = new Vector2(100, 50);
-        var addPos = wallNormal * 200 + Vector3.up * size.y / 2;
+        var frwAmount = wallDirection * size.z;
 
-        SetPositionsSquare(wallNormal, size);
+        SetPositionsSquare(wallDirection, size);
 
         for (int i = 0; i < Positions.Length; i++)
         {
