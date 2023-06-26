@@ -39,7 +39,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         InitMesh();
         ApplyMaterial(aMaterial);
-        BuildBox(new Vector3(1,0,0), new Vector3(100,50, 12));
+        BuildBox(new Vector3(1,0,0), new Vector3(100,50, 12), new Vector3(1,0,0) * 200 + Vector3.up * 25);
     }
     
     
@@ -126,7 +126,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
 
-    private void SetPositionsSquare(Vector3 aNormal, Vector2 size)
+    private void SetPositionsSquare(Vector3 aNormal, Vector2 size, Vector3 addPos)
     {
         var aCrossForward = Vector3.Cross(aNormal, Vector3.up).normalized;
         
@@ -145,14 +145,17 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             {
                 Positions[i] =  aCrossUp2 * size.x / 2 + aCrossUp3 * size.y / 2;
             }
+
+            Positions[i] += addPos;
         }        
     }
     
-    private void BuildBox(Vector3 wallDirection, Vector3 size)
+    private void BuildBox(Vector3 wallDirection, Vector3 size, Vector3 addPos)
     {
         var frwAmount = wallDirection * size.z;
+        var aCross = Vector3.Cross(Vector3.up, wallDirection);
 
-        SetPositionsSquare(wallDirection, size);
+        SetPositionsSquare(wallDirection, size, addPos);
 
         for (int i = 0; i < Positions.Length; i++)
         {
@@ -163,6 +166,15 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 AddQuad(Positions[i], Positions[i] + frwAmount, Positions[0] + frwAmount, Positions[0]);
             }
         }
+
+        var newSize = new Vector2(50, 100);
+        var anotherPos  = addPos + aCross * ((size.x + newSize.x) / 2);
+        var anotherPos2 = addPos - aCross * ((size.x + newSize.x) / 2);
+        SetPositionsSquare(wallDirection, newSize, anotherPos);
+        AddQuad(Positions[3], Positions[2], Positions[1] ,Positions[0]);
+        
+        SetPositionsSquare(wallDirection, newSize, anotherPos2);
+        AddQuad(Positions[3], Positions[2], Positions[1] ,Positions[0]);
     }
 
     private void OnDrawGizmos()
