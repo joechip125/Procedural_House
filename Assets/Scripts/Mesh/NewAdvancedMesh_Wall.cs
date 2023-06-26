@@ -134,8 +134,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
         for (int i = 0; i < 4; i++)
         {
-            var aCrossUp2 = Quaternion.AngleAxis(90+(90 * i), wallNormal) *aCrossForward;
-            var aCrossUp3 = Quaternion.AngleAxis( 180+(90 * i), wallNormal) *aCrossForward;
+            var aCrossUp2 = Quaternion.AngleAxis(90+(90 * i), aNormal) *aCrossForward;
+            var aCrossUp3 = Quaternion.AngleAxis( 180+(90 * i), aNormal) *aCrossForward;
             
             if (i % 2 == 0)
             {
@@ -167,7 +167,13 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             }
         }
 
-        var newSize = new Vector2(50, 100);
+        var newSize = new Vector2(150, 100);
+        
+        for (int i = 0; i < 4; i++)
+        {
+            
+        }
+
         var anotherPos  = addPos + aCross * ((size.x + newSize.x) / 2);
         var anotherPos2 = addPos - aCross * ((size.x + newSize.x) / 2);
         SetPositionsSquare(wallDirection, newSize, anotherPos);
