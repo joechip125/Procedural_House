@@ -25,8 +25,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     [SerializeField] private float length;
     [SerializeField] private float height;
     [SerializeField] private int numberTiles;
-    private Vector3 wallSize;
-    private Vector2 wallNormal;
+    private Vector2 wallSize;
+    private Vector3 wallNormal;
 
     public List<WallInfo> wallInfos = new();
 
@@ -57,7 +57,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void AddDoor(Vector3 pos, Vector3 size, Vector3 normalDir)
     {
         var aCrossForward = Vector3.Cross(normalDir, Vector3.up).normalized;
-        pos += normalDir * size.z / 2;
+        pos -= normalDir * size.z / 2;
         var maxHeight = 100f;
         
         for (int i = 0; i < 4; i++)
@@ -88,6 +88,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         wallNormal = normal;
         wallSize = size;
+        Debug.Log($"normal {wallNormal}, size {wallSize}");
         for (int i = 0; i < numTiles; i++)
         {
             wallInfos.Add(new WallInfo(){type = WallTypes.Blank});

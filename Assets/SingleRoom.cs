@@ -14,6 +14,7 @@ public class SingleRoom : MonoBehaviour
         InitRoom(new Vector3(100,100,100));
         AddWalls(4);
         AddStairs();
+        AddDoor(2);
     }
 
     private void InitRoom(Vector3 roomSize)
@@ -23,6 +24,13 @@ public class SingleRoom : MonoBehaviour
         temp.SetValuesAndActivate(roomSize.x, 5,5);
     }
 
+    public void AddDoor(int number)
+    {
+        number = Mathf.Clamp(number, 1, 4);
+        var temp = (NewAdvancedMesh_Wall)meshes[number];
+        temp.AddDoor(2);
+    }
+    
     private void AddWalls(int numWalls)
     {
         var add = 45;
@@ -38,7 +46,6 @@ public class SingleRoom : MonoBehaviour
                 .GetComponent<NewAdvancedMesh>());
             var temp = (NewAdvancedMesh_Wall)meshes[^1];
             temp.InitWall(aCrossUp2, wallSize, numWalls);
-            temp.AddDoor(2);
         }
         
     }
