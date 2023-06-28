@@ -168,6 +168,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
 
         var newSize = new Vector2(150, 100);
+        var newSize2 = new Vector2(size.x, 20);
         
         for (int i = 0; i < 4; i++)
         {
@@ -176,10 +177,18 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
         var anotherPos  = addPos + aCross * ((size.x + newSize.x) / 2);
         var anotherPos2 = addPos - aCross * ((size.x + newSize.x) / 2);
+        var anotherPos3 = addPos + Vector3.up * ((size.y + newSize2.y) / 2);
+        var anotherPos4 = addPos - Vector3.up * ((size.y + newSize2.y) / 2);
         SetPositionsSquare(wallDirection, newSize, anotherPos);
         AddQuad(Positions[3], Positions[2], Positions[1] ,Positions[0]);
         
         SetPositionsSquare(wallDirection, newSize, anotherPos2);
+        AddQuad(Positions[3], Positions[2], Positions[1] ,Positions[0]);
+        
+        SetPositionsSquare(wallDirection, newSize2, anotherPos3);
+        AddQuad(Positions[3], Positions[2], Positions[1] ,Positions[0]);
+        
+        SetPositionsSquare(wallDirection, newSize2, anotherPos4);
         AddQuad(Positions[3], Positions[2], Positions[1] ,Positions[0]);
     }
 
