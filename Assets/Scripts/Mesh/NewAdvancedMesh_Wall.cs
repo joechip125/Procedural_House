@@ -171,31 +171,33 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         
         for (int i = 0; i < 4; i++)
         {
-            var anotherPos7  = addPos + aCross * ((size.x + newSize.x) / 2);
+            var aCrossUp2 = Quaternion.AngleAxis(90+(90 * i), wallDirection) *aCross;
+            if (i % 2 == 0)
+            {
+                SetPositionsSquare(wallDirection, newSize2, 
+                    addPos + aCrossUp2 * ((size.y + newSize2.y) / 2));
+                AddQuad(Positions[3], Positions[2], Positions[1] ,Positions[0]);
+                
+                SetPositionsSquare(-wallDirection, newSize2, 
+                    frwAmount + addPos + aCrossUp2 * ((size.y + newSize2.y) / 2));
+                AddQuad(Positions[3], Positions[2], Positions[1] ,Positions[0]);
+            }
+            else
+            {
+                SetPositionsSquare(wallDirection, newSize, 
+                    addPos + aCrossUp2 * ((size.x + newSize.x) / 2));
+                AddQuad(Positions[3], Positions[2], Positions[1] ,Positions[0]);
+                
+                SetPositionsSquare(-wallDirection, newSize, 
+                    frwAmount + addPos + aCrossUp2 * ((size.x + newSize.x) / 2));
+                AddQuad(Positions[3], Positions[2], Positions[1] ,Positions[0]);
+            }
         }
-
-        var anotherPos  = addPos + aCross * ((size.x + newSize.x) / 2);
-        var anotherPos2 = addPos - aCross * ((size.x + newSize.x) / 2);
-        var anotherPos3 = addPos + Vector3.up * ((size.y + newSize2.y) / 2);
-        var anotherPos4 = addPos - Vector3.up * ((size.y + newSize2.y) / 2);
-        //SetPositionsSquare(wallDirection, newSize, anotherPos);
-        //AddQuad(Positions[3], Positions[2], Positions[1] ,Positions[0]);
-        //
-        //SetPositionsSquare(wallDirection, newSize, anotherPos2);
-        //AddQuad(Positions[3], Positions[2], Positions[1] ,Positions[0]);
-        //
-        //SetPositionsSquare(wallDirection, newSize2, anotherPos3);
-        //AddQuad(Positions[3], Positions[2], Positions[1] ,Positions[0]);
-        //
-        //SetPositionsSquare(wallDirection, newSize2, anotherPos4);
-        //AddQuad(Positions[3], Positions[2], Positions[1] ,Positions[0]);
-        
-        var aSize = new Vector2(10, 10);
-        BuildOuter(new Vector2(size.x, size.y) + aSize, wallDirection, addPos, aSize);
     }
 
     private void BuildOuter(Vector2 size, Vector3 wallDirection, Vector3 center, Vector2 innerSize)
     {
+        var aSize = size - innerSize;
         var cross = Vector3.Cross(Vector3.up, wallDirection);
         var start = center - (cross * size.x + Vector3.up * size.y)/ 2;
         SetPositionsSquare(wallDirection, size, center);
@@ -216,7 +218,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         var aCrossForward = Vector3.Cross(wallNormal, Vector3.up).normalized;
         var theRed = 0f;
-        Positions = new Vector3[8];
         Directions = new Vector3[4];
         var size = new Vector3(100, 50, 10);
         var pos = transform.position;
