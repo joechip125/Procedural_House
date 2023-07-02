@@ -168,7 +168,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
 
         var newSize = new Vector2(150, 100);
-        var newSize2 = new Vector2(size.x, 20);
+        var newSize2 = new Vector2(size.x, size.y / 2);
         
         for (int i = 0; i < 4; i++)
         {
