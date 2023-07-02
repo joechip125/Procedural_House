@@ -39,7 +39,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         InitMesh();
         ApplyMaterial(aMaterial);
-        BuildBox(new Vector3(1,0,0), new Vector3(100,50, 12), new Vector3(1,0,0) * 200 + Vector3.up * 25);
+        BuildBox(new Vector3(1,0,0), new Vector3(100,50, 12), Vector3.zero);
     }
     
     
@@ -196,29 +196,33 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private void BuildOuter(Vector2 size, Vector3 wallDirection, Vector3 center, Vector2 innerSize)
     {
-        
         var cross = Vector3.Cross(Vector3.up, wallDirection);
         var start = center - (cross * size.x + Vector3.up * size.y)/ 2;
+        SetPositionsSquare(wallDirection, size, center);
+        AddQuad(Positions[0], Positions[1], Positions[2], Positions[3]);
+
+        for (int i = 0; i < 4; i++)
+        {
+            Debug.Log(Positions[i]);
+        }
+    }
+
+    private void SetDirections()
+    {
         
-        SetPositionsSquare(wallDirection, innerSize, start);
-        AddQuad(Positions[3], Positions[2], Positions[1] ,Positions[0]);
     }
     
     private void OnDrawGizmos()
     {
         var aCrossForward = Vector3.Cross(wallNormal, Vector3.up).normalized;
         var theRed = 0f;
-        var addDeg = 45f;
         Positions = new Vector3[8];
         Directions = new Vector3[4];
-        var adder = 0;
-        Vector2 size = new Vector2(100, 50);
+        var size = new Vector3(100, 50, 10);
         var pos = transform.position;
-        var wallThick = 10f;
 
         for (int i = 0; i < 4; i++)
         {
-            Gizmos.color = new Color(theRed, 0, 0);
             var aCrossUp2 = Quaternion.AngleAxis(90+(90 * i), wallNormal) *aCrossForward;
             var aCrossUp3 = Quaternion.AngleAxis( 180+(90 * i), wallNormal) *aCrossForward;
             
@@ -232,17 +236,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             }
 
             Directions[i] += pos;
-            
-            theRed += 0.25f;
-            adder += 2;
-    
         }
         
-        theRed = 0f;
-
         for (int i = 0; i < 4; i++)
         {
-            var otherVec = wallNormal * -wallThick;
+            var otherVec = wallNormal * size.z;
             Gizmos.color = new Color(theRed, 0, 0);
             Gizmos.DrawSphere(Directions[i], 1.5f);
             Gizmos.DrawSphere(Directions[i] + otherVec, 1.5f);
