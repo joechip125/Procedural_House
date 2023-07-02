@@ -145,7 +145,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             {
                 Positions[i] =  aCrossUp2 * size.x / 2 + aCrossUp3 * size.y / 2;
             }
-
             Positions[i] += addPos;
         }        
     }
@@ -167,31 +166,44 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             }
         }
 
-        var newSize = new Vector2(150, 100);
+        var newSize = new Vector2(20, size.y * 2);
         var newSize2 = new Vector2(size.x, size.y / 2);
         
         for (int i = 0; i < 4; i++)
         {
-            
+            var anotherPos7  = addPos + aCross * ((size.x + newSize.x) / 2);
         }
 
         var anotherPos  = addPos + aCross * ((size.x + newSize.x) / 2);
         var anotherPos2 = addPos - aCross * ((size.x + newSize.x) / 2);
         var anotherPos3 = addPos + Vector3.up * ((size.y + newSize2.y) / 2);
         var anotherPos4 = addPos - Vector3.up * ((size.y + newSize2.y) / 2);
-        SetPositionsSquare(wallDirection, newSize, anotherPos);
-        AddQuad(Positions[3], Positions[2], Positions[1] ,Positions[0]);
+        //SetPositionsSquare(wallDirection, newSize, anotherPos);
+        //AddQuad(Positions[3], Positions[2], Positions[1] ,Positions[0]);
+        //
+        //SetPositionsSquare(wallDirection, newSize, anotherPos2);
+        //AddQuad(Positions[3], Positions[2], Positions[1] ,Positions[0]);
+        //
+        //SetPositionsSquare(wallDirection, newSize2, anotherPos3);
+        //AddQuad(Positions[3], Positions[2], Positions[1] ,Positions[0]);
+        //
+        //SetPositionsSquare(wallDirection, newSize2, anotherPos4);
+        //AddQuad(Positions[3], Positions[2], Positions[1] ,Positions[0]);
         
-        SetPositionsSquare(wallDirection, newSize, anotherPos2);
-        AddQuad(Positions[3], Positions[2], Positions[1] ,Positions[0]);
-        
-        SetPositionsSquare(wallDirection, newSize2, anotherPos3);
-        AddQuad(Positions[3], Positions[2], Positions[1] ,Positions[0]);
-        
-        SetPositionsSquare(wallDirection, newSize2, anotherPos4);
-        AddQuad(Positions[3], Positions[2], Positions[1] ,Positions[0]);
+        var aSize = new Vector2(10, 10);
+        BuildOuter(new Vector2(size.x, size.y) + aSize, wallDirection, addPos, aSize);
     }
 
+    private void BuildOuter(Vector2 size, Vector3 wallDirection, Vector3 center, Vector2 innerSize)
+    {
+        
+        var cross = Vector3.Cross(Vector3.up, wallDirection);
+        var start = center - (cross * size.x + Vector3.up * size.y)/ 2;
+        
+        SetPositionsSquare(wallDirection, innerSize, start);
+        AddQuad(Positions[3], Positions[2], Positions[1] ,Positions[0]);
+    }
+    
     private void OnDrawGizmos()
     {
         var aCrossForward = Vector3.Cross(wallNormal, Vector3.up).normalized;
