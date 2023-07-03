@@ -39,7 +39,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         InitMesh();
         ApplyMaterial(aMaterial);
-        BuildBox(new Vector3(1,0,0), new Vector3(100,50, 12), Vector3.zero);
+        //BuildBox(new Vector3(1,0,0), new Vector3(100,50, 12), Vector3.zero);
+        InnerOuter(new Vector3(50,50), new Vector3(100,100), transform.position);
     }
     
     
@@ -209,38 +210,72 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
 
-    private void InnerOuter(Vector3 innerS, Vector3 outerS, Vector3 pos)
+    private void AddVerts(Vector3 center, Vector3 size, int numTiles)
     {
-        var numTiles = 4;
-        var min = pos - outerS;
-        var max = pos + outerS;
-        var diff = outerS - innerS;
-        var aDir = new Vector3(1, 0, 0);
-        var aDir2 = new Vector3(0, 1, 0);
-        var singleS = new Vector2(diff.x, (max.y - min.y)/ numTiles);
-        var dir = new Vector3(0, 0, 1);
-        var aCrossForward = Vector3.Cross(dir, Vector3.up).normalized;
-        var colorVal = 0f;
-
-        Gizmos.color = new Color(colorVal,0,0);
-       
-
-        var aCrossUp3 = Quaternion.AngleAxis(90, aDir2) *dir;
-        var aCrossUp2 = Quaternion.AngleAxis(90, aDir) *dir;
+        var min = center - size;
+        var max = center + size;
         
-        for (int i = 0; i <= numTiles; i++)
+        var aDir2 = new Vector3(0, 1, 0);
+        var singleO = new Vector2((max.x - min.x) / numTiles, (max.y - min.y)/ numTiles);
+        var dir = new Vector3(0, 0, 1);
+        
+        for (int i = 0; i < 4; i++)
         {
+            var aCrossUp2 = Quaternion.AngleAxis(90 + (90 * i), dir) * -aDir2;
             for (int j = 0; j < numTiles; j++)
             {
-                Gizmos.color = new Color(colorVal,0,0);
-                Gizmos.DrawSphere(max, 4);
-                max += aCrossUp2 * singleS.y;
-                colorVal += 0.05f;
+                Vertices.Add(min);
+                min += aCrossUp2 * singleO.y;
             }
-            aCrossUp2 = Quaternion.AngleAxis(90 + (90 * i), dir) * aDir;
-            Debug.Log($"i:{i}, cross2 {aCrossUp2}");
+        }
+    }
+    
+    private void AddDots(Vector3 center, Vector3 size, int numTiles)
+    {
+        var min = center - size;
+        var max = center + size;
+        
+        var aDir2 = new Vector3(0, 1, 0);
+        var singleO = new Vector2((max.x - min.x) / numTiles, (max.y - min.y)/ numTiles);
+        var dir = new Vector3(0, 0, 1);
+        var aColor = 0f;
+
+        for (int i = 0; i < 4; i++)
+        {
+            var aCrossUp2 = Quaternion.AngleAxis(90 + (90 * i), dir) * -aDir2;
+            for (int j = 0; j < numTiles; j++)
+            {
+                
+                Gizmos.color = new Color(aColor, 0, 0);
+                Gizmos.DrawSphere(min, 4);
+                
+                min += aCrossUp2 * singleO.y;
+                aColor += 0.05f;
+            }
+        }
+    }
+    
+    private void InnerOuter(Vector3 innerS, Vector3 outerS, Vector3 pos)
+    {
+        AddVerts(pos, outerS, 4);
+        AddVerts(pos, innerS, 2);
+
+        if (!Application.isPlaying) return;
+
+        for (int i = 0; i < 3; i++)
+        {
+            Triangles.Add(i);
+            Triangles.Add(i + 16);
+            Triangles.Add(i + 1);
+            
+            if(i < 1) continue;
+            Triangles.Add(i);
+            Triangles.Add(i + 16);
+            Triangles.Add(i + 17);
         }
         
+        UpdateMesh();
+        Debug.Log($"verts {Vertices.Count}, tris {Triangles.Count}");
     }
     
     private void SetDirections()
@@ -273,7 +308,9 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             Directions[i] += pos;
         }
         
-        InnerOuter(new Vector3(50,50), new Vector3(100,100), pos);
+        
+        AddDots(pos, new Vector3(100,100), 4);
+        AddDots(pos, new Vector3(50,50), 2);
         
         for (int i = 0; i < 4; i++)
         {
