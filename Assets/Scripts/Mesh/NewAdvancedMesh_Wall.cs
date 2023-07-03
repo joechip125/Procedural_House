@@ -254,6 +254,14 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             }
         }
     }
+
+    private void AddStrip(Vector3 start, Vector2 size, int numTiles)
+    {
+        for (int i = 0; i < numTiles; i++)
+        {
+            
+        }
+    }
     
     private void InnerOuter(Vector3 innerS, Vector3 outerS, Vector3 pos)
     {
@@ -270,9 +278,13 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             
             if(i < 1) continue;
             Triangles.Add(i);
+            Triangles.Add(i + 15);
             Triangles.Add(i + 16);
-            Triangles.Add(i + 17);
+            
         }
+        Triangles.Add(3);
+        Triangles.Add(5);
+        Triangles.Add(4);
         
         UpdateMesh();
         Debug.Log($"verts {Vertices.Count}, tris {Triangles.Count}");
