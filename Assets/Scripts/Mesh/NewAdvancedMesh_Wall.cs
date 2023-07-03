@@ -213,6 +213,20 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         var min = pos - outerS;
         var max = pos + outerS;
+        var diff = outerS - innerS;
+        var aDir = new Vector3(1, 0, 0);
+        var aDir2 = new Vector3(0, 1, 0);
+        var singleS = new Vector2(diff.x, 20);
+        var aCrossForward = Vector3.Cross(wallNormal, Vector3.up).normalized;
+        var aCrossUp2 = Quaternion.AngleAxis(90, wallNormal) *aCrossForward;
+        
+        Gizmos.color = Color.yellow;
+        for (int i = 0; i <= 4; i++)
+        {
+            Gizmos.DrawSphere(min, 4);
+            Gizmos.DrawSphere(min + aDir * singleS.x, 4);
+            min += aDir2 * singleS.y;
+        }
     }
     
     private void SetDirections()
@@ -244,6 +258,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
             Directions[i] += pos;
         }
+        
+        InnerOuter(new Vector3(50,50), new Vector3(100,100), pos);
         
         for (int i = 0; i < 4; i++)
         {
