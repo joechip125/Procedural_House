@@ -209,6 +209,12 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
 
+    private void InnerOuter(Vector3 innerS, Vector3 outerS, Vector3 pos)
+    {
+        var min = pos - outerS;
+        var max = pos + outerS;
+    }
+    
     private void SetDirections()
     {
         
