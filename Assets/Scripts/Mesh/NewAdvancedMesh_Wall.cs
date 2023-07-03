@@ -211,22 +211,34 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private void InnerOuter(Vector3 innerS, Vector3 outerS, Vector3 pos)
     {
+        var numTiles = 4;
         var min = pos - outerS;
         var max = pos + outerS;
         var diff = outerS - innerS;
         var aDir = new Vector3(1, 0, 0);
         var aDir2 = new Vector3(0, 1, 0);
-        var singleS = new Vector2(diff.x, 20);
+        var singleS = new Vector2(diff.x, (max.y - min.y)/ numTiles);
         var aCrossForward = Vector3.Cross(wallNormal, Vector3.up).normalized;
-        var aCrossUp2 = Quaternion.AngleAxis(90, wallNormal) *aCrossForward;
+   
         
         Gizmos.color = Color.yellow;
-        for (int i = 0; i <= 4; i++)
+        for (int i = 0; i <= numTiles; i++)
         {
             Gizmos.DrawSphere(min, 4);
             Gizmos.DrawSphere(min + aDir * singleS.x, 4);
-            min += aDir2 * singleS.y;
+            if(i != numTiles) min += aDir2 * singleS.y;
         }
+
+        var aCrossUp3 = Quaternion.AngleAxis(90, aDir2) *aCrossForward;
+        var aCrossUp2 = Quaternion.AngleAxis(90, aDir) *aCrossForward;
+        min += aCrossUp3 * singleS.x * 2;
+        for (int i = 0; i < numTiles; i++)
+        {
+            Gizmos.DrawSphere(min, 4);
+            Gizmos.DrawSphere(min + aCrossUp2 * singleS.x, 4);
+            min += aCrossUp3 * singleS.y;
+        }
+        Debug.Log($"crossNew {aCrossUp3}");
     }
     
     private void SetDirections()
