@@ -277,15 +277,16 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             Directions[i] += center;
         }
 
+        var count = 0;
         var aVec = Vector3.zero;
         for (int i = 0; i < 4; i++)
         {
-            var theRed = 0f;
             for (int j = 0; j < 4; j++)
             {
-                Gizmos.color = new Color(theRed, 0, 0);
+                Gizmos.color = Color.red;
                 Gizmos.DrawSphere(Directions[j] + aVec, 1.5f);
-                theRed += 0.25f;
+                Handles.Label(Directions[j] + aVec, $"{count}");
+                count++;
             }
 
             aVec += aDir * size.z; 
