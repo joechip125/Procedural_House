@@ -257,12 +257,17 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void AddStrip(Vector3 start, Vector2 size, int numTiles)
     {
         var dir = new Vector3(1, 0, 0);
+        var dir2 = new Vector3(0, 0, 1);
+        var aDir2 = new Vector3(0, 1, 0);
+        var amount = 4;
         
         for (int i = 0; i <= numTiles; i++)
         {
+            var aCrossUp2 = Quaternion.AngleAxis(10 * i, dir) * -aDir2;
             Gizmos.DrawSphere(start, 2);
             Gizmos.DrawSphere(start + Vector3.up * size.y, 2);
-            start += dir * size.x;
+            start += dir * size.x + dir2 * amount;
+            amount += 2;
         }
     }
     private void AddStripVerts(Vector3 start, Vector2 size, int numTiles)
@@ -288,7 +293,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             Triangles.Add(add + 2);
             add += 2;
         }
-        
         
         UpdateMesh();
     }
@@ -317,7 +321,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         Triangles.Add(4);
         
         UpdateMesh();
-        Debug.Log($"verts {Vertices.Count}, tris {Triangles.Count}");
     }
     
     private void SetDirections()
