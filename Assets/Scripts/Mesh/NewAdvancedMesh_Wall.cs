@@ -39,8 +39,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         InitMesh();
         ApplyMaterial(aMaterial);
-        //BuildBox(new Vector3(1,0,0), new Vector3(100,50, 12), Vector3.zero);
-        InnerOuter(new Vector3(50,50), new Vector3(100,100), transform.position);
+        AddStripVerts(transform.position, new Vector2(20,20), 5);
     }
     
     
@@ -257,10 +256,41 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private void AddStrip(Vector3 start, Vector2 size, int numTiles)
     {
+        var dir = new Vector3(1, 0, 0);
+        
+        for (int i = 0; i <= numTiles; i++)
+        {
+            Gizmos.DrawSphere(start, 2);
+            Gizmos.DrawSphere(start + Vector3.up * size.y, 2);
+            start += dir * size.x;
+        }
+    }
+    private void AddStripVerts(Vector3 start, Vector2 size, int numTiles)
+    {
+        var dir = new Vector3(1, 0, 0);
+        
+        for (int i = 0; i <= numTiles; i++)
+        {
+            Vertices.Add(start);
+            Vertices.Add(start + Vector3.up * size.y);
+            start += dir * size.x;
+        }
+
+        var add = 0;
         for (int i = 0; i < numTiles; i++)
         {
+            Triangles.Add(add);
+            Triangles.Add(add + 1);
+            Triangles.Add(add + 2);
             
+            Triangles.Add(add + 1);
+            Triangles.Add(add + 3);
+            Triangles.Add(add + 2);
+            add += 2;
         }
+        
+        
+        UpdateMesh();
     }
     
     private void InnerOuter(Vector3 innerS, Vector3 outerS, Vector3 pos)
@@ -320,9 +350,9 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             Directions[i] += pos;
         }
         
-        
-        AddDots(pos, new Vector3(100,100), 4);
-        AddDots(pos, new Vector3(50,50), 2);
+        AddStrip(pos, new Vector2(20,20), 5);
+        //AddDots(pos, new Vector3(100,100), 4);
+        //AddDots(pos, new Vector3(50,50), 2);
         
         for (int i = 0; i < 4; i++)
         {
