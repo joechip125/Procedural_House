@@ -279,19 +279,20 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
 
         var count = 0;
-        var aVec = Vector3.zero;
         Gizmos.color = Color.red;
+        
         for (int i = 0; i < 4; i++)
         {
+            var aVec = Vector3.zero;
             for (int j = 0; j < 4; j++)
             {
-                Gizmos.DrawSphere(Directions[j] + aVec, 1.5f);
-                Handles.Label(Directions[j] + aVec, $"{count}");
+                Gizmos.DrawSphere(Directions[i] + aVec, 1.5f);
+                Handles.Label(Directions[i] + aVec, $"{count}");
+                aVec += aDir * size.z;
                 count++;
             }
-
-            aVec += aDir * size.z; 
         }
+        
     }
     private void TunnelVerts(Vector3 center, Vector3 aDir, Vector3 size)
     {
@@ -316,15 +317,14 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             Directions[i] += center;
         }
         
-        var aVec = Vector3.zero;
         for (int i = 0; i < 4; i++)
         {
+            var aVec = Vector3.zero;
             for (int j = 0; j < 4; j++)
             {
-                Vertices.Add(Directions[j] + aVec);
+                Vertices.Add(Directions[i] + aVec);
+                aVec += aDir * size.z;
             }
-
-            aVec += aDir * size.z; 
         }
 
         var add = 5;
