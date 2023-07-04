@@ -188,6 +188,10 @@ PrefabInstance:
       value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 1638415911921875675, guid: 4558952e6c625164d90ea015e3641b49, type: 3}
+      propertyPath: numberTiles
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 1638415911921875675, guid: 4558952e6c625164d90ea015e3641b49, type: 3}
       propertyPath: wallNormal.x
       value: 1
       objectReference: {fileID: 0}

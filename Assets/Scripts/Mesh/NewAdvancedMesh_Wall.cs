@@ -194,7 +194,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             }
         }
     }
-
+    
     private void BuildOuter(Vector2 size, Vector3 wallDirection, Vector3 center, Vector2 innerSize)
     {
         var aSize = size - innerSize;
@@ -254,6 +254,41 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
 
+    private void Tunnel(Vector3 center, Vector3 aDir)
+    {
+        var aCrossForward = Vector3.Cross(wallNormal, Vector3.up).normalized;
+        var theRed = 0f;
+        Directions = new Vector3[4];
+        var size = new Vector3(100, 50, 10);
+        var pos = transform.position;
+
+        for (int i = 0; i < 4; i++)
+        {
+            var aCrossUp2 = Quaternion.AngleAxis(90+(90 * i), wallNormal) *aCrossForward;
+            var aCrossUp3 = Quaternion.AngleAxis( 180+(90 * i), wallNormal) *aCrossForward;
+            
+            if (i % 2 == 0)
+            {
+                Directions[i] =  aCrossUp2 * size.y / 2 + aCrossUp3 * size.x / 2;
+            }
+            else
+            {
+                Directions[i] =  aCrossUp2 * size.x / 2 + aCrossUp3 * size.y / 2;
+            }
+
+            Directions[i] += pos;
+        }
+        
+        for (int i = 0; i < 4; i++)
+        {
+            var otherVec = wallNormal * size.z;
+            Gizmos.color = new Color(theRed, 0, 0);
+            Gizmos.DrawSphere(Directions[i], 1.5f);
+            Gizmos.DrawSphere(Directions[i] + otherVec, 1.5f);
+            theRed += 0.25f;
+        }
+    }
+    
     private void AddStrip(Vector3 start, Vector2 size, int numTiles)
     {
         var dir = new Vector3(1, 0, 0);
@@ -282,14 +317,10 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             start2 += amount;
             
             sin =Mathf.Cos((Mathf.PI / 180) * start2);
-
-            var aCrossUp2 = Quaternion.AngleAxis(10 * i, dir) * -aDir2;
+            
             Gizmos.DrawSphere(start, 2);
             Gizmos.DrawSphere(start + Vector3.up * (size.y * sin), 2);
             start += dir * size.x;
-
-
-            Debug.Log($"sin {sin} amount {start2}");
         }
     }
 
@@ -402,40 +433,10 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     
     private void OnDrawGizmos()
     {
-        var aCrossForward = Vector3.Cross(wallNormal, Vector3.up).normalized;
-        var theRed = 0f;
-        Directions = new Vector3[4];
-        var size = new Vector3(100, 50, 10);
         var pos = transform.position;
-
-        for (int i = 0; i < 4; i++)
-        {
-            var aCrossUp2 = Quaternion.AngleAxis(90+(90 * i), wallNormal) *aCrossForward;
-            var aCrossUp3 = Quaternion.AngleAxis( 180+(90 * i), wallNormal) *aCrossForward;
-            
-            if (i % 2 == 0)
-            {
-                Directions[i] =  aCrossUp2 * size.y / 2 + aCrossUp3 * size.x / 2;
-            }
-            else
-            {
-                Directions[i] =  aCrossUp2 * size.x / 2 + aCrossUp3 * size.y / 2;
-            }
-
-            Directions[i] += pos;
-        }
+        
+        Tunnel(pos, wallNormal);
         
         AddStrip(pos, new Vector2(20,40), numberTiles);
-        //AddDots(pos, new Vector3(100,100), 4);
-        //AddDots(pos, new Vector3(50,50), 2);
-        
-        for (int i = 0; i < 4; i++)
-        {
-            var otherVec = wallNormal * size.z;
-            Gizmos.color = new Color(theRed, 0, 0);
-            Gizmos.DrawSphere(Directions[i], 1.5f);
-            Gizmos.DrawSphere(Directions[i] + otherVec, 1.5f);
-            theRed += 0.25f;
-        }
     }
 }
