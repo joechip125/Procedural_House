@@ -259,15 +259,36 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var dir = new Vector3(1, 0, 0);
         var dir2 = new Vector3(0, 0, 1);
         var aDir2 = new Vector3(0, 1, 0);
-        var amount = 4;
+        var amount = 20;
+        var start2 = 0;
+        var toggle = true;
+        var min = 0.5f;
+        var max = 1f;
         
         for (int i = 0; i <= numTiles; i++)
         {
+            var sin =Mathf.Cos((Mathf.PI / 180) * start2);
+            
             var aCrossUp2 = Quaternion.AngleAxis(10 * i, dir) * -aDir2;
             Gizmos.DrawSphere(start, 2);
-            Gizmos.DrawSphere(start + Vector3.up * size.y, 2);
-            start += dir * size.x + dir2 * amount;
-            amount += 2;
+            Gizmos.DrawSphere(start + Vector3.up * (size.y * sin), 2);
+            start += dir * size.x;
+            
+            start2 += amount;
+            if (sin <= min && toggle)
+            {
+                amount = -amount;
+                toggle = false;
+            }
+            
+            if (sin >= max && !toggle)
+            {
+                amount = -amount;
+                toggle = true;
+            }
+            
+            
+            Debug.Log($"sin {sin}");
         }
     }
     private void AddStripVerts(Vector3 start, Vector2 size, int numTiles)
@@ -353,7 +374,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             Directions[i] += pos;
         }
         
-        AddStrip(pos, new Vector2(20,20), 5);
+        AddStrip(pos, new Vector2(20,40), 30);
         //AddDots(pos, new Vector3(100,100), 4);
         //AddDots(pos, new Vector3(50,50), 2);
         
