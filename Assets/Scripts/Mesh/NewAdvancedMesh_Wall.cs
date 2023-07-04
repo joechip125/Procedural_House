@@ -28,7 +28,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     [SerializeField] private int numberTiles;
     [SerializeField]private Vector2 wallSize;
     [SerializeField]private Vector3 wallNormal;
-
+   
     public List<WallInfo> wallInfos = new();
 
     private int lastVert;
@@ -39,7 +39,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         InitMesh();
         ApplyMaterial(aMaterial);
-        AddStripVerts(transform.position, new Vector2(20,20), 5);
+        AddStripsSin(transform.position, new Vector2(20,40), numberTiles);
     }
     
     
@@ -257,12 +257,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void AddStrip(Vector3 start, Vector2 size, int numTiles)
     {
         var dir = new Vector3(1, 0, 0);
-        var dir2 = new Vector3(0, 0, 1);
         var aDir2 = new Vector3(0, 1, 0);
         var amount = -20;
-        var start2 = 0;
+        var start2 = -60;
         var toggle = true;
-        var min = 0.5f;
+        var min = 0.4f;
         var max = 1f;
         var sin =Mathf.Cos((Mathf.PI / 180) * start2);
         
@@ -290,9 +289,59 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             start += dir * size.x;
 
 
-            Debug.Log($"sin {sin}");
+            Debug.Log($"sin {sin} amount {start2}");
         }
     }
+
+    private void AddStripsSin(Vector3 start, Vector2 size, int numTiles)
+    {
+        var dir = new Vector3(1, 0, 0);
+        var amount = -20;
+        var start2 = -60;
+        var toggle = true;
+        var min = 0.4f;
+        var max = 1f;
+        var sin =Mathf.Cos((Mathf.PI / 180) * start2);
+        
+        for (int i = 0; i <= numTiles; i++)
+        {
+            if (sin <= min && toggle)
+            {
+                amount = 20;
+                toggle = false;
+            }
+            
+            if (sin >= max && !toggle)
+            {
+                amount = -20;
+                toggle = true;
+            }
+
+            start2 += amount;
+            sin =Mathf.Cos((Mathf.PI / 180) * start2);
+            
+            Vertices.Add(start);
+            Vertices.Add(start + Vector3.up * (size.y * sin));
+            
+            start += dir * size.x;
+        }
+        
+        var add = 0;
+        for (int i = 0; i < numTiles; i++)
+        {
+            Triangles.Add(add);
+            Triangles.Add(add + 1);
+            Triangles.Add(add + 2);
+            
+            Triangles.Add(add + 1);
+            Triangles.Add(add + 3);
+            Triangles.Add(add + 2);
+            add += 2;
+        }
+        
+        UpdateMesh();
+    }
+    
     private void AddStripVerts(Vector3 start, Vector2 size, int numTiles)
     {
         var dir = new Vector3(1, 0, 0);
@@ -376,7 +425,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             Directions[i] += pos;
         }
         
-        AddStrip(pos, new Vector2(20,40), 32);
+        AddStrip(pos, new Vector2(20,40), numberTiles);
         //AddDots(pos, new Vector3(100,100), 4);
         //AddDots(pos, new Vector3(50,50), 2);
         
