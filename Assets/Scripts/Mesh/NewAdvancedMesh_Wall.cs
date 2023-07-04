@@ -39,7 +39,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         InitMesh();
         ApplyMaterial(aMaterial);
-        AddStripsSin(transform.position, new Vector2(20,40), numberTiles);
+        //AddStripsSin(transform.position, new Vector2(20,40), numberTiles);
+        TunnelVerts(transform.position, wallNormal, new Vector3(100,100,40));
     }
     
     
@@ -279,11 +280,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
         var count = 0;
         var aVec = Vector3.zero;
+        Gizmos.color = Color.red;
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
             {
-                Gizmos.color = Color.red;
                 Gizmos.DrawSphere(Directions[j] + aVec, 1.5f);
                 Handles.Label(Directions[j] + aVec, $"{count}");
                 count++;
@@ -292,6 +293,79 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             aVec += aDir * size.z; 
         }
     }
+    private void TunnelVerts(Vector3 center, Vector3 aDir, Vector3 size)
+    {
+        var aCrossForward = Vector3.Cross(aDir, Vector3.up).normalized;
+        
+        if(Directions.Length != 4) Directions = new Vector3[4];
+
+        for (int i = 0; i < 4; i++)
+        {
+            var aCrossUp2 = Quaternion.AngleAxis(90+(90 * i), aDir) *aCrossForward;
+            var aCrossUp3 = Quaternion.AngleAxis( 180+(90 * i), aDir) *aCrossForward;
+            
+            if (i % 2 == 0)
+            {
+                Directions[i] =  aCrossUp2 * size.y / 2 + aCrossUp3 * size.x / 2;
+            }
+            else
+            {
+                Directions[i] =  aCrossUp2 * size.x / 2 + aCrossUp3 * size.y / 2;
+            }
+
+            Directions[i] += center;
+        }
+        
+        var aVec = Vector3.zero;
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                Vertices.Add(Directions[j] + aVec);
+            }
+
+            aVec += aDir * size.z; 
+        }
+
+        var add = 5;
+        var add2 = 1;
+        var add3 = 0;
+        for (int i = 0; i < 3; i++)
+        {
+            Triangles.Add(add);
+            Triangles.Add(add2);
+            Triangles.Add(add3);
+            add += 4;
+            add3 += 4;
+            add2 += 4;
+        }
+        
+        //Triangles.Add(5);
+        //Triangles.Add(1);
+        //Triangles.Add(0);
+        //
+        //Triangles.Add(9);
+        //Triangles.Add(5);
+        //Triangles.Add(4);
+        //
+        //Triangles.Add(13);
+        //Triangles.Add(9);
+        //Triangles.Add(8);
+        ////
+        //Triangles.Add(4);
+        //Triangles.Add(5);
+        //Triangles.Add(0);
+        //
+        //Triangles.Add(8);
+        //Triangles.Add(9);
+        //Triangles.Add(4);
+        //
+        //Triangles.Add(12);
+        //Triangles.Add(13);
+        //Triangles.Add(8);
+        UpdateMesh();
+    }
+    
     
     private void AddStrip(Vector3 start, Vector2 size, int numTiles)
     {
@@ -441,6 +515,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         
         Tunnel(pos, wallNormal, new Vector3(100,100,40));
         
-        AddStrip(pos, new Vector2(20,40), numberTiles);
+        //AddStrip(pos, new Vector2(20,40), numberTiles);
     }
 }
