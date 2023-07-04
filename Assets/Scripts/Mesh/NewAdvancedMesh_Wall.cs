@@ -254,18 +254,16 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
 
-    private void Tunnel(Vector3 center, Vector3 aDir)
+    private void Tunnel(Vector3 center, Vector3 aDir, Vector3 size)
     {
-        var aCrossForward = Vector3.Cross(wallNormal, Vector3.up).normalized;
-        var theRed = 0f;
-        Directions = new Vector3[4];
-        var size = new Vector3(100, 50, 10);
-        var pos = transform.position;
+        var aCrossForward = Vector3.Cross(aDir, Vector3.up).normalized;
+        
+        if(Directions.Length != 4) Directions = new Vector3[4];
 
         for (int i = 0; i < 4; i++)
         {
-            var aCrossUp2 = Quaternion.AngleAxis(90+(90 * i), wallNormal) *aCrossForward;
-            var aCrossUp3 = Quaternion.AngleAxis( 180+(90 * i), wallNormal) *aCrossForward;
+            var aCrossUp2 = Quaternion.AngleAxis(90+(90 * i), aDir) *aCrossForward;
+            var aCrossUp3 = Quaternion.AngleAxis( 180+(90 * i), aDir) *aCrossForward;
             
             if (i % 2 == 0)
             {
@@ -276,16 +274,21 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 Directions[i] =  aCrossUp2 * size.x / 2 + aCrossUp3 * size.y / 2;
             }
 
-            Directions[i] += pos;
+            Directions[i] += center;
         }
-        
+
+        var aVec = Vector3.zero;
         for (int i = 0; i < 4; i++)
         {
-            var otherVec = wallNormal * size.z;
-            Gizmos.color = new Color(theRed, 0, 0);
-            Gizmos.DrawSphere(Directions[i], 1.5f);
-            Gizmos.DrawSphere(Directions[i] + otherVec, 1.5f);
-            theRed += 0.25f;
+            var theRed = 0f;
+            for (int j = 0; j < 4; j++)
+            {
+                Gizmos.color = new Color(theRed, 0, 0);
+                Gizmos.DrawSphere(Directions[j] + aVec, 1.5f);
+                theRed += 0.25f;
+            }
+
+            aVec += aDir * size.z; 
         }
     }
     
@@ -435,7 +438,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         var pos = transform.position;
         
-        Tunnel(pos, wallNormal);
+        Tunnel(pos, wallNormal, new Vector3(100,100,40));
         
         AddStrip(pos, new Vector2(20,40), numberTiles);
     }
