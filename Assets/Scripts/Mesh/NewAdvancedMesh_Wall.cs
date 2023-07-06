@@ -327,42 +327,13 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             }
         }
 
-        var add = 5;
-        var add2 = 1;
-        var add3 = 0;
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 7; i++)
         {
-            Triangles.Add(add);
-            Triangles.Add(add2);
-            Triangles.Add(add3);
-            add += 4;
-            add3 += 4;
-            add2 += 4;
+            Triangles.Add(i + 5);
+            Triangles.Add(i + 4);
+            Triangles.Add(i);
         }
         
-        //Triangles.Add(5);
-        //Triangles.Add(1);
-        //Triangles.Add(0);
-        //
-        //Triangles.Add(9);
-        //Triangles.Add(5);
-        //Triangles.Add(4);
-        //
-        //Triangles.Add(13);
-        //Triangles.Add(9);
-        //Triangles.Add(8);
-        ////
-        //Triangles.Add(4);
-        //Triangles.Add(5);
-        //Triangles.Add(0);
-        //
-        //Triangles.Add(8);
-        //Triangles.Add(9);
-        //Triangles.Add(4);
-        //
-        //Triangles.Add(12);
-        //Triangles.Add(13);
-        //Triangles.Add(8);
         UpdateMesh();
     }
     
