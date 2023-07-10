@@ -36,7 +36,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     [SerializeField, Range(1, 100)] private float tileSize;
     private List<Vector3> dots = new();
     [SerializeField] private Edges edgeChoice;
-    //[SerializeField] private Vector3 totalSize;
+    
     private List<TileInfo> info = new();
     
 
@@ -104,7 +104,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         var pos = -new Vector3(totalSize.x, 0, totalSize.z) / 2;
         var singleS = new Vector3(totalSize.x / (numberTiles.x - 1), totalSize.y, totalSize.z / (numberTiles.y - 1));
         
-        Debug.Log($"position: {pos}, single size {singleS}");
         info.Add(new TileInfo()
         {
             index = Vector2Int.zero,
@@ -155,7 +154,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             }
             pos += new Vector3(0, 0, singleS.z);
         }
-   
         UpdateMesh();
     }
     
@@ -171,7 +169,23 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         Gizmos.DrawSphere(all[0], 6);
     }
 
-    private void GetTilePos(Vector3 direction, Vector2Int index)
+    private bool GetTilePos(Vector3 direction, Vector2Int index, out Vector3 pos)
+    {
+        var some = info.SingleOrDefault(x => x.index == index);
+        pos = Vector3.zero;
+        if (some == default) return false;
+
+        var center = some.center;
+        
+        if (some.type == TileType.Square)
+        {
+            pos = center + Vector3.Scale(direction.normalized, some.size) / 2;
+        }
+        
+        return true;
+    }
+
+    public void AddNewTile()
     {
         
     }
@@ -229,9 +243,8 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         }
     }
 
-    private void CircleWall()
+    private void CircleWall(Vector3 pos)
     {
-        var pos = transform.position;
         var start = 0;
         var radius = 100;
         var adder = 0;
@@ -311,6 +324,5 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     {
         if (!Application.isPlaying) return;
         MakeGridTest(new Vector3(400,100,400), new Vector2Int(5,5));
-        GetGridPos(Vector3.forward);
     }
 }
