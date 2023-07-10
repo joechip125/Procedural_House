@@ -24,6 +24,9 @@ public enum TileType
 public class TileInfo
 {
     public TileType type;
+    public Vector2Int index;
+    public Vector3 center;
+    public Vector3 size;
 }
 
 public class NewAdvancedMesh_Floor : NewAdvancedMesh
@@ -33,9 +36,9 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     [SerializeField, Range(1, 100)] private float tileSize;
     private List<Vector3> dots = new();
     [SerializeField] private Edges edgeChoice;
-    [SerializeField] private Vector3 totalSize;
-
-    public Vector3 TotalSize => totalSize;
+    //[SerializeField] private Vector3 totalSize;
+    private List<TileInfo> info = new();
+    
 
     private List<Vector3> edgeList = new();
     private List<Vector3> circleList = new();
@@ -73,7 +76,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     
     public void SetValuesAndActivate(Vector3 size, int tilesX, int tilesZ)
     {
-        totalSize = size;
+        
         numberX = tilesX;
         numberZ = tilesZ;
         Activate();
@@ -95,9 +98,17 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     private void MakeGrid()
     {
         var lineCount = Vertices.Count;
-        
+
         var pos = -(new Vector3(numberX - 1, 0, numberZ - 1) * tileSize)/ 2;
-        totalSize = new Vector3(numberX - 1,0, numberZ - 1) * tileSize;
+        var totalSize = new Vector3(numberX - 1,0, numberZ - 1) * tileSize;
+        
+        info.Add(new TileInfo()
+        {
+            index = Vector2Int.zero,
+            type = TileType.Square,
+            center = pos + totalSize / 2, 
+            size = totalSize
+        });
 
         for (int i = 0; i < numberZ; i++)
         {
@@ -127,7 +138,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     private void MakeGridTest()
     {
         var pos = -(new Vector3(numberX - 1, 0, numberZ - 1) * tileSize)/ 2;
-        totalSize = new Vector3(numberX - 1,0, numberZ - 1) * tileSize;
+        var totalSize = new Vector3(numberX - 1,0, numberZ - 1) * tileSize;
         var count = 0;
 
         for (int i = 0; i < numberZ; i++)
@@ -156,24 +167,12 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         Gizmos.DrawSphere(all[0], 6);
     }
 
-    private void GetTilePos(Vector3 direction)
+    private void GetTilePos(Vector3 direction, Vector2Int index)
     {
         
     }
     
-    private void AddOpen(Vector3 primeDir, float position, float length, float width)
-    {
-        var superStart = new Vector3((totalSize.x * primeDir.x), 0, (totalSize.y * primeDir.z)) / 4 
-                         + (primeDir * width) / 4;
-        var crossDir = Vector3.Cross(primeDir, Vector3.up);
-        var max = Vector3.Magnitude(Vector3.Scale(crossDir, totalSize)) / 2;
-        position = Mathf.Clamp(position, -max + length / 2, max - length / 2);
-        var aStart = superStart + crossDir * position;
-        doors.Add(aStart);
-        Callback?.Invoke(aStart * 2, primeDir);
-        
-      
-    }
+
     
     private void AddSomething()
     {
