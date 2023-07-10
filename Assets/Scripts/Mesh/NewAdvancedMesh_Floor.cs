@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public enum Edges
@@ -109,6 +110,25 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         UpdateMesh();
     }
     
+    
+    private void MakeGridTest()
+    {
+        var pos = -(new Vector3(numberX - 1, 0, numberZ - 1) * tileSize)/ 2;
+        totalSize = new Vector3(numberX - 1,0, numberZ - 1) * tileSize;
+        var count = 0;
+
+        for (int i = 0; i < numberZ; i++)
+        {
+            for (int j = 0; j < numberX; j++)
+            {
+                var pos2 = pos + new Vector3(tileSize * j, 0, 0);
+                Gizmos.DrawSphere(pos2, 3);
+                Handles.Label(pos2, $"{count}");
+            }
+            
+            pos += new Vector3(0, 0, tileSize);
+        }
+    }
     private void AddOpen(Vector3 primeDir, float position, float length, float width)
     {
         var superStart = new Vector3((totalSize.x * primeDir.x), 0, (totalSize.y * primeDir.z)) / 4 
@@ -256,22 +276,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     
     private void OnDrawGizmos()
     {
-        if (Application.isPlaying) return;
-        
-        RotateAroundAxis(new Vector3(0,1,0), 4, 90, 45);
-        var pos = transform.position;
-        var color = 0f;
-        var degree = 180;
-
-        foreach (var d in Directions)
-        {
-            var other = RotateAroundAxisReturn(Vector3.up, degree);
-            var pos2 = (d * 100) + pos;
-            Gizmos.color = new Color(color, 0, 0);
-            Gizmos.DrawSphere(pos2, 3);
-            Gizmos.DrawLine(pos2, pos2 + other * 50);
-            color += 0.2f;
-            degree += 90;
-        }
+        if (!Application.isPlaying) return;
+        MakeGridTest();
     }
 }
