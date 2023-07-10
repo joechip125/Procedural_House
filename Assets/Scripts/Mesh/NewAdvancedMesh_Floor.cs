@@ -68,12 +68,9 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
 
     public void SetValuesAndActivate(float size, int tilesX, int tilesZ)
     {
-        tileSize = size;
-        numberX = tilesX;
-        numberZ = tilesZ;
-        
         ApplyMaterial(aMaterial);
-        MakeGrid(new Vector3(400,100,400), new Vector2Int(5,5));
+        CircleFloor(transform.position);
+        //MakeGrid(new Vector3(400,100,400), new Vector2Int(5,5));
     }
     
     public void SetValuesAndActivate(Vector3 size, int tilesX, int tilesZ)
@@ -185,9 +182,12 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         return true;
     }
 
-    public void AddNewTile()
+    public void AddNewTile(TileType newType)
     {
-        
+        if (newType == TileType.HalfCircle)
+        {
+            
+        }
     }
     
     private void AddSomething()
@@ -243,12 +243,14 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         }
     }
 
-    private void CircleWall(Vector3 pos)
+    private void CircleFloor(Vector3 pos)
     {
         var start = 0;
         var radius = 100;
-        var adder = 0;
-        
+        var adder = Vertices.Count  + 1;
+        var vertexIndex = Vertices.Count;
+        Vertices.Add(pos);
+
         for (int i = 0; i < numberCircle; i++)
         {
             var sin =Mathf.Cos((Mathf.PI / 180) * start);
@@ -256,19 +258,14 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             var newPos = new Vector3(radius * sin, 0, radius * cos) + pos;
             
             Vertices.Add(newPos);
-            Vertices.Add(newPos+ new Vector3(0, 50,0));
             
             start += addCircle;
             
             if(i > numberCircle - 2) continue;
-            Triangles.Add(adder);
-            Triangles.Add(adder + 1);
-            Triangles.Add(adder + 2);
-            
-            Triangles.Add(adder + 1);
-            Triangles.Add(adder + 3);
-            Triangles.Add(adder + 2);
-            adder += 2;
+            var current = adder + i;
+            Triangles.Add(vertexIndex);
+            Triangles.Add(current + 1);
+            Triangles.Add(current);
         }
     }
     
