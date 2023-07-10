@@ -328,13 +328,19 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
 
         var temp = 0;
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < 11; i++)
         {
             temp++;
             if(temp % 4 == 0 && i != 0) continue;
             Triangles.Add(i + 5);
             Triangles.Add(i + 4);
             Triangles.Add(i);
+            
+            Triangles.Add(i);
+            Triangles.Add(i + 1);
+            Triangles.Add(i + 5);
+            
+            
         }
         
         UpdateMesh();
