@@ -71,7 +71,9 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         tileSize = size;
         numberX = tilesX;
         numberZ = tilesZ;
-        Activate();
+        
+        ApplyMaterial(aMaterial);
+        MakeGrid(new Vector3(400,100,400), new Vector2Int(5,5));
     }
     
     public void SetValuesAndActivate(Vector3 size, int tilesX, int tilesZ)
@@ -86,7 +88,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     {
         base.Activate();
         
-        MakeGrid();
+        MakeGrid(new Vector3(400,100,400), new Vector2Int(5,5));
         ApplyMaterial(aMaterial);
     }
 
@@ -95,12 +97,13 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         
     }
 
-    private void MakeGrid()
+    private void MakeGrid(Vector3 totalSize, Vector2Int numberTiles)
     {
         var lineCount = Vertices.Count;
 
-        var pos = -(new Vector3(numberX - 1, 0, numberZ - 1) * tileSize)/ 2;
-        var totalSize = new Vector3(numberX - 1,0, numberZ - 1) * tileSize;
+        var pos = -new Vector3(totalSize.x, 0, totalSize.z) / 2;
+        var singleS = new Vector3(totalSize.x / numberTiles.x, totalSize.y, totalSize.z / numberTiles.y);
+        
         
         info.Add(new TileInfo()
         {
@@ -110,51 +113,52 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             size = totalSize
         });
 
-        for (int i = 0; i < numberZ; i++)
+        for (int i = 0; i < numberTiles.y; i++)
         {
-            for (int j = 0; j < numberX; j++)
+            for (int j = 0; j < numberTiles.x; j++)
             {
-                Vertices.Add(pos + new Vector3(tileSize * j,0,0));
+                Vertices.Add(pos + new Vector3(singleS.x * j,0,0));
                 
-                if(j == numberX - 1 || i == numberZ - 1) continue;
-                
-                Triangles.Add(lineCount + j);
-                Triangles.Add(lineCount + j + numberX);
-                Triangles.Add(lineCount + j + numberX + 1);
+                if(j == numberTiles.x - 1 || i == numberTiles.y - 1) continue;
                 
                 Triangles.Add(lineCount + j);
-                Triangles.Add(lineCount + j + numberX + 1);
+                Triangles.Add(lineCount + j + numberTiles.x);
+                Triangles.Add(lineCount + j + numberTiles.x + 1);
+                
+                Triangles.Add(lineCount + j);
+                Triangles.Add(lineCount + j + numberTiles.x + 1);
                 Triangles.Add(lineCount + j + 1);
             }
 
-            lineCount += numberX;
-            pos += new Vector3(0, 0, tileSize);
+            lineCount += numberTiles.x;
+            pos += new Vector3(0, 0, singleS.z);
         }
    
         UpdateMesh();
     }
     
-    
-    private void MakeGridTest()
+    private void MakeGridTest(Vector3 totalSize, Vector2Int numberTiles)
     {
-        var pos = -(new Vector3(numberX - 1, 0, numberZ - 1) * tileSize)/ 2;
-        var totalSize = new Vector3(numberX - 1,0, numberZ - 1) * tileSize;
+        var pos = -new Vector3(totalSize.x, 0, totalSize.z) / 2;
+        var singleS = new Vector3(totalSize.x / numberTiles.x, totalSize.y, totalSize.z / numberTiles.y);
         var count = 0;
 
-        for (int i = 0; i < numberZ; i++)
+        for (int i = 0; i < numberTiles.y; i++)
         {
-            for (int j = 0; j < numberX; j++)
+            for (int j = 0; j < numberTiles.x; j++)
             {
-                var pos2 = pos + new Vector3(tileSize * j, 0, 0);
+                var pos2 = pos + new Vector3(singleS.x * j, 0, 0);
                 Gizmos.DrawSphere(pos2, 3);
                 Handles.Label(pos2 + Vector3.up * 10, $"{count}");
                 count++;
+                
             }
-            
-            pos += new Vector3(0, 0, tileSize);
+            pos += new Vector3(0, 0, singleS.z);
         }
+   
+        UpdateMesh();
     }
-
+    
     private void GetGridPos(Vector3 direction)
     {
         var all = Vertices
@@ -171,8 +175,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     {
         
     }
-    
-
     
     private void AddSomething()
     {
@@ -308,7 +310,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     private void OnDrawGizmos()
     {
         if (!Application.isPlaying) return;
-        MakeGridTest();
+        MakeGridTest(new Vector3(400,100,400), new Vector2Int(5,5));
         GetGridPos(Vector3.forward);
     }
 }
