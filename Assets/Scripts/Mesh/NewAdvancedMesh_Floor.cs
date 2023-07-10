@@ -13,6 +13,19 @@ public enum Edges
     PlusZ
 }
 
+public enum TileType
+{
+    Square,
+    Triangle,
+    HalfCircle
+}
+
+[Serializable]
+public class TileInfo
+{
+    public TileType type;
+}
+
 public class NewAdvancedMesh_Floor : NewAdvancedMesh
 {
     [SerializeField, Range(0, 30)] private int numberX;
@@ -123,12 +136,31 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             {
                 var pos2 = pos + new Vector3(tileSize * j, 0, 0);
                 Gizmos.DrawSphere(pos2, 3);
-                Handles.Label(pos2, $"{count}");
+                Handles.Label(pos2 + Vector3.up * 10, $"{count}");
+                count++;
             }
             
             pos += new Vector3(0, 0, tileSize);
         }
     }
+
+    private void GetGridPos(Vector3 direction)
+    {
+        var all = Vertices
+            .Where(x => x.x > 0)
+            .OrderByDescending(x => x.x)
+            .ThenByDescending(x => x.z)
+            .ToList();
+        Gizmos.color = Color.yellow;
+        Debug.Log($"amount: {all.Count}");
+        Gizmos.DrawSphere(all[0], 6);
+    }
+
+    private void GetTilePos(Vector3 direction)
+    {
+        
+    }
+    
     private void AddOpen(Vector3 primeDir, float position, float length, float width)
     {
         var superStart = new Vector3((totalSize.x * primeDir.x), 0, (totalSize.y * primeDir.z)) / 4 
@@ -278,5 +310,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     {
         if (!Application.isPlaying) return;
         MakeGridTest();
+        GetGridPos(Vector3.forward);
     }
 }
