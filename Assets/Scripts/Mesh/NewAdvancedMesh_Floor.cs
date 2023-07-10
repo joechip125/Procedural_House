@@ -102,9 +102,9 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         var lineCount = Vertices.Count;
 
         var pos = -new Vector3(totalSize.x, 0, totalSize.z) / 2;
-        var singleS = new Vector3(totalSize.x / numberTiles.x, totalSize.y, totalSize.z / numberTiles.y);
+        var singleS = new Vector3(totalSize.x / (numberTiles.x - 1), totalSize.y, totalSize.z / (numberTiles.y - 1));
         
-        
+        Debug.Log($"position: {pos}, single size {singleS}");
         info.Add(new TileInfo()
         {
             index = Vector2Int.zero,
@@ -140,7 +140,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     private void MakeGridTest(Vector3 totalSize, Vector2Int numberTiles)
     {
         var pos = -new Vector3(totalSize.x, 0, totalSize.z) / 2;
-        var singleS = new Vector3(totalSize.x / numberTiles.x, totalSize.y, totalSize.z / numberTiles.y);
+        var singleS = new Vector3(totalSize.x / (numberTiles.x - 1), totalSize.y, totalSize.z / (numberTiles.y - 1));
         var count = 0;
 
         for (int i = 0; i < numberTiles.y; i++)
