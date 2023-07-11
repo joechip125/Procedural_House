@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using UnityEditor;
 using UnityEngine;
 
@@ -31,7 +32,7 @@ public class TileInfo
 
 public class NewAdvancedMesh_Floor : NewAdvancedMesh
 {
-    [SerializeField, Range(0, 30)] private int numberX;
+    [SerializeField, Range(0, 30)] private int circleResolution;
     [SerializeField, Range(0, 30)] private int numberZ;
     [SerializeField, Range(1, 100)] private float tileSize;
     private List<Vector3> dots = new();
@@ -76,8 +77,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     public void SetValuesAndActivate(Vector3 size, int tilesX, int tilesZ)
     {
         
-        numberX = tilesX;
-        numberZ = tilesZ;
         Activate();
     }
     
@@ -283,7 +282,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             var aCrossUp2 = Quaternion.AngleAxis(singDeg * i, Vector3.up) *aCrossForward2;
             var newPos = new Vector3(radius * aCrossUp2.x, 0, radius * aCrossUp2.z) + pos;
             Gizmos.DrawSphere(newPos, 3);
-            Debug.Log($"degrees: {singDeg * i}");
+            Handles.Label(newPos, $"{i}");
         }
     }
     
@@ -337,7 +336,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     
     private void OnDrawGizmos()
     {
-        if (!Application.isPlaying) return;
+        if (Application.isPlaying) return;
         var pos = transform.position;
         //MakeGridTest(new Vector3(400,100,400), new Vector2Int(5,5));
         CircleTest(pos, Vector3.forward, 90, 10);
