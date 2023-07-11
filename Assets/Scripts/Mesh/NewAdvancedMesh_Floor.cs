@@ -139,7 +139,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             }
             pos += new Vector3(0, 0, singleS.z);
         }
-        UpdateMesh();
     }
     
 
