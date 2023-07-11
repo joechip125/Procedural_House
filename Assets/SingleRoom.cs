@@ -12,8 +12,6 @@ public class SingleRoom : MonoBehaviour
     void Start()
     {
         InitRoom(new Vector3(100,100,100));
-        //AddWalls(4);
-        //AddDoor(1);
     }
 
     private void InitRoom(Vector3 roomSize)

@@ -316,6 +316,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
             Directions[i] += center;
         }
+
+        var add = Vertices.Count;
         
         for (int i = 0; i < 4; i++)
         {
@@ -328,7 +330,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
 
         var temp = 0;
-        var add = 0;
         var count = Directions.Length * 4;
         for (int i = 0; i < count; i++)
         {
@@ -361,7 +362,12 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         
         UpdateMesh();
     }
-    
+
+
+    private void AddCorner()
+    {
+        var aCrossForward = Vector3.Cross(Vector3.up, Vector3.right).normalized;
+    }
     
     private void AddStrip(Vector3 start, Vector2 size, int numTiles)
     {
@@ -510,7 +516,5 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var pos = transform.position;
         
         Tunnel(pos, wallNormal, new Vector3(100,100,40));
-        
-        //AddStrip(pos, new Vector2(20,40), numberTiles);
     }
 }
