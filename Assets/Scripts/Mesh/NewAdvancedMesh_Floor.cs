@@ -58,7 +58,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         InitMesh();
     }
 
-    public void SetValuesAndActivate(float size, int tilesX, int tilesZ)
+    public void SetValuesAndActivate()
     {
         ApplyMaterial(aMaterial);
         CircleFloor(transform.position, new Vector3(1,0,0));
@@ -203,33 +203,33 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     
     private void CircleFloor(Vector3 pos, Vector3 dir)
     {
-        var start = 0;
         var radius = 100;
-        var adder = Vertices.Count  + 1;
-        var vertexIndex = Vertices.Count;
-        
-        var resolution = numberCircle;
-        var numDeg = 180;
-        
+
+        var resolution = 10;
+        var numDeg = 90;
+
         Vertices.Add(pos);
-        
+        var adder = Vertices.Count;
+        var vertexIndex = Vertices.Count;
+
         var aCrossForward2 = Vector3.Cross(dir,  Vector3.up).normalized;
         var singDeg = numDeg / resolution;
 
-        for (int i = 0; i < resolution; i++)
+        for (int i = 0; i <= resolution; i++)
         {
-            var sin =Mathf.Cos((Mathf.PI / 180) * start);
-            var cos = Mathf.Sin((Mathf.PI / 180) * start);
-            var newPos = new Vector3(radius * sin, 0, radius * cos) + pos;
-            
+            var aCrossUp2 = Quaternion.AngleAxis(singDeg * i, Vector3.up) *aCrossForward2;
+            var newPos = new Vector3(radius * aCrossUp2.x, 0, radius * aCrossUp2.z) + pos;
+
             Vertices.Add(newPos);
-            start += addCircle;
+            Debug.Log($"vert count: {Vertices.Count}, adder:{adder + i}");
             
-            if(i > resolution - 2) continue;
+            if(i > resolution - 1) continue;
             Triangles.Add(vertexIndex);
             Triangles.Add(adder + i + 1);
             Triangles.Add(adder + i);
         }
+        
+        UpdateMesh();
     }
     
     private void CircleTest(Vector3 pos, Vector3 dir, float numDeg, int resolution)

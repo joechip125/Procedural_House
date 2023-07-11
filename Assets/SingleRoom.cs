@@ -18,7 +18,7 @@ public class SingleRoom : MonoBehaviour
     {
         meshes.Add(Instantiate(spawnable[0], transform).GetComponent<NewAdvancedMesh>());
         var temp = (NewAdvancedMesh_Floor)meshes[^1];
-        temp.SetValuesAndActivate(roomSize.x, 5,5);
+        temp.SetValuesAndActivate();
     }
 
     public void AddDoor(int number)
