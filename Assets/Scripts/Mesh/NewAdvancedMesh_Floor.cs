@@ -119,7 +119,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             lineCount += numberTiles.x;
             pos += new Vector3(0, 0, singleS.z);
         }
-   
         UpdateMesh();
     }
     
@@ -137,24 +136,12 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
                 Gizmos.DrawSphere(pos2, 3);
                 Handles.Label(pos2 + Vector3.up * 10, $"{count}");
                 count++;
-                
             }
             pos += new Vector3(0, 0, singleS.z);
         }
         UpdateMesh();
     }
     
-    private void GetGridPos(Vector3 direction)
-    {
-        var all = Vertices
-            .Where(x => x.x > 0)
-            .OrderByDescending(x => x.x)
-            .ThenByDescending(x => x.z)
-            .ToList();
-        Gizmos.color = Color.yellow;
-        Debug.Log($"amount: {all.Count}");
-        Gizmos.DrawSphere(all[0], 6);
-    }
 
     private bool GetTilePos(Vector3 direction, Vector2Int index, out Vector3 pos)
     {
@@ -172,35 +159,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         return true;
     }
 
-    public void AddNewTile(TileType newType)
-    {
-        if (newType == TileType.HalfCircle)
-        {
-            
-        }
-    }
-
-
-    private void GetEdges(Vector3 direction)
-    {
-        edgeList.Clear();
-        var numEdge = 0;
-
-        if (direction.x != 0)
-        {
-            dots = direction.x > 0 ? 
-                dots.OrderByDescending(x => x.x).ToList() 
-                : dots.OrderBy(x => x.x).ToList();
-        }
-        
-        if (direction.z != 0)
-        {
-            dots = direction.z > 0 ? 
-                dots.OrderByDescending(x => x.z).ToList() 
-                : dots.OrderBy(x => x.z).ToList();
-        }
-    }
-    
     private void CircleFloor(Vector3 pos, Vector3 dir, float numDeg, int resolution, float start)
     {
         var radius = 100;
@@ -208,6 +166,9 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         Vertices.Add(pos);
         var adder = Vertices.Count;
         var vertIndex = Vertices.Count - 1;
+
+        var first = adder;
+        var last = first + resolution;
 
         var aCrossForward2 = Vector3.Cross(dir,  Vector3.up).normalized;
         var singDeg = numDeg / resolution;
@@ -224,7 +185,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             Triangles.Add(adder + i);
             Triangles.Add(adder + i + 1);
         }
-        
         UpdateMesh();
     }
     
@@ -250,7 +210,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     private void OnDrawGizmos()
     {
         var pos = transform.position;
-        //MakeGridTest(new Vector3(400,100,400), new Vector2Int(5,5));
         if (circleResolution <= 0) return;
         
         CircleTest(pos, Vector3.forward, 90, circleResolution);
