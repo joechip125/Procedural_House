@@ -61,7 +61,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     public void SetValuesAndActivate()
     {
         ApplyMaterial(aMaterial);
-        CircleFloor(transform.position, new Vector3(1,0,0));
+        CircleFloor(transform.position, Vector3.forward, 90, 10, 90);
         //MakeGrid(new Vector3(400,100,400), new Vector2Int(5,5));
     }
     
@@ -201,32 +201,28 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         }
     }
     
-    private void CircleFloor(Vector3 pos, Vector3 dir)
+    private void CircleFloor(Vector3 pos, Vector3 dir, float numDeg, int resolution, float start)
     {
         var radius = 100;
-
-        var resolution = 10;
-        var numDeg = 90;
-
+        
         Vertices.Add(pos);
         var adder = Vertices.Count;
-        var vertexIndex = Vertices.Count;
+        var vertIndex = Vertices.Count - 1;
 
         var aCrossForward2 = Vector3.Cross(dir,  Vector3.up).normalized;
         var singDeg = numDeg / resolution;
 
         for (int i = 0; i <= resolution; i++)
         {
-            var aCrossUp2 = Quaternion.AngleAxis(singDeg * i, Vector3.up) *aCrossForward2;
+            var aCrossUp2 = Quaternion.AngleAxis(start + singDeg * i, Vector3.up) *aCrossForward2;
             var newPos = new Vector3(radius * aCrossUp2.x, 0, radius * aCrossUp2.z) + pos;
 
             Vertices.Add(newPos);
-            Debug.Log($"vert count: {Vertices.Count}, adder:{adder + i}");
-            
+
             if(i > resolution - 1) continue;
-            Triangles.Add(vertexIndex);
-            Triangles.Add(adder + i + 1);
+            Triangles.Add(vertIndex);
             Triangles.Add(adder + i);
+            Triangles.Add(adder + i + 1);
         }
         
         UpdateMesh();
@@ -237,7 +233,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         var radius = 100;
         
         Gizmos.DrawSphere(pos, 3);
-        resolution = circleResolution;
+
         var aCrossForward2 = Vector3.Cross(dir,  Vector3.up).normalized;
         var singDeg = numDeg / resolution;
 
@@ -253,9 +249,10 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
  
     private void OnDrawGizmos()
     {
-        if (Application.isPlaying) return;
         var pos = transform.position;
         //MakeGridTest(new Vector3(400,100,400), new Vector2Int(5,5));
-        CircleTest(pos, Vector3.forward, 90, 10);
+        if (circleResolution <= 0) return;
+        
+        CircleTest(pos, Vector3.forward, 90, circleResolution);
     }
 }
