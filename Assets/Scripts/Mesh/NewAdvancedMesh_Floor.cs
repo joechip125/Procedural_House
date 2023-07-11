@@ -40,21 +40,12 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     
     private List<TileInfo> info = new();
     
-
     private List<Vector3> edgeList = new();
-    private List<Vector3> circleList = new();
-
-    public List<Vector3> doors = new();
-    private Vector3 newStart;
 
     public int numberCircle;
     public int addCircle;
 
-    [SerializeField] private float doorAdd;
-
     public Material aMaterial;
-
-    public Action<Vector3, Vector3> Callback;
 
     private readonly Vector3[] corners = new[]
     {   new Vector3(-1, 0, -1), 
@@ -188,16 +179,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             
         }
     }
-    
-    private void AddSomething()
-    {
-        var v1 = newStart + new Vector3(0, 0, doorAdd);
-        var v2 = v1 + new Vector3(0,0,50);
-        var v3 = v1 + new Vector3(10,0,50);
-        var v4 = v1 + new Vector3(10,0,0);
-        
-        AddQuad(v1, v2, v3, v4);
-    }
+
 
     private void GetEdges(Vector3 direction)
     {
@@ -217,54 +199,36 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
                 dots.OrderByDescending(x => x.z).ToList() 
                 : dots.OrderBy(x => x.z).ToList();
         }
-        
-        newStart = dots[0];
     }
     
-    private void Pyramid()
-    {
-        var start = 0;
-        var amountX = 12;
-        var amountZ = 12;
-        var end = amountX;
-        var pos = transform.position;
-
-        for (int i = 0; i < amountZ; i++)
-        {
-            for (int j = start; j < end; j++)
-            {
-                Gizmos.DrawCube(pos + new Vector3(10 * j,0,0), Vector3.one * 10);
-            }
-
-            start++;
-            end--;
-            pos += new Vector3(0, 0, 10);
-        }
-    }
-
     private void CircleFloor(Vector3 pos, Vector3 dir)
     {
         var start = 0;
         var radius = 100;
         var adder = Vertices.Count  + 1;
         var vertexIndex = Vertices.Count;
+        
+        var resolution = numberCircle;
+        var numDeg = 180;
+        
         Vertices.Add(pos);
+        
+        var aCrossForward2 = Vector3.Cross(dir,  Vector3.up).normalized;
+        var singDeg = numDeg / resolution;
 
-        for (int i = 0; i < numberCircle; i++)
+        for (int i = 0; i < resolution; i++)
         {
             var sin =Mathf.Cos((Mathf.PI / 180) * start);
             var cos = Mathf.Sin((Mathf.PI / 180) * start);
             var newPos = new Vector3(radius * sin, 0, radius * cos) + pos;
             
             Vertices.Add(newPos);
-            
             start += addCircle;
             
-            if(i > numberCircle - 2) continue;
-            var current = adder + i;
+            if(i > resolution - 2) continue;
             Triangles.Add(vertexIndex);
-            Triangles.Add(current + 1);
-            Triangles.Add(current);
+            Triangles.Add(adder + i + 1);
+            Triangles.Add(adder + i);
         }
     }
     
@@ -273,7 +237,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         var radius = 100;
         
         Gizmos.DrawSphere(pos, 3);
-        
+        resolution = circleResolution;
         var aCrossForward2 = Vector3.Cross(dir,  Vector3.up).normalized;
         var singDeg = numDeg / resolution;
 
@@ -286,54 +250,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         }
     }
     
-    private void CircleWall(int startDegree, int radius)
-    {
-        var pos = transform.position;
-        var adder = 0;
-        
-        for (int i = 0; i < numberCircle; i++)
-        {
-            var sin =Mathf.Cos((Mathf.PI / 180) * startDegree);
-            var cos = Mathf.Sin((Mathf.PI / 180) * startDegree);
-            var newPos = new Vector3(radius * sin, 0, radius * cos) + pos;
-            
-            Vertices.Add(newPos);
-            Vertices.Add(newPos+ new Vector3(0, 50,0));
-            
-            startDegree += addCircle;
-            
-            if(i > numberCircle - 2) continue;
-            Triangles.Add(adder);
-            Triangles.Add(adder + 1);
-            Triangles.Add(adder + 2);
-            
-            Triangles.Add(adder + 1);
-            Triangles.Add(adder + 3);
-            Triangles.Add(adder + 2);
-            adder += 2;
-        }
-    }
-    
-    private void Circle(float radius)
-    {
-        var pos = transform.position;
-        circleList.Clear();
-        var aDir = new Vector3(1, 0, 0);
-        var start = 0;
-
-        for (int i = 0; i < numberCircle; i++)
-        {
-            var sin =Mathf.Cos((Mathf.PI / 180) * start);
-            var cos = Mathf.Sin((Mathf.PI / 180) * start);
-
-            var newPos = new Vector3(radius * sin, 0, radius * cos) + pos;
-            circleList.Add(newPos);
-            circleList.Add(newPos+ new Vector3(0, 50,0));
-
-            start += addCircle;
-        }
-    }
-    
+ 
     private void OnDrawGizmos()
     {
         if (Application.isPlaying) return;
