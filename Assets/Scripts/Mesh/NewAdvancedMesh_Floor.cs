@@ -269,20 +269,21 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         }
     }
     
-    private void CircleTest(Vector3 pos, Vector3 dir)
+    private void CircleTest(Vector3 pos, Vector3 dir, float numDeg, int resolution)
     {
         var radius = 100;
         
         Gizmos.DrawSphere(pos, 3);
-        var aCrossForward = Vector3.Cross(Vector3.up, dir).normalized;
-        var aCrossForward2 = Vector3.Cross(Vector3.right,  Vector3.up).normalized;
-        var aCrossUp2 = Quaternion.AngleAxis(0, dir) *aCrossForward;
+        
+        var aCrossForward2 = Vector3.Cross(dir,  Vector3.up).normalized;
+        var singDeg = numDeg / resolution;
 
-        for (int i = 0; i < numberCircle; i++) 
+        for (int i = 0; i <= resolution; i++) 
         {
+            var aCrossUp2 = Quaternion.AngleAxis(singDeg * i, Vector3.up) *aCrossForward2;
             var newPos = new Vector3(radius * aCrossUp2.x, 0, radius * aCrossUp2.z) + pos;
-            aCrossUp2 = Quaternion.AngleAxis(20 * i, Vector3.up) *aCrossForward2;
             Gizmos.DrawSphere(newPos, 3);
+            Debug.Log($"degrees: {singDeg * i}");
         }
     }
     
@@ -339,6 +340,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         if (!Application.isPlaying) return;
         var pos = transform.position;
         //MakeGridTest(new Vector3(400,100,400), new Vector2Int(5,5));
-        CircleTest(pos, Vector3.right);
+        CircleTest(pos, Vector3.forward, 90, 10);
     }
 }
