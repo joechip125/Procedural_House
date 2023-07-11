@@ -69,7 +69,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     public void SetValuesAndActivate(float size, int tilesX, int tilesZ)
     {
         ApplyMaterial(aMaterial);
-        CircleFloor(transform.position);
+        CircleFloor(transform.position, new Vector3(1,0,0));
         //MakeGrid(new Vector3(400,100,400), new Vector2Int(5,5));
     }
     
@@ -243,7 +243,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         }
     }
 
-    private void CircleFloor(Vector3 pos)
+    private void CircleFloor(Vector3 pos, Vector3 dir)
     {
         var start = 0;
         var radius = 100;
@@ -266,6 +266,23 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             Triangles.Add(vertexIndex);
             Triangles.Add(current + 1);
             Triangles.Add(current);
+        }
+    }
+    
+    private void CircleTest(Vector3 pos, Vector3 dir)
+    {
+        var radius = 100;
+        
+        Gizmos.DrawSphere(pos, 3);
+        var aCrossForward = Vector3.Cross(Vector3.up, dir).normalized;
+        var aCrossForward2 = Vector3.Cross(Vector3.right,  Vector3.up).normalized;
+        var aCrossUp2 = Quaternion.AngleAxis(0, dir) *aCrossForward;
+
+        for (int i = 0; i < numberCircle; i++) 
+        {
+            var newPos = new Vector3(radius * aCrossUp2.x, 0, radius * aCrossUp2.z) + pos;
+            aCrossUp2 = Quaternion.AngleAxis(20 * i, Vector3.up) *aCrossForward2;
+            Gizmos.DrawSphere(newPos, 3);
         }
     }
     
@@ -320,6 +337,8 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     private void OnDrawGizmos()
     {
         if (!Application.isPlaying) return;
-        MakeGridTest(new Vector3(400,100,400), new Vector2Int(5,5));
+        var pos = transform.position;
+        //MakeGridTest(new Vector3(400,100,400), new Vector2Int(5,5));
+        CircleTest(pos, Vector3.right);
     }
 }
