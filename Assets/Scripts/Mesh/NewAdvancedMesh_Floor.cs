@@ -65,9 +65,15 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         MakeGrid(new Vector3(400,100,400), new Vector2Int(5,5));
     }
 
-    public void AddNewTile()
+    public void AddNewTile(Vector2Int addTile)
     {
-        
+        var tile = info.SingleOrDefault(x => x.index == Vector2Int.zero);
+        if (tile == default) return;
+
+        if (GetTilePos(Vector3.right, Vector2Int.zero, out var pos))
+        {
+            
+        }
     }
     
     public void SetValuesAndActivate(Vector3 size, int tilesX, int tilesZ)
