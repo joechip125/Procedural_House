@@ -61,8 +61,13 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     public void SetValuesAndActivate()
     {
         ApplyMaterial(aMaterial);
-        CircleFloor(transform.position, Vector3.forward, 90, 10, 90);
-        //MakeGrid(new Vector3(400,100,400), new Vector2Int(5,5));
+        //CircleFloor(transform.position, Vector3.forward, 90, 10, 90);
+        MakeGrid(new Vector3(400,100,400), new Vector2Int(5,5));
+    }
+
+    public void AddNewTile()
+    {
+        
     }
     
     public void SetValuesAndActivate(Vector3 size, int tilesX, int tilesZ)
