@@ -56,12 +56,14 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     private void Awake()
     {
         InitMesh();
+        ApplyMaterial(aMaterial);
+        CircleFloor(transform.position, Vector3.forward, 180, circleResolution);
     }
 
     public void SetValuesAndActivate()
     {
         ApplyMaterial(aMaterial);
-        //CircleFloor(transform.position, Vector3.forward, 90, 10, 90);
+        CircleTest(transform.position, Vector3.forward, 180, circleResolution);
         MakeGrid(new Vector3(400,100,400), new Vector2Int(5,5));
     }
 
@@ -169,13 +171,14 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         return true;
     }
 
-    private void CircleFloor(Vector3 pos, Vector3 dir, float numDeg, int resolution, float start)
+    private void CircleFloor(Vector3 pos, Vector3 dir, float numDeg, int resolution, float start = 0)
     {
         var radius = 100;
         
         Vertices.Add(pos);
         var adder = Vertices.Count;
         var vertIndex = Vertices.Count - 1;
+        var size = new Vector2(200, 100);
 
         var first = adder;
         var last = first + resolution;
@@ -186,7 +189,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         for (int i = 0; i <= resolution; i++)
         {
             var aCrossUp2 = Quaternion.AngleAxis(start + singDeg * i, Vector3.up) *aCrossForward2;
-            var newPos = new Vector3(radius * aCrossUp2.x, 0, radius * aCrossUp2.z) + pos;
+            var newPos = new Vector3(size.x * aCrossUp2.x, 0, size.y * aCrossUp2.z) + pos;
 
             Vertices.Add(newPos);
 
@@ -203,6 +206,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         var radius = 100;
         
         Gizmos.DrawSphere(pos, 3);
+        var size = new Vector2(200, 100);
 
         var aCrossForward2 = Vector3.Cross(dir,  Vector3.up).normalized;
         var singDeg = numDeg / resolution;
@@ -210,7 +214,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         for (int i = 0; i <= resolution; i++) 
         {
             var aCrossUp2 = Quaternion.AngleAxis(singDeg * i, Vector3.up) *aCrossForward2;
-            var newPos = new Vector3(radius * aCrossUp2.x, 0, radius * aCrossUp2.z) + pos;
+            var newPos = new Vector3(size.x * aCrossUp2.x, 0, size.y * aCrossUp2.z) + pos;
             Gizmos.DrawSphere(newPos, 3);
             Handles.Label(newPos, $"{i}");
         }
@@ -222,6 +226,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         var pos = transform.position;
         if (circleResolution <= 0) return;
         
-        CircleTest(pos, Vector3.forward, 90, circleResolution);
+        CircleTest(pos, Vector3.forward, 180, circleResolution);
     }
 }

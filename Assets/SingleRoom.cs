@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ public class SingleRoom : MonoBehaviour
 
     void Start()
     {
-        InitRoom(new Vector3(100,100,100));
+       // InitRoom(new Vector3(100,100,100));
     }
 
     private void InitRoom(Vector3 roomSize)
@@ -67,6 +68,15 @@ public class SingleRoom : MonoBehaviour
         {
             center = pos,
             size = new Vector3(400,100,400)
+        });
+
+        var nextSize = new Vector3(400,100,200);
+        pos += Vector3.forward * (infos[^1].size.z / 2 + nextSize.z / 2);
+        
+        infos.Add(new TileInfo()
+        {
+            center = pos,
+            size = nextSize
         });
     }
     
