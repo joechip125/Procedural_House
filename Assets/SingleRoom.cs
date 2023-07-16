@@ -10,6 +10,8 @@ public class SingleRoom : MonoBehaviour
     [SerializeField] private List<GameObject> spawnable;
     private Vector3 theSize;
 
+    private List<TileInfo> infos = new();
+
     void Start()
     {
         InitRoom(new Vector3(100,100,100));
@@ -55,14 +57,28 @@ public class SingleRoom : MonoBehaviour
         var temp = (NewAdvancedMesh_Staircase)meshes[^1];
         temp.MakeStairs(new Vector3(1,0,0), 5);
     }
+
+    private void RoomTest()
+    {
+        var pos = transform.position;
+        infos.Clear();
+
+        infos.Add(new TileInfo()
+        {
+            center = pos,
+            size = new Vector3(400,100,400)
+        });
+    }
     
     private void OnDrawGizmos()
     {
         if (Application.isPlaying) return;
-        
-        var roomSize = new Vector3(400, 100, 400);
-        var pos = transform.position + Vector3.up * (roomSize.y / 2);
-        Handles.DrawWireCube(pos, roomSize);
+        RoomTest();
+
+        foreach (var i in infos)
+        {
+            Handles.DrawWireCube( i.center + Vector3.up * (i.size.y / 2), i.size);
+        }
     }
     
 }
