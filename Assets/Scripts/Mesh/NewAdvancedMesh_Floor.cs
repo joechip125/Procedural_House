@@ -203,20 +203,27 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     
     private void CircleTest(Vector3 pos, Vector3 dir, float numDeg, int resolution)
     {
-        var radius = 100;
-        
         Gizmos.DrawSphere(pos, 3);
         var size = new Vector2(200, 100);
 
         var aCrossForward2 = Vector3.Cross(dir,  Vector3.up).normalized;
         var singDeg = numDeg / resolution;
+        var aDeg = 0f;
 
-        for (int i = 0; i <= resolution; i++) 
+        for (int i = 0; i <= resolution; i++)
         {
+            var cos = (Mathf.Cos((Mathf.PI / 180) * (singDeg * i)) * dir) * size.y;
+            var cos2 = (Mathf.Cos((Mathf.PI / 180) * (singDeg * i)) * aCrossForward2) * size.x;
+            
             var aCrossUp2 = Quaternion.AngleAxis(singDeg * i, Vector3.up) *aCrossForward2;
+            var aCrossUp3 = Quaternion.AngleAxis(singDeg * i, Vector3.up) * dir;
+            var x = aCrossUp2 * size.x;
+            var y = aCrossUp2 * size.y;
             var newPos = new Vector3(size.x * aCrossUp2.x, 0, size.y * aCrossUp2.z) + pos;
-            Gizmos.DrawSphere(newPos, 3);
-            Handles.Label(newPos, $"{i}");
+            var newPos2 = pos + cos2;
+            Gizmos.DrawSphere(newPos2, 3);
+            Debug.Log($"cross: {aCrossUp2}, cross2 {aCrossUp3} x: {x}, y: {y}, total {x + y}, cos: {cos} cos2: {cos2}");
+            Handles.Label(newPos2, $"{i}");
         }
     }
     

@@ -118,9 +118,7 @@ public abstract class NewAdvancedMesh : MonoBehaviour
             var aCrossUp2 = Quaternion.AngleAxis((90 * i) + 90 + addDegree, normalDir) *aCrossForward;
             
             var poss = new Vector3();
-
             if (!flip) poss = (aCrossUp * (theSize.x / 2)) + (aCrossUp2 * (theSize.y / 2));
-            
             else poss = aCrossUp * theSize.y / 2 + (aCrossUp2 * theSize.x / 2);
             
             corners[i] = poss + addPos;
