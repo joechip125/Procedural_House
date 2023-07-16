@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class SingleRoom : MonoBehaviour
@@ -59,21 +60,9 @@ public class SingleRoom : MonoBehaviour
     {
         if (Application.isPlaying) return;
         
-        var pos = transform.position;
-        var cChange = 0f;
-        var add = 45;
-        var distance = Mathf.Sqrt(Mathf.Pow(200, 2) + Mathf.Pow(200, 2));
-        for (int i = 0; i < 4; i++)
-        {
-            
-            var aCrossUp = Quaternion.AngleAxis(add +  90 *i, Vector3.up) *Vector3.right;
-            var aCrossUp2 = Quaternion.AngleAxis(add + 135 +  90 *i, Vector3.up) *Vector3.right;
-            var next = pos + aCrossUp * distance;
-            Gizmos.color = new Color(0,cChange,0);
-            Gizmos.DrawLine(pos, next);
-            Gizmos.DrawLine(next, next  + aCrossUp2 * 100);
-            
-            cChange += 0.25f;
-        }
+        var roomSize = new Vector3(400, 100, 400);
+        var pos = transform.position + Vector3.up * (roomSize.y / 2);
+        Handles.DrawWireCube(pos, roomSize);
     }
+    
 }

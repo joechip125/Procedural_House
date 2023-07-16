@@ -273,7 +273,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4710687903862347867, guid: 9e9f5f0dd212d38498a64c55312d4e24, type: 3}
       propertyPath: circleResolution
-      value: 13
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
