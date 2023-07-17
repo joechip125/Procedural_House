@@ -220,9 +220,9 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             var y = aCrossUp2 * size.y;
             var newPos = new Vector3(size.x * aCrossUp2.x, 0, size.y * aCrossUp2.z) + pos;
             var newPos2 = pos + cos2;
-            Gizmos.DrawSphere(newPos2, 3);
+            Gizmos.DrawSphere(newPos, 3);
             Debug.Log($"cross: {aCrossUp2}, cross2 {aCrossUp3} x: {x}, y: {y}, total {x + y}, cos: {cos} cos2: {cos2}");
-            Handles.Label(newPos2, $"{i}");
+            Handles.Label(newPos, $"{i}");
         }
     }
     
