@@ -208,7 +208,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
 
         var aCrossForward2 = Vector3.Cross(dir,  Vector3.up).normalized;
         var singDeg = numDeg / resolution;
-        var aDeg = 0f;
 
         for (int i = 0; i <= resolution; i++)
         {
