@@ -102,6 +102,34 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         var rez = 12;
         var pos = transform.position;
         CircleFloor(pos, Vector3.forward, 360, rez);
+        Sides(1, Vertices.Count);
+    }
+
+    private void Sides(int first, int last)
+    {
+        Debug.Log(Vertices.Count);
+        var depth = 20;
+
+        Vertices.Add(Vertices[first] + Vector3.down * depth);
+        Vertices.Add(Vertices[first + 1] + Vector3.down * depth);
+        
+        Triangles.Add(first + 1);
+        Triangles.Add(first);
+        Triangles.Add(last);
+        
+        Triangles.Add(last);
+        Triangles.Add(last + 1);
+        Triangles.Add(first + 1);
+        
+        for (int i = first; i < last; i++)
+        {
+            Vertices.Add(Vertices[last + i] + Vector3.down * depth);
+            
+            Triangles.Add(first + 1);
+            Triangles.Add(first);
+            Triangles.Add(last);
+        }
+        UpdateMesh();
     }
     
     private void MakeGrid(Vector3 totalSize, Vector2Int numberTiles)
@@ -211,7 +239,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     private void CircleTest(Vector3 pos, Vector3 dir, float numDeg, int resolution)
     {
         Gizmos.DrawSphere(pos, 3);
-        var size = new Vector2(200, 100);
+        var size = new Vector2(200, 200);
 
         var aCrossForward2 = Vector3.Cross(dir,  Vector3.up).normalized;
         var singDeg = numDeg / resolution;
@@ -228,8 +256,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             var newPos = new Vector3(size.x * aCrossUp2.x, 0, size.y * aCrossUp2.z) + pos;
             var newPos2 = pos + cos2;
             Gizmos.DrawSphere(newPos, 3);
-            Debug.Log($"cross: {aCrossUp2}, cross2 {aCrossUp3} x: {x}, y: {y}, total {x + y}, cos: {cos} cos2: {cos2}");
-            Handles.Label(newPos, $"{i}");
+            Handles.Label(newPos + Vector3.up * 10, $"{i}");
         }
     }
     
@@ -239,6 +266,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         var pos = transform.position;
         if (circleResolution <= 0) return;
         
-        CircleTest(pos, Vector3.forward, 180, circleResolution);
+        CircleTest(pos, Vector3.forward, 360, circleResolution);
     }
 }
