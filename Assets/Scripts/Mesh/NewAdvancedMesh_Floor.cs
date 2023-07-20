@@ -99,35 +99,32 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
 
     private void CylinderTest()
     {
-        var rez = 12;
         var pos = transform.position;
-        CircleFloor(pos, Vector3.forward, 360, rez);
+        CircleFloor(pos, Vector3.forward, 360, circleResolution);
         Sides(1, Vertices.Count);
     }
 
     private void Sides(int first, int last)
     {
-        Debug.Log(Vertices.Count);
         var depth = 20;
-
-        Vertices.Add(Vertices[first] + Vector3.down * depth);
-        Vertices.Add(Vertices[first + 1] + Vector3.down * depth);
-        
-        Triangles.Add(first + 1);
-        Triangles.Add(first);
-        Triangles.Add(last);
-        
-        Triangles.Add(last);
-        Triangles.Add(last + 1);
-        Triangles.Add(first + 1);
+        var add = 0;
         
         for (int i = first; i < last; i++)
         {
-            Vertices.Add(Vertices[last + i] + Vector3.down * depth);
+            Vertices.Add(Vertices[i] + Vector3.down * depth);
+
+            if (i < last - 1)
+            {
+                Triangles.Add(i + 1);
+                Triangles.Add(i);
+                Triangles.Add(last + add);
+                
+                Triangles.Add(last + add);
+                Triangles.Add(last + add + 1);
+                Triangles.Add(i + 1);
+            }
             
-            Triangles.Add(first + 1);
-            Triangles.Add(first);
-            Triangles.Add(last);
+            add++;
         }
         UpdateMesh();
     }
@@ -259,8 +256,11 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             Handles.Label(newPos + Vector3.up * 10, $"{i}");
         }
     }
-    
- 
+
+    private void SidesTest()
+    {
+        
+    }
     private void OnDrawGizmos()
     {
         var pos = transform.position;
