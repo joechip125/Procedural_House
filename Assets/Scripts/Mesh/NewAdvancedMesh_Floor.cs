@@ -57,7 +57,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     {
         InitMesh();
         ApplyMaterial(aMaterial);
-        CircleFloor(transform.position, Vector3.forward, 180, circleResolution);
+        CylinderTest();
     }
 
     public void SetValuesAndActivate()
@@ -97,6 +97,13 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         
     }
 
+    private void CylinderTest()
+    {
+        var rez = 12;
+        var pos = transform.position;
+        CircleFloor(pos, Vector3.forward, 360, rez);
+    }
+    
     private void MakeGrid(Vector3 totalSize, Vector2Int numberTiles)
     {
         var lineCount = Vertices.Count;
@@ -178,7 +185,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         Vertices.Add(pos);
         var adder = Vertices.Count;
         var vertIndex = Vertices.Count - 1;
-        var size = new Vector2(200, 100);
+        var size = new Vector2(200, 200);
 
         var first = adder;
         var last = first + resolution;
