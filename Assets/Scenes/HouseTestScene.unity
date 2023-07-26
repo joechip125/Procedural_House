@@ -196,6 +196,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NewAdvancedMesh_Floor
       objectReference: {fileID: 0}
+    - target: {fileID: 4710687903862347866, guid: 9e9f5f0dd212d38498a64c55312d4e24, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4710687903862347867, guid: 9e9f5f0dd212d38498a64c55312d4e24, type: 3}
       propertyPath: circleResolution
       value: 30
