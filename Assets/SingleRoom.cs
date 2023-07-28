@@ -12,10 +12,17 @@ public class SingleRoom : MonoBehaviour
     private Vector3 theSize;
 
     private List<TileInfo> infos = new();
-
-    void Start()
+    
+    private void Awake()
     {
-       // InitRoom(new Vector3(100,100,100));
+        
+    }
+
+    public void ExpandRoom(Vector3 newSize, int oldIndex)
+    {
+        var old = infos[oldIndex];
+        if (old == default) return;
+        
     }
 
     private void InitRoom(Vector3 roomSize)
