@@ -22,7 +22,15 @@ public class SingleRoom : MonoBehaviour
     {
         var old = infos[oldIndex];
         if (old == default) return;
-        
+        var nextPos = old.size;
+    }
+
+    private void GetNextIndex(Vector2Int startIndex)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            
+        }
     }
 
     private void InitRoom(Vector3 roomSize)
