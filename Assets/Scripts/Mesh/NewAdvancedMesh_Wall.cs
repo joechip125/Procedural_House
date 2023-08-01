@@ -39,8 +39,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         InitMesh();
         ApplyMaterial(aMaterial);
-        //AddStripsSin(transform.position, new Vector2(20,40), numberTiles);
-        TunnelVerts(transform.position, wallNormal, new Vector3(100,100,40));
     }
     
     
