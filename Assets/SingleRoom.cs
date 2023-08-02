@@ -38,6 +38,10 @@ public class SingleRoom : MonoBehaviour
         meshes.Add(Instantiate(spawnable[0], transform).GetComponent<NewAdvancedMesh>());
         var temp = (NewAdvancedMesh_Floor)meshes[^1];
         temp.SetValuesAndActivate();
+        
+        meshes.Add(Instantiate(spawnable[1], new Vector3(), Quaternion.identity, transform).GetComponent<NewAdvancedMesh>());
+        var temp1 = (NewAdvancedMesh_Wall)meshes[^1];
+        temp1.InitWall(new Vector3(1,0,0), new Vector2(400,100), 4);
     }
 
     public void AddDoor(int number)
