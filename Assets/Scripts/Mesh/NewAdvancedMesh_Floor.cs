@@ -52,18 +52,11 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         new Vector3(0, 0, 1),
         new Vector3(1, 0, 1), 
         new Vector3(1, 0, 0) };
-
-    private void Awake()
+    
+    public void SetValuesAndActivate()
     {
         InitMesh();
         ApplyMaterial(aMaterial);
-        CylinderTest();
-    }
-
-    public void SetValuesAndActivate()
-    {
-        ApplyMaterial(aMaterial);
-        CircleTest(transform.position, Vector3.forward, 180, circleResolution);
         MakeGrid(new Vector3(400,100,400), new Vector2Int(5,5));
     }
 

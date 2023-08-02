@@ -15,7 +15,7 @@ public class SingleRoom : MonoBehaviour
     
     private void Awake()
     {
-        
+        InitRoom();
     }
 
     public void ExpandRoom(Vector3 newSize, int oldIndex)
@@ -33,7 +33,7 @@ public class SingleRoom : MonoBehaviour
         }
     }
 
-    private void InitRoom(Vector3 roomSize)
+    private void InitRoom()
     {
         meshes.Add(Instantiate(spawnable[0], transform).GetComponent<NewAdvancedMesh>());
         var temp = (NewAdvancedMesh_Floor)meshes[^1];
@@ -98,7 +98,7 @@ public class SingleRoom : MonoBehaviour
     private void OnDrawGizmos()
     {
         if (Application.isPlaying) return;
-        RoomTest();
+       // RoomTest();
 
         foreach (var i in infos)
         {
