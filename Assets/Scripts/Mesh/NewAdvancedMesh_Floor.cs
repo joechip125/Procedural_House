@@ -128,7 +128,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
 
         var pos = -new Vector3(totalSize.x, 0, totalSize.z) / 2;
         var singleS = new Vector3(totalSize.x / (numberTiles.x - 1), totalSize.y, totalSize.z / (numberTiles.y - 1));
-        
+        Debug.Log($"{singleS}");
         info.Add(new TileInfo()
         {
             index = Vector2Int.zero,
