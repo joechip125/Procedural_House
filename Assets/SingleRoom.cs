@@ -27,19 +27,24 @@ public class SingleRoom : MonoBehaviour
     private void InitRoom()
     {
         var center = transform.position;
+        AddSquare(center);
         
         meshes.Add(Instantiate(spawnable[0], transform).GetComponent<NewAdvancedMesh>());
         var temp = (NewAdvancedMesh_Floor)meshes[^1];
         temp.SetValuesAndActivate(sizeX, sizeY);
         
-        //meshes.Add(Instantiate(spawnable[1], new Vector3(-200,0,200), Quaternion.identity, transform).GetComponent<NewAdvancedMesh>());
-        //var temp1 = (NewAdvancedMesh_Wall)meshes[^1];
-        //temp1.InitWall(new Vector3(1,0,0), new Vector2(400,100), 4);
+        Debug.Log($"corner 0:{corners[0]}");
+        
+        meshes.Add(Instantiate(spawnable[1], corners[0], Quaternion.identity, transform).GetComponent<NewAdvancedMesh>());
+        var temp1 = (NewAdvancedMesh_Wall)meshes[^1];
+        var angle = Quaternion.AngleAxis(180, Vector3.up) *Vector3.right;
+        temp1.InitWall(angle, new Vector2(400,100), 4);
     }
 
-    private void AddSquare(float degreeAdjust)
+    private void AddSquare(Vector3 pos, float degreeAdjust = 0)
     {
-        if (tempVectors.Length < 1)
+        tempVectors = new Vector3[4];
+        if (tempVectors.Length != 4)
         {
             tempVectors = new Vector3[4];
         }
@@ -48,7 +53,6 @@ public class SingleRoom : MonoBehaviour
             tempVectors[i] = Quaternion.AngleAxis(degreeAdjust + 90 * i, Vector3.up) *Vector3.right;
         }
         
-        var pos = transform.position;
         var tempPos = new Vector3();
         
         for (int i = 0; i < tempVectors.Length; i++)

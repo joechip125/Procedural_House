@@ -291,6 +291,14 @@ PrefabInstance:
       value: SingleRoom
       objectReference: {fileID: 0}
     - target: {fileID: 6735426867609371292, guid: 2cd49f33cd39a2a4da8d9de96c5c0a2e, type: 3}
+      propertyPath: sizeX
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 6735426867609371292, guid: 2cd49f33cd39a2a4da8d9de96c5c0a2e, type: 3}
+      propertyPath: sizeY
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 6735426867609371292, guid: 2cd49f33cd39a2a4da8d9de96c5c0a2e, type: 3}
       propertyPath: adjust
       value: 0
       objectReference: {fileID: 0}
@@ -368,62 +376,3 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: b274a0ca8efd99b4a8d917f8c08bc7b0, type: 3}
---- !u!1001 &6463574988157795271
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 2
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 6463574987221778605, guid: c3df99260606db94c8dd80c1abf1bb7b, type: 3}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6463574987221778605, guid: c3df99260606db94c8dd80c1abf1bb7b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6463574987221778605, guid: c3df99260606db94c8dd80c1abf1bb7b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6463574987221778605, guid: c3df99260606db94c8dd80c1abf1bb7b, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6463574987221778605, guid: c3df99260606db94c8dd80c1abf1bb7b, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6463574987221778605, guid: c3df99260606db94c8dd80c1abf1bb7b, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6463574987221778605, guid: c3df99260606db94c8dd80c1abf1bb7b, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6463574987221778605, guid: c3df99260606db94c8dd80c1abf1bb7b, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6463574987221778605, guid: c3df99260606db94c8dd80c1abf1bb7b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6463574987221778605, guid: c3df99260606db94c8dd80c1abf1bb7b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6463574987221778605, guid: c3df99260606db94c8dd80c1abf1bb7b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6463574987221778607, guid: c3df99260606db94c8dd80c1abf1bb7b, type: 3}
-      propertyPath: m_Name
-      value: SimpleHouse
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_AddedGameObjects: []
-  m_SourcePrefab: {fileID: 100100000, guid: c3df99260606db94c8dd80c1abf1bb7b, type: 3}
