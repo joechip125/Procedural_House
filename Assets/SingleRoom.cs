@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using UnityEditor;
 using UnityEngine;
+using Color = UnityEngine.Color;
 
 public class SingleRoom : MonoBehaviour
 {
@@ -12,36 +13,30 @@ public class SingleRoom : MonoBehaviour
     private Vector3 theSize;
 
     private List<TileInfo> infos = new();
+    private List<Vector3> corners = new();
+    [SerializeField] private float adjust = 0;
     
     private void Awake()
     {
         InitRoom();
     }
-
-    public void ExpandRoom(Vector3 newSize, int oldIndex)
-    {
-        var old = infos[oldIndex];
-        if (old == default) return;
-        var nextPos = old.size;
-    }
-
-    private void GetNextIndex(Vector2Int startIndex)
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            
-        }
-    }
-
+    
     private void InitRoom()
     {
+        var center = transform.position;
+        
         meshes.Add(Instantiate(spawnable[0], transform).GetComponent<NewAdvancedMesh>());
         var temp = (NewAdvancedMesh_Floor)meshes[^1];
         temp.SetValuesAndActivate();
         
-        meshes.Add(Instantiate(spawnable[1], new Vector3(), Quaternion.identity, transform).GetComponent<NewAdvancedMesh>());
+        meshes.Add(Instantiate(spawnable[1], new Vector3(-200,0,200), Quaternion.identity, transform).GetComponent<NewAdvancedMesh>());
         var temp1 = (NewAdvancedMesh_Wall)meshes[^1];
         temp1.InitWall(new Vector3(1,0,0), new Vector2(400,100), 4);
+    }
+
+    private void AddSquare()
+    {
+        
     }
 
     public void AddDoor(int number)
@@ -102,12 +97,37 @@ public class SingleRoom : MonoBehaviour
     private void OnDrawGizmos()
     {
         if (Application.isPlaying) return;
-       // RoomTest();
+        var temp = new Vector3[4];
+       for (int i = 0; i < temp.Length; i++)
+       {
+           temp[i] = Quaternion.AngleAxis( adjust + 90 * i, Vector3.up) *Vector3.right;
+       }
 
-        foreach (var i in infos)
-        {
-            Handles.DrawWireCube( i.center + Vector3.up * (i.size.y / 2), i.size);
-        }
+       var add = 90;
+       var size = new Vector2(400, 200);
+       var pos = transform.position;
+       
+       
+       for (int i = 0; i < temp.Length; i++)
+       {
+           Gizmos.color = Color.red;
+           if (i == temp.Length - 1)
+           {
+               Gizmos.DrawLine(pos, pos + temp[0] * size.x + temp[^1] * size.y);
+           }
+           else
+           {
+               if (i % 2 == 0)
+               {
+                   Gizmos.DrawLine(pos, pos + temp[i] * size.x + temp[i + 1] * size.y);
+               }
+               else
+               {
+                   Gizmos.DrawLine(pos, pos + temp[i+ 1] * size.x + temp[i] * size.y); 
+               }
+           }
+        
+       }
     }
     
 }
