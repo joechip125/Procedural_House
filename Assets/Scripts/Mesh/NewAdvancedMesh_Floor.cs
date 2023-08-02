@@ -53,11 +53,11 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         new Vector3(1, 0, 1), 
         new Vector3(1, 0, 0) };
     
-    public void SetValuesAndActivate()
+    public void SetValuesAndActivate(float sizeX, float sizeY)
     {
         InitMesh();
         ApplyMaterial(aMaterial);
-        MakeGrid(new Vector3(400,100,400), new Vector2Int(5,5));
+        MakeGrid(new Vector3(sizeX,100,sizeY), new Vector2Int(5,5));
     }
 
     public void AddNewTile(Vector2Int addTile)
