@@ -106,6 +106,7 @@ public class SingleRoom : MonoBehaviour
        var add = 90;
        var size = new Vector2(400, 200);
        var pos = transform.position;
+       var tempDir = new Vector3();
        
        
        for (int i = 0; i < temp.Length; i++)
@@ -113,19 +114,21 @@ public class SingleRoom : MonoBehaviour
            Gizmos.color = Color.red;
            if (i == temp.Length - 1)
            {
-               Gizmos.DrawLine(pos, pos + temp[0] * size.x + temp[^1] * size.y);
+               tempDir = pos + temp[0] * size.x + temp[^1] * size.y;
+               
            }
            else
            {
                if (i % 2 == 0)
                {
-                   Gizmos.DrawLine(pos, pos + temp[i] * size.x + temp[i + 1] * size.y);
+                   tempDir = pos + temp[i] * size.x + temp[i + 1] * size.y;
                }
                else
                {
-                   Gizmos.DrawLine(pos, pos + temp[i+ 1] * size.x + temp[i] * size.y); 
+                   tempDir = pos + temp[i + 1] * size.x + temp[i] * size.y;
                }
            }
+           Gizmos.DrawLine(pos, pos + tempDir); 
         
        }
     }
