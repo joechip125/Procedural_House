@@ -38,8 +38,7 @@ public class SingleRoom : MonoBehaviour
             meshes.Add(Instantiate(spawnable[1], corners[i], Quaternion.identity, transform).GetComponent<NewAdvancedMesh>());
             var temp1 = (NewAdvancedMesh_Wall)meshes[^1];
             var angle = Quaternion.AngleAxis(180+ 90 * i, Vector3.up) *Vector3.right;
-            if(i % 2 == 0) temp1.InitWall(angle, new Vector2(sizeY,100), 4);
-            else temp1.InitWall(angle, new Vector2(sizeX,100), 4);
+            temp1.InitWall(angle, i % 2 == 0 ? new Vector2(sizeY, 100) : new Vector2(sizeX, 100), 4);
         }
     }
 
