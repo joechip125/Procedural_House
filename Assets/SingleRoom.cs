@@ -16,8 +16,8 @@ public class SingleRoom : MonoBehaviour
     private List<Vector3> corners = new();
     private Vector3[] tempVectors;
     [SerializeField] private float adjust = 0;
-    [SerializeField, Range(0, 1000)] private float sizeX = 400;
-    [SerializeField, Range(0, 1000)] private float sizeY = 400;
+    [SerializeField, Range(0, 1000)] private float sizeX;
+    [SerializeField, Range(0, 1000)] private float sizeY;
     
     private void Awake()
     {
@@ -32,13 +32,14 @@ public class SingleRoom : MonoBehaviour
         meshes.Add(Instantiate(spawnable[0], transform).GetComponent<NewAdvancedMesh>());
         var temp = (NewAdvancedMesh_Floor)meshes[^1];
         temp.SetValuesAndActivate(sizeX, sizeY);
-        
-        Debug.Log($"corner 0:{corners[0]}");
-        
-        meshes.Add(Instantiate(spawnable[1], corners[0], Quaternion.identity, transform).GetComponent<NewAdvancedMesh>());
-        var temp1 = (NewAdvancedMesh_Wall)meshes[^1];
-        var angle = Quaternion.AngleAxis(180, Vector3.up) *Vector3.right;
-        temp1.InitWall(angle, new Vector2(sizeY,100), 4);
+
+        for (int i = 0; i < corners.Count; i++)
+        {
+            meshes.Add(Instantiate(spawnable[1], corners[i], Quaternion.identity, transform).GetComponent<NewAdvancedMesh>());
+            var temp1 = (NewAdvancedMesh_Wall)meshes[^1];
+            var angle = Quaternion.AngleAxis(180+ 90 * i, Vector3.up) *Vector3.right;
+            temp1.InitWall(angle, new Vector2(sizeY,100), 4);    
+        }
     }
 
     private void AddSquare(Vector3 pos, float degreeAdjust = 0)
@@ -53,10 +54,10 @@ public class SingleRoom : MonoBehaviour
             tempVectors[i] = Quaternion.AngleAxis(degreeAdjust + 90 * i, Vector3.up) *Vector3.right;
         }
         
+        corners.Clear();
         var tempPos = new Vector3();
         sizeX /= 2;
         sizeY /= 2;
-        Debug.Log($"size_x: {sizeX} size_y {sizeY}");
         for (int i = 0; i < tempVectors.Length; i++)
         {
             if (i == tempVectors.Length - 1) tempPos = pos + tempVectors[0] * sizeX + tempVectors[^1] * sizeY;
@@ -67,6 +68,8 @@ public class SingleRoom : MonoBehaviour
             }
             corners.Add(tempPos);
         }
+        sizeX *= 2;
+        sizeY *= 2;
     }
 
     public void AddDoor(int number)
