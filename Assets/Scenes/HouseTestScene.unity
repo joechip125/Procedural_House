@@ -300,7 +300,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1638415911921875675, guid: 4558952e6c625164d90ea015e3641b49, type: 3}
       propertyPath: wallSize.x
-      value: 128.6
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 1638415911921875675, guid: 4558952e6c625164d90ea015e3641b49, type: 3}
       propertyPath: wallSize.y

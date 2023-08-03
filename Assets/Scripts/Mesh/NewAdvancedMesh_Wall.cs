@@ -26,7 +26,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     [SerializeField] private float length;
     [SerializeField] private float height;
     [SerializeField] private int numberTiles;
-    [SerializeField]private Vector2 wallSize;
+    [SerializeField]private Vector3 wallSize;
     [SerializeField]private Vector3 wallNormal;
    
     public List<WallInfo> wallInfos = new();
@@ -275,25 +275,27 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     }
     private void TunnelVerts(Vector3 center, Vector3 aDir, Vector3 size)
     {
-        SetSquare(-aDir, center, new Vector2(size.x, size.y));
+        SetSquare(aDir, center, new Vector2(size.x, size.y));
+        var add = Vertices.Count;
 
         foreach (var c in Corners)
         {
             Vertices.Add(c);
             Vertices.Add(c + aDir * size.z);
         }
-
-        Debug.Log($"{Vertices.Count}");
-        Triangles.Add(0);
-        Triangles.Add(1);
-        Triangles.Add(2);
         
-        var add = Vertices.Count;
+        //Triangles.Add(1);
+        //Triangles.Add(3);
+        //Triangles.Add(2);
+
         var temp = 0;
         var count = Directions.Length * 4;
-        for (int i = 0; i < Vertices.Count; i++)
+        for (int i = 0; i < 2; i++)
         {
-            Debug.Log($"{Vertices[i]}");
+            Triangles.Add(add);
+            Triangles.Add(add + 1);
+            Triangles.Add(add + 2);
+            add+= 2;
         }
         UpdateMesh();
     }
@@ -450,11 +452,14 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         var pos = transform.position;
         SetSquare(direction, pos, wallSize);
-
+        var count = 0;
+        
         for (int i = 0; i < Corners.Count; i++)
         {
             Gizmos.DrawSphere(Corners[i], 4);
-            Handles.Label(Corners[i], $"{i}");
+            Handles.Label(Corners[i], $"{count++}");
+            Gizmos.DrawSphere(Corners[i] + direction * wallSize.z, 4);
+            Handles.Label(Corners[i]+ direction * wallSize.z, $"{count++}");
         }
     }
 }
