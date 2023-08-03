@@ -196,10 +196,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         var adder = Vertices.Count;
         var vertIndex = Vertices.Count - 1;
         var size = new Vector2(200, 200);
-
-        var first = adder;
-        var last = first + resolution;
-
+        
         var aCrossForward2 = Vector3.Cross(dir,  Vector3.up).normalized;
         var singDeg = numDeg / resolution;
 

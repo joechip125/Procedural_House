@@ -79,13 +79,16 @@ public abstract class NewAdvancedMesh : MonoBehaviour
     }
     
     
-    protected void SetSquare(Vector3 normal, Vector3 pos, Vector2 size, float degreeAdjust = 0)
+    protected void SetSquare(Vector3 normalDir, Vector3 pos, Vector2 size, float degreeAdjust = 0)
     {
+        var aCrossForward = Vector3.Cross(normalDir, Vector3.up).normalized;
+        if (normalDir.y != 0) aCrossForward = Vector3.Cross(normalDir, Vector3.forward).normalized;
+        
         if (TempVectors.Length != 4) TempVectors = new Vector3[4];
         
         for (int i = 0; i < TempVectors.Length; i++)
         {
-            TempVectors[i] = Quaternion.AngleAxis(degreeAdjust + 90 * i, Vector3.up) *Vector3.right;
+            TempVectors[i]  = Quaternion.AngleAxis(degreeAdjust + 90 * i, normalDir) *aCrossForward;
         }
         
         Corners.Clear();
