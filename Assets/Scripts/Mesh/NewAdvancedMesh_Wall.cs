@@ -287,30 +287,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var count = Directions.Length * 4;
         for (int i = 0; i < count; i++)
         {
-            temp++;
-            if(temp % 4 == 0 && i != 0) continue;
-            
-            if (i > 10)
-            {
-                Triangles.Add(add + 1);
-                Triangles.Add(add);
-                Triangles.Add(i);
-                
-                Triangles.Add(i + 1);
-                Triangles.Add(add + 1);
-                Triangles.Add(i);
-                add++;
-            }
-            else
-            {
-                Triangles.Add(i + 5);
-                Triangles.Add(i + 4);
-                Triangles.Add(i);
-            
-                Triangles.Add(i);
-                Triangles.Add(i + 1);
-                Triangles.Add(i + 5);
-            }
+           
         }
         UpdateMesh();
     }
