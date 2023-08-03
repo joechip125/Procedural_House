@@ -44,27 +44,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     
     private void AddDoor(Vector3 pos, Vector3 size, Vector3 normalDir)
     {
-        var aCrossForward = Vector3.Cross(normalDir, Vector3.up).normalized;
-        pos -= normalDir * size.z / 2;
-        var maxHeight = 100f;
         
-        
-        for (int i = 0; i < 4; i++)
-        {
-            var panelSize = i % 2 == 0 ? new Vector2(size.z, size.x) : new Vector2(size.z, size.y);
-
-            var aCrossUp = Quaternion.AngleAxis((90 * i), normalDir) *aCrossForward;
-            var aPlace = pos + Vector3.Scale(size / 2, aCrossUp);
-
-            SimplePanel(aPlace, -aCrossUp, panelSize);
-        }
-
-        if (size.y >= maxHeight) return;
-        
-        var theSize = new Vector2(size.x, maxHeight - size.y);
-        var addUp = Vector3.up * (size.y / 2 + theSize.y / 2);
-        SimplePanel( pos + addUp + normalDir * (-size.z / 2), -normalDir, theSize);
-        SimplePanel(pos + addUp +normalDir * (size.z / 2), normalDir, theSize);
     }
 
     public void AddDoor(int place)
