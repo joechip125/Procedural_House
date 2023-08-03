@@ -44,7 +44,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     
     private void AddDoor(Vector3 pos, Vector3 size, Vector3 normalDir)
     {
-        
+        TunnelVerts(pos, new Vector3(1,0,0), size);
     }
 
     public void AddDoor(int place)
@@ -274,24 +274,18 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     }
     private void TunnelVerts(Vector3 center, Vector3 aDir, Vector3 size)
     {
-        var aCrossForward = Vector3.Cross(aDir, Vector3.up).normalized;
+        var aCrossRight = Vector3.Cross(aDir, Vector3.up).normalized;
         
         if(Directions.Length != 4) Directions = new Vector3[4];
 
         for (int i = 0; i < 4; i++)
         {
-            var aCrossUp2 = Quaternion.AngleAxis(90+(90 * i), aDir) *aCrossForward;
-            var aCrossUp3 = Quaternion.AngleAxis( 180+(90 * i), aDir) *aCrossForward;
+            var aCrossUp2 = Quaternion.AngleAxis(90+(90 * i), aDir) *aCrossRight;
+            var aCrossUp3 = Quaternion.AngleAxis( 180+(90 * i), aDir) *aCrossRight;
             
-            if (i % 2 == 0)
-            {
-                Directions[i] =  aCrossUp2 * size.y / 2 + aCrossUp3 * size.x / 2;
-            }
-            else
-            {
-                Directions[i] =  aCrossUp2 * size.x / 2 + aCrossUp3 * size.y / 2;
-            }
-
+            if (i % 2 == 0) Directions[i] =  aCrossUp2 * size.y / 2 + aCrossUp3 * size.x / 2;
+            else Directions[i] =  aCrossUp2 * size.x / 2 + aCrossUp3 * size.y / 2;
+            
             Directions[i] += center;
         }
 

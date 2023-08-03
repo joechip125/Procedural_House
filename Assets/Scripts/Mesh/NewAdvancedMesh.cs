@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TMPro.EditorUtilities;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
@@ -87,7 +88,17 @@ public abstract class NewAdvancedMesh : MonoBehaviour
             
         }
     }
-    
+
+
+    protected void SetCorners(Vector3 normalDir)
+    {
+        var aCrossForward = Vector3.Cross(normalDir, Vector3.up).normalized;
+        if (normalDir.y != 0)
+        {
+            aCrossForward = Vector3.Cross(normalDir, Vector3.forward).normalized;
+        }
+        var aCrossUp = Quaternion.AngleAxis(89, normalDir) *aCrossForward;
+    }
     
     public Vector3 RotateAroundAxisReturn(Vector3 normalDir,float degreeInc, float startDeg = 0)
     {
