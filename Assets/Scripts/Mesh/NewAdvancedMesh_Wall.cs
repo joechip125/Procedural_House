@@ -274,33 +274,15 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     }
     private void TunnelVerts(Vector3 center, Vector3 aDir, Vector3 size)
     {
-        var aCrossRight = Vector3.Cross(aDir, Vector3.up).normalized;
-        
-        if(Directions.Length != 4) Directions = new Vector3[4];
+        SetSquare(-aDir, center, new Vector2(size.x, size.y));
 
-        for (int i = 0; i < 4; i++)
+        foreach (var c in Corners)
         {
-            var aCrossUp2 = Quaternion.AngleAxis(90+(90 * i), aDir) *aCrossRight;
-            var aCrossUp3 = Quaternion.AngleAxis( 180+(90 * i), aDir) *aCrossRight;
-            
-            if (i % 2 == 0) Directions[i] =  aCrossUp2 * size.y / 2 + aCrossUp3 * size.x / 2;
-            else Directions[i] =  aCrossUp2 * size.x / 2 + aCrossUp3 * size.y / 2;
-            
-            Directions[i] += center;
+            Vertices.Add(c);
+            Vertices.Add(c + aDir * size.z);
         }
-
+        
         var add = Vertices.Count;
-        
-        for (int i = 0; i < 4; i++)
-        {
-            var aVec = Vector3.zero;
-            for (int j = 0; j < 4; j++)
-            {
-                Vertices.Add(Directions[i] + aVec);
-                aVec += aDir * size.z;
-            }
-        }
-
         var temp = 0;
         var count = Directions.Length * 4;
         for (int i = 0; i < count; i++)
