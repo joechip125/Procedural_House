@@ -39,6 +39,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         InitMesh();
         ApplyMaterial(aMaterial);
+        TunnelVerts(transform.position, direction, wallSize);
     }
     
     
@@ -281,13 +282,18 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             Vertices.Add(c);
             Vertices.Add(c + aDir * size.z);
         }
+
+        Debug.Log($"{Vertices.Count}");
+        Triangles.Add(0);
+        Triangles.Add(1);
+        Triangles.Add(2);
         
         var add = Vertices.Count;
         var temp = 0;
         var count = Directions.Length * 4;
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < Vertices.Count; i++)
         {
-           
+            Debug.Log($"{Vertices[i]}");
         }
         UpdateMesh();
     }
@@ -443,7 +449,12 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void OnDrawGizmos()
     {
         var pos = transform.position;
-        
-        //Tunnel(pos, wallNormal, new Vector3(100,100,40));
+        SetSquare(direction, pos, wallSize);
+
+        for (int i = 0; i < Corners.Count; i++)
+        {
+            Gizmos.DrawSphere(Corners[i], 4);
+            Handles.Label(Corners[i], $"{i}");
+        }
     }
 }
