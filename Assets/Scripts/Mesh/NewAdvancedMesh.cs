@@ -12,13 +12,15 @@ public abstract class NewAdvancedMesh : MonoBehaviour
     [NonSerialized] protected List<int> Triangles = new ();
     protected Vector3[] Directions = new Vector3[4];
     
-    protected Vector3[] Positions = new Vector3[4];
+    protected Vector3[] TempVectors = new Vector3[4];
     
-    private readonly Vector3[] corners = new[]
+    private readonly Vector3[] panelCorners = new[]
     {   new Vector3(-1,0,-1), 
         new Vector3(0, 0, 1),
         new Vector3(1, 0, 1), 
         new Vector3(1, 0, 0)};
+
+    protected List<Vector3> Corners = new();
 
     protected virtual void InitMesh()
     {
@@ -75,29 +77,31 @@ public abstract class NewAdvancedMesh : MonoBehaviour
             Directions[i] = aCrossUp;
         }
     }
-
-    protected void SetPositionsBox(int numPos, Vector3 boxNormal)
+    
+    
+    protected void SetSquare(Vector3 normal, Vector3 pos, Vector2 size, float degreeAdjust = 0)
     {
-        if (numPos >= Positions.Length)
+        if (TempVectors.Length != 4) TempVectors = new Vector3[4];
+        
+        for (int i = 0; i < TempVectors.Length; i++)
         {
-            Positions = new Vector3[numPos];
+            TempVectors[i] = Quaternion.AngleAxis(degreeAdjust + 90 * i, Vector3.up) *Vector3.right;
         }
+        
+        Corners.Clear();
+        var tempPos = new Vector3();
 
-        for (int i = 0; i < numPos; i++)
+        size /= 2;
+        for (int i = 0; i < TempVectors.Length; i++)
         {
-            
+            if (i == TempVectors.Length - 1) tempPos = pos + TempVectors[0] * size.x + TempVectors[^1] * size.y;
+            else
+            {
+                if (i % 2 == 0) tempPos = pos + TempVectors[i] * size.x + TempVectors[i + 1] * size.y;
+                else tempPos = pos + TempVectors[i + 1] * size.x + TempVectors[i] * size.y;
+            }
+            Corners.Add(tempPos);
         }
-    }
-
-
-    protected void SetCorners(Vector3 normalDir)
-    {
-        var aCrossForward = Vector3.Cross(normalDir, Vector3.up).normalized;
-        if (normalDir.y != 0)
-        {
-            aCrossForward = Vector3.Cross(normalDir, Vector3.forward).normalized;
-        }
-        var aCrossUp = Quaternion.AngleAxis(89, normalDir) *aCrossForward;
     }
     
     public Vector3 RotateAroundAxisReturn(Vector3 normalDir,float degreeInc, float startDeg = 0)
@@ -132,12 +136,12 @@ public abstract class NewAdvancedMesh : MonoBehaviour
             if (!flip) poss = (aCrossUp * (theSize.x / 2)) + (aCrossUp2 * (theSize.y / 2));
             else poss = aCrossUp * theSize.y / 2 + (aCrossUp2 * theSize.x / 2);
             
-            corners[i] = poss + addPos;
+            panelCorners[i] = poss + addPos;
             
             flip = !flip;
         }
         
-        AddQuad(corners[0], corners[1], corners[2], corners[3]);
+        AddQuad(panelCorners[0], panelCorners[1], panelCorners[2], panelCorners[3]);
     }
     
     protected void RemoveTriangle(int start, int count)

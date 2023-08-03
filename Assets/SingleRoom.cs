@@ -69,7 +69,6 @@ public class SingleRoom : MonoBehaviour
             }
             corners.Add(tempPos);
         }
-       
     }
 
     public void AddDoor(int number)

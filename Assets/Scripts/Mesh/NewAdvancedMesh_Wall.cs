@@ -44,7 +44,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     
     private void AddDoor(Vector3 pos, Vector3 size, Vector3 normalDir)
     {
-        TunnelVerts(pos, new Vector3(1,0,0), size);
+        TunnelVerts(pos, normalDir, size);
     }
 
     public void AddDoor(int place)
@@ -109,7 +109,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         var aCrossForward = Vector3.Cross(aNormal, Vector3.up).normalized;
         
-        if(Positions.Length != 4) Positions = new Vector3[4];
+        if(TempVectors.Length != 4) TempVectors = new Vector3[4];
 
         for (int i = 0; i < 4; i++)
         {
@@ -118,13 +118,13 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             
             if (i % 2 == 0)
             {
-                Positions[i] =  aCrossUp2 * size.y / 2 + aCrossUp3 * size.x / 2;
+                TempVectors[i] =  aCrossUp2 * size.y / 2 + aCrossUp3 * size.x / 2;
             }
             else
             {
-                Positions[i] =  aCrossUp2 * size.x / 2 + aCrossUp3 * size.y / 2;
+                TempVectors[i] =  aCrossUp2 * size.x / 2 + aCrossUp3 * size.y / 2;
             }
-            Positions[i] += addPos;
+            TempVectors[i] += addPos;
         }        
     }
     
@@ -135,13 +135,13 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
         SetPositionsSquare(wallDirection, size, addPos);
 
-        for (int i = 0; i < Positions.Length; i++)
+        for (int i = 0; i < TempVectors.Length; i++)
         {
-            if (i != Positions.Length - 1)
-                AddQuad(Positions[i], Positions[i] + frwAmount, Positions[i + 1] + frwAmount, Positions[i + 1]);
+            if (i != TempVectors.Length - 1)
+                AddQuad(TempVectors[i], TempVectors[i] + frwAmount, TempVectors[i + 1] + frwAmount, TempVectors[i + 1]);
             else
             {
-                AddQuad(Positions[i], Positions[i] + frwAmount, Positions[0] + frwAmount, Positions[0]);
+                AddQuad(TempVectors[i], TempVectors[i] + frwAmount, TempVectors[0] + frwAmount, TempVectors[0]);
             }
         }
 
@@ -155,21 +155,21 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             {
                 SetPositionsSquare(wallDirection, newSize2, 
                     addPos + aCrossUp2 * ((size.y + newSize2.y) / 2));
-                AddQuad(Positions[3], Positions[2], Positions[1] ,Positions[0]);
+                AddQuad(TempVectors[3], TempVectors[2], TempVectors[1] ,TempVectors[0]);
                 
                 SetPositionsSquare(-wallDirection, newSize2, 
                     frwAmount + addPos + aCrossUp2 * ((size.y + newSize2.y) / 2));
-                AddQuad(Positions[3], Positions[2], Positions[1] ,Positions[0]);
+                AddQuad(TempVectors[3], TempVectors[2], TempVectors[1] ,TempVectors[0]);
             }
             else
             {
                 SetPositionsSquare(wallDirection, newSize, 
                     addPos + aCrossUp2 * ((size.x + newSize.x) / 2));
-                AddQuad(Positions[3], Positions[2], Positions[1] ,Positions[0]);
+                AddQuad(TempVectors[3], TempVectors[2], TempVectors[1] ,TempVectors[0]);
                 
                 SetPositionsSquare(-wallDirection, newSize, 
                     frwAmount + addPos + aCrossUp2 * ((size.x + newSize.x) / 2));
-                AddQuad(Positions[3], Positions[2], Positions[1] ,Positions[0]);
+                AddQuad(TempVectors[3], TempVectors[2], TempVectors[1] ,TempVectors[0]);
             }
         }
     }
@@ -180,11 +180,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var cross = Vector3.Cross(Vector3.up, wallDirection);
         var start = center - (cross * size.x + Vector3.up * size.y)/ 2;
         SetPositionsSquare(wallDirection, size, center);
-        AddQuad(Positions[0], Positions[1], Positions[2], Positions[3]);
+        AddQuad(TempVectors[0], TempVectors[1], TempVectors[2], TempVectors[3]);
 
         for (int i = 0; i < 4; i++)
         {
-            Debug.Log(Positions[i]);
+            Debug.Log(TempVectors[i]);
         }
     }
 
