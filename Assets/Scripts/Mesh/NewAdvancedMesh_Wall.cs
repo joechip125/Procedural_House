@@ -457,19 +457,46 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         
     }
+
+    private void SetPoints(Color pointColor,int num)
+    {
+        Gizmos.color = pointColor;
+        foreach (var c in Corners)
+        {
+            Gizmos.DrawSphere(c, 4);
+            Handles.Label(c, $"{num++}");
+        }
+    }
+    
+    private void SetPoints2(Color pointColor,int num)
+    {
+        Gizmos.color = pointColor;
+        
+        for (int i = 0; i < Corners.Count; i++)
+        {
+            Gizmos.DrawSphere(Corners[i], 4);
+            Handles.Label(Corners[i], $"{num++}");
+            Gizmos.DrawSphere(Corners[i] + direction * wallSize.z, 4);
+            Handles.Label(Corners[i]+ direction * wallSize.z, $"{num++}");
+        }
+    }
     
     private void OnDrawGizmos()
     {
         var pos = transform.position;
         SetSquare(direction, pos, wallSize);
         var count = 0;
-        
+        SetPoints(Color.green, count);
+        count += 4;
+        SetSquare(direction, pos, wallSize + new Vector3(50,50,0));
+        SetPoints(Color.red, count);
+
         for (int i = 0; i < Corners.Count; i++)
         {
-            Gizmos.DrawSphere(Corners[i], 4);
-            Handles.Label(Corners[i], $"{count++}");
-            Gizmos.DrawSphere(Corners[i] + direction * wallSize.z, 4);
-            Handles.Label(Corners[i]+ direction * wallSize.z, $"{count++}");
+            //Gizmos.DrawSphere(Corners[i], 4);
+            //Handles.Label(Corners[i], $"{count++}");
+            //Gizmos.DrawSphere(Corners[i] + direction * wallSize.z, 4);
+            //Handles.Label(Corners[i]+ direction * wallSize.z, $"{count++}");
         }
     }
 }
