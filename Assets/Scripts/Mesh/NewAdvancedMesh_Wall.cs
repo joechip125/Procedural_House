@@ -284,17 +284,27 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             Vertices.Add(c + aDir * size.z);
         }
         
-        //Triangles.Add(1);
-        //Triangles.Add(3);
-        //Triangles.Add(2);
-
-        var temp = 0;
-        var count = Directions.Length * 4;
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < Corners.Count; i++)
         {
+            if (i == Corners.Count - 1)
+            {
+                Triangles.Add(add);
+                Triangles.Add(add + 1);
+                Triangles.Add(1);
+                
+                Triangles.Add(1);
+                Triangles.Add(0);
+                Triangles.Add(add);
+                continue;
+            }
             Triangles.Add(add);
             Triangles.Add(add + 1);
             Triangles.Add(add + 2);
+            
+            Triangles.Add(add + 1);
+            Triangles.Add(add + 3);
+            Triangles.Add(add + 2);
+            
             add+= 2;
         }
         UpdateMesh();
