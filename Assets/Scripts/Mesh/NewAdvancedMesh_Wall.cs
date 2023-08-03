@@ -332,12 +332,20 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             {
                 Triangles.Add(current);
                 Triangles.Add(current + 4);
-                Triangles.Add(start + 4);      
+                Triangles.Add(start + 4); 
+                
+                Triangles.Add(current);
+                Triangles.Add(start + 4);
+                Triangles.Add(start);  
                 continue;
             }
             Triangles.Add(current);
             Triangles.Add(current + 4);
-            Triangles.Add(current + 5);    
+            Triangles.Add(current + 5);  
+            
+            Triangles.Add(current + 1);
+            Triangles.Add(current);
+            Triangles.Add(current + 5);  
         }
         
         UpdateMesh();
