@@ -27,7 +27,7 @@ public class SingleRoom : MonoBehaviour
     private void InitRoom()
     {
         var center = transform.position;
-        AddSquare(center);
+        AddSquare(center, new Vector2(sizeX, sizeY));
         
         meshes.Add(Instantiate(spawnable[0], transform).GetComponent<NewAdvancedMesh>());
         var temp = (NewAdvancedMesh_Floor)meshes[^1];
@@ -42,7 +42,7 @@ public class SingleRoom : MonoBehaviour
         }
     }
 
-    private void AddSquare(Vector3 pos, float degreeAdjust = 0)
+    private void AddSquare(Vector3 pos, Vector2 size, float degreeAdjust = 0)
     {
         tempVectors = new Vector3[4];
         if (tempVectors.Length != 4)
@@ -56,20 +56,19 @@ public class SingleRoom : MonoBehaviour
         
         corners.Clear();
         var tempPos = new Vector3();
-        sizeX /= 2;
-        sizeY /= 2;
+
+        size /= 2;
         for (int i = 0; i < tempVectors.Length; i++)
         {
-            if (i == tempVectors.Length - 1) tempPos = pos + tempVectors[0] * sizeX + tempVectors[^1] * sizeY;
+            if (i == tempVectors.Length - 1) tempPos = pos + tempVectors[0] * size.x + tempVectors[^1] * size.y;
             else
             {
-                if (i % 2 == 0) tempPos = pos + tempVectors[i] * sizeX + tempVectors[i + 1] * sizeY;
-                else tempPos = pos + tempVectors[i + 1] * sizeX + tempVectors[i] * sizeY;
+                if (i % 2 == 0) tempPos = pos + tempVectors[i] * size.x + tempVectors[i + 1] * size.y;
+                else tempPos = pos + tempVectors[i + 1] * size.x + tempVectors[i] * size.y;
             }
             corners.Add(tempPos);
         }
-        sizeX *= 2;
-        sizeY *= 2;
+       
     }
 
     public void AddDoor(int number)
