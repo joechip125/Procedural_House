@@ -39,7 +39,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         InitMesh();
         ApplyMaterial(aMaterial);
-        TunnelVerts(Vector3.zero, direction, wallSize);
+        //TunnelVerts(Vector3.zero, direction, wallSize);
+        SideVerts(Vector3.zero, direction, wallSize);
     }
     
     
@@ -310,6 +311,37 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         UpdateMesh();
     }
 
+    private void SideVerts(Vector3 pos, Vector3 dir, Vector3 innerSize)
+    {
+        var start = Vertices.Count;
+        for (int i = 0; i < 2; i++)
+        {
+            SetSquare(dir, pos, innerSize);
+            foreach (var t in Corners)
+            {
+                Vertices.Add(t);
+            }
+            innerSize += new Vector3(50, 50, 0);
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            var current = start + i;
+
+            if (i == 3)
+            {
+                Triangles.Add(current);
+                Triangles.Add(current + 4);
+                Triangles.Add(start + 4);      
+                continue;
+            }
+            Triangles.Add(current);
+            Triangles.Add(current + 4);
+            Triangles.Add(current + 5);    
+        }
+        
+        UpdateMesh();
+    }
 
     private void AddCorner()
     {
@@ -458,6 +490,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         
     }
 
+    private void AddVertSquare()
+    {
+        
+    }
+    
     private void SetPoints(Color pointColor,int num)
     {
         Gizmos.color = pointColor;
