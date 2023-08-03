@@ -39,8 +39,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         InitMesh();
         ApplyMaterial(aMaterial);
-        //TunnelVerts(Vector3.zero, direction, wallSize);
-        SideVerts(Vector3.zero, direction, wallSize);
+        TunnelVerts(Vector3.zero, direction, wallSize);
+        SideVerts(Vector3.zero +direction * wallSize.z, direction, wallSize);
     }
     
     
@@ -324,11 +324,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             innerSize += new Vector3(50, 50, 0);
         }
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < Corners.Count; i++)
         {
             var current = start + i;
 
-            if (i == 3)
+            if (i == Corners.Count - 1)
             {
                 Triangles.Add(current);
                 Triangles.Add(current + 4);
@@ -347,7 +347,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             Triangles.Add(current);
             Triangles.Add(current + 5);  
         }
-        
         UpdateMesh();
     }
 
