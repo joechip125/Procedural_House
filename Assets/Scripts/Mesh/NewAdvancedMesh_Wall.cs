@@ -39,7 +39,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         InitMesh();
         ApplyMaterial(aMaterial);
-        TunnelVerts(transform.position, direction, wallSize);
+        TunnelVerts(Vector3.zero, direction, wallSize);
     }
     
     
