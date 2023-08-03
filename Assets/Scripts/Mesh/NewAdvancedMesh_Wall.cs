@@ -40,7 +40,9 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         InitMesh();
         ApplyMaterial(aMaterial);
         TunnelVerts(Vector3.zero, direction, wallSize);
-        SideVerts(Vector3.zero +direction * wallSize.z, direction, wallSize);
+        var shift = direction * wallSize.z;
+        SideVerts(Vector3.zero +shift, direction, wallSize, new Vector2(50,50));
+        SideVerts(Vector3.zero, -direction, wallSize, new Vector2(50,50));
     }
     
     
@@ -311,7 +313,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         UpdateMesh();
     }
 
-    private void SideVerts(Vector3 pos, Vector3 dir, Vector3 innerSize)
+    private void SideVerts(Vector3 pos, Vector3 dir, Vector2 innerSize, Vector2 addSize)
     {
         var start = Vertices.Count;
         for (int i = 0; i < 2; i++)
@@ -321,7 +323,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             {
                 Vertices.Add(t);
             }
-            innerSize += new Vector3(50, 50, 0);
+            innerSize += new Vector2(addSize.x, addSize.y);
         }
 
         for (int i = 0; i < Corners.Count; i++)
