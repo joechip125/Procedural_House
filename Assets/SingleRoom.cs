@@ -22,12 +22,13 @@ public class SingleRoom : MonoBehaviour
     private void Awake()
     {
         InitRoom();
+        AddDoor(3);
     }
     
     private void InitRoom()
     {
         var center = transform.position;
-        AddSquare(center, new Vector2(sizeX, sizeY));
+        SetSquare(center, new Vector2(sizeX, sizeY));
         
         meshes.Add(Instantiate(spawnable[0], transform).GetComponent<NewAdvancedMesh>());
         var temp = (NewAdvancedMesh_Floor)meshes[^1];
@@ -42,7 +43,7 @@ public class SingleRoom : MonoBehaviour
         }
     }
 
-    private void AddSquare(Vector3 pos, Vector2 size, float degreeAdjust = 0)
+    private void SetSquare(Vector3 pos, Vector2 size, float degreeAdjust = 0)
     {
         tempVectors = new Vector3[4];
         if (tempVectors.Length != 4)

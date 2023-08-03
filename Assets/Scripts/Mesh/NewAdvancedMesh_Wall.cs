@@ -355,9 +355,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 Triangles.Add(i + 1);
                 Triangles.Add(i + 5);
             }
-            
         }
-        
         UpdateMesh();
     }
 
