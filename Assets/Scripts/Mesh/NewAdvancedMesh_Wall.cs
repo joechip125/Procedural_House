@@ -29,8 +29,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     [SerializeField]private Vector3 wallSize;
     [SerializeField]private Vector3 wallNormal;
     
-    [SerializeField, Range(0, 180)]private float adjustDeg = 0;
-   
+    [SerializeField]private float adjustDeg;
+
     public List<WallInfo> wallInfos = new();
 
     private int lastVert;
@@ -291,14 +291,12 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var deg3 =  Quaternion.AngleAxis(adjustDeg, Vector3.up) *aDir;
         Gizmos.DrawLine(pos, pos + deg3 * sum2);
 
-        adjustDeg += 10;
-        add2 = length * (Mathf.Sin(Mathf.PI / 180 * adjustDeg) / Mathf.Cos(Mathf.PI / 180 * adjustDeg));
+        var adjustMore = adjustDeg + 10;
+        add2 = length * (Mathf.Sin(Mathf.PI / 180 * adjustMore) / Mathf.Cos(Mathf.PI / 180 * adjustMore));
         sum2 =Mathf.Sqrt( Mathf.Pow(length, 2) + Mathf.Pow(add2,2));
-        deg3 =  Quaternion.AngleAxis(adjustDeg, Vector3.up) *aDir;
+        deg3 =  Quaternion.AngleAxis(adjustMore, Vector3.up) *aDir;
         Gizmos.DrawLine(pos, pos + deg3 * sum2);
-
-        adjustDeg = 0;
-
+        
     }
     
     private void OnDrawGizmos()
