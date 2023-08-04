@@ -23,7 +23,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 {
 
     [SerializeField] private Vector3 direction;
-    [SerializeField] private float length;
+    [SerializeField] private float adjacent;
     [SerializeField] private float height;
     [SerializeField] private int numberTiles;
     [SerializeField]private Vector3 wallSize;
@@ -165,7 +165,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         ApplyMaterial(aMaterial);
         
         var pos = transform.position;
-        var single = length / numberTiles;
+        var single = adjacent / numberTiles;
        
         for (int i = 0; i < numberTiles; i++)
         {
@@ -279,20 +279,22 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void TangentWall(Vector3 aDir)
     {
         var pos = transform.position;
-        var tangent = 100f / 500f;
-        var newVal = tangent * length;
+        var tangent2 = 100f / adjacent;
+        var newVal = tangent2 * adjacent;
+        var addDegrees = adjustDeg;
         
-        Gizmos.DrawLine(pos, pos + aDir * length);
-        var add = length * (Mathf.Sin(Mathf.PI / 180 * adjustDeg) / Mathf.Cos(Mathf.PI / 180 * adjustDeg));
-        var sum =Mathf.Sqrt( Mathf.Pow(length, 2) + Mathf.Pow(add,2));
-        var deg1 =  Quaternion.AngleAxis(adjustDeg, Vector3.up) *aDir;
-        
-        Gizmos.color = Color.yellow;
-        var add2 = length * (Mathf.Sin(Mathf.PI / 180 * adjustDeg) / Mathf.Cos(Mathf.PI / 180 * adjustDeg));
-        var sum2 =Mathf.Sqrt( Mathf.Pow(length, 2) + Mathf.Pow(add2,2));
-        var deg3 =  Quaternion.AngleAxis(adjustDeg, Vector3.up) *aDir;
-        Gizmos.DrawLine(pos, pos + deg3 * sum2);
+        Gizmos.DrawLine(pos, pos + aDir * adjacent);
 
+        Gizmos.color = Color.yellow;
+
+        for (int i = 0; i < 4; i++)
+        {
+            var opposite = adjacent * (Mathf.Sin(Mathf.PI / 180 * addDegrees) / Mathf.Cos(Mathf.PI / 180 * addDegrees));
+            var hypo =Mathf.Sqrt( Mathf.Pow(adjacent, 2) + Mathf.Pow(opposite,2));
+            var deg =  Quaternion.AngleAxis(addDegrees, Vector3.up) *aDir;
+            Gizmos.DrawLine(pos, pos + deg * hypo);
+            addDegrees += 10;
+        }
     }
     
     private void OnDrawGizmos()
