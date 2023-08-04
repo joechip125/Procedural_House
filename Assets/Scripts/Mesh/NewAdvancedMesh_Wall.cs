@@ -110,8 +110,25 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 Vertices.Add(Corners[i] + addVec);
                 Vertices.Add(Corners[i] + addVec+ Vector3.up * 100);
                 addVec += wallRight * size.x / 4;
+              
             }
         }
+
+        var count = 0;
+        for (int i = 0; i < 13; i++)
+        {
+            Triangles.Add(count);
+            Triangles.Add(count + 1);
+            Triangles.Add(count + 3);
+            
+            Triangles.Add(count);
+            Triangles.Add(count + 3);
+            Triangles.Add(count + 2);
+            count += 2;
+        }
+
+        
+        UpdateMesh();
     }
     
     private void BuildWall()
