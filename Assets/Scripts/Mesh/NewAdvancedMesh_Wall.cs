@@ -279,14 +279,14 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void TangentWall(Vector3 aDir)
     {
         var pos = transform.position;
-        var tangent2 = 100f / adjacent;
-        var newVal = tangent2 * adjacent;
+        var arcTan = 100f / adjacent;
+        var newVal = arcTan * adjacent;
         var addDegrees = adjustDeg;
+        var hypo2 =Mathf.Sqrt( Mathf.Pow(adjacent, 2) + Mathf.Pow(100,2));
         
         Gizmos.DrawLine(pos, pos + aDir * adjacent);
 
         Gizmos.color = Color.yellow;
-
         for (int i = 0; i < 4; i++)
         {
             var opposite = adjacent * (Mathf.Sin(Mathf.PI / 180 * addDegrees) / Mathf.Cos(Mathf.PI / 180 * addDegrees));
