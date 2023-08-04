@@ -117,8 +117,20 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
 
         var count = 0;
-        for (int i = 0; i < 13; i++)
+        for (int i = 0; i < 16; i++)
         {
+            if (i == 15)
+            {
+                Triangles.Add(count);
+                Triangles.Add(count + 1);
+                Triangles.Add(1);  
+                
+                Triangles.Add(count);
+                Triangles.Add(1);
+                Triangles.Add(0);  
+                continue;
+            }
+            
             Triangles.Add(count);
             Triangles.Add(count + 1);
             Triangles.Add(count + 3);
@@ -128,8 +140,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             Triangles.Add(count + 2);
             count += 2;
         }
-
-        
         UpdateMesh();
     }
     
@@ -282,17 +292,23 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var arcTan = 100f / adjacent;
         var newVal = arcTan * adjacent;
         var addDegrees = adjustDeg;
+        var start = pos + aDir * adjacent;
+        var nextDir = Vector3.Cross(Vector3.up, aDir);
         var hypo2 =Mathf.Sqrt( Mathf.Pow(adjacent, 2) + Mathf.Pow(100,2));
-        
+        var opposite2 = adjacent * (Mathf.Sin(Mathf.PI / 180 * addDegrees) / Mathf.Cos(Mathf.PI / 180 * addDegrees));
+        var angle2= Quaternion.AngleAxis(23, Vector3.up) *aDir;
         Gizmos.DrawLine(pos, pos + aDir * adjacent);
+        
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(pos, start + nextDir * -500);
 
         Gizmos.color = Color.yellow;
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 0; i++)
         {
             var opposite = adjacent * (Mathf.Sin(Mathf.PI / 180 * addDegrees) / Mathf.Cos(Mathf.PI / 180 * addDegrees));
-            var hypo =Mathf.Sqrt( Mathf.Pow(adjacent, 2) + Mathf.Pow(opposite,2));
-            var deg =  Quaternion.AngleAxis(addDegrees, Vector3.up) *aDir;
-            Gizmos.DrawLine(pos, pos + deg * hypo);
+            var hypo= Mathf.Sqrt( Mathf.Pow(adjacent, 2) + Mathf.Pow(opposite,2));
+            var angle= Quaternion.AngleAxis(addDegrees, Vector3.up) *aDir;
+            Gizmos.DrawLine(pos, pos + angle * hypo);
             addDegrees += 10;
         }
     }
