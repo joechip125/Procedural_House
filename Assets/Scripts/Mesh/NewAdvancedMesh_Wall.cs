@@ -28,6 +28,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     [SerializeField] private int numberTiles;
     [SerializeField]private Vector3 wallSize;
     [SerializeField]private Vector3 wallNormal;
+    
+    [SerializeField, Range(0, 180)]private float adjustDeg = 0;
    
     public List<WallInfo> wallInfos = new();
 
@@ -273,11 +275,35 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             Handles.Label(Corners[i]+ direction * wallSize.z, $"{num++}");
         }
     }
+
+    private void TangentWall(Vector3 aDir)
+    {
+        var pos = transform.position;
+        
+        Gizmos.DrawLine(pos, pos + aDir * length);
+        var add = length * (Mathf.Sin(Mathf.PI / 180 * adjustDeg) / Mathf.Cos(Mathf.PI / 180 * adjustDeg));
+        var sum =Mathf.Sqrt( Mathf.Pow(length, 2) + Mathf.Pow(add,2));
+        var deg1 =  Quaternion.AngleAxis(adjustDeg, Vector3.up) *aDir;
+        
+        Gizmos.color = Color.yellow;
+        var add2 = length * (Mathf.Sin(Mathf.PI / 180 * adjustDeg) / Mathf.Cos(Mathf.PI / 180 * adjustDeg));
+        var sum2 =Mathf.Sqrt( Mathf.Pow(length, 2) + Mathf.Pow(add2,2));
+        var deg3 =  Quaternion.AngleAxis(adjustDeg, Vector3.up) *aDir;
+        Gizmos.DrawLine(pos, pos + deg3 * sum2);
+
+        adjustDeg += 10;
+        add2 = length * (Mathf.Sin(Mathf.PI / 180 * adjustDeg) / Mathf.Cos(Mathf.PI / 180 * adjustDeg));
+        sum2 =Mathf.Sqrt( Mathf.Pow(length, 2) + Mathf.Pow(add2,2));
+        deg3 =  Quaternion.AngleAxis(adjustDeg, Vector3.up) *aDir;
+        Gizmos.DrawLine(pos, pos + deg3 * sum2);
+
+        adjustDeg = 0;
+
+    }
     
     private void OnDrawGizmos()
     {
-        var pos = transform.position;
-        SetSquare(direction, pos, wallSize);
         MakeWalls();
+        TangentWall(direction);
     }
 }

@@ -252,7 +252,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1638415911921875670, guid: 4558952e6c625164d90ea015e3641b49, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 105
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1638415911921875670, guid: 4558952e6c625164d90ea015e3641b49, type: 3}
       propertyPath: m_LocalPosition.z
@@ -296,7 +296,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1638415911921875675, guid: 4558952e6c625164d90ea015e3641b49, type: 3}
       propertyPath: length
-      value: 556.7
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1638415911921875675, guid: 4558952e6c625164d90ea015e3641b49, type: 3}
+      propertyPath: adjustDeg
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 1638415911921875675, guid: 4558952e6c625164d90ea015e3641b49, type: 3}
       propertyPath: wallSize.x
@@ -317,6 +321,10 @@ PrefabInstance:
     - target: {fileID: 1638415911921875675, guid: 4558952e6c625164d90ea015e3641b49, type: 3}
       propertyPath: direction.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1638415911921875675, guid: 4558952e6c625164d90ea015e3641b49, type: 3}
+      propertyPath: numberTiles
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1638415911921875675, guid: 4558952e6c625164d90ea015e3641b49, type: 3}
       propertyPath: wallNormal.x
