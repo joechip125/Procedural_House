@@ -279,6 +279,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void TangentWall(Vector3 aDir)
     {
         var pos = transform.position;
+        var tangent = 100f / 500f;
+        var newVal = tangent * length;
         
         Gizmos.DrawLine(pos, pos + aDir * length);
         var add = length * (Mathf.Sin(Mathf.PI / 180 * adjustDeg) / Mathf.Cos(Mathf.PI / 180 * adjustDeg));
@@ -291,12 +293,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var deg3 =  Quaternion.AngleAxis(adjustDeg, Vector3.up) *aDir;
         Gizmos.DrawLine(pos, pos + deg3 * sum2);
 
-        var adjustMore = adjustDeg + 10;
-        add2 = length * (Mathf.Sin(Mathf.PI / 180 * adjustMore) / Mathf.Cos(Mathf.PI / 180 * adjustMore));
-        sum2 =Mathf.Sqrt( Mathf.Pow(length, 2) + Mathf.Pow(add2,2));
-        deg3 =  Quaternion.AngleAxis(adjustMore, Vector3.up) *aDir;
-        Gizmos.DrawLine(pos, pos + deg3 * sum2);
-        
     }
     
     private void OnDrawGizmos()
