@@ -40,8 +40,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         InitMesh();
         ApplyMaterial(aMaterial);
         
-        AddDoor(Vector3.zero, new Vector3(100,200,30), Vector3.right);
-        MakeWalls();
+        //AddDoor(Vector3.zero, new Vector3(100,200,30), Vector3.right);
+        //MakeWalls();
     }
     
     private void AddDoor(Vector3 addPos, Vector3 size, Vector3 aDirection)
@@ -71,13 +71,30 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private void MakeWalls()
     {
-        SetSquare(Vector3.up, transform.position, new Vector2(1000,1000));
-        var wallRight = Vector3.Cross(Vector3.up, wallNormal);
-
-        foreach (var c in Corners)
+        var size = new Vector2(1000, 1000);
+        SetSquare(Vector3.up, transform.position, size);
+        var start = Vector3.zero;
+        var adjust = 90f;
+        var point = 0;
+        
+        for (int i = 0; i < 4; i++)
         {
-            Debug.Log($"corner: {c}");
+            var aNormal = Quaternion.AngleAxis(adjust + i * 90, Vector3.up) *Vector3.right;
+            var wallRight = Vector3.Cross(Vector3.up, aNormal);
+            
+            var addVec = Vector3.zero;
+            for (int j = 0; j < 2; j++)
+            {
+                Gizmos.DrawSphere(Corners[i] + addVec, 4);
+                Handles.Label(Corners[i] + addVec, $"{point++}");
+                
+                Gizmos.DrawSphere(Corners[i] + addVec + Vector3.up * 100, 4);
+                Handles.Label(Corners[i] + addVec+ Vector3.up * 100, $"{point++}");
+                addVec += wallRight * 300;
+            }
+            
         }
+       
     }
     
     private void BuildWall()
@@ -227,10 +244,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         var pos = transform.position;
         SetSquare(direction, pos, wallSize);
-        var count = 0;
-        SetPoints(Color.green, count);
-        count += 4;
-        SetSquare(direction, pos, wallSize + new Vector3(50,50,0));
-        SetPoints(Color.red, count);
+        MakeWalls();
     }
 }
