@@ -41,14 +41,15 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         ApplyMaterial(aMaterial);
         
         AddDoor(Vector3.zero, new Vector3(100,200,30), Vector3.right);
+        MakeWalls();
     }
     
     private void AddDoor(Vector3 addPos, Vector3 size, Vector3 aDirection)
     {
         TunnelVerts(addPos, aDirection, size);
         var shift = aDirection * size.z;
-        SideVerts(addPos +shift, aDirection, size, new Vector2(50,50));
-        SideVerts(addPos, -aDirection, size, new Vector2(50,50));
+        SideVerts(addPos +shift, aDirection, size);
+        SideVerts(addPos, -aDirection, size);
     }
 
     public void AddDoor(int place)
@@ -66,6 +67,17 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             wallInfos.Add(new WallInfo(){type = WallTypes.Blank});
         }
         BuildWall();
+    }
+
+    private void MakeWalls()
+    {
+        SetSquare(Vector3.up, transform.position, new Vector2(1000,1000));
+        var wallRight = Vector3.Cross(Vector3.up, wallNormal);
+
+        foreach (var c in Corners)
+        {
+            Debug.Log($"corner: {c}");
+        }
     }
     
     private void BuildWall()
@@ -90,7 +102,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                     AddDoor(start, panelSize2, wallNormal);
                     break;
             }
-            
             start += wallRight * singlePanel.x;
         }
     }
@@ -146,7 +157,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         UpdateMesh();
     }
 
-    private void SideVerts(Vector3 pos, Vector3 dir, Vector2 innerSize, Vector2 addSize)
+    private void SideVerts(Vector3 pos, Vector3 dir, Vector2 innerSize)
     {
         var start = Vertices.Count;
         var outer = new Vector2(200, 400) - innerSize;
