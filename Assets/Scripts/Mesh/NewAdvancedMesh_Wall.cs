@@ -41,7 +41,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         ApplyMaterial(aMaterial);
         
         //AddDoor(Vector3.zero, new Vector3(100,200,30), Vector3.right);
-        //MakeWalls();
+        MakeWalls2();
     }
     
     private void AddDoor(Vector3 addPos, Vector3 size, Vector3 aDirection)
@@ -73,7 +73,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         var size = new Vector2(1000, 1000);
         SetSquare(Vector3.up, transform.position, size);
-        var start = Vector3.zero;
         var adjust = 90f;
         var point = 0;
         
@@ -83,18 +82,36 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             var wallRight = Vector3.Cross(Vector3.up, aNormal);
             
             var addVec = Vector3.zero;
-            for (int j = 0; j < 2; j++)
+            for (int j = 0; j < 4; j++)
             {
                 Gizmos.DrawSphere(Corners[i] + addVec, 4);
                 Handles.Label(Corners[i] + addVec, $"{point++}");
                 
                 Gizmos.DrawSphere(Corners[i] + addVec + Vector3.up * 100, 4);
                 Handles.Label(Corners[i] + addVec+ Vector3.up * 100, $"{point++}");
-                addVec += wallRight * 300;
+                addVec += wallRight * size.x / 4;
             }
-            
         }
-       
+    }
+    private void MakeWalls2()
+    {
+        var size = new Vector2(1000, 1000);
+        SetSquare(Vector3.up, transform.position, size);
+        var adjust = 90f;
+
+        for (int i = 0; i < 4; i++)
+        {
+            var aNormal = Quaternion.AngleAxis(adjust + i * 90, Vector3.up) *Vector3.right;
+            var wallRight = Vector3.Cross(Vector3.up, aNormal);
+            
+            var addVec = Vector3.zero;
+            for (int j = 0; j < 4; j++)
+            {
+                Vertices.Add(Corners[i] + addVec);
+                Vertices.Add(Corners[i] + addVec+ Vector3.up * 100);
+                addVec += wallRight * size.x / 4;
+            }
+        }
     }
     
     private void BuildWall()
