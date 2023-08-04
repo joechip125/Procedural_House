@@ -17,6 +17,7 @@ public enum WallTypes
 public class WallInfo
 {
     public WallTypes type;
+    public Vector2 pStartEnd;
 }
 
 public class NewAdvancedMesh_Wall : NewAdvancedMesh
@@ -319,17 +320,30 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         var pos = transform.position;
         var rAmount = 1000f;
+        var addPos = 0f;
         var start = pos + aDir * frwAmount;
         var nextDir = Vector3.Cross(Vector3.up, aDir);
         var increment = rAmount / resolution;
         var startPos = -rAmount / 2;
-
+        var first = new Vector2(startPos, startPos + 250);
+        startPos += 250;
+        var second = new Vector2(startPos, startPos + 500);
+        Gizmos.DrawLine(pos, start + nextDir * first.x);
+        Gizmos.DrawLine(pos, start + nextDir * first.y);
+        
         Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(pos, start + nextDir * second.x);
+        Gizmos.DrawLine(pos, start + nextDir * second.y);
         for (int i = 0; i <= resolution; i++)
         {
-            Gizmos.DrawLine(pos, start + nextDir * startPos);
-            startPos += increment;
+          //  Gizmos.DrawLine(pos, start + nextDir * startPos);
+          //  startPos += increment;
         }
+    }
+
+    private void WallTracer()
+    {
+        
     }
     private void OnDrawGizmos()
     {
