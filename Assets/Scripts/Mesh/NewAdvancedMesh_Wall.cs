@@ -316,28 +316,46 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
 
+
+    private void FillInfos(float placePos, float size)
+    {
+        wallInfos.Clear();
+        var pos = transform.position;
+        var start4 = -500f;
+        var rAmount = 1000f;
+        var end = placePos - size / 2;
+        wallInfos.Add(new WallInfo(){ pStartEnd = new Vector2(start4, end), type = WallTypes.Blank});
+        wallInfos.Add(new WallInfo(){ pStartEnd = new Vector2(end, end + size), type = WallTypes.Door});
+        wallInfos.Add(new WallInfo(){ pStartEnd = new Vector2(end + size, end + size + 400), type = WallTypes.Blank});
+    }
+    
     private void TangentWall2(Vector3 aDir, float frwAmount)
     {
+        
         var pos = transform.position;
+        var start4 = -500f;
         var rAmount = 1000f;
+        FillInfos(-100, 200);
         var addPos = 0f;
         var start = pos + aDir * frwAmount;
         var nextDir = Vector3.Cross(Vector3.up, aDir);
-        var increment = rAmount / resolution;
-        var startPos = -rAmount / 2;
-        var first = new Vector2(startPos, startPos + 250);
-        startPos += 250;
-        var second = new Vector2(startPos, startPos + 500);
-        Gizmos.DrawLine(pos, start + nextDir * first.x);
-        Gizmos.DrawLine(pos, start + nextDir * first.y);
         
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(pos, start + nextDir * second.x);
-        Gizmos.DrawLine(pos, start + nextDir * second.y);
-        for (int i = 0; i <= resolution; i++)
+        foreach (var w in wallInfos)
         {
-          //  Gizmos.DrawLine(pos, start + nextDir * startPos);
-          //  startPos += increment;
+            switch (w.type)
+            {
+                case WallTypes.Blank:
+                    Gizmos.color = Color.white;
+                    break;
+                case WallTypes.Door:
+                    Gizmos.color = Color.green;
+                    break;
+                case WallTypes.Window:
+                    Gizmos.color = Color.yellow;
+                    break;
+            }
+            Gizmos.DrawLine(pos, start + nextDir * w.pStartEnd.x);
+            Gizmos.DrawLine(pos, start + nextDir * w.pStartEnd.y);
         }
     }
 
@@ -347,7 +365,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     }
     private void OnDrawGizmos()
     {
-        MakeWalls();
         TangentWall2(direction, 500);
     }
 }
