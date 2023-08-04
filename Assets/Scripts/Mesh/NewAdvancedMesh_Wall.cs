@@ -317,16 +317,22 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     }
 
 
-    private void FillInfos(float placePos, float size)
+    private void AddInfo(float totalSize, float size, WallTypes type)
+    {
+        var start4 = -totalSize / 2;
+        if (wallInfos.Count > 0) start4 = wallInfos[^1].pStartEnd.y;
+        
+        wallInfos.Add(new WallInfo(){ pStartEnd = new Vector2(start4, start4 + size), type = type});
+    }
+    private void FillInfos(float placePos, float size, float totalSize)
     {
         wallInfos.Clear();
         var pos = transform.position;
-        var start4 = -500f;
-        var rAmount = 1000f;
+        var start4 = -totalSize / 2;
         var end = placePos - size / 2;
-        wallInfos.Add(new WallInfo(){ pStartEnd = new Vector2(start4, end), type = WallTypes.Blank});
-        wallInfos.Add(new WallInfo(){ pStartEnd = new Vector2(end, end + size), type = WallTypes.Door});
-        wallInfos.Add(new WallInfo(){ pStartEnd = new Vector2(end + size, end + size + 400), type = WallTypes.Blank});
+        AddInfo(1000, 400, WallTypes.Blank);
+        AddInfo(1000, 200, WallTypes.Door);
+        AddInfo(1000, 400, WallTypes.Blank);
     }
     
     private void TangentWall2(Vector3 aDir, float frwAmount)
@@ -335,10 +341,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var pos = transform.position;
         var start4 = -500f;
         var rAmount = 1000f;
-        FillInfos(-100, 200);
+        FillInfos(-100, 200, 1000);
         var addPos = 0f;
         var start = pos + aDir * frwAmount;
         var nextDir = Vector3.Cross(Vector3.up, aDir);
+        var count = 0;
         
         foreach (var w in wallInfos)
         {
@@ -356,6 +363,13 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             }
             Gizmos.DrawLine(pos, start + nextDir * w.pStartEnd.x);
             Gizmos.DrawLine(pos, start + nextDir * w.pStartEnd.y);
+            if (w.type == WallTypes.Blank)
+            {
+                Gizmos.DrawSphere(start + nextDir * w.pStartEnd.x, 7);
+                Handles.Label(start + nextDir * w.pStartEnd.x, $"{count++}");
+                Gizmos.DrawSphere(start + nextDir * w.pStartEnd.y, 7);
+                Handles.Label(start + nextDir * w.pStartEnd.y, $"{count++}");
+            }
         }
     }
 
