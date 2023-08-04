@@ -30,6 +30,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     [SerializeField]private Vector3 wallNormal;
     
     [SerializeField]private float adjustDeg;
+    
+    [SerializeField, Range(1, 50)]private int resolution;
 
     public List<WallInfo> wallInfos = new();
 
@@ -303,7 +305,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         Gizmos.DrawLine(pos, start + nextDir * -500);
 
         Gizmos.color = Color.yellow;
-        for (int i = 0; i < 0; i++)
+        for (int i = 0; i < 4; i++)
         {
             var opposite = adjacent * (Mathf.Sin(Mathf.PI / 180 * addDegrees) / Mathf.Cos(Mathf.PI / 180 * addDegrees));
             var hypo= Mathf.Sqrt( Mathf.Pow(adjacent, 2) + Mathf.Pow(opposite,2));
@@ -312,10 +314,26 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             addDegrees += 10;
         }
     }
-    
+
+    private void TangentWall2(Vector3 aDir, float frwAmount)
+    {
+        var pos = transform.position;
+        var rAmount = 1000f;
+        var start = pos + aDir * frwAmount;
+        var nextDir = Vector3.Cross(Vector3.up, aDir);
+        var increment = rAmount / resolution;
+        var startPos = -rAmount / 2;
+
+        Gizmos.color = Color.yellow;
+        for (int i = 0; i <= resolution; i++)
+        {
+            Gizmos.DrawLine(pos, start + nextDir * startPos);
+            startPos += increment;
+        }
+    }
     private void OnDrawGizmos()
     {
         MakeWalls();
-        TangentWall(direction);
+        TangentWall2(direction, 500);
     }
 }

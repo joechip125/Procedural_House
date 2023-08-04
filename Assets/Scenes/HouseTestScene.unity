@@ -299,8 +299,12 @@ PrefabInstance:
       value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 1638415911921875675, guid: 4558952e6c625164d90ea015e3641b49, type: 3}
+      propertyPath: adjacent
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 1638415911921875675, guid: 4558952e6c625164d90ea015e3641b49, type: 3}
       propertyPath: adjustDeg
-      value: 9
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1638415911921875675, guid: 4558952e6c625164d90ea015e3641b49, type: 3}
       propertyPath: wallSize.x
@@ -313,6 +317,10 @@ PrefabInstance:
     - target: {fileID: 1638415911921875675, guid: 4558952e6c625164d90ea015e3641b49, type: 3}
       propertyPath: wallSize.z
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 1638415911921875675, guid: 4558952e6c625164d90ea015e3641b49, type: 3}
+      propertyPath: direction.x
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1638415911921875675, guid: 4558952e6c625164d90ea015e3641b49, type: 3}
       propertyPath: direction.y
