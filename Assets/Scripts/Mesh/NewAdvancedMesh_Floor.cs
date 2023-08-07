@@ -21,14 +21,6 @@ public enum TileType
     HalfCircle
 }
 
-[Serializable]
-public class TileInfo
-{
-    public TileType type;
-    public Vector2Int index;
-    public Vector3 center;
-    public Vector3 size;
-}
 
 public class NewAdvancedMesh_Floor : NewAdvancedMesh
 {
@@ -120,14 +112,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
 
         var pos = -new Vector3(totalSize.x, 0, totalSize.z) / 2;
         var singleS = new Vector3(totalSize.x / (numberTiles.x - 1), totalSize.y, totalSize.z / (numberTiles.y - 1));
-    
-        info.Add(new TileInfo()
-        {
-            index = Vector2Int.zero,
-            type = TileType.Square,
-            center = pos + totalSize / 2, 
-            size = totalSize
-        });
 
         for (int i = 0; i < numberTiles.y; i++)
         {

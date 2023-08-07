@@ -105,27 +105,7 @@ public class SingleRoom : MonoBehaviour
         temp.MakeStairs(new Vector3(1,0,0), 5);
     }
 
-    private void RoomTest()
-    {
-        var pos = transform.position;
-        infos.Clear();
 
-        infos.Add(new TileInfo()
-        {
-            center = pos,
-            size = new Vector3(400,100,400)
-        });
-
-        var nextSize = new Vector3(400,100,200);
-        pos += Vector3.forward * (infos[^1].size.z / 2 + nextSize.z / 2);
-        
-        infos.Add(new TileInfo()
-        {
-            center = pos,
-            size = nextSize
-        });
-    }
-    
     private void OnDrawGizmos()
     {
       //  if (Application.isPlaying) return;

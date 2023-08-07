@@ -20,6 +20,14 @@ public class WallInfo
     public Vector2 pStartEnd;
 }
 
+[Serializable]
+public class TileInfo
+{
+    public TileType type;
+    public Vector2Int index;
+    public Vector3 center;
+    public Vector3 size;
+}
 public class NewAdvancedMesh_Wall : NewAdvancedMesh
 {
 
@@ -327,21 +335,18 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void FillInfos(float placePos, float size, float totalSize)
     {
         wallInfos.Clear();
-        var pos = transform.position;
-        var start4 = -totalSize / 2;
-        var end = placePos - size / 2;
-        AddInfo(1000, 400, WallTypes.Blank);
-        AddInfo(1000, 200, WallTypes.Door);
-        AddInfo(1000, 400, WallTypes.Blank);
+        var sideSize = (totalSize - size) / 2;
+        AddInfo(totalSize, sideSize, WallTypes.Blank);
+        AddInfo(totalSize, size, WallTypes.Door);
+        AddInfo(totalSize, sideSize, WallTypes.Blank);
     }
     
-    private void TangentWall2(Vector3 aDir, float frwAmount)
+    private void TangentWall2(Vector3 aDir, float frwAmount, float wallLen)
     {
-        
         var pos = transform.position;
-        var start4 = -500f;
+        var start4 = -wallLen / 2;
         var rAmount = 1000f;
-        FillInfos(-100, 200, 1000);
+        FillInfos(-100, 200, wallLen);
         var addPos = 0f;
         var start = pos + aDir * frwAmount;
         var nextDir = Vector3.Cross(Vector3.up, aDir);
@@ -379,6 +384,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     }
     private void OnDrawGizmos()
     {
-        TangentWall2(direction, 500);
+        TangentWall2(direction, 500, 1000);
     }
 }
