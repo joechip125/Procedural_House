@@ -337,66 +337,48 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void GizmoSideVerts(Vector3 pos, Vector3 dir, Vector2 innerSize, Vector2 outerSize)
     {
         var vAmount = 8;
+        var hAmount = 8;
         var lowest = 5;
         var vInc = outerSize.y / vAmount;
         var counter = 0;
-        var iStart = pos + dir * (outerSize.x - innerSize.x) /2;
-        Debug.Log($"${iStart}");
+        var iStart = pos + (dir * (outerSize.x - innerSize.x) /2) + Vector3.up * lowest;
+        var iEnd = iStart + dir * innerSize.x + Vector3.up * innerSize.y;
+       
         var start = pos;
         for (int i = 0; i < vAmount; i++)
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawSphere(pos, 4);
-            Handles.Label(pos,$"{counter++}");
-
-            if (pos.y +(Vector3.up * vInc).y > lowest && pos.y < lowest)
+            if (pos.y > iStart.y && pos.y < iEnd.y)
             {
-                Gizmos.color = Color.green;
-                var aPos = new Vector3(pos.x, lowest, pos.z);
-                Handles.Label(aPos,$"{counter++}");
-                Gizmos.DrawSphere(aPos, 4);
+                PlaceDot(Color.green, pos, counter++);
+            }
+            else
+            {
+                PlaceDot(Color.red, pos, counter++);
+            }
+
+            if (pos.y +(Vector3.up * vInc).y > iStart.y && pos.y < iStart.y)
+            {
+                var aPos = new Vector3(pos.x, iStart.y, pos.z);
+                PlaceDot(Color.green, aPos, counter++);
+            }
+
+            if (pos.y + (Vector3.up * vInc).y > iEnd.y && pos.y < iEnd.y)
+            {
+                var aPos = new Vector3(pos.x, iEnd.y, pos.z);
+                PlaceDot(Color.green, aPos, counter++);
             }
             pos += Vector3.up * vInc;
         }
 
         start += dir * (outerSize - innerSize).x / 2;
-        pos = start;
-        
-        for (int i = 0; i < vAmount; i++)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawSphere(pos, 4);
-            Handles.Label(pos,$"{counter++}");
+        pos = start; 
+    }
 
-            if (pos.y +(Vector3.up * vInc).y > lowest && pos.y < lowest)
-            {
-                Gizmos.color = Color.green;
-                var aPos = new Vector3(pos.x, lowest, pos.z);
-                Handles.Label(aPos,$"{counter++}");
-                Gizmos.DrawSphere(aPos, 4);
-            }
-            pos += Vector3.up * vInc;
-        }
-        
-        start += dir * innerSize.x;
-        pos = start;
-        
-        for (int i = 0; i < vAmount; i++)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawSphere(pos, 4);
-            Handles.Label(pos,$"{counter++}");
-
-            if (pos.y +(Vector3.up * vInc).y > lowest && pos.y < lowest)
-            {
-                Gizmos.color = Color.green;
-                var aPos = new Vector3(pos.x, lowest, pos.z);
-                Handles.Label(aPos,$"{counter++}");
-                Gizmos.DrawSphere(aPos, 4);
-            }
-            pos += Vector3.up * vInc;
-        }
-
+    private void PlaceDot(Color color, Vector3 pos, int count)
+    {
+        Gizmos.color = color;
+        Handles.Label(pos,$"{count}");
+        Gizmos.DrawSphere(pos, 4);         
     }
     
     private void SideVerts(Vector3 pos, Vector3 dir, Vector2 innerSize)
