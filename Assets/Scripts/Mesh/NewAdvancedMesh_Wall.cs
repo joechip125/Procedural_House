@@ -16,17 +16,16 @@ public enum WallTypes
 [Serializable]
 public class WallInfo
 {
-    public WallTypes type;
-    public Vector2 pStartEnd;
+    public List<TileInfo> tileInfos = new();
+    //public Vector2 pStartEnd;
+    public Vector3 direction;
 }
 
 [Serializable]
 public class TileInfo
 {
-    public TileType type;
-    public Vector2Int index;
-    public Vector3 center;
-    public Vector3 size;
+    public WallTypes type;
+    public Vector2 size;
 }
 public class NewAdvancedMesh_Wall : NewAdvancedMesh
 {
@@ -43,6 +42,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     [SerializeField, Range(1, 50)]private int resolution;
 
     public List<WallInfo> wallInfos = new();
+    public WallInfo wallInfo = new();
 
     private int lastVert;
 
@@ -67,7 +67,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     public void AddDoor(int place)
     {
-        wallInfos[place].type = WallTypes.Door;
         BuildWall();
     }
 
@@ -75,10 +74,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         wallNormal = normal;
         wallSize = size;
-        for (int i = 0; i < numTiles; i++)
-        {
-            wallInfos.Add(new WallInfo(){type = WallTypes.Blank});
-        }
+       
         BuildWall();
     }
 
@@ -167,15 +163,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
       
         for (int i = 0; i < numTiles; i++)
         {
-            switch (wallInfos[i].type)
-            {
-                case WallTypes.Blank:
-                    SimplePanel(start, wallNormal, singlePanel);
-                    break;
-                case WallTypes.Door:
-                    AddDoor(start, panelSize2, wallNormal);
-                    break;
-            }
+            
             start += wallRight * singlePanel.x;
         }
     }
@@ -327,10 +315,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private void AddInfo(float totalSize, float size, WallTypes type)
     {
-        var start4 = -totalSize / 2;
-        if (wallInfos.Count > 0) start4 = wallInfos[^1].pStartEnd.y;
         
-        wallInfos.Add(new WallInfo(){ pStartEnd = new Vector2(start4, start4 + size), type = type});
     }
     private void FillInfos(float placePos, float size, float totalSize)
     {
@@ -354,27 +339,27 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         
         foreach (var w in wallInfos)
         {
-            switch (w.type)
-            {
-                case WallTypes.Blank:
-                    Gizmos.color = Color.white;
-                    break;
-                case WallTypes.Door:
-                    Gizmos.color = Color.green;
-                    break;
-                case WallTypes.Window:
-                    Gizmos.color = Color.yellow;
-                    break;
-            }
-            Gizmos.DrawLine(pos, start + nextDir * w.pStartEnd.x);
-            Gizmos.DrawLine(pos, start + nextDir * w.pStartEnd.y);
-            if (w.type == WallTypes.Blank)
-            {
-                Gizmos.DrawSphere(start + nextDir * w.pStartEnd.x, 7);
-                Handles.Label(start + nextDir * w.pStartEnd.x, $"{count++}");
-                Gizmos.DrawSphere(start + nextDir * w.pStartEnd.y, 7);
-                Handles.Label(start + nextDir * w.pStartEnd.y, $"{count++}");
-            }
+            //switch (w.type)
+            //{
+            //    case WallTypes.Blank:
+            //        Gizmos.color = Color.white;
+            //        break;
+            //    case WallTypes.Door:
+            //        Gizmos.color = Color.green;
+            //        break;
+            //    case WallTypes.Window:
+            //        Gizmos.color = Color.yellow;
+            //        break;
+            //}
+            //Gizmos.DrawLine(pos, start + nextDir * w.pStartEnd.x);
+            //Gizmos.DrawLine(pos, start + nextDir * w.pStartEnd.y);
+            //if (w.type == WallTypes.Blank)
+            //{
+            //    Gizmos.DrawSphere(start + nextDir * w.pStartEnd.x, 7);
+            //    Handles.Label(start + nextDir * w.pStartEnd.x, $"{count++}");
+            //    Gizmos.DrawSphere(start + nextDir * w.pStartEnd.y, 7);
+            //    Handles.Label(start + nextDir * w.pStartEnd.y, $"{count++}");
+            //}
         }
     }
 

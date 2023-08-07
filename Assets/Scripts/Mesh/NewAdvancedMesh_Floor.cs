@@ -52,16 +52,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         MakeGrid(new Vector3(sizeX,100,sizeY), new Vector2Int(5,5));
     }
 
-    public void AddNewTile(Vector2Int addTile)
-    {
-        var tile = info.SingleOrDefault(x => x.index == Vector2Int.zero);
-        if (tile == default) return;
 
-        if (GetTilePos(Vector3.right, Vector2Int.zero, out var pos))
-        {
-            
-        }
-    }
     
     public void SetValuesAndActivate(Vector3 size, int tilesX, int tilesZ)
     {
@@ -153,23 +144,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             }
             pos += new Vector3(0, 0, singleS.z);
         }
-    }
-    
-
-    private bool GetTilePos(Vector3 direction, Vector2Int index, out Vector3 pos)
-    {
-        var some = info.SingleOrDefault(x => x.index == index);
-        pos = Vector3.zero;
-        if (some == default) return false;
-
-        var center = some.center;
-        
-        if (some.type == TileType.Square)
-        {
-            pos = center + Vector3.Scale(direction.normalized, some.size) / 2;
-        }
-        
-        return true;
     }
 
     private void CircleFloor(Vector3 pos, Vector3 dir, float numDeg, int resolution, float start = 0)
