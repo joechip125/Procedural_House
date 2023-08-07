@@ -118,6 +118,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             switch (t.type)
             {
                 case WallTypes.Blank:
+                    AWallTile(current, wallInfo.direction, t.size);
                     break;
                 case WallTypes.Door:
                     break;
@@ -131,7 +132,22 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private void AWallTile(Vector3 start, Vector3 dir, Vector2 size)
     {
-            
+        var vCount = Vertices.Count;
+        Vertices.Add(start);
+        Vertices.Add(start + Vector3.up * size.y);
+        start += dir * size.x;
+        Vertices.Add(start);
+        Vertices.Add(start + Vector3.up * size.y);
+        
+        Triangles.Add(vCount + 2);
+        Triangles.Add(vCount + 1);
+        Triangles.Add(vCount);
+        
+        Triangles.Add(vCount + 2);
+        Triangles.Add(vCount + 3);
+        Triangles.Add(vCount + 1);
+
+        UpdateMesh();
     }
     
     private void MakeWalls()
@@ -219,7 +235,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
       
         for (int i = 0; i < numTiles; i++)
         {
-            
             start += wallRight * singlePanel.x;
         }
     }
