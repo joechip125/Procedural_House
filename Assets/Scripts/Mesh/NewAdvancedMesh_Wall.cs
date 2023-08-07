@@ -17,14 +17,21 @@ public enum WallTypes
 public class WallInfo
 {
     public List<TileInfo> tileInfos = new();
-    //public Vector2 pStartEnd;
     public Vector3 direction;
+    public Vector3 start;
+    public Vector2 size;
+
+    public void ClearTiles()
+    {
+        tileInfos.Clear();
+    }
 }
 
 [Serializable]
 public class TileInfo
 {
     public WallTypes type;
+    public Vector2 pStartEnd;
     public Vector2 size;
 }
 public class NewAdvancedMesh_Wall : NewAdvancedMesh
@@ -40,8 +47,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     [SerializeField]private float adjustDeg;
     
     [SerializeField, Range(1, 50)]private int resolution;
-
-    public List<WallInfo> wallInfos = new();
+    
     public WallInfo wallInfo = new();
 
     private int lastVert;
@@ -65,6 +71,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         SideVerts(addPos, -aDirection, size);
     }
 
+    private void SetWall()
+    {
+        
+    }
+    
     public void AddDoor(int place)
     {
         BuildWall();
@@ -154,7 +165,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         ClearMesh();
         var wallRight = Vector3.Cross(Vector3.up, wallNormal);
-        var numTiles = wallInfos.Count();
+        var numTiles = wallInfo.tileInfos.Count();
 
         var singlePanel = new Vector2(wallSize.x / numTiles, wallSize.y);
         var start = wallRight * singlePanel.x / 2 + (Vector3.up * wallSize.y) / 2;
@@ -313,17 +324,22 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     }
 
 
-    private void AddInfo(float totalSize, float size, WallTypes type)
+    private void AddInfo(float size, WallTypes type)
     {
-        
+        wallInfo.tileInfos.Add(new TileInfo()
+        {
+            size = new Vector2(size, 200),
+            type = type
+        });
     }
     private void FillInfos(float placePos, float size, float totalSize)
     {
-        wallInfos.Clear();
+        wallInfo.ClearTiles();
+        wallInfo.size = new Vector2(totalSize, 200);
         var sideSize = (totalSize - size) / 2;
-        AddInfo(totalSize, sideSize, WallTypes.Blank);
-        AddInfo(totalSize, size, WallTypes.Door);
-        AddInfo(totalSize, sideSize, WallTypes.Blank);
+        AddInfo(sideSize, WallTypes.Blank);
+        AddInfo(size, WallTypes.Door);
+        AddInfo(sideSize, WallTypes.Blank);
     }
     
     private void TangentWall2(Vector3 aDir, float frwAmount, float wallLen)
@@ -337,29 +353,30 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var nextDir = Vector3.Cross(Vector3.up, aDir);
         var count = 0;
         
-        foreach (var w in wallInfos)
+        foreach (var t in wallInfo.tileInfos)
         {
-            //switch (w.type)
-            //{
-            //    case WallTypes.Blank:
-            //        Gizmos.color = Color.white;
-            //        break;
-            //    case WallTypes.Door:
-            //        Gizmos.color = Color.green;
-            //        break;
-            //    case WallTypes.Window:
-            //        Gizmos.color = Color.yellow;
-            //        break;
-            //}
-            //Gizmos.DrawLine(pos, start + nextDir * w.pStartEnd.x);
-            //Gizmos.DrawLine(pos, start + nextDir * w.pStartEnd.y);
-            //if (w.type == WallTypes.Blank)
-            //{
-            //    Gizmos.DrawSphere(start + nextDir * w.pStartEnd.x, 7);
-            //    Handles.Label(start + nextDir * w.pStartEnd.x, $"{count++}");
-            //    Gizmos.DrawSphere(start + nextDir * w.pStartEnd.y, 7);
-            //    Handles.Label(start + nextDir * w.pStartEnd.y, $"{count++}");
-            //}
+            switch (t.type)
+            {
+                case WallTypes.Blank:
+                    Gizmos.color = Color.white;
+                    break;
+                case WallTypes.Door:
+                    Gizmos.color = Color.green;
+                    break;
+                case WallTypes.Window:
+                    Gizmos.color = Color.yellow;
+                    break;
+            }
+            Gizmos.DrawLine(pos, start);
+            start += nextDir * t.size.x;
+            Gizmos.DrawLine(pos, start);
+            if (t.type == WallTypes.Blank)
+            {
+                Gizmos.DrawSphere(start + nextDir * t.pStartEnd.x, 7);
+                Handles.Label(start + nextDir * t.pStartEnd.x, $"{count++}");
+                Gizmos.DrawSphere(start + nextDir * t.pStartEnd.y, 7);
+                Handles.Label(start + nextDir * t.pStartEnd.y, $"{count++}");
+            }
         }
     }
 
@@ -369,6 +386,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     }
     private void OnDrawGizmos()
     {
-        TangentWall2(direction, 500, 1000);
+       // TangentWall2(direction, 500, 1000);
     }
 }
