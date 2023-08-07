@@ -75,7 +75,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     
     private void AddDoor(Vector3 addPos, Vector3 size, Vector3 aDirection)
     {
-        Debug.Log($"dir {aDirection}");
         TunnelVerts(addPos, aDirection, size);
         var shift = aDirection * size.z;
         //SideVerts(addPos +shift, aDirection, size);
@@ -132,7 +131,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             {
                 case WallTypes.Blank:
                     AWallTile(current, wallInfo.direction, t.size);
-                    AWallTile(current + -aNormal * wallThick, wallInfo.direction, t.size, true);
+                    AWallTile(current + aNormal * wallInfo.size.z, wallInfo.direction, t.size, true);
                     break;
                 case WallTypes.Door:
                     var outerSize = new Vector3(t.size.x, t.size.y, wallThick);
@@ -324,9 +323,80 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         UpdateMesh();
     }
 
-    private void NewSideVerts()
+    private void NewSideVerts(Vector3 pos, Vector3 dir, Vector2 innerSize, Vector2 outerSize)
     {
+        var vAmount = 8;
+        var vInc = outerSize.y / vAmount;
+        for (int i = 0; i < vAmount; i++)
+        {
+            Vertices.Add(pos);
+            pos += Vector3.up * vInc;
+        }
+    }
+
+    private void GizmoSideVerts(Vector3 pos, Vector3 dir, Vector2 innerSize, Vector2 outerSize)
+    {
+        var vAmount = 8;
+        var lowest = 5;
+        var vInc = outerSize.y / vAmount;
+        var counter = 0;
+        var iStart = pos + dir * (outerSize.x - innerSize.x) /2;
+        Debug.Log($"${iStart}");
+        var start = pos;
+        for (int i = 0; i < vAmount; i++)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(pos, 4);
+            Handles.Label(pos,$"{counter++}");
+
+            if (pos.y +(Vector3.up * vInc).y > lowest && pos.y < lowest)
+            {
+                Gizmos.color = Color.green;
+                var aPos = new Vector3(pos.x, lowest, pos.z);
+                Handles.Label(aPos,$"{counter++}");
+                Gizmos.DrawSphere(aPos, 4);
+            }
+            pos += Vector3.up * vInc;
+        }
+
+        start += dir * (outerSize - innerSize).x / 2;
+        pos = start;
         
+        for (int i = 0; i < vAmount; i++)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(pos, 4);
+            Handles.Label(pos,$"{counter++}");
+
+            if (pos.y +(Vector3.up * vInc).y > lowest && pos.y < lowest)
+            {
+                Gizmos.color = Color.green;
+                var aPos = new Vector3(pos.x, lowest, pos.z);
+                Handles.Label(aPos,$"{counter++}");
+                Gizmos.DrawSphere(aPos, 4);
+            }
+            pos += Vector3.up * vInc;
+        }
+        
+        start += dir * innerSize.x;
+        pos = start;
+        
+        for (int i = 0; i < vAmount; i++)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(pos, 4);
+            Handles.Label(pos,$"{counter++}");
+
+            if (pos.y +(Vector3.up * vInc).y > lowest && pos.y < lowest)
+            {
+                Gizmos.color = Color.green;
+                var aPos = new Vector3(pos.x, lowest, pos.z);
+                Handles.Label(aPos,$"{counter++}");
+                Gizmos.DrawSphere(aPos, 4);
+            }
+            pos += Vector3.up * vInc;
+        }
+
     }
     
     private void SideVerts(Vector3 pos, Vector3 dir, Vector2 innerSize)
@@ -466,8 +536,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                     Gizmos.color = Color.yellow;
                     break;
             }
-            Gizmos.DrawLine(pos, start);
-            Gizmos.DrawLine(pos, next);
+            //Gizmos.DrawLine(pos, start);
+            //Gizmos.DrawLine(pos, next);
             if (t.type == WallTypes.Blank)
             {
                 Gizmos.DrawSphere(start, 7);
@@ -482,6 +552,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 Gizmos.DrawSphere(next+ Vector3.up * wallInfo.size.y, 7);
                 Handles.Label(next+ Vector3.up * wallInfo.size.y, $"{count++}");
             }
+
+            if (t.type == WallTypes.Door)
+            {
+                Gizmos.DrawLine(start, next);
+            }
         }
     }
 
@@ -492,7 +567,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void OnDrawGizmos()
     {
         if (Application.isPlaying) return;
-        SetWall(direction, 500, new Vector2(1000, 300));
-        TangentWall2(direction, 500, 1000);
+        GizmoSideVerts(Vector3.zero, direction, new Vector2(100,200), new Vector2(200, 400));
+        //SetWall(direction, 500, new Vector2(1000, 300));
+        //TangentWall2(direction, 500, 1000);
     }
 }
