@@ -5,6 +5,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using Zenject.ReflectionBaking.Mono.Cecil;
 
 public enum WallTypes
 {
@@ -19,7 +20,7 @@ public class WallInfo
     public List<TileInfo> tileInfos = new();
     public Vector3 direction;
     public Vector3 start;
-    public Vector2 size;
+    public Vector3 size;
 
     public void AddTile(WallTypes type, Vector2 theSize)
     {
@@ -66,7 +67,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         InitMesh();
         ApplyMaterial(aMaterial);
-        SetWall(direction, 500, new Vector2(1000,300));
+        SetWall(direction, 500, new Vector3(1000,400,30));
         FillInfos(200);
         
         MakeWalls3();
@@ -80,8 +81,16 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         //SideVerts(addPos +shift, aDirection, size);
         //SideVerts(addPos, -aDirection, size);
     }
+    
+    private void AddDoor(Vector3 addPos,Vector3 aDirection, Vector3 innerSize, Vector3 outerSize, float adjustH = 0)
+    {
+        TunnelVerts(addPos + Vector3.up * adjustH, aDirection, innerSize);
+        var shift = aDirection * innerSize.z;
+        //SideVerts(addPos +shift, aDirection, outerSize);
+        SideVerts(addPos+ Vector3.up * adjustH, -aDirection, innerSize);
+    }
 
-    private void SetWall(Vector3 startDir, float startAm, Vector2 totalWSize)
+    private void SetWall(Vector3 startDir, float startAm, Vector3 totalWSize)
     {
         wallInfo.ClearTiles();
         wallInfo.direction = Vector3.Cross(Vector3.up, -startDir);
@@ -115,17 +124,22 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         var current = wallInfo.start;
         var aNormal = Vector3.Cross(Vector3.up, wallInfo.direction);
-        var doorSize = new Vector3(200, 300, 30);
-        
+        var wallThick = 30;
+
         foreach (var t in wallInfo.tileInfos)
         {
             switch (t.type)
             {
                 case WallTypes.Blank:
                     AWallTile(current, wallInfo.direction, t.size);
+                    AWallTile(current + -aNormal * wallThick, wallInfo.direction, t.size, true);
                     break;
                 case WallTypes.Door:
-                    AddDoor(current +(wallInfo.direction * t.size.x / 2)  + Vector3.up * wallInfo.size.y / 2, doorSize, aNormal);
+                    var outerSize = new Vector3(t.size.x, t.size.y, wallThick);
+                    var doorSize = new Vector3(t.size.x, t.size.y, wallThick);
+                    var innerSize = outerSize - new Vector3(50, 100, 0);
+                    var adjust = (outerSize.y - innerSize.y) / 2 - 5;
+                    AddDoor(current +(wallInfo.direction * t.size.x / 2) + Vector3.up * doorSize.y / 2, aNormal, innerSize, outerSize, -adjust);
                     break;
                 case WallTypes.Window:
                     break;
@@ -135,7 +149,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
 
-    private void AWallTile(Vector3 start, Vector3 dir, Vector2 size)
+    private void AWallTile(Vector3 start, Vector3 dir, Vector2 size, bool invert = false)
     {
         var vCount = Vertices.Count;
         Vertices.Add(start);
@@ -143,14 +157,28 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         start += dir * size.x;
         Vertices.Add(start);
         Vertices.Add(start + Vector3.up * size.y);
-        
-        Triangles.Add(vCount + 2);
-        Triangles.Add(vCount + 1);
-        Triangles.Add(vCount);
-        
-        Triangles.Add(vCount + 2);
-        Triangles.Add(vCount + 3);
-        Triangles.Add(vCount + 1);
+
+        if (!invert)
+        {
+            Triangles.Add(vCount + 2);
+            Triangles.Add(vCount + 1);
+            Triangles.Add(vCount);
+            
+            Triangles.Add(vCount + 2);
+            Triangles.Add(vCount + 3);
+            Triangles.Add(vCount + 1);
+        }
+
+        else
+        {
+            Triangles.Add(vCount);
+            Triangles.Add(vCount + 1);
+            Triangles.Add(vCount + 3);
+            
+            Triangles.Add(vCount);
+            Triangles.Add(vCount + 3);
+            Triangles.Add(vCount + 2);
+        }
 
         UpdateMesh();
     }
@@ -296,11 +324,17 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         UpdateMesh();
     }
 
+    private void NewSideVerts()
+    {
+        
+    }
+    
     private void SideVerts(Vector3 pos, Vector3 dir, Vector2 innerSize)
     {
         var start = Vertices.Count;
         var outer = new Vector2(200, 400) - innerSize;
         var adjustIn = new Vector3(0,(innerSize.y / 2) - 5);
+        
         for (int i = 0; i < 2; i++)
         {
             if(i == 1) SetSquare(dir, pos+ adjustIn, innerSize);
@@ -394,7 +428,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         wallInfo.tileInfos.Add(new TileInfo()
         {
-            size = new Vector2(size, 200),
+            size = new Vector2(size, wallInfo.size.y),
             type = type
         });
     }
