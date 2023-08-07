@@ -66,7 +66,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         InitMesh();
         ApplyMaterial(aMaterial);
-        SetWall(new Vector3(1,0,0), 500, new Vector2(1000,300));
+        SetWall(direction, 500, new Vector2(1000,300));
+        FillInfos(200);
         
         MakeWalls3();
     }
@@ -81,14 +82,20 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private void SetWall(Vector3 startDir, float startAm, Vector2 totalWSize)
     {
-        var right = Vector3.Cross(Vector3.up, -startDir);
-        var start = startDir * startAm + -right * totalWSize.x / 2;
-
         wallInfo.ClearTiles();
-        wallInfo.direction = right;
+        wallInfo.direction = Vector3.Cross(Vector3.up, -startDir);
         wallInfo.size = totalWSize;
-        wallInfo.start = start;
+        wallInfo.start = startDir * startAm + -wallInfo.direction * totalWSize.x / 2;
     }
+
+    private void SetTiles(int numTiles)
+    {
+        for (int i = 0; i < numTiles; i++)
+        {
+            wallInfo.AddTile(WallTypes.Blank, new Vector2(wallInfo.size.x / numTiles, wallInfo.size.y));
+        }
+    }
+    
     
     public void AddDoor(int place)
     {
@@ -120,6 +127,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             
             current += wallInfo.direction * t.size.x;
         }
+    }
+
+    private void AWallTile(Vector3 start, Vector3 dir, Vector2 size)
+    {
+            
     }
     
     private void MakeWalls()
@@ -365,12 +377,12 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             type = type
         });
     }
-    private void FillInfos(float size)
+    private void FillInfos(float doorSize)
     {
         wallInfo.ClearTiles();
-        var sideSize = (wallInfo.size.x - size) / 2;
+        var sideSize = (wallInfo.size.x - doorSize) / 2;
         AddInfo(sideSize, WallTypes.Blank);
-        AddInfo(size, WallTypes.Door);
+        AddInfo(doorSize, WallTypes.Door);
         AddInfo(sideSize, WallTypes.Blank);
     }
     
@@ -378,15 +390,15 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         var pos = transform.position;
         FillInfos(200);
-        var start = wallInfo.start;
         var next = wallInfo.start;
         var nextDir = wallInfo.direction;
         var count = 0;
         
         foreach (var t in wallInfo.tileInfos)
         {
-            start = next;
+            var start = next;
             next += nextDir * t.size.x;
+            
             switch (t.type)
             {
                 case WallTypes.Blank:
