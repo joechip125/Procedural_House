@@ -349,7 +349,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var nextX = Vector3.zero;
         var nextY = Vector3.zero;
 
-            var start = pos;
+        var start = pos;
 
         for (int i = 0; i < 4; i++)
         {
@@ -379,6 +379,12 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
 
+    private void SVerts2(Vector3 normalDir)
+    {
+        var aRight = Vector3.Cross(normalDir, Vector3.up).normalized;
+
+    }
+    
     private void PlaceDot(Color color, Vector3 pos, int count)
     {
         Gizmos.color = color;
