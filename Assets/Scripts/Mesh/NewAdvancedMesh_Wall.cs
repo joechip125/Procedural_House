@@ -340,38 +340,43 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var hAmount = 8;
         var lowest = 5;
         var vInc = outerSize.y / vAmount;
+        var hInc = outerSize.x / hAmount;
         var counter = 0;
         var iStart = pos + (dir * (outerSize.x - innerSize.x) /2) + Vector3.up * lowest;
         var iEnd = iStart + dir * innerSize.x + Vector3.up * innerSize.y;
-       
-        var start = pos;
-        for (int i = 0; i < vAmount; i++)
+        var side = dir * (outerSize - innerSize).x / 2;
+        var center = dir * innerSize.x;
+        var nextX = Vector3.zero;
+        var nextY = Vector3.zero;
+
+            var start = pos;
+
+        for (int i = 0; i < 4; i++)
         {
-            if (pos.y > iStart.y && pos.y < iEnd.y)
+            nextX = pos + dir * hInc;
+            for (int j = 0; j < vAmount; j++)
             {
-                PlaceDot(Color.green, pos, counter++);
-            }
-            else
-            {
+                nextY = pos + Vector3.up * vInc;
                 PlaceDot(Color.red, pos, counter++);
+
+                if (nextY.y > iStart.y && pos.y < iStart.y)
+                {
+                    var aPos = new Vector3(pos.x, iStart.y, pos.z);
+                    PlaceDot(Color.green, aPos, counter++);
+                }
+
+                if (nextY.y > iEnd.y && pos.y < iEnd.y)
+                {
+                    var aPos = new Vector3(pos.x, iEnd.y, pos.z);
+                    PlaceDot(Color.green, aPos, counter++);
+                }
+                pos += Vector3.up * vInc;
             }
 
-            if (pos.y +(Vector3.up * vInc).y > iStart.y && pos.y < iStart.y)
-            {
-                var aPos = new Vector3(pos.x, iStart.y, pos.z);
-                PlaceDot(Color.green, aPos, counter++);
-            }
-
-            if (pos.y + (Vector3.up * vInc).y > iEnd.y && pos.y < iEnd.y)
-            {
-                var aPos = new Vector3(pos.x, iEnd.y, pos.z);
-                PlaceDot(Color.green, aPos, counter++);
-            }
-            pos += Vector3.up * vInc;
+            if (i % 2 == 0) start += side;
+            else start += center;
+            pos = start; 
         }
-
-        start += dir * (outerSize - innerSize).x / 2;
-        pos = start; 
     }
 
     private void PlaceDot(Color color, Vector3 pos, int count)
