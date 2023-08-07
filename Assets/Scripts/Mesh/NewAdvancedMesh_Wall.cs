@@ -74,10 +74,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     
     private void AddDoor(Vector3 addPos, Vector3 size, Vector3 aDirection)
     {
+        Debug.Log($"dir {aDirection}");
         TunnelVerts(addPos, aDirection, size);
         var shift = aDirection * size.z;
-        SideVerts(addPos +shift, aDirection, size);
-        SideVerts(addPos, -aDirection, size);
+        //SideVerts(addPos +shift, aDirection, size);
+        //SideVerts(addPos, -aDirection, size);
     }
 
     private void SetWall(Vector3 startDir, float startAm, Vector2 totalWSize)
@@ -113,6 +114,9 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void MakeWalls3()
     {
         var current = wallInfo.start;
+        var aNormal = Vector3.Cross(Vector3.up, wallInfo.direction);
+        var doorSize = new Vector3(200, 300, 30);
+        
         foreach (var t in wallInfo.tileInfos)
         {
             switch (t.type)
@@ -121,6 +125,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                     AWallTile(current, wallInfo.direction, t.size);
                     break;
                 case WallTypes.Door:
+                    AddDoor(current +(wallInfo.direction * t.size.x / 2)  + Vector3.up * wallInfo.size.y / 2, doorSize, aNormal);
                     break;
                 case WallTypes.Window:
                     break;
@@ -257,6 +262,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         SetSquare(aDir, center, new Vector2(size.x, size.y));
         var add = Vertices.Count;
+        var first = add;
 
         foreach (var c in Corners)
         {
@@ -270,10 +276,10 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             {
                 Triangles.Add(add);
                 Triangles.Add(add + 1);
-                Triangles.Add(1);
+                Triangles.Add(first + 1);
                 
-                Triangles.Add(1);
-                Triangles.Add(0);
+                Triangles.Add(first + 1);
+                Triangles.Add(first);
                 Triangles.Add(add);
                 continue;
             }

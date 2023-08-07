@@ -71,11 +71,9 @@ public class SingleRoom : MonoBehaviour
         }
     }
 
-    public void AddDoor(int number)
+    private void AddDoor(int number)
     {
-        number = Mathf.Clamp(number, 1, 4);
-        var temp = (NewAdvancedMesh_Wall)meshes[number];
-        temp.AddDoor(2);
+        
     }
     
     private void AddWalls(int numWalls)
