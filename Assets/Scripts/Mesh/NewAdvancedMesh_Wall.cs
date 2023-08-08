@@ -351,45 +351,58 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
         var start = pos;
         
-        PlaceDot(Color.yellow, iStart, 0);
-        PlaceDot(Color.yellow, iEnd, 0);
-        PlaceDot(Color.yellow, iStart + Vector3.up * innerSize.y, 0);
-        PlaceDot(Color.yellow, iEnd, 0);
-        PlaceDot(Color.yellow, iStart + (dir * innerSize.x), 0);
         
-        PlaceDot(Color.red, pos, 0);
-        PlaceDot(Color.red, pos + dir * outerSize.x, 0);
-        PlaceDot(Color.red, pos + Vector3.up * outerSize.y, 0);
-        PlaceDot(Color.red, pos + (Vector3.up * outerSize.y) + (dir * outerSize.x), 0);
 
-        //for (int i = 0; i < 4; i++)
-        //{
-        //    nextX = pos + dir * hInc;
-        //    for (int j = 0; j < vAmount; j++)
-        //    {
-        //        nextY = pos + Vector3.up * vInc;
-        //        PlaceDot(Color.red, pos, counter++);
-        //
-        //        if (nextY.y > iStart.y && pos.y < iStart.y)
-        //        {
-        //            var aPos = new Vector3(pos.x, iStart.y, pos.z);
-        //            PlaceDot(Color.green, aPos, counter++);
-        //        }
-        //
-        //        if (nextY.y > iEnd.y && pos.y < iEnd.y)
-        //        {
-        //            var aPos = new Vector3(pos.x, iEnd.y, pos.z);
-        //            PlaceDot(Color.green, aPos, counter++);
-        //        }
-        //        pos += Vector3.up * vInc;
-        //    }
-        //
-        //    if (i % 2 == 0) start += side;
-        //    else start += center;
-        //    pos = start; 
-        //}
+        for (int i = 0; i < 4; i++)
+        {
+            nextX = pos + dir * hInc;
+            
+            for (int j = 0; j < vAmount; j++)
+            {
+                nextY = pos + Vector3.up * vInc;
+                PlaceDot(Color.red, pos, counter++);
+
+                if (IsPointInSquare(iStart, iEnd, pos))
+                {
+                    
+                }
+                else
+                {
+                    
+                }
+                
+                if (nextY.y > iStart.y && pos.y < iStart.y)
+                {
+                    var aPos = new Vector3(pos.x, iStart.y, pos.z);
+                    PlaceDot(Color.green, aPos, counter++);
+                }
+        
+                else if (nextY.y > iEnd.y && pos.y < iEnd.y)
+                {
+                    var aPos = new Vector3(pos.x, iEnd.y, pos.z);
+                    PlaceDot(Color.green, aPos, counter++);
+                }
+                else
+                {
+                    
+                }
+                pos += Vector3.up * vInc;
+            }
+        
+            if (i % 2 == 0) start += side;
+            else start += center;
+            pos = start; 
+        }
     }
 
+    private bool IsPointInSquare(Vector3 min, Vector3 max, Vector3 point)
+    {
+        if (point.x < min.x || point.y < min.y || point.z < min.z) return false;
+        if (point.x > max.x || point.y > max.y || point.z > max.z) return false;
+        
+        return true;
+    }
+    
     private void SVerts2(Vector3 normalDir)
     {
         var aRight = Vector3.Cross(normalDir, Vector3.up).normalized;
