@@ -52,7 +52,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     [SerializeField] private Vector3 direction;
     [SerializeField] private float adjacent;
-    [SerializeField] private float height;
     [SerializeField] private int numberTiles;
     [SerializeField]private Vector3 wallSize;
     [SerializeField]private Vector3 wallNormal;
@@ -356,17 +355,32 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
         var start = pos;
         var tempCount = 0;
+        var skipNext = false;
+        
         
 
 
 
         for (int i = 0; i < 9; i++)
         {
-            
+                        
             for (int j = 0; j < vAmount; j++)
             {
                 nextY = pos + Vector3.up * vInc;
                 nextX = pos + dir * hInc;
+
+                var cMin = pos;
+                var cMax = (nextX + nextY ) / 2;
+                if (IsPointInSquare(cMin, cMax, iStart))
+                {
+                    skipNext = true;
+                    counter = StackEm(pos, counter, new Vector2(iStart.y, iEnd.y), outerSize.y, vAmount);
+                }
+                if (skipNext)
+                {
+                    skipNext = false;
+                    break;
+                }
                 
                 if (!IsPointInSquare(iStart, iEnd, pos))
                 {
@@ -374,7 +388,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                     
                     if (IsPointInSquare(iStart, iEnd, nextX))
                     {
-                        PlaceDot(Color.green, new Vector3(iStart.x, pos.y, iStart.z), counter++);
+                        //PlaceDot(Color.green, new Vector3(iStart.x, pos.y, iStart.z), counter++);
                     }
 
                     if (nextY.y > iStart.y && nextY.y < iEnd.y && pos.y < 10)
@@ -397,7 +411,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                     
                     if (nextX.x > iEnd.x || nextX.z > iEnd.z)
                     {
-                        PlaceDot(Color.green, new Vector3(iEnd.x, pos.y, iEnd.z), counter++);
+                        //PlaceDot(Color.green, new Vector3(iEnd.x, pos.y, iEnd.z), counter++);
                     }
                 }
                 
@@ -407,6 +421,32 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             start += dir * hInc;
             pos = start; 
         }
+    }
+
+    private int StackEm(Vector3 pos, int count, Vector2 startEnd, float height, int numDots)
+    {
+        var outVal = count;
+        
+        for (int i = 0; i < numDots; i++)
+        {
+            var next = pos + Vector3.up * (height / numDots);
+            if (pos.y >= startEnd.x && pos.y <= startEnd.y)
+            {
+                PlaceDot(Color.green, pos, outVal++);
+            }
+            else
+            {
+                if (next.y > startEnd.x && next.y < startEnd.y)
+                {
+                    PlaceDot(Color.green, new Vector3(pos.x, startEnd.x + 10, pos.z), outVal++);
+                }
+                PlaceDot(Color.red, pos, outVal++);
+            }
+            
+            pos += Vector3.up * (height / numDots);
+        }
+
+        return outVal;
     }
 
     private bool IsPointInSquare(Vector3 min, Vector3 max, Vector3 point)
