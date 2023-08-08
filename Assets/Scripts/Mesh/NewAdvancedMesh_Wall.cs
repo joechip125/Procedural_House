@@ -18,6 +18,18 @@ public enum WallTypes
     Window
 }
 
+[System.Flags]
+public enum PPlace
+{
+    None     = 0,
+    LessX    = 1 << 0,
+    LessY    = 2 << 0,
+    MiddleX  = 3 << 0,
+    MiddleY  = 4 << 0,
+    GreaterX = 5 << 0,
+    GreaterY = 6 << 0
+}
+
 [Serializable]
 public class WallInfo
 {
@@ -65,6 +77,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private int lastVert;
 
     public Material aMaterial;
+    private PPlace pPlace;
     
     private void Awake()
     {
@@ -347,8 +360,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var counter = 0;
         var iStart = pos + (dir * (outerSize.x - innerSize.x) /2) + Vector3.up * lowest;
         var iEnd = iStart + dir * innerSize.x + Vector3.up * innerSize.y;
-        var side = dir * (outerSize - innerSize).x / 2;
-        var center = dir * innerSize.x;
+       
         var nextX = Vector3.zero;
         var nextY = Vector3.zero;
         var firstSet = false;
@@ -356,11 +368,18 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var start = pos;
         var tempCount = 0;
         var skipNext = false;
-        
+        var vertC = Vertices.Count;
+        PPlace current = PPlace.None;
+
         for (int i = 0; i < hAmount; i++)
         {
             var cMin = pos;
             var cMax = cMin + dir * hInc + Vector3.up * vInc;
+            if (skipNext)
+            {
+                skipNext = false;
+                break;
+            }
             if (IsPointInSquare(cMin, cMax, iStart))
             {
                 skipNext = true;
@@ -369,47 +388,25 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             }
             for (int j = 0; j < vAmount; j++)
             {
+                current = PPlace.None;
                 nextY = pos + Vector3.up * vInc;
                 nextX = pos + dir * hInc;
-
                 cMin = pos;
                 cMax = (nextX + nextY ) / 2;
+                
                 if (pos.y < iStart.y)
                 {
-                    
-                }
-                
-                if (!IsPointInSquare(iStart, iEnd, pos))
-                {
-                    if (IsPointInSquare(iStart, iEnd, nextX))
+                    current |= PPlace.LessY;
+                    if (nextX.y > iStart.y)
                     {
-                        
+                        Vertices.Add(new Vector3(pos.x, iStart.y, pos.z));    
                     }
+                }
 
-                    if (nextY.y > iStart.y && nextY.y < iEnd.y && pos.y < 10)
-                    {
-                        
-                    }
-                    
-                    else if (nextY.y > iEnd.y && nextY.y < outerSize.y)
-                    {
-                       
-                    }
-                    
-                }
-                else
+                if (current.HasFlag(PPlace.LessY))
                 {
-                    if (nextY.y > iEnd.y && nextY.y < outerSize.y)
-                    {
-                        
-                    }
                     
-                    if (nextX.x > iEnd.x || nextX.z > iEnd.z)
-                    {
-                       
-                    }
                 }
-                
                 pos += Vector3.up * vInc;
             }
 
