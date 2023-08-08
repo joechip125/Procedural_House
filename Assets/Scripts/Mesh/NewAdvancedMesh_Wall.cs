@@ -445,6 +445,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             {
                 if (skipNext)
                 {
+                    counter = StackEm(pos, counter, new Vector2(iStart.y, iEnd.y), outerSize.y, vAmount);
                     skipNext = false;
                     break;
                 }
@@ -456,12 +457,10 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 var currPlace = WhereIsPoint(iStart, iEnd, pos);
                 var nextPlace = WhereIsPoint(iStart, iEnd, nextAll);
                 
-                
-
                 Debug.Log($"v {j}, h {i} pos: {pos} next: {nextAll}  current: {currPlace.ToString()}");
                 if ((currPlace & (PPlace.LessY | PPlace.LessX)) == (PPlace.LessY | PPlace.LessX))
                 {
-                    
+                    PlaceDot(Color.magenta, pos + Vector3.forward *30, 0);
                 }
                 if (currPlace.HasFlag(PPlace.LessY))
                 {
@@ -477,7 +476,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 }
                 else if (currPlace.HasFlag(PPlace.MiddleY))
                 {
-                    PlaceDot(Color.magenta, pos + Vector3.forward *30, 0);
+                   
                 }
                 else if (currPlace.HasFlag(PPlace.GreaterY))
                 {
@@ -489,14 +488,12 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 if (IsPointInSquare(cMin, cMax, iStart))
                 {
                     skipNext = true;
-                    counter = StackEm(pos, counter, new Vector2(iStart.y, iEnd.y), outerSize.y, vAmount);
                     continue;
                 }
 
                 if (IsPointInSquare(cMin, cMax, iStart + dir * innerSize.x))
                 {
                     skipNext = true;
-                    counter = StackEm(pos, counter, new Vector2(iStart.y, iEnd.y), outerSize.y, vAmount);
                     continue;
                 }
                 
