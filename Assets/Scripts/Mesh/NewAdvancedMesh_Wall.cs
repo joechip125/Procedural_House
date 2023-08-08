@@ -369,48 +369,27 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             }
             for (int j = 0; j < vAmount; j++)
             {
-                if (skipNext)
-                {
-                    skipNext = false;
-                    break;
-                }
-
                 nextY = pos + Vector3.up * vInc;
                 nextX = pos + dir * hInc;
 
                 cMin = pos;
                 cMax = (nextX + nextY ) / 2;
-                if (IsPointInSquare(cMin, cMax, iStart))
-                {
-                    skipNext = true;
-                    counter = StackEm(pos, counter, new Vector2(iStart.y, iEnd.y), outerSize.y, vAmount);
-                    continue;
-                }
-
-                if (IsPointInSquare(cMin, cMax, iStart + dir * innerSize.x))
-                {
-                    skipNext = true;
-                    counter = StackEm(pos, counter, new Vector2(iStart.y, iEnd.y), outerSize.y, vAmount);
-                    continue;
-                }
                 
                 if (!IsPointInSquare(iStart, iEnd, pos))
                 {
-                    PlaceDot(Color.red, pos, counter++);
-                    
                     if (IsPointInSquare(iStart, iEnd, nextX))
                     {
-                        //PlaceDot(Color.green, new Vector3(iStart.x, pos.y, iStart.z), counter++);
+                        
                     }
 
                     if (nextY.y > iStart.y && nextY.y < iEnd.y && pos.y < 10)
                     {
-                        PlaceDot(Color.green, new Vector3(pos.x, iStart.y + (Vector3.up * 10).y, pos.z), counter++);
+                        
                     }
                     
                     else if (nextY.y > iEnd.y && nextY.y < outerSize.y)
                     {
-                       PlaceDot(Color.green, new Vector3(pos.x, iEnd.y + (Vector3.up * 10).y, pos.z), counter++);
+                       
                     }
                     
                 }
@@ -418,12 +397,12 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 {
                     if (nextY.y > iEnd.y && nextY.y < outerSize.y)
                     {
-                        PlaceDot(Color.green, new Vector3(pos.x, iEnd.y + (Vector3.up * 10).y, pos.z), counter++);
+                        
                     }
                     
                     if (nextX.x > iEnd.x || nextX.z > iEnd.z)
                     {
-                        //PlaceDot(Color.green, new Vector3(iEnd.x, pos.y, iEnd.z), counter++);
+                       
                     }
                 }
                 
@@ -532,7 +511,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         for (int i = 0; i < numDots; i++)
         {
             var next = pos + dir * (length / numDots);
-            
+            PlaceDot(Color.green, pos, outVal++);
             pos += dir * (length / numDots);
         }
 
