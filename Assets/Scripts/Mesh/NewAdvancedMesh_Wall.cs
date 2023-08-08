@@ -369,7 +369,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var tempCount = 0;
         var skipNext = false;
         var vertC = Vertices.Count;
-        PPlace current = PPlace.None;
+        
 
         for (int i = 0; i < hAmount; i++)
         {
@@ -388,7 +388,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             }
             for (int j = 0; j < vAmount; j++)
             {
-                current = PPlace.None;
+                var current = PPlace.None;
+                var nextPlace = PPlace.None;
                 nextY = pos + Vector3.up * vInc;
                 nextX = pos + dir * hInc;
                 cMin = pos;
@@ -399,8 +400,20 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                     current |= PPlace.LessY;
                     if (nextX.y > iStart.y)
                     {
-                        Vertices.Add(new Vector3(pos.x, iStart.y, pos.z));    
                     }
+                }
+                else if (pos.y > iStart.y && pos.y < iEnd.y)
+                {
+                    current |= PPlace.MiddleY;
+                }
+                else if (pos.y > iEnd.y)
+                {
+                    current |= PPlace.GreaterY;
+                }
+
+                if (pos.x < iStart.x || pos.z < iStart.z)
+                {
+                    current |= PPlace.LessX;
                 }
 
                 if (current.HasFlag(PPlace.LessY))
@@ -555,6 +568,46 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         if (point.x > max.x || point.y > max.y || point.z > max.z) return false;
         
         return true;
+    }
+
+    private PPlace WhereIsPoint(Vector3 min, Vector3 max, Vector3 point)
+    {
+        var outP = PPlace.None;
+
+        if (point.y < min.y)
+        {
+            outP |= PPlace.LessY;
+        }
+        else if (point.y > min.y)
+        { 
+            if (point.y < max.y)
+            {
+                outP |= PPlace.MiddleY;
+            }
+            else if (point.y > max.y)
+            {
+                outP |= PPlace.GreaterY;    
+            }
+        }
+        
+        if (point.x < min.x || point.z < min.z)
+        {
+            outP |= PPlace.LessX;
+        }
+        else if (point.x > min.x || point.z > min.z)
+        {
+            if (point.x < max.x && point.z < max.z)
+            {
+                outP |= PPlace.MiddleX;
+            } 
+            
+            if (point.x < max.x && point.z < max.z)
+            {
+                outP |= PPlace.MiddleX;
+            }
+        }
+        
+        return outP;
     }
     
     private void SVerts2(Vector3 normalDir)
