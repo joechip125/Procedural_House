@@ -452,15 +452,23 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 
                 nextY = pos + Vector3.up * vInc;
                 nextX = pos + dir * hInc;
-                var nextAll = pos + Vector3.up * vInc + dir * hInc;
+                var nextAll = pos + (Vector3.up * vInc) + (dir * hInc);
 
                 var currPlace = WhereIsPoint(iStart, iEnd, pos);
                 var nextPlace = WhereIsPoint(iStart, iEnd, nextAll);
+                Debug.Log($"current {currPlace}, next {nextPlace}");
                 
-                Debug.Log($"v {j}, h {i} pos: {pos} next: {nextAll}  current: {currPlace.ToString()}");
+                if ((currPlace & PPlace.LessY) == PPlace.LessY)
+                {
+                    if ((nextPlace & (PPlace.MiddleY | PPlace.MiddleX)) == (PPlace.MiddleY | PPlace.MiddleX))
+                    {
+                        PlaceDot(Color.magenta, pos + Vector3.forward *30, 0);    
+                    }
+                }
+                
                 if ((currPlace & (PPlace.LessY | PPlace.LessX)) == (PPlace.LessY | PPlace.LessX))
                 {
-                    PlaceDot(Color.magenta, pos + Vector3.forward *30, 0);
+                    
                 }
                 if (currPlace.HasFlag(PPlace.LessY))
                 {
@@ -601,6 +609,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             if (point.y < max.y) outP |= PPlace.MiddleY;
             else if (point.y >= max.y) outP |= PPlace.GreaterY;
         }
+        
         
         if (point.x < min.x || point.z < min.z) outP |= PPlace.LessX;
         
