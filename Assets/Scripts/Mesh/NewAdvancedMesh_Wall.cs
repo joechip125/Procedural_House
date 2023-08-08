@@ -2,10 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using Zenject.ReflectionBaking.Mono.Cecil;
+using Quaternion = UnityEngine.Quaternion;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 public enum WallTypes
 {
@@ -336,7 +340,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private void GizmoSideVerts(Vector3 pos, Vector3 dir, Vector2 innerSize, Vector2 outerSize)
     {
-        var vAmount = 8;
+        var vAmount = 6;
         var hAmount = 8;
         var lowest = 5;
         var vInc = outerSize.y / vAmount;
@@ -348,49 +352,41 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var center = dir * innerSize.x;
         var nextX = Vector3.zero;
         var nextY = Vector3.zero;
+        var firstSet = false;
 
         var start = pos;
-        
-        
 
-        for (int i = 0; i < 4; i++)
+
+
+        for (int i = 0; i < 10; i++)
         {
-            nextX = pos + dir * hInc;
             
             for (int j = 0; j < vAmount; j++)
             {
                 nextY = pos + Vector3.up * vInc;
-                PlaceDot(Color.red, pos, counter++);
+                nextX = pos + dir * hInc;
 
-                if (IsPointInSquare(iStart, iEnd, pos))
+
+                if (!IsPointInSquare(iStart, iEnd, pos))
                 {
-                    
+                    PlaceDot(Color.red, pos, counter++);
+                    if (IsPointInSquare(iStart, iEnd, nextY))
+                    {
+                        if (pos.y < 10)
+                        {
+                            PlaceDot(Color.green, new Vector3(pos.x, iStart.y, pos.z), counter++);
+                        }
+                    }
                 }
                 else
                 {
-                    
+                   
                 }
                 
-                if (nextY.y > iStart.y && pos.y < iStart.y)
-                {
-                    var aPos = new Vector3(pos.x, iStart.y, pos.z);
-                    PlaceDot(Color.green, aPos, counter++);
-                }
-        
-                else if (nextY.y > iEnd.y && pos.y < iEnd.y)
-                {
-                    var aPos = new Vector3(pos.x, iEnd.y, pos.z);
-                    PlaceDot(Color.green, aPos, counter++);
-                }
-                else
-                {
-                    
-                }
                 pos += Vector3.up * vInc;
             }
-        
-            if (i % 2 == 0) start += side;
-            else start += center;
+
+            start += dir * hInc;
             pos = start; 
         }
     }
@@ -413,7 +409,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         Gizmos.color = color;
         Handles.Label(pos,$"{count}");
-        Gizmos.DrawSphere(pos, 4);         
+        Gizmos.DrawSphere(pos, 3);         
     }
     
     private void SideVerts(Vector3 pos, Vector3 dir, Vector2 innerSize)
@@ -584,7 +580,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void OnDrawGizmos()
     {
         if (Application.isPlaying) return;
-        GizmoSideVerts(Vector3.zero, direction, new Vector2(100,200), new Vector2(200, 400));
+        GizmoSideVerts(Vector3.zero, direction, new Vector2(100,200), new Vector2(200, 300));
         //SetWall(direction, 500, new Vector2(1000, 300));
         //TangentWall2(direction, 500, 1000);
     }
