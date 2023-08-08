@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Numerics;
 using Unity.VisualScripting;
 using UnityEditor;
@@ -10,6 +11,7 @@ using Zenject.ReflectionBaking.Mono.Cecil;
 using Quaternion = UnityEngine.Quaternion;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
+using Vector4 = System.Numerics.Vector4;
 
 public enum WallTypes
 {
@@ -457,38 +459,14 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 var currPlace = WhereIsPoint(iStart, iEnd, pos);
                 var nextPlace = WhereIsPoint(iStart, iEnd, nextAll);
                 Debug.Log($"current {currPlace}, next {nextPlace}");
-                
-                if ((currPlace & PPlace.LessY) == PPlace.LessY)
-                {
-                    if ((nextPlace & (PPlace.MiddleY | PPlace.MiddleX)) == (PPlace.MiddleY | PPlace.MiddleX))
-                    {
-                        PlaceDot(Color.magenta, pos + Vector3.forward *30, 0);    
-                    }
-                }
-                
-                if ((currPlace & (PPlace.LessY | PPlace.LessX)) == (PPlace.LessY | PPlace.LessX))
-                {
-                    
-                }
-                if (currPlace.HasFlag(PPlace.LessY))
-                {
-                    if (nextPlace.HasFlag(PPlace.MiddleY))
-                    {
-                        
-                    }
 
-                    if (nextPlace.HasFlag(PPlace.LessX))
+
+                if (currPlace.x < 0 && currPlace.y  < 0)
+                {
+                    if (currPlace.x < 0 && currPlace.y  < 0)
                     {
-                        //PlaceDot(Color.magenta, pos + Vector3.forward *30, 0);
-                    }
-                }
-                else if (currPlace.HasFlag(PPlace.MiddleY))
-                {
-                   
-                }
-                else if (currPlace.HasFlag(PPlace.GreaterY))
-                {
                     
+                    }    
                 }
                 
                 var cMin = pos;
@@ -598,27 +576,21 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         return true;
     }
 
-    private PPlace WhereIsPoint(Vector3 min, Vector3 max, Vector3 point)
+    private Vector2 WhereIsPoint(Vector3 min, Vector3 max, Vector3 point)
     {
         var outP = PPlace.None;
-
-        if (point.y < min.y) outP |= PPlace.LessY;
+        var outVec = new Vector2();
         
-        else if (point.y >= min.y)
-        { 
-            if (point.y < max.y) outP |= PPlace.MiddleY;
-            else if (point.y >= max.y) outP |= PPlace.GreaterY;
-        }
+        var calc = point.x + point.z;
+        var calc2 = min.x + min.z;
+        var calc3 = max.x + max.z;
         
+        if (point.y < min.y) outVec.y = -1;
+        else if (point.y >= min.y) outVec.x = point.y < max.y ? 0 : 1;
         
-        if (point.x < min.x || point.z < min.z) outP |= PPlace.LessX;
-        
-        else if (point.x >= min.x && point.z >= min.z)
-        {
-            if (point.x < max.x && point.z < max.z) outP |= PPlace.MiddleX;
-            else if (point.x >= max.x && point.z >= max.z) outP |= PPlace.GreaterX;
-        }
-        return outP;
+        if (calc < calc2) outVec.x = -1;
+        else if (calc >= calc2) outVec.x = calc < calc3 ? 0 : 1;
+        return outVec;
     }
     
     private void SVerts2(Vector3 normalDir)
