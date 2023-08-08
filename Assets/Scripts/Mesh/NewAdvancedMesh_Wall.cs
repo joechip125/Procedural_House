@@ -400,18 +400,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 var nextPlace = WhereIsPoint(iStart, iEnd, nextAll);
                 
                 Debug.Log($"v {j}, h {i} pos: {pos} next: {nextAll}  current: {currPlace.ToString()}");
-                if (currPlace.HasFlag(PPlace.LessY))
-                {
-                    if (nextPlace.HasFlag(PPlace.MiddleY))
-                    {
-                        
-                    }
-
-                    if (nextPlace.HasFlag(PPlace.LessX))
-                    {
-                        PlaceDot(Color.magenta, pos + Vector3.forward *30, 0);
-                    }
-                }
+               
                 
                 pos += Vector3.up * vInc;
             }
@@ -461,9 +450,14 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 Debug.Log($"current {currPlace}, next {nextPlace}");
 
 
-                if (currPlace.x < 0 && currPlace.y  < 0)
+                if (currPlace.x < 0 && currPlace.y < 0)
                 {
-                    if (currPlace.x < 0 && currPlace.y  < 0)
+                    if (nextPlace.x < 0)
+                    {
+                        
+                    }
+                    
+                    if (currPlace.x < 0 && currPlace.y < 0)
                     {
                     
                     }    
