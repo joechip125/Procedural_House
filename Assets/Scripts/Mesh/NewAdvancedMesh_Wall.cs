@@ -388,38 +388,29 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             }
             for (int j = 0; j < vAmount; j++)
             {
-                var current = PPlace.None;
-                var nextPlace = PPlace.None;
                 nextY = pos + Vector3.up * vInc;
                 nextX = pos + dir * hInc;
                 cMin = pos;
                 cMax = (nextX + nextY ) / 2;
+                Vector3 nextAll = pos + Vector3.up * vInc + dir * hInc;
+
+                var currPlace = WhereIsPoint(iStart, iEnd, pos);
+                var nextPlace = WhereIsPoint(iStart, iEnd, nextAll);
                 
-                if (pos.y < iStart.y)
+                Debug.Log($"v {j}, h {i} pos: {pos} next: {nextAll}  current: {currPlace.ToString()}");
+                if (currPlace.HasFlag(PPlace.LessY))
                 {
-                    current |= PPlace.LessY;
-                    if (nextX.y > iStart.y)
+                    if (nextPlace.HasFlag(PPlace.MiddleY))
                     {
+                        
+                    }
+
+                    if (nextPlace.HasFlag(PPlace.LessX))
+                    {
+                        PlaceDot(Color.magenta, pos + Vector3.forward *30, 0);
                     }
                 }
-                else if (pos.y > iStart.y && pos.y < iEnd.y)
-                {
-                    current |= PPlace.MiddleY;
-                }
-                else if (pos.y > iEnd.y)
-                {
-                    current |= PPlace.GreaterY;
-                }
-
-                if (pos.x < iStart.x || pos.z < iStart.z)
-                {
-                    current |= PPlace.LessX;
-                }
-
-                if (current.HasFlag(PPlace.LessY))
-                {
-                    
-                }
+                
                 pos += Vector3.up * vInc;
             }
 
@@ -464,15 +455,33 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
                 var currPlace = WhereIsPoint(iStart, iEnd, pos);
                 var nextPlace = WhereIsPoint(iStart, iEnd, nextAll);
+                
+                
 
                 Debug.Log($"v {j}, h {i} pos: {pos} next: {nextAll}  current: {currPlace.ToString()}");
+                if ((currPlace & (PPlace.LessY | PPlace.LessX)) == (PPlace.LessY | PPlace.LessX))
+                {
+                    
+                }
                 if (currPlace.HasFlag(PPlace.LessY))
                 {
-                    PlaceDot(Color.magenta, pos + Vector3.forward *30, 0);
                     if (nextPlace.HasFlag(PPlace.MiddleY))
                     {
-                        PlaceDot(Color.magenta, pos + Vector3.forward *30, 0);
-                    }    
+                        
+                    }
+
+                    if (nextPlace.HasFlag(PPlace.LessX))
+                    {
+                        //PlaceDot(Color.magenta, pos + Vector3.forward *30, 0);
+                    }
+                }
+                else if (currPlace.HasFlag(PPlace.MiddleY))
+                {
+                    PlaceDot(Color.magenta, pos + Vector3.forward *30, 0);
+                }
+                else if (currPlace.HasFlag(PPlace.GreaterY))
+                {
+                    
                 }
                 
                 var cMin = pos;
