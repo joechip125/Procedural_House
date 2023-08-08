@@ -340,7 +340,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void DoorFront(Vector3 pos, Vector3 dir, Vector2 innerSize, Vector2 outerSize)
     {
         var vAmount = 6;
-        var hAmount = 8;
+        var hAmount = 9;
         var lowest = 5;
         var vInc = outerSize.y / vAmount;
         var hInc = outerSize.x / hAmount;
@@ -357,10 +357,10 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var tempCount = 0;
         var skipNext = false;
         
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < hAmount; i++)
         {
             var cMin = pos;
-            var cMax = (nextX + nextY ) / 2;
+            var cMax = cMin + dir * hInc + Vector3.up * vInc;
             if (IsPointInSquare(cMin, cMax, iStart))
             {
                 skipNext = true;
@@ -374,6 +374,10 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
                 cMin = pos;
                 cMax = (nextX + nextY ) / 2;
+                if (pos.y < iStart.y)
+                {
+                    
+                }
                 
                 if (!IsPointInSquare(iStart, iEnd, pos))
                 {
