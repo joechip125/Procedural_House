@@ -23,11 +23,11 @@ public enum PPlace
 {
     None     = 0,
     LessX    = 1 << 0,
-    LessY    = 2 << 0,
-    MiddleX  = 3 << 0,
-    MiddleY  = 4 << 0,
-    GreaterX = 5 << 0,
-    GreaterY = 6 << 0
+    LessY    = 1 << 1,
+    MiddleX  = 1 << 2,
+    MiddleY  = 1 << 3,
+    GreaterX = 1 << 4,
+    GreaterY = 1 << 5
 }
 
 [Serializable]
@@ -457,10 +457,24 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                     skipNext = false;
                     break;
                 }
-
+                
                 nextY = pos + Vector3.up * vInc;
                 nextX = pos + dir * hInc;
+                var nextAll = pos + Vector3.up * vInc + dir * hInc;
 
+                var currPlace = WhereIsPoint(iStart, iEnd, pos);
+                var nextPlace = WhereIsPoint(iStart, iEnd, nextAll);
+
+                Debug.Log($"v {j}, h {i} pos: {pos} next: {nextAll}  current: {currPlace.ToString()}");
+                if (currPlace.HasFlag(PPlace.LessY))
+                {
+                    PlaceDot(Color.magenta, pos + Vector3.forward *30, 0);
+                    if (nextPlace.HasFlag(PPlace.MiddleY))
+                    {
+                        PlaceDot(Color.magenta, pos + Vector3.forward *30, 0);
+                    }    
+                }
+                
                 var cMin = pos;
                 var cMax = (nextX + nextY ) / 2;
                 if (IsPointInSquare(cMin, cMax, iStart))
@@ -574,39 +588,21 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         var outP = PPlace.None;
 
-        if (point.y < min.y)
-        {
-            outP |= PPlace.LessY;
-        }
-        else if (point.y > min.y)
+        if (point.y < min.y) outP |= PPlace.LessY;
+        
+        else if (point.y >= min.y)
         { 
-            if (point.y < max.y)
-            {
-                outP |= PPlace.MiddleY;
-            }
-            else if (point.y > max.y)
-            {
-                outP |= PPlace.GreaterY;    
-            }
+            if (point.y < max.y) outP |= PPlace.MiddleY;
+            else if (point.y >= max.y) outP |= PPlace.GreaterY;
         }
         
-        if (point.x < min.x || point.z < min.z)
-        {
-            outP |= PPlace.LessX;
-        }
-        else if (point.x > min.x || point.z > min.z)
-        {
-            if (point.x < max.x && point.z < max.z)
-            {
-                outP |= PPlace.MiddleX;
-            } 
-            
-            if (point.x < max.x && point.z < max.z)
-            {
-                outP |= PPlace.MiddleX;
-            }
-        }
+        if (point.x < min.x || point.z < min.z) outP |= PPlace.LessX;
         
+        else if (point.x >= min.x && point.z >= min.z)
+        {
+            if (point.x < max.x && point.z < max.z) outP |= PPlace.MiddleX;
+            else if (point.x >= max.x && point.z >= max.z) outP |= PPlace.GreaterX;
+        }
         return outP;
     }
     
