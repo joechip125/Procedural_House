@@ -337,6 +337,104 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
 
+    private void DoorFront(Vector3 pos, Vector3 dir, Vector2 innerSize, Vector2 outerSize)
+    {
+        var vAmount = 6;
+        var hAmount = 8;
+        var lowest = 5;
+        var vInc = outerSize.y / vAmount;
+        var hInc = outerSize.x / hAmount;
+        var counter = 0;
+        var iStart = pos + (dir * (outerSize.x - innerSize.x) /2) + Vector3.up * lowest;
+        var iEnd = iStart + dir * innerSize.x + Vector3.up * innerSize.y;
+        var side = dir * (outerSize - innerSize).x / 2;
+        var center = dir * innerSize.x;
+        var nextX = Vector3.zero;
+        var nextY = Vector3.zero;
+        var firstSet = false;
+
+        var start = pos;
+        var tempCount = 0;
+        var skipNext = false;
+        
+        for (int i = 0; i < 9; i++)
+        {
+            var cMin = pos;
+            var cMax = (nextX + nextY ) / 2;
+            if (IsPointInSquare(cMin, cMax, iStart))
+            {
+                skipNext = true;
+                counter = StackEm(pos, counter, new Vector2(iStart.y, iEnd.y), outerSize.y, vAmount);
+                continue;
+            }
+            for (int j = 0; j < vAmount; j++)
+            {
+                if (skipNext)
+                {
+                    skipNext = false;
+                    break;
+                }
+
+                nextY = pos + Vector3.up * vInc;
+                nextX = pos + dir * hInc;
+
+                cMin = pos;
+                cMax = (nextX + nextY ) / 2;
+                if (IsPointInSquare(cMin, cMax, iStart))
+                {
+                    skipNext = true;
+                    counter = StackEm(pos, counter, new Vector2(iStart.y, iEnd.y), outerSize.y, vAmount);
+                    continue;
+                }
+
+                if (IsPointInSquare(cMin, cMax, iStart + dir * innerSize.x))
+                {
+                    skipNext = true;
+                    counter = StackEm(pos, counter, new Vector2(iStart.y, iEnd.y), outerSize.y, vAmount);
+                    continue;
+                }
+                
+                if (!IsPointInSquare(iStart, iEnd, pos))
+                {
+                    PlaceDot(Color.red, pos, counter++);
+                    
+                    if (IsPointInSquare(iStart, iEnd, nextX))
+                    {
+                        //PlaceDot(Color.green, new Vector3(iStart.x, pos.y, iStart.z), counter++);
+                    }
+
+                    if (nextY.y > iStart.y && nextY.y < iEnd.y && pos.y < 10)
+                    {
+                        PlaceDot(Color.green, new Vector3(pos.x, iStart.y + (Vector3.up * 10).y, pos.z), counter++);
+                    }
+                    
+                    else if (nextY.y > iEnd.y && nextY.y < outerSize.y)
+                    {
+                       PlaceDot(Color.green, new Vector3(pos.x, iEnd.y + (Vector3.up * 10).y, pos.z), counter++);
+                    }
+                    
+                }
+                else
+                {
+                    if (nextY.y > iEnd.y && nextY.y < outerSize.y)
+                    {
+                        PlaceDot(Color.green, new Vector3(pos.x, iEnd.y + (Vector3.up * 10).y, pos.z), counter++);
+                    }
+                    
+                    if (nextX.x > iEnd.x || nextX.z > iEnd.z)
+                    {
+                        //PlaceDot(Color.green, new Vector3(iEnd.x, pos.y, iEnd.z), counter++);
+                    }
+                }
+                
+                pos += Vector3.up * vInc;
+            }
+
+            start += dir * hInc;
+            pos = start; 
+        }
+    }
+    
     private void GizmoSideVerts(Vector3 pos, Vector3 dir, Vector2 innerSize, Vector2 outerSize)
     {
         var vAmount = 6;
@@ -357,15 +455,16 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var tempCount = 0;
         var skipNext = false;
         
-        
-
-
-
         for (int i = 0; i < 9; i++)
         {
-                        
             for (int j = 0; j < vAmount; j++)
             {
+                if (skipNext)
+                {
+                    skipNext = false;
+                    break;
+                }
+
                 nextY = pos + Vector3.up * vInc;
                 nextX = pos + dir * hInc;
 
@@ -375,11 +474,14 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 {
                     skipNext = true;
                     counter = StackEm(pos, counter, new Vector2(iStart.y, iEnd.y), outerSize.y, vAmount);
+                    continue;
                 }
-                if (skipNext)
+
+                if (IsPointInSquare(cMin, cMax, iStart + dir * innerSize.x))
                 {
-                    skipNext = false;
-                    break;
+                    skipNext = true;
+                    counter = StackEm(pos, counter, new Vector2(iStart.y, iEnd.y), outerSize.y, vAmount);
+                    continue;
                 }
                 
                 if (!IsPointInSquare(iStart, iEnd, pos))
@@ -423,6 +525,20 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
 
+    private int LineEm(Vector3 pos, int count, Vector3 dir, float length, int numDots)
+    {
+        var outVal = count;
+        
+        for (int i = 0; i < numDots; i++)
+        {
+            var next = pos + dir * (length / numDots);
+            
+            pos += dir * (length / numDots);
+        }
+
+        return outVal;
+    }
+    
     private int StackEm(Vector3 pos, int count, Vector2 startEnd, float height, int numDots)
     {
         var outVal = count;
@@ -430,19 +546,23 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         for (int i = 0; i < numDots; i++)
         {
             var next = pos + Vector3.up * (height / numDots);
-            if (pos.y >= startEnd.x && pos.y <= startEnd.y)
-            {
+
+            if (pos.y > startEnd.x && pos.y < startEnd.y)
+            { 
                 PlaceDot(Color.green, pos, outVal++);
+                if (next.y > startEnd.y)
+                {
+                    PlaceDot(Color.green, new Vector3(pos.x, startEnd.y + 10, pos.z), outVal++);
+                }
             }
-            else
+            else if(pos.y < startEnd.x || pos.y > startEnd.y)
             {
+                PlaceDot(Color.red, pos, outVal++);
                 if (next.y > startEnd.x && next.y < startEnd.y)
                 {
                     PlaceDot(Color.green, new Vector3(pos.x, startEnd.x + 10, pos.z), outVal++);
                 }
-                PlaceDot(Color.red, pos, outVal++);
             }
-            
             pos += Vector3.up * (height / numDots);
         }
 
