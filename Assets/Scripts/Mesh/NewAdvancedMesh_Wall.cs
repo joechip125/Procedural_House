@@ -370,12 +370,10 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 if (!IsPointInSquare(iStart, iEnd, pos))
                 {
                     PlaceDot(Color.red, pos, counter++);
-                    if (IsPointInSquare(iStart, iEnd, nextY))
+                    var simp = new Vector3(iStart.x, nextY.y, iStart.z);
+                    if (IsPointInSquare(iStart, iEnd, simp))
                     {
-                        if (pos.y < 10)
-                        {
-                            PlaceDot(Color.green, new Vector3(pos.x, iStart.y, pos.z), counter++);
-                        }
+                        if(pos.y < 10) PlaceDot(Color.green, new Vector3(pos.x, iStart.y, pos.z), counter++);
                     }
                     
                     if (IsPointInSquare(iStart, iEnd, nextX))
@@ -385,12 +383,10 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 }
                 else
                 {
-                    if (!IsPointInSquare(iStart, iEnd, nextY))
-                    {
-                        if (pos.y > 10)
-                        {
-                            PlaceDot(Color.green, new Vector3(pos.x, iEnd.y, pos.z), counter++);
-                        }
+                    var simp = new Vector3(iStart.x, nextY.y, iStart.z);
+                    if (!IsPointInSquare(iStart, iEnd, simp))
+                    { 
+                        PlaceDot(Color.green, new Vector3(pos.x, iEnd.y, pos.z), counter++);
                     }
                     if (!IsPointInSquare(iStart, iEnd, nextX))
                     {
