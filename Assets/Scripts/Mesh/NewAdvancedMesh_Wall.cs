@@ -355,40 +355,47 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var firstSet = false;
 
         var start = pos;
+        var tempCount = 0;
+        
 
 
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 9; i++)
         {
             
             for (int j = 0; j < vAmount; j++)
             {
                 nextY = pos + Vector3.up * vInc;
                 nextX = pos + dir * hInc;
-
-
+                
                 if (!IsPointInSquare(iStart, iEnd, pos))
                 {
                     PlaceDot(Color.red, pos, counter++);
-                    var simp = new Vector3(iStart.x, nextY.y, iStart.z);
-                    if (IsPointInSquare(iStart, iEnd, simp))
-                    {
-                        if(pos.y < 10) PlaceDot(Color.green, new Vector3(pos.x, iStart.y, pos.z), counter++);
-                    }
                     
                     if (IsPointInSquare(iStart, iEnd, nextX))
                     {
                         PlaceDot(Color.green, new Vector3(iStart.x, pos.y, iStart.z), counter++);
                     }
+
+                    if (nextY.y > iStart.y && nextY.y < iEnd.y && pos.y < 10)
+                    {
+                        PlaceDot(Color.green, new Vector3(pos.x, iStart.y + (Vector3.up * 10).y, pos.z), counter++);
+                    }
+                    
+                    else if (nextY.y > iEnd.y && nextY.y < outerSize.y)
+                    {
+                       PlaceDot(Color.green, new Vector3(pos.x, iEnd.y + (Vector3.up * 10).y, pos.z), counter++);
+                    }
+                    
                 }
                 else
                 {
-                    var simp = new Vector3(iStart.x, nextY.y, iStart.z);
-                    if (!IsPointInSquare(iStart, iEnd, simp))
-                    { 
-                        PlaceDot(Color.green, new Vector3(pos.x, iEnd.y, pos.z), counter++);
+                    if (nextY.y > iEnd.y && nextY.y < outerSize.y)
+                    {
+                        PlaceDot(Color.green, new Vector3(pos.x, iEnd.y + (Vector3.up * 10).y, pos.z), counter++);
                     }
-                    if (!IsPointInSquare(iStart, iEnd, nextX))
+                    
+                    if (nextX.x > iEnd.x || nextX.z > iEnd.z)
                     {
                         PlaceDot(Color.green, new Vector3(iEnd.x, pos.y, iEnd.z), counter++);
                     }
