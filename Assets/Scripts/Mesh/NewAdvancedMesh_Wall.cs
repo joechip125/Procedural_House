@@ -377,10 +377,25 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                             PlaceDot(Color.green, new Vector3(pos.x, iStart.y, pos.z), counter++);
                         }
                     }
+                    
+                    if (IsPointInSquare(iStart, iEnd, nextX))
+                    {
+                        PlaceDot(Color.green, new Vector3(iStart.x, pos.y, iStart.z), counter++);
+                    }
                 }
                 else
                 {
-                   
+                    if (!IsPointInSquare(iStart, iEnd, nextY))
+                    {
+                        if (pos.y > 10)
+                        {
+                            PlaceDot(Color.green, new Vector3(pos.x, iEnd.y, pos.z), counter++);
+                        }
+                    }
+                    if (!IsPointInSquare(iStart, iEnd, nextX))
+                    {
+                        PlaceDot(Color.green, new Vector3(iEnd.x, pos.y, iEnd.z), counter++);
+                    }
                 }
                 
                 pos += Vector3.up * vInc;
