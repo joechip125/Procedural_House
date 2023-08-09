@@ -432,27 +432,29 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         PlaneDirections(myDir, out var pUp, out var pRight);
         var endY = pUp * pSize.y / 2;
         var endX = pRight * pSize.x / 2;
+        Debug.Log($"up{pUp* pSize.y / 2}, pR{pRight* pSize.x / 2}");
         corns[0] = pos - (endY + endX);
         corns[1] = pos + endY - endX;
         corns[2] = pos + endY + endX;
         corns[3] = pos - endY + endX;
-        var lCount = 0;
+        var nextC = 0;
         
         for (int i = 0; i < 4; i++)
         {
             PlaceDot(Color.green,corns[i], counter++);
-            lCount = i == corns.Length - 1 ? 0 : lCount + 1;
-            Debug.Log($"count {lCount} i {i}");
+            
+            nextC = i == corns.Length - 1 ? 0 : nextC + 1;
+            var distance = Vector3.Distance(corns[i], corns[nextC]);
+            DrawLine(corns[i], corns[nextC],  Color.green, $"L:{distance}");
+            
             if (i == corns.Length - 1)
             {
-                DrawLine(corns[i], corns[0],  Color.green);    
+                  
             }
             else
             {
-                var distance = Vector3.Distance(corns[i], corns[i + 1]);
-                DrawLine(corns[i], corns[i + 1],  Color.green);    
+               
             }
-            
         }
         
         
