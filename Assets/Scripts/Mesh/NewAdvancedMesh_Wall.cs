@@ -81,6 +81,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     public Material aMaterial;
     private PPlace pPlace;
     
+    [Header("Direction")]
+    [SerializeField, Range(-1,1)] private float xDir;
+    [SerializeField, Range(-1,1)] private float yDir;
+    [SerializeField, Range(-1,1)] private float zDir;
+    
     private void Awake()
     {
         InitMesh();
@@ -427,13 +432,23 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var color = new Color(1, 0,0);
         var cSize = new Vector2(hInc, vInc);
         var nextAll = pos + (Vector3.up * vInc) + (dir * hInc);
+        var aNormal = new Vector3(1, 0, 0);
+        var pro = Vector3.ProjectOnPlane(new Vector3(1,1,0), new Vector3(1,0,0));
+        Debug.Log($" pro {pro}, pos {pos}");
+        DrawLine(pos, direction, 100, Color.green);
+        DrawLine(pos, pro, 100, Color.red);
         
         for (int i = 0; i < vAmount; i++)
         {
-            var next = pos +  Vector3.up * vInc;
+            var nextY = pos + Vector3.up * vInc;
 
-            nextAll.y = pos.y < iStart.y && next.y > iStart.y 
-                ? nextAll.y = iStart.y : nextAll.y = next.y;
+            if (pos.y < iStart.y)
+            {
+                
+            }
+
+            nextAll.y = pos.y < iStart.y && nextY.y > iStart.y 
+                ? nextAll.y = iStart.y : nextAll.y = nextY.y;
 
             for (int j = 0; j < hAmount; j++)
             {
@@ -441,7 +456,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 nextAll.z = pos.z;
                 var currPlace = WhereIsPoint(iStart, iEnd, pos);
                 var nextPlace = WhereIsPoint(iStart, iEnd, nextAll);
-                Debug.Log($"curr {currPlace} h {j} count {counter}, pos {pos}");
+               
                 
                 if (currPlace.x < 0)
                 {
@@ -469,10 +484,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
                 if (i == 0 && j == 0)
                 {
-                    PlaceDot(color, pos, counter++);
-                    PlaceDot(color, new Vector3(pos.x, iStart.y, pos.z), counter++);
-                    PlaceDot(color, pos + dir * hInc, counter++);
-                    PlaceDot(color, new Vector3(pos.x, iStart.y, pos.z)+ dir * hInc, counter++);
                 }
                 else
                 {
@@ -673,6 +684,12 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         var aRight = Vector3.Cross(normalDir, Vector3.up).normalized;
         
+    }
+
+    private void DrawLine(Vector3 origin, Vector3 dir, float length, Color color)
+    {
+        Gizmos.color = color;
+        Gizmos.DrawLine(origin, dir * length);
     }
     
     private void PlaceDot(Color color, Vector3 pos, int count)
