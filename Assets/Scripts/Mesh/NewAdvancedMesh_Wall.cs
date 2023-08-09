@@ -425,10 +425,14 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void VizPlane(Vector3 pos)
     {
         var myDir = new Vector3(xDir, yDir, zDir);
+        var pSize = new Vector2(200, 400);
+        var corns = new Vector3[4];
+        
         PlaneDirections(myDir, out var pUp, out var pRight);
-        DrawLine(pos, myDir, 100, Color.green);
-        DrawLine(pos, pUp, 100, Color.red);
-        DrawLine(pos, pRight, 100, Color.yellow);
+        
+        DrawLine(pos, pos +myDir * 100,  Color.green);
+        DrawLine(pos, pos +pUp * 100,  Color.red);
+        DrawLine(pos, pos +pRight * 100,  Color.yellow);
     }
     
     private void GizmoSideVerts2(Vector3 pos, Vector3 normal, Vector2 innerSize, Vector2 outerSize)
@@ -447,7 +451,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var nextAll = pos + (Vector3.up * vInc) + (normal * hInc);
         
         PlaneDirections(normal, out var pUp, out var pRight);
-
+        VizPlane(pos);
         for (int i = 0; i < vAmount; i++)
         {
             pPos.y = vInc * i;
@@ -476,7 +480,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 }
 
                 pos += addVec;
-                if (pPos.x < iStart.x && pPos.x < iStart.y)
+                if (pPos.x < iStart.x || pPos.x > iEnd.x)
                 {
                     PlaceDot(Color.red, pos, counter++);
                 }
@@ -671,10 +675,10 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         
     }
 
-    private void DrawLine(Vector3 origin, Vector3 dir, float length, Color color)
+    private void DrawLine(Vector3 origin, Vector3 end, Color color)
     {
         Gizmos.color = color;
-        Gizmos.DrawLine(origin, dir * length);
+        Gizmos.DrawLine(origin, end);
     }
     
     private void PlaceDot(Color color, Vector3 pos, int count)
