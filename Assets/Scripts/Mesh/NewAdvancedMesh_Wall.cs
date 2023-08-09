@@ -433,11 +433,14 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var endY = pUp * pSize.y / 2;
         var endX = pRight * pSize.x / 2;
         //Debug.Log($"up{pUp* pSize.y / 2}, pR{pRight* pSize.x / 2}");
+        
+        var ie = Mathf.Sqrt(Mathf.Pow(pSize.y / 2, 2) + Mathf.Pow(pSize.y / 2, 2));
         for (int i = 0; i < 4; i++)
         {
             var cAngle = Quaternion.AngleAxis(90* i, myDir) *pRight;
             var nAngle = Quaternion.AngleAxis(90* i + 90, myDir) *pRight;
-            Debug.Log($"up{cAngle} next{nAngle} sum {cAngle + nAngle}");
+            ie = Mathf.Sqrt(Mathf.Pow((pSize.y * cAngle.x) / 2, 2) + Mathf.Pow((pSize.y * cAngle.y), 2));
+            Debug.Log($"up{cAngle} next{nAngle} sum {cAngle + nAngle} square {ie}");
         }
         
         corns[0] = pos - (endY + endX);
