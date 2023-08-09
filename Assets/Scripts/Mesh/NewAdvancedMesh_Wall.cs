@@ -433,11 +433,15 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var cSize = new Vector2(hInc, vInc);
         var nextAll = pos + (Vector3.up * vInc) + (dir * hInc);
         var aNormal = new Vector3(1, 0, 0);
-        var pro = Vector3.ProjectOnPlane(new Vector3(1,1,0), new Vector3(1,0,0));
-        Debug.Log($" pro {pro}, pos {pos}");
-        DrawLine(pos, direction, 100, Color.green);
-        DrawLine(pos, pro, 100, Color.red);
+        var myDir = new Vector3(xDir, yDir, zDir);
+        var proAngle = Vector3.zero;
         
+        var pro = Vector3.ProjectOnPlane(new Vector3(0,1,0), myDir);
+        DrawLine(pos, myDir, 100, Color.green);
+        DrawLine(pos, pro, 100, Color.red);
+        DrawLine(pos, Vector3.Cross(myDir, pro), 100, Color.yellow);
+        Debug.Log($" pro {pro}, cross {Vector3.Cross(pro, myDir)}");
+
         for (int i = 0; i < vAmount; i++)
         {
             var nextY = pos + Vector3.up * vInc;
