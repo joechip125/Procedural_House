@@ -425,6 +425,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var second = Vector3.zero;
         var third = Vector3.zero;
         var fourth = Vector3.zero;
+        var color = new Color(1, 0,0);
+        var cSize = new Vector2(hInc, vInc);
         
         
         for (int i = 0; i < vAmount; i++)
@@ -435,10 +437,17 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 var currPlace = WhereIsPoint(iStart, iEnd, pos);
                 var nextPlace = WhereIsPoint(iStart, iEnd, nextAll);
                 Debug.Log($"curr {currPlace} h {j} count {counter}, pos {pos}");
-
-                PlaceDot(Color.red, pos, counter++);
                 
-                if (currPlace.x is < 0 )
+                if (currPlace.x < 0)
+                {
+                    PlaceDot(color, pos, counter++);
+                    if (currPlace.y < 0)
+                    {
+                        
+                    }
+                }
+                
+                if (currPlace.x < 0 )
                 {
                     if (nextPlace.x == 0)
                     {
@@ -446,7 +455,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                         continue;
                     }
                 }
-                
                 
                 pos += dir * hInc;
             }
