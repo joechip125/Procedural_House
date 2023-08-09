@@ -413,7 +413,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void GizmoSideVerts2(Vector3 pos, Vector3 dir, Vector2 innerSize, Vector2 outerSize)
     {
         var counter = 0;
-        var vAmount = 4;
+        var vAmount = 8;
         var hAmount = 8;
         var lowest = 5;
         var vInc = outerSize.y / vAmount;
@@ -434,36 +434,19 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 var nextAll = pos + (Vector3.up * vInc) + (dir * hInc);
                 var currPlace = WhereIsPoint(iStart, iEnd, pos);
                 var nextPlace = WhereIsPoint(iStart, iEnd, nextAll);
-                
-                
-                Debug.Log($"mag {currPlace.magnitude} vecC " +
-                          $"{currPlace} vecN " +
-                          $"{nextPlace} dot{Vector2.Dot(currPlace, nextPlace)}" +
-                          $"angle {Vector2.Angle(currPlace, nextPlace)}");
-                if (currPlace.y < 0)
-                {
-                    PlaceDot(Color.red, pos, counter++);
-                    
-                    if (currPlace.x < 0)
-                    {
-                        if (nextPlace.y == 0)
-                        {
-                            PlaceDot(Color.green, pos + Vector3.up * lowest, counter++);
-                        }
-                    }
-                    if (nextPlace.y == 0)
-                    {
-                      //  PlaceDot(Color.green, pos + Vector3.up * lowest, counter++);
-                    }    
-                }
+                Debug.Log($"curr {currPlace} h {j} count {counter}, pos {pos}");
 
-                else if (currPlace.x == 0)
+                PlaceDot(Color.red, pos, counter++);
+                
+                if (currPlace.x is < 0 )
                 {
-                    if (nextPlace.x > 0)
+                    if (nextPlace.x == 0)
                     {
-                        PlaceDot(Color.green, pos, counter++);
+                        pos += dir * hInc / 2;
+                        continue;
                     }
                 }
+                
                 
                 pos += dir * hInc;
             }
