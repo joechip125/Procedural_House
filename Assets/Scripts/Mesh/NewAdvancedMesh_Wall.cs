@@ -427,12 +427,20 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var myDir = new Vector3(xDir, yDir, zDir);
         var pSize = new Vector2(200, 400);
         var corns = new Vector3[4];
+        var counter = 0;
         
         PlaneDirections(myDir, out var pUp, out var pRight);
+        var endY = pUp * pSize.y / 2;
+        var endX = pRight * pSize.x / 2;
+        PlaceDot(Color.green,pos -(endY + endX), counter++);
+        PlaceDot(Color.green,pos + endY - endX, counter++);
+        PlaceDot(Color.green,pos + endY + endX, counter++);
+        PlaceDot(Color.green,pos - endY + endX, counter++);
         
         DrawLine(pos, pos +myDir * 100,  Color.green);
-        DrawLine(pos, pos +pUp * 100,  Color.red);
-        DrawLine(pos, pos +pRight * 100,  Color.yellow);
+        DrawLine(pos, pos +pUp * pSize.y,  Color.red);
+        DrawLine(pos, pos +pRight * pSize.x,  Color.yellow);
+        DrawLine(pos+pRight * pSize.x, pos +pRight * pSize.x,  Color.yellow);
     }
     
     private void GizmoSideVerts2(Vector3 pos, Vector3 normal, Vector2 innerSize, Vector2 outerSize)
@@ -482,7 +490,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 pos += addVec;
                 if (pPos.x < iStart.x || pPos.x > iEnd.x)
                 {
-                    PlaceDot(Color.red, pos, counter++);
+                    //PlaceDot(Color.red, pos, counter++);
                 }
                 else
                 {
