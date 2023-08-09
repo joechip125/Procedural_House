@@ -431,7 +431,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         DrawLine(pos, pRight, 100, Color.yellow);
     }
     
-    private void GizmoSideVerts2(Vector3 pos, Vector3 dir, Vector2 innerSize, Vector2 outerSize)
+    private void GizmoSideVerts2(Vector3 pos, Vector3 normal, Vector2 innerSize, Vector2 outerSize)
     {
         var counter = 0;
         var vAmount = 8;
@@ -439,52 +439,52 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var lowest = 5;
         var vInc = outerSize.y / vAmount;
         var hInc = outerSize.x / hAmount;
-        var start = pos;
-        var iStart = pos + (dir * (outerSize.x - innerSize.x) /2) + Vector3.up * lowest;
-        var iEnd = iStart + dir * innerSize.x + Vector3.up * innerSize.y;
-        var second = Vector3.zero;
-        var third = Vector3.zero;
-        var fourth = Vector3.zero;
-        var color = new Color(1, 0,0);
-        var cSize = new Vector2(hInc, vInc);
-        var nextAll = pos + (Vector3.up * vInc) + (dir * hInc);
-        var placeDot = true;
 
-        PlaneDirections(dir, out var pUp, out var pRight);
+        var iStart = new Vector2((outerSize.x - innerSize.x) /2, lowest);
+        var iEnd = iStart + innerSize;
+        var pPos = Vector2.zero;
+       
+        var nextAll = pos + (Vector3.up * vInc) + (normal * hInc);
+        
+        PlaneDirections(normal, out var pUp, out var pRight);
 
         for (int i = 0; i < vAmount; i++)
         {
-            var nextY = pos + pUp * vInc;
-
+            pPos.y = vInc * i;
+            
             if (pos.y < iStart.y)
             {
-                if (nextY.y > iStart.y) nextAll.y = iStart.y;
+                if (pPos.y > iStart.y) pPos.y  = iStart.y;
             }
-            else if (pos.y > iStart.y && nextAll.y < iEnd.y)
+            else if (pos.y > iStart.y && pPos.y + vInc < iEnd.y)
             {
-                if (nextY.y > iEnd.y) nextAll.y = iEnd.y;
+                if (pPos.y > iEnd.y) pPos.y = iEnd.y;
             }
-            
-            else nextAll.y = nextY.y;
+            pos = pUp * pPos.y;
             
             for (int j = 0; j < hAmount; j++)
             {
-                nextAll.x = pos.x;
-                nextAll.z = pos.z;
-                var nextX = pos + pRight * hInc;
-                
-                Debug.Log($"{j} {counter}, pos {pos}");
-                var currPlace = WhereIsPoint(iStart, iEnd, pos);
-                var nextPlace = WhereIsPoint(iStart, iEnd, nextAll);
-                
-                PlaceDot(Color.green, pos, counter++);
-                PlaceDot(Color.red, nextAll, counter++);
-                
-                pos += pRight * hInc;
-            }
+                pPos.x = hInc * j;
+                var addVec = pRight * hInc;
 
-            start +=  pUp * vInc;
-            pos = start; 
+                if (pPos.x < iStart.x)
+                {
+                    if (pPos.x + hInc >= iStart.x)
+                    {
+                        addVec = pRight * iStart.x;
+                    }    
+                }
+
+                pos += addVec;
+                if (pPos.x < iStart.x && pPos.x < iStart.y)
+                {
+                    PlaceDot(Color.red, pos, counter++);
+                }
+                else
+                {
+                   
+                }
+            }
         }
     }
     
