@@ -421,39 +421,67 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var start = pos;
         var iStart = pos + (dir * (outerSize.x - innerSize.x) /2) + Vector3.up * lowest;
         var iEnd = iStart + dir * innerSize.x + Vector3.up * innerSize.y;
-        var first = Vector3.zero;
         var second = Vector3.zero;
         var third = Vector3.zero;
         var fourth = Vector3.zero;
         var color = new Color(1, 0,0);
         var cSize = new Vector2(hInc, vInc);
-        
+        var nextAll = pos + (Vector3.up * vInc) + (dir * hInc);
         
         for (int i = 0; i < vAmount; i++)
         {
+            var next = pos +  Vector3.up * vInc;
+
+            nextAll.y = pos.y < iStart.y && next.y > iStart.y 
+                ? nextAll.y = iStart.y : nextAll.y = next.y;
+
             for (int j = 0; j < hAmount; j++)
             {
-                var nextAll = pos + (Vector3.up * vInc) + (dir * hInc);
+                nextAll.x = pos.x;
+                nextAll.z = pos.z;
                 var currPlace = WhereIsPoint(iStart, iEnd, pos);
                 var nextPlace = WhereIsPoint(iStart, iEnd, nextAll);
                 Debug.Log($"curr {currPlace} h {j} count {counter}, pos {pos}");
                 
                 if (currPlace.x < 0)
                 {
-                    PlaceDot(color, pos, counter++);
-                    if (currPlace.y < 0)
+                    if (nextPlace.x > -1)
                     {
-                        
+                       
                     }
                 }
-                
-                if (currPlace.x < 0 )
+                if (currPlace.y < 0)
                 {
-                    if (nextPlace.x == 0)
+                    if (nextPlace.y > -1)
                     {
-                        pos += dir * hInc / 2;
-                        continue;
-                    }
+                       
+                    }        
+                }
+                
+                else if (currPlace.x > 0)
+                {
+                    
+                }
+                else if (currPlace.x == 0)
+                {
+                   
+                }
+
+                if (i == 0 && j == 0)
+                {
+                    PlaceDot(color, pos, counter++);
+                    PlaceDot(color, new Vector3(pos.x, iStart.y, pos.z), counter++);
+                    PlaceDot(color, pos + dir * hInc, counter++);
+                    PlaceDot(color, new Vector3(pos.x, iStart.y, pos.z)+ dir * hInc, counter++);
+                }
+                else
+                {
+                    
+                }
+
+                if (currPlace.y < 0)
+                {
+                    
                 }
                 
                 pos += dir * hInc;
