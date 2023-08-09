@@ -432,10 +432,27 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         PlaneDirections(myDir, out var pUp, out var pRight);
         var endY = pUp * pSize.y / 2;
         var endX = pRight * pSize.x / 2;
-        PlaceDot(Color.green,pos -(endY + endX), counter++);
-        PlaceDot(Color.green,pos + endY - endX, counter++);
-        PlaceDot(Color.green,pos + endY + endX, counter++);
-        PlaceDot(Color.green,pos - endY + endX, counter++);
+        corns[0] = pos - (endY + endX);
+        corns[1] = pos + endY - endX;
+        corns[2] = pos + endY + endX;
+        corns[3] = pos - endY + endX;
+        
+        for (int i = 0; i < 4; i++)
+        {
+            PlaceDot(Color.green,corns[i], counter++);
+
+            if (i == corns.Length - 1)
+            {
+                DrawLine(corns[i], corns[0],  Color.green);    
+            }
+            else
+            {
+                DrawLine(corns[i], corns[i + 1],  Color.green);    
+            }
+        }
+        
+        
+       
         
         DrawLine(pos, pos +myDir * 100,  Color.green);
         DrawLine(pos, pos +pUp * pSize.y,  Color.red);
@@ -683,9 +700,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         
     }
 
-    private void DrawLine(Vector3 origin, Vector3 end, Color color)
+    private void DrawLine(Vector3 origin, Vector3 end, Color color, string label = "")
     {
         Gizmos.color = color;
+        var place = origin + (end - origin) / 2;
+        Handles.Label(place, label);
         Gizmos.DrawLine(origin, end);
     }
     
