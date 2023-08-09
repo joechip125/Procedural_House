@@ -456,18 +456,20 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
         for (int i = 0; i < vAmount; i++)
         {
-            var nextY = pos + Vector3.up * vInc;
+            var nextY = pos + pUp * vInc;
 
             if (pos.y < iStart.y)
             {
-                if (nextY.y > iStart.y)
-                {
-                    
-                }
+                if (nextY.y > iStart.y) nextAll.y = iStart.y;
             }
-
-            nextAll.y = pos.y < iStart.y && nextY.y > iStart.y 
-                ? nextAll.y = iStart.y : nextAll.y = nextY.y;
+            else if (pos.y > iStart.y && pos.y < iEnd.y)
+            {
+                if (nextY.y > iEnd.y) nextAll.y = iEnd.y;
+            }
+            else
+            {
+                nextAll.y = nextY.y;
+            }
 
             for (int j = 0; j < hAmount; j++)
             {
@@ -475,49 +477,15 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 nextAll.z = pos.z;
                 var currPlace = WhereIsPoint(iStart, iEnd, pos);
                 var nextPlace = WhereIsPoint(iStart, iEnd, nextAll);
-               
                 
-                if (currPlace.x < 0)
-                {
-                    if (nextPlace.x > -1)
-                    {
-                       
-                    }
-                }
-                if (currPlace.y < 0)
-                {
-                    if (nextPlace.y > -1)
-                    {
-                       
-                    }        
-                }
+                PlaceDot(Color.green, nextAll, counter++);
+                PlaceDot(Color.green, pos, counter++);
                 
-                else if (currPlace.x > 0)
-                {
-                    
-                }
-                else if (currPlace.x == 0)
-                {
-                   
-                }
-
-                if (i == 0 && j == 0)
-                {
-                }
-                else
-                {
-                    
-                }
-
-                if (currPlace.y < 0)
-                {
-                    
-                }
                 
-                pos += dir * hInc;
+                pos += pRight * hInc;
             }
 
-            start += Vector3.up * vInc;
+            start += nextY;
             pos = start; 
         }
     }
