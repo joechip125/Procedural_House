@@ -421,6 +421,15 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             ? new Vector2(1,0) : new Vector2(0,1), normal);
         planeRight = Vector3.Cross(normal, planeUp);
     }
+
+    private void VizPlane(Vector3 pos)
+    {
+        var myDir = new Vector3(xDir, yDir, zDir);
+        PlaneDirections(myDir, out var pUp, out var pRight);
+        DrawLine(pos, myDir, 100, Color.green);
+        DrawLine(pos, pUp, 100, Color.red);
+        DrawLine(pos, pRight, 100, Color.yellow);
+    }
     
     private void GizmoSideVerts2(Vector3 pos, Vector3 dir, Vector2 innerSize, Vector2 outerSize)
     {
@@ -441,21 +450,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var nextAll = pos + (Vector3.up * vInc) + (dir * hInc);
         var aNormal = new Vector3(1, 0, 0);
         var myDir = new Vector3(xDir, yDir, zDir);
-        var proAngle = Vector3.zero;
-
-        if (myDir.x + myDir.z == 0)
-        {
-            proAngle.x = 1;
-        }
-        else
-        {
-            proAngle.y = 1;
-        }
-        PlaneDirections(myDir, out var pUp, out var pRight);
         
-        DrawLine(pos, myDir, 100, Color.green);
-        DrawLine(pos, pUp, 100, Color.red);
-        DrawLine(pos, pRight, 100, Color.yellow);
 
         for (int i = 0; i < vAmount; i++)
         {
