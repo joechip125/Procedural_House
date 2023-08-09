@@ -436,19 +436,23 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         corns[1] = pos + endY - endX;
         corns[2] = pos + endY + endX;
         corns[3] = pos - endY + endX;
+        var lCount = 0;
         
         for (int i = 0; i < 4; i++)
         {
             PlaceDot(Color.green,corns[i], counter++);
-
+            lCount = i == corns.Length - 1 ? 0 : lCount + 1;
+            Debug.Log($"count {lCount} i {i}");
             if (i == corns.Length - 1)
             {
                 DrawLine(corns[i], corns[0],  Color.green);    
             }
             else
             {
+                var distance = Vector3.Distance(corns[i], corns[i + 1]);
                 DrawLine(corns[i], corns[i + 1],  Color.green);    
             }
+            
         }
         
         
