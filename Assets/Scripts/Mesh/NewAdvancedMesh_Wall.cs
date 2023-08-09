@@ -450,7 +450,9 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var nextAll = pos + (Vector3.up * vInc) + (dir * hInc);
         var aNormal = new Vector3(1, 0, 0);
         var myDir = new Vector3(xDir, yDir, zDir);
-        
+        PlaneDirections(dir, out var pUp, out var pRight);
+
+        Debug.Log($"dir {dir} up {pUp}, right {pRight}");
 
         for (int i = 0; i < vAmount; i++)
         {
@@ -458,7 +460,10 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
             if (pos.y < iStart.y)
             {
-                
+                if (nextY.y > iStart.y)
+                {
+                    
+                }
             }
 
             nextAll.y = pos.y < iStart.y && nextY.y > iStart.y 
