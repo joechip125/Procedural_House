@@ -28,4 +28,11 @@ public class MathHelpers
         else if (calc >= calc2) outVec.x = calc < calc3 ? 0 : 1;
         return outVec;
     }
+    
+    public static void PlaneDirections(Vector3 normal, out Vector3 planeUp, out Vector3 planeRight)
+    {
+        planeUp = Vector3.ProjectOnPlane(normal.x + normal.z == 0 
+            ? new Vector2(1,0) : new Vector2(0,1), normal);
+        planeRight = Vector3.Cross(normal, planeUp);
+    }
 }
