@@ -409,6 +409,69 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             pos = start; 
         }
     }
+
+    private void GizmoSideVerts2(Vector3 pos, Vector3 dir, Vector2 innerSize, Vector2 outerSize)
+    {
+        var counter = 0;
+        var vAmount = 4;
+        var hAmount = 8;
+        var lowest = 5;
+        var vInc = outerSize.y / vAmount;
+        var hInc = outerSize.x / hAmount;
+        var start = pos;
+        var iStart = pos + (dir * (outerSize.x - innerSize.x) /2) + Vector3.up * lowest;
+        var iEnd = iStart + dir * innerSize.x + Vector3.up * innerSize.y;
+        var first = Vector3.zero;
+        var second = Vector3.zero;
+        var third = Vector3.zero;
+        var fourth = Vector3.zero;
+        
+        
+        for (int i = 0; i < vAmount; i++)
+        {
+            for (int j = 0; j < hAmount; j++)
+            {
+                var nextAll = pos + (Vector3.up * vInc) + (dir * hInc);
+                var currPlace = WhereIsPoint(iStart, iEnd, pos);
+                var nextPlace = WhereIsPoint(iStart, iEnd, nextAll);
+                
+                
+                Debug.Log($"mag {currPlace.magnitude} vecC " +
+                          $"{currPlace} vecN " +
+                          $"{nextPlace} dot{Vector2.Dot(currPlace, nextPlace)}" +
+                          $"angle {Vector2.Angle(currPlace, nextPlace)}");
+                if (currPlace.y < 0)
+                {
+                    PlaceDot(Color.red, pos, counter++);
+                    
+                    if (currPlace.x < 0)
+                    {
+                        if (nextPlace.y == 0)
+                        {
+                            PlaceDot(Color.green, pos + Vector3.up * lowest, counter++);
+                        }
+                    }
+                    if (nextPlace.y == 0)
+                    {
+                      //  PlaceDot(Color.green, pos + Vector3.up * lowest, counter++);
+                    }    
+                }
+
+                else if (currPlace.x == 0)
+                {
+                    if (nextPlace.x > 0)
+                    {
+                        PlaceDot(Color.green, pos, counter++);
+                    }
+                }
+                
+                pos += dir * hInc;
+            }
+
+            start += Vector3.up * vInc;
+            pos = start; 
+        }
+    }
     
     private void GizmoSideVerts(Vector3 pos, Vector3 dir, Vector2 innerSize, Vector2 outerSize)
     {
@@ -590,14 +653,14 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void SVerts2(Vector3 normalDir)
     {
         var aRight = Vector3.Cross(normalDir, Vector3.up).normalized;
-
+        
     }
     
     private void PlaceDot(Color color, Vector3 pos, int count)
     {
         Gizmos.color = color;
         Handles.Label(pos,$"{count}");
-        Gizmos.DrawSphere(pos, 3);         
+        Gizmos.DrawSphere(pos, 3);
     }
     
     private void SideVerts(Vector3 pos, Vector3 dir, Vector2 innerSize)
@@ -768,7 +831,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void OnDrawGizmos()
     {
         if (Application.isPlaying) return;
-        GizmoSideVerts(Vector3.zero, direction, new Vector2(100,200), new Vector2(200, 300));
+        GizmoSideVerts2(Vector3.zero, direction, new Vector2(100,200), new Vector2(200, 300));
         //SetWall(direction, 500, new Vector2(1000, 300));
         //TangentWall2(direction, 500, 1000);
     }
