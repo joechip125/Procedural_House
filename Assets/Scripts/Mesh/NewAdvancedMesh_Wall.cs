@@ -448,11 +448,9 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var color = new Color(1, 0,0);
         var cSize = new Vector2(hInc, vInc);
         var nextAll = pos + (Vector3.up * vInc) + (dir * hInc);
-        var aNormal = new Vector3(1, 0, 0);
-        var myDir = new Vector3(xDir, yDir, zDir);
-        PlaneDirections(dir, out var pUp, out var pRight);
+        var placeDot = true;
 
-        Debug.Log($"dir {dir} up {pUp}, right {pRight}");
+        PlaneDirections(dir, out var pUp, out var pRight);
 
         for (int i = 0; i < vAmount; i++)
         {
@@ -462,30 +460,30 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             {
                 if (nextY.y > iStart.y) nextAll.y = iStart.y;
             }
-            else if (pos.y > iStart.y && pos.y < iEnd.y)
+            else if (pos.y > iStart.y && nextAll.y < iEnd.y)
             {
                 if (nextY.y > iEnd.y) nextAll.y = iEnd.y;
             }
-            else
-            {
-                nextAll.y = nextY.y;
-            }
-
+            
+            else nextAll.y = nextY.y;
+            
             for (int j = 0; j < hAmount; j++)
             {
                 nextAll.x = pos.x;
                 nextAll.z = pos.z;
+                var nextX = pos + pRight * hInc;
+                
+                Debug.Log($"{j} {counter}, pos {pos}");
                 var currPlace = WhereIsPoint(iStart, iEnd, pos);
                 var nextPlace = WhereIsPoint(iStart, iEnd, nextAll);
                 
-                PlaceDot(Color.green, nextAll, counter++);
                 PlaceDot(Color.green, pos, counter++);
-                
+                PlaceDot(Color.red, nextAll, counter++);
                 
                 pos += pRight * hInc;
             }
 
-            start += nextY;
+            start +=  pUp * vInc;
             pos = start; 
         }
     }
