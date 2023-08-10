@@ -66,10 +66,10 @@ public class PanelInfo
 {
     public Vector3 upVec;
     public Vector3 rightVec;
+    public Vector3[] corners = new Vector3[8];
 }
 public class NewAdvancedMesh_Wall : NewAdvancedMesh
 {
-
     [SerializeField] private Vector3 direction;
     [SerializeField] private float adjacent;
     [SerializeField] private int numberTiles;
@@ -467,10 +467,15 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         //DrawLine(pos+pRight * pSize.x, pos +pRight * pSize.x,  Color.yellow);
     }
 
+    private void PlaceCorners(Vector3 planeR, Vector3 planeU, Vector2 pSize)
+    {
+        var hypo = Mathf.Sqrt(Mathf.Pow(pSize.y / 2, 2) + Mathf.Pow(pSize.x / 2, 2));
+        var tan =Mathf.Atan(pSize.y / pSize.x) * (180 / Mathf.PI);
+        var tan2 =Mathf.Atan(pSize.x / pSize.y) * (180 / Mathf.PI);
+    }
     private int PointShape(Vector3 pos, Vector2 pSize, int counter)
     {
         var myDir = new Vector3(xDir, yDir, zDir);
-       
         var corns = new Vector3[8];
         var size2 = pSize + new Vector2(100, 100);
         
@@ -480,13 +485,14 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var hypo2 = Mathf.Sqrt(Mathf.Pow(size2.y / 2, 2) + Mathf.Pow(size2.x / 2, 2));
         var tan =Mathf.Atan(pSize.y / pSize.x) * (180 / Mathf.PI);
         var tan2 =Mathf.Atan(pSize.x / pSize.y) * (180 / Mathf.PI);
-        
+        Debug.Log($"hyp {hypo} hyp2 {hypo2} nSize {size2}");
         for (int i = 0; i < 4; i++)
         {
             var remain = i % 2 == 0 ? tan : tan2;
             var cAngle = Quaternion.AngleAxis(remain + 90 * i, myDir) *pRight;
             corns[i] = pos + cAngle.normalized * hypo;
             corns[i + 4] = pos + cAngle.normalized * hypo2;
+            DrawLine(pos, pos + cAngle.normalized * hypo2, Color.white);
         }
 
         var flip = true;
