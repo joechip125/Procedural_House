@@ -471,13 +471,13 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         var myDir = new Vector3(xDir, yDir, zDir);
        
-        var corns = new Vector3[4];
+        var corns = new Vector3[8];
+        var size2 = pSize + new Vector2(100, 100);
         
         PlaneDirections(myDir, out var pUp, out var pRight);
-        var endY = pUp.normalized * Mathf.Sqrt(Mathf.Pow(pSize.y, 2))/ 2;
-        var endX = pRight.normalized * Mathf.Sqrt(Mathf.Pow(pSize.x, 2))/ 2;
 
         var hypo = Mathf.Sqrt(Mathf.Pow(pSize.y / 2, 2) + Mathf.Pow(pSize.x / 2, 2));
+        var hypo2 = Mathf.Sqrt(Mathf.Pow(size2.y / 2, 2) + Mathf.Pow(size2.x / 2, 2));
         var tan =Mathf.Atan(pSize.y / pSize.x) * (180 / Mathf.PI);
         var tan2 =Mathf.Atan(pSize.x / pSize.y) * (180 / Mathf.PI);
         
@@ -486,6 +486,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             var remain = i % 2 == 0 ? tan : tan2;
             var cAngle = Quaternion.AngleAxis(remain + 90 * i, myDir) *pRight;
             corns[i] = pos + cAngle.normalized * hypo;
+            corns[i + 4] = pos + cAngle.normalized * hypo2;
         }
 
         var flip = true;
@@ -513,13 +514,15 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         for (int i = 0; i < 4; i++)
         {
             
-            
-            nextC = i == corns.Length - 1 ? 0 : nextC + 1;
+            PlaceDot(Color.green, corns[i +4], counter++);
+            nextC = i == 3 ? 0 : nextC + 1;
             var distance = Vector3.Distance(corns[i], corns[nextC]);
+            var distance2 = Vector3.Distance(corns[i + 4], corns[nextC + 4]);
             DrawLine(corns[i], corns[nextC],  Color.green, $"L:{distance}");
+            DrawLine(corns[i + 4], corns[nextC + 4],  Color.green, $"L:{distance2}");
         }
         
-        DrawLine(pos, pos +myDir * 100,  Color.green);
+        //DrawLine(pos, pos +myDir * 100,  Color.green);
         //DrawLine(pos, pos +pUp * pSize.y,  Color.red);
         //DrawLine(pos, pos +pRight * pSize.x,  Color.yellow);
         //DrawLine(pos+pRight * pSize.x, pos +pRight * pSize.x,  Color.yellow);
@@ -968,7 +971,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var pSize2 = new Vector2(300, 500);
         var counter = 0;
         counter = PointShape(pos, pSize, counter);
-        PointShape(pos, pSize2, counter);
+        
         //GizmoSideVerts2(transform.position, direction, new Vector2(100,200), new Vector2(200, 300));
         //SetWall(direction, 500, new Vector2(1000, 300));
         //TangentWall2(direction, 500, 1000);
