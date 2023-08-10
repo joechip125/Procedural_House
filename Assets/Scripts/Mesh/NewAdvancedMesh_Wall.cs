@@ -467,11 +467,22 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         //DrawLine(pos+pRight * pSize.x, pos +pRight * pSize.x,  Color.yellow);
     }
 
-    private void PlaceCorners(Vector3 planeR, Vector3 planeU, Vector2 pSize)
+    private void PlaceCorners(Vector3 planeR, Vector3 planeU, Vector2 pSize, Vector3 pos)
     {
         var hypo = Mathf.Sqrt(Mathf.Pow(pSize.y / 2, 2) + Mathf.Pow(pSize.x / 2, 2));
         var tan =Mathf.Atan(pSize.y / pSize.x) * (180 / Mathf.PI);
         var tan2 =Mathf.Atan(pSize.x / pSize.y) * (180 / Mathf.PI);
+        var counter = 0;
+        var max = pos + planeU * pSize.y + planeR * pSize.x;
+        PlaceDot(Color.magenta, pos, counter++);
+        PlaceDot(Color.magenta, pos + planeU * pSize.y, counter++);
+        PlaceDot(Color.magenta, max, counter++);
+        PlaceDot(Color.magenta, pos + planeR * pSize.x, counter++);
+        
+        for (int i = 0; i < 4; i++)
+        {
+            
+        }
     }
     private int PointShape(Vector3 pos, Vector2 pSize, int counter)
     {
@@ -976,7 +987,10 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var pSize = new Vector2(200, 400);
         var pSize2 = new Vector2(300, 500);
         var counter = 0;
-        counter = PointShape(pos, pSize, counter);
+        var myDir = new Vector3(xDir, yDir, zDir);
+        PlaneDirections(myDir, out var pUp, out var pRight);
+        //PointShape(pos, pSize, counter);
+        PlaceCorners(pRight, pUp, pSize, pos);
         
         //GizmoSideVerts2(transform.position, direction, new Vector2(100,200), new Vector2(200, 300));
         //SetWall(direction, 500, new Vector2(1000, 300));
