@@ -428,25 +428,32 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var pSize = new Vector2(200, 400);
         var corns = new Vector3[4];
         var counter = 0;
-        
         PlaneDirections(myDir, out var pUp, out var pRight);
-        var endY = pUp * pSize.y / 2;
-        var endX = pRight * pSize.x / 2;
-        //Debug.Log($"up{pUp* pSize.y / 2}, pR{pRight* pSize.x / 2}");
-        
-        var ie = Mathf.Sqrt(Mathf.Pow(pSize.y / 2, 2) + Mathf.Pow(pSize.y / 2, 2));
+        var endY = pUp.normalized * Mathf.Sqrt(Mathf.Pow(pSize.y, 2))/ 2;
+        var endX = pRight.normalized * Mathf.Sqrt(Mathf.Pow(pSize.x, 2))/ 2;
+
         for (int i = 0; i < 4; i++)
         {
             var cAngle = Quaternion.AngleAxis(90* i, myDir) *pRight;
             var nAngle = Quaternion.AngleAxis(90* i + 90, myDir) *pRight;
-            ie = Mathf.Sqrt(Mathf.Pow((pSize.y * cAngle.x) / 2, 2) + Mathf.Pow((pSize.y * cAngle.y), 2));
-            Debug.Log($"up{cAngle} next{nAngle} sum {cAngle + nAngle} square {ie}");
+            
+            if (i % 2 == 0)
+            {
+                cAngle *= pSize.x / 2;
+                nAngle *= pSize.y / 2;
+            }
+            else
+            {
+                cAngle *= pSize.y / 2;
+                nAngle *= pSize.x / 2;
+            }
+            corns[i] = cAngle + nAngle;
         }
         
-        corns[0] = pos - (endY + endX);
-        corns[1] = pos + endY - endX;
-        corns[2] = pos + endY + endX;
-        corns[3] = pos - endY + endX;
+        //corns[0] = pos - (endY + endX);
+        //corns[1] = pos + endY - endX;
+        //corns[2] = pos + endY + endX;
+        //corns[3] = pos - endY + endX;
         var nextC = 0;
         
         for (int i = 0; i < 4; i++)
