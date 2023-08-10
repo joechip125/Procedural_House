@@ -432,31 +432,29 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var endY = pUp.normalized * Mathf.Sqrt(Mathf.Pow(pSize.y, 2))/ 2;
         var endX = pRight.normalized * Mathf.Sqrt(Mathf.Pow(pSize.x, 2))/ 2;
 
-        var test = pUp.normalized * Mathf.Sqrt(Mathf.Pow(pSize.y / 2, 2) + Mathf.Pow(pSize.x / 2, 2));
+        var test = Mathf.Sqrt(Mathf.Pow(pSize.y / 2, 2) + Mathf.Pow(pSize.x / 2, 2));
+        var tan =Mathf.Atan(pSize.y / pSize.x) * (180 / Mathf.PI);
+        var tan2 =Mathf.Atan(pSize.x / pSize.y) * (180 / Mathf.PI);
+        var add = 0f;
+        var remain = 90 - tan;
+
         for (int i = 0; i < 4; i++)
         {
-            var cAngle = Quaternion.AngleAxis(60 + (90* i), myDir) *pRight;
-            var nAngle = Quaternion.AngleAxis(90* i + 90, myDir) *pRight;
+            remain = i % 2 == 0 ? tan : tan2;
             
-            if (i % 2 == 0)
-            {
-                cAngle *= pSize.x / 2;
-                nAngle *= pSize.y / 2;
-            }
-            else
-            {
-                cAngle *= pSize.y / 2;
-                nAngle *= pSize.x / 2;
-            }
-            corns[i] = cAngle + nAngle;
-            Gizmos.DrawLine(pos, pos + cAngle * 100);
-            Debug.Log($"c {cAngle} n {nAngle} test {test}");
+            var cAngle = Quaternion.AngleAxis(remain + 90 * i, myDir) *pRight;
+
+            corns[i] = pos + cAngle.normalized * test;
+            Gizmos.color = Color.white;
+            Gizmos.DrawLine(pos, pos + cAngle.normalized * test);
+            Debug.Log($"c {cAngle} test {tan} deg {(i * 90)} add {tan2}");
+            add += 90 - tan;
         }
         
-        corns[0] = pos - (endY + endX);
-        corns[1] = pos + endY - endX;
-        corns[2] = pos + endY + endX;
-        corns[3] = pos - endY + endX;
+        //corns[0] = pos - (endY + endX);
+        //corns[1] = pos + endY - endX;
+        //corns[2] = pos + endY + endX;
+        //corns[3] = pos - endY + endX;
         var nextC = 0;
         
         for (int i = 0; i < 4; i++)
@@ -481,9 +479,9 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
        
         
         DrawLine(pos, pos +myDir * 100,  Color.green);
-        DrawLine(pos, pos +pUp * pSize.y,  Color.red);
-        DrawLine(pos, pos +pRight * pSize.x,  Color.yellow);
-        DrawLine(pos+pRight * pSize.x, pos +pRight * pSize.x,  Color.yellow);
+        //DrawLine(pos, pos +pUp * pSize.y,  Color.red);
+        //DrawLine(pos, pos +pRight * pSize.x,  Color.yellow);
+        //DrawLine(pos+pRight * pSize.x, pos +pRight * pSize.x,  Color.yellow);
     }
     
     private void GizmoSideVerts2(Vector3 pos, Vector3 normal, Vector2 innerSize, Vector2 outerSize)
