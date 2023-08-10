@@ -478,24 +478,35 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         for (int i = 0; i < 4; i++)
         {
             var remain = i % 2 == 0 ? tan : tan2;
-            
             var cAngle = Quaternion.AngleAxis(remain + 90 * i, myDir) *pRight;
-
             corns[i] = pos + cAngle.normalized * hypo;
         }
 
-        var flipFlop = true;
-        var firstDir = -pRight;
+        var flip = true;
+        var numPoints = new Vector3(4, 6);
 
         for (int i = 0; i < 4; i++)
         {
+            var cAngle = Quaternion.AngleAxis(90 * i, myDir) * -pRight;
+            var pos3 = corns[i];
+
+            var totalL = flip ? pSize.x : pSize.y;
+            var cCount = flip ? numPoints.x : numPoints.y;
+            var current = 0f;
+            flip = !flip;
+
+            for (int j = 0; j < cCount; j++)
+            {
+                PlaceDot(Color.blue, pos3 + cAngle * current, counter++);
+                current += totalL / cCount;
+            }
             
         }
         
         var nextC = 0;
         for (int i = 0; i < 4; i++)
         {
-            PlaceDot(Color.green,corns[i], counter++);
+            
             
             nextC = i == corns.Length - 1 ? 0 : nextC + 1;
             var distance = Vector3.Distance(corns[i], corns[nextC]);
