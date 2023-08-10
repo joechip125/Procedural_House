@@ -61,6 +61,12 @@ public class TileInfo
     public WallTypes type;
     public Vector2 size;
 }
+[Serializable]
+public class PanelInfo
+{
+    public Vector3 upVec;
+    public Vector3 rightVec;
+}
 public class NewAdvancedMesh_Wall : NewAdvancedMesh
 {
 
@@ -461,12 +467,12 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         //DrawLine(pos+pRight * pSize.x, pos +pRight * pSize.x,  Color.yellow);
     }
 
-    private void PointShape(Vector3 pos)
+    private int PointShape(Vector3 pos, Vector2 pSize, int counter)
     {
         var myDir = new Vector3(xDir, yDir, zDir);
-        var pSize = new Vector2(200, 400);
+       
         var corns = new Vector3[4];
-        var counter = 0;
+        
         PlaneDirections(myDir, out var pUp, out var pRight);
         var endY = pUp.normalized * Mathf.Sqrt(Mathf.Pow(pSize.y, 2))/ 2;
         var endX = pRight.normalized * Mathf.Sqrt(Mathf.Pow(pSize.x, 2))/ 2;
@@ -517,6 +523,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         //DrawLine(pos, pos +pUp * pSize.y,  Color.red);
         //DrawLine(pos, pos +pRight * pSize.x,  Color.yellow);
         //DrawLine(pos+pRight * pSize.x, pos +pRight * pSize.x,  Color.yellow);
+        return counter;
     }
     
     private void GizmoSideVerts2(Vector3 pos, Vector3 normal, Vector2 innerSize, Vector2 outerSize)
@@ -957,7 +964,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         if (Application.isPlaying) return;
         var pos = transform.position;
-        PointShape(pos);
+        var pSize = new Vector2(200, 400);
+        var pSize2 = new Vector2(300, 500);
+        var counter = 0;
+        counter = PointShape(pos, pSize, counter);
+        PointShape(pos, pSize2, counter);
         //GizmoSideVerts2(transform.position, direction, new Vector2(100,200), new Vector2(200, 300));
         //SetWall(direction, 500, new Vector2(1000, 300));
         //TangentWall2(direction, 500, 1000);
