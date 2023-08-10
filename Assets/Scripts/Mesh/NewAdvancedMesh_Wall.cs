@@ -435,12 +435,10 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var test = Mathf.Sqrt(Mathf.Pow(pSize.y / 2, 2) + Mathf.Pow(pSize.x / 2, 2));
         var tan =Mathf.Atan(pSize.y / pSize.x) * (180 / Mathf.PI);
         var tan2 =Mathf.Atan(pSize.x / pSize.y) * (180 / Mathf.PI);
-        var add = 0f;
-        var remain = 90 - tan;
-
+        
         for (int i = 0; i < 4; i++)
         {
-            remain = i % 2 == 0 ? tan : tan2;
+            var remain = i % 2 == 0 ? tan : tan2;
             
             var cAngle = Quaternion.AngleAxis(remain + 90 * i, myDir) *pRight;
 
@@ -448,15 +446,9 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             Gizmos.color = Color.white;
             Gizmos.DrawLine(pos, pos + cAngle.normalized * test);
             Debug.Log($"c {cAngle} test {tan} deg {(i * 90)} add {tan2}");
-            add += 90 - tan;
         }
         
-        //corns[0] = pos - (endY + endX);
-        //corns[1] = pos + endY - endX;
-        //corns[2] = pos + endY + endX;
-        //corns[3] = pos - endY + endX;
         var nextC = 0;
-        
         for (int i = 0; i < 4; i++)
         {
             PlaceDot(Color.green,corns[i], counter++);
@@ -474,9 +466,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                
             }
         }
-        
-        
-       
         
         DrawLine(pos, pos +myDir * 100,  Color.green);
         //DrawLine(pos, pos +pUp * pSize.y,  Color.red);
