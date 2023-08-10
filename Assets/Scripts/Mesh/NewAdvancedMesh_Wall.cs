@@ -432,9 +432,10 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var endY = pUp.normalized * Mathf.Sqrt(Mathf.Pow(pSize.y, 2))/ 2;
         var endX = pRight.normalized * Mathf.Sqrt(Mathf.Pow(pSize.x, 2))/ 2;
 
+        var test = pUp.normalized * Mathf.Sqrt(Mathf.Pow(pSize.y / 2, 2) + Mathf.Pow(pSize.x / 2, 2));
         for (int i = 0; i < 4; i++)
         {
-            var cAngle = Quaternion.AngleAxis(90* i, myDir) *pRight;
+            var cAngle = Quaternion.AngleAxis(60 + (90* i), myDir) *pRight;
             var nAngle = Quaternion.AngleAxis(90* i + 90, myDir) *pRight;
             
             if (i % 2 == 0)
@@ -448,12 +449,14 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 nAngle *= pSize.x / 2;
             }
             corns[i] = cAngle + nAngle;
+            Gizmos.DrawLine(pos, pos + cAngle * 100);
+            Debug.Log($"c {cAngle} n {nAngle} test {test}");
         }
         
-        //corns[0] = pos - (endY + endX);
-        //corns[1] = pos + endY - endX;
-        //corns[2] = pos + endY + endX;
-        //corns[3] = pos - endY + endX;
+        corns[0] = pos - (endY + endX);
+        corns[1] = pos + endY - endX;
+        corns[2] = pos + endY + endX;
+        corns[3] = pos - endY + endX;
         var nextC = 0;
         
         for (int i = 0; i < 4; i++)
