@@ -461,9 +461,51 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         //DrawLine(pos+pRight * pSize.x, pos +pRight * pSize.x,  Color.yellow);
     }
 
-    private void PointShape()
+    private void PointShape(Vector3 pos)
     {
+        var myDir = new Vector3(xDir, yDir, zDir);
+        var pSize = new Vector2(200, 400);
+        var corns = new Vector3[4];
+        var counter = 0;
+        PlaneDirections(myDir, out var pUp, out var pRight);
+        var endY = pUp.normalized * Mathf.Sqrt(Mathf.Pow(pSize.y, 2))/ 2;
+        var endX = pRight.normalized * Mathf.Sqrt(Mathf.Pow(pSize.x, 2))/ 2;
+
+        var hypo = Mathf.Sqrt(Mathf.Pow(pSize.y / 2, 2) + Mathf.Pow(pSize.x / 2, 2));
+        var tan =Mathf.Atan(pSize.y / pSize.x) * (180 / Mathf.PI);
+        var tan2 =Mathf.Atan(pSize.x / pSize.y) * (180 / Mathf.PI);
         
+        for (int i = 0; i < 4; i++)
+        {
+            var remain = i % 2 == 0 ? tan : tan2;
+            
+            var cAngle = Quaternion.AngleAxis(remain + 90 * i, myDir) *pRight;
+
+            corns[i] = pos + cAngle.normalized * hypo;
+        }
+
+        var flipFlop = true;
+        var firstDir = -pRight;
+
+        for (int i = 0; i < 4; i++)
+        {
+            
+        }
+        
+        var nextC = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            PlaceDot(Color.green,corns[i], counter++);
+            
+            nextC = i == corns.Length - 1 ? 0 : nextC + 1;
+            var distance = Vector3.Distance(corns[i], corns[nextC]);
+            DrawLine(corns[i], corns[nextC],  Color.green, $"L:{distance}");
+        }
+        
+        DrawLine(pos, pos +myDir * 100,  Color.green);
+        //DrawLine(pos, pos +pUp * pSize.y,  Color.red);
+        //DrawLine(pos, pos +pRight * pSize.x,  Color.yellow);
+        //DrawLine(pos+pRight * pSize.x, pos +pRight * pSize.x,  Color.yellow);
     }
     
     private void GizmoSideVerts2(Vector3 pos, Vector3 normal, Vector2 innerSize, Vector2 outerSize)
@@ -478,20 +520,21 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var iStart = new Vector2((outerSize.x - innerSize.x) /2, lowest);
         var iEnd = iStart + innerSize;
         var pPos = Vector2.zero;
+        var pDot = true;
 
         PlaneDirections(normal, out var pUp, out var pRight);
-        //VizPlane(pos);
+        VizPlane(pos);
         for (int i = 0; i < vAmount; i++)
         {
             pPos.y = vInc * i;
             
             if (pos.y < iStart.y)
             {
-                if (pPos.y > iStart.y) pPos.y  = iStart.y;
+                //if (pPos.y > iStart.y) pPos.y  = iStart.y;
             }
             else if (pos.y > iStart.y && pPos.y + vInc < iEnd.y)
             {
-                if (pPos.y > iEnd.y) pPos.y = iEnd.y;
+                //if (pPos.y > iEnd.y) pPos.y = iEnd.y;
             }
             pos = pUp * pPos.y;
             
@@ -504,19 +547,34 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 {
                     if (pPos.x + hInc >= iStart.x)
                     {
-                        addVec = pRight * iStart.x;
+                       // addVec = pRight * iStart.x;
+                    }    
+                }
+                else if (pPos.x < iEnd.x)
+                {
+                    if (pPos.x + hInc >= iEnd.x)
+                    {
+                      //  addVec = pRight * iEnd.x;
                     }    
                 }
 
-                pos += addVec;
-                if (pPos.x < iStart.x || pPos.x > iEnd.x)
+
+                if (pPos.x >= iStart.x && pPos.x < iEnd.x)
                 {
-                    //PlaceDot(Color.red, pos, counter++);
+                    if (pPos.y >= iStart.y && pPos.y < iEnd.y)
+                    {
+                        pDot = false;
+                    }
                 }
+                
                 else
                 {
-                   
+                    pDot = true;
                 }
+
+                if(pDot) PlaceDot(Color.red, pos, counter++);
+                else  PlaceDot(Color.green, pos, counter++);
+                pos += addVec;
             }
         }
     }
@@ -887,7 +945,9 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void OnDrawGizmos()
     {
         if (Application.isPlaying) return;
-        GizmoSideVerts2(transform.position, direction, new Vector2(100,200), new Vector2(200, 300));
+        var pos = transform.position;
+        PointShape(pos);
+        //GizmoSideVerts2(transform.position, direction, new Vector2(100,200), new Vector2(200, 300));
         //SetWall(direction, 500, new Vector2(1000, 300));
         //TangentWall2(direction, 500, 1000);
     }
