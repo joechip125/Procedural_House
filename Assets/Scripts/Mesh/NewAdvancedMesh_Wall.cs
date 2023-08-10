@@ -443,9 +443,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             var cAngle = Quaternion.AngleAxis(remain + 90 * i, myDir) *pRight;
 
             corns[i] = pos + cAngle.normalized * test;
-            Gizmos.color = Color.white;
-            Gizmos.DrawLine(pos, pos + cAngle.normalized * test);
-            Debug.Log($"c {cAngle} test {tan} deg {(i * 90)} add {tan2}");
         }
         
         var nextC = 0;
@@ -456,21 +453,17 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             nextC = i == corns.Length - 1 ? 0 : nextC + 1;
             var distance = Vector3.Distance(corns[i], corns[nextC]);
             DrawLine(corns[i], corns[nextC],  Color.green, $"L:{distance}");
-            
-            if (i == corns.Length - 1)
-            {
-                  
-            }
-            else
-            {
-               
-            }
         }
         
         DrawLine(pos, pos +myDir * 100,  Color.green);
         //DrawLine(pos, pos +pUp * pSize.y,  Color.red);
         //DrawLine(pos, pos +pRight * pSize.x,  Color.yellow);
         //DrawLine(pos+pRight * pSize.x, pos +pRight * pSize.x,  Color.yellow);
+    }
+
+    private void PointShape()
+    {
+        
     }
     
     private void GizmoSideVerts2(Vector3 pos, Vector3 normal, Vector2 innerSize, Vector2 outerSize)
@@ -485,11 +478,9 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var iStart = new Vector2((outerSize.x - innerSize.x) /2, lowest);
         var iEnd = iStart + innerSize;
         var pPos = Vector2.zero;
-       
-        var nextAll = pos + (Vector3.up * vInc) + (normal * hInc);
-        
+
         PlaneDirections(normal, out var pUp, out var pRight);
-        VizPlane(pos);
+        //VizPlane(pos);
         for (int i = 0; i < vAmount; i++)
         {
             pPos.y = vInc * i;
@@ -896,7 +887,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void OnDrawGizmos()
     {
         if (Application.isPlaying) return;
-        GizmoSideVerts2(Vector3.zero, direction, new Vector2(100,200), new Vector2(200, 300));
+        GizmoSideVerts2(transform.position, direction, new Vector2(100,200), new Vector2(200, 300));
         //SetWall(direction, 500, new Vector2(1000, 300));
         //TangentWall2(direction, 500, 1000);
     }
