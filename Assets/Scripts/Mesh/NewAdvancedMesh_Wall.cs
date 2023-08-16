@@ -68,6 +68,7 @@ public class PanelInfo
     public Vector3 upVec;
     public Vector3 rightVec;
     public Vector2 firstLastVert;
+    public Vector2 numXY;
 }
 public class NewAdvancedMesh_Wall : NewAdvancedMesh
 {
@@ -409,26 +410,38 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             flip = !flip;
         }
 
-        for (int i = 0; i < 4; i++)
-        {
-            
-        }
-        
         var pInfo = new PanelInfo()
         {
             upVec =  pUp,
             rightVec = pRight,
-            firstLastVert = new Vector2(first, counter - 1)
+            firstLastVert = new Vector2(first, counter - 1),
+            numXY = new Vector2(xR, yR)
         };
-        var extent = (pRight * (pSize.x / 2)).magnitude;
+        
+        GetDots(pRight,(pRight * (pSize.x / 2)).magnitude, dotPos);
+    }
+
+    private void GetDots(Vector3 dir,float extent, List<Vector3> dotPos)
+    {
+        var test = dir * extent;
+        var count = 0;
+        var center = transform.position;
         var selection = dotPos
-            .Where(x => x.z >= extent)
-            .OrderByDescending(x => x.y)
-            .ToList();
+            .Where(x =>
+            {
+                var pex = (x - center).normalized;
+                var dot = Vector3.Dot(dir, pex);
+                var angle = Vector3.Angle(dir, pex);
+                Debug.Log($"{pex} angle: {angle}");
+                if (angle < 80) return true;
+                
+                
+                return false;
+            }).ToList();
 
         foreach (var s in selection)
         {
-            PlaceDot(Color.magenta,s + pRight * 20, counter++);
+            PlaceDot(Color.magenta,s + dir * 20, count++);
         }
     }
     
