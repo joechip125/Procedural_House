@@ -437,6 +437,9 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         PlaneDirections(myDir, out var pUp, out var pRight);
         var endY = pUp.normalized * Mathf.Sqrt(Mathf.Pow(pSize.y, 2))/ 2;
         var endX = pRight.normalized * Mathf.Sqrt(Mathf.Pow(pSize.x, 2))/ 2;
+        var rez = 4;
+        var xR = (pSize.x / 100) * rez;
+        var yR = (pSize.y / 100) * rez;
 
         var test = Mathf.Sqrt(Mathf.Pow(pSize.y / 2, 2) + Mathf.Pow(pSize.x / 2, 2));
         var tan =Mathf.Atan(pSize.y / pSize.x) * (180 / Mathf.PI);
