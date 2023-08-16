@@ -68,7 +68,6 @@ public class PanelInfo
     public Vector3 upVec;
     public Vector3 rightVec;
     public Vector2 firstLastVert;
-    public Vector3[] corners = new Vector3[8];
 }
 public class NewAdvancedMesh_Wall : NewAdvancedMesh
 {
@@ -87,7 +86,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private int lastVert;
 
     public Material aMaterial;
-    private PPlace pPlace;
     
     [Header("Direction")]
     [SerializeField, Range(-1,1)] private float xDir;
@@ -454,21 +452,14 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
         
         var nextC = 0;
-        for (int i = 0; i < corns.Length; i++)
-        {
-            //PlaceDot(Color.green,corns[i], counter++);
-            
-            nextC = i == corns.Length - 1 ? 0 : nextC + 1;
-            var distance = Vector3.Distance(corns[i], corns[nextC]);
-            DrawLine(corns[i], corns[nextC],  Color.green, $"");
-        }
-        
         var flip = true;
         var first = counter;
+        var dotPos = new List<Vector3>();
         
         for (int i = 0; i < corns.Length; i++)
         {
             nextC = i == corns.Length - 1 ? 0 : nextC + 1;
+            DrawLine(corns[i], corns[nextC],  Color.green, $"");
             var pos2 = corns[i];
             var dir = (corns[nextC] - pos2).normalized;
             var currNum = flip ? 3 : 6;
@@ -476,19 +467,29 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             for (int j = 0; j < currNum; j++)
             {
                 PlaceDot(Color.green,pos2, counter++);
+                dotPos.Add(pos2);
                 if (flip) pos2 += dir * pSize.x / currNum;
                 else pos2 += dir * pSize.y / currNum;
             }
             flip = !flip;
         }
 
-        var last = counter - 1;
-        Debug.Log($"{first}, {last}");
-        
-        DrawLine(pos, pos +myDir * 100,  Color.green);
-        //DrawLine(pos, pos +pUp * pSize.y,  Color.red);
-        //DrawLine(pos, pos +pRight * pSize.x,  Color.yellow);
-        //DrawLine(pos+pRight * pSize.x, pos +pRight * pSize.x,  Color.yellow);
+        var pInfo = new PanelInfo()
+        {
+            upVec =  pUp,
+            rightVec = pRight,
+            firstLastVert = new Vector2(first, counter - 1)
+        };
+        var extent = (pRight * (pSize.x / 2)).magnitude;
+        var selection = dotPos
+            .Where(x => x.z >= extent)
+            .OrderByDescending(x => x.y)
+            .ToList();
+
+        foreach (var s in selection)
+        {
+            PlaceDot(Color.magenta,s + pRight * 20, counter++);
+        }
     }
 
     private void PlaceCorners(Vector3 planeR, Vector3 planeU, Vector2 pSize, Vector3 pos)
@@ -809,7 +810,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private Vector2 WhereIsPoint(Vector3 min, Vector3 max, Vector3 point)
     {
-        var outP = PPlace.None;
         var outVec = new Vector2();
         
         var calc = point.x + point.z;

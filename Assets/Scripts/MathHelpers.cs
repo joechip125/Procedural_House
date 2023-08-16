@@ -14,7 +14,6 @@ public class MathHelpers
 
     public static Vector2 WhereIsPoint(Vector3 min, Vector3 max, Vector3 point)
     {
-        var outP = PPlace.None;
         var outVec = new Vector2();
         
         var calc = point.x + point.z;
