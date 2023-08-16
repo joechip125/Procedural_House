@@ -442,7 +442,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var tan =Mathf.Atan(pSize.y / pSize.x) * (180 / Mathf.PI);
         var tan2 =Mathf.Atan(pSize.x / pSize.y) * (180 / Mathf.PI);
         
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < corns.Length; i++)
         {
             var remain = i % 2 == 0 ? tan : tan2;
             
@@ -452,7 +452,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
         
         var nextC = 0;
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < corns.Length; i++)
         {
             PlaceDot(Color.green,corns[i], counter++);
             
@@ -474,6 +474,10 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var tan2 =Mathf.Atan(pSize.x / pSize.y) * (180 / Mathf.PI);
         var myDir = new Vector3(xDir, yDir, zDir);
         PlaneDirections(myDir, out var pUp, out var pRight);
+
+        var corners = new Vector3[4];
+        
+        
         var counter = 0;
         var max = pos + planeU * pSize.y + planeR * pSize.x;
         PlaceDot(Color.magenta, pos, counter++);
@@ -992,8 +996,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var myDir = new Vector3(xDir, yDir, zDir);
         PlaneDirections(myDir, out var pUp, out var pRight);
         //PointShape(pos, pSize, counter);
-        PlaceCorners(pRight, pUp, pSize, pos);
-        
+        //PlaceCorners(pRight, pUp, pSize, pos);
+        VizPlane(pos);
         //GizmoSideVerts2(transform.position, direction, new Vector2(100,200), new Vector2(200, 300));
         //SetWall(direction, 500, new Vector2(1000, 300));
         //TangentWall2(direction, 500, 1000);
