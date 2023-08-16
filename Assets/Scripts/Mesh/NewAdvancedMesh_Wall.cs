@@ -460,6 +460,19 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             var distance = Vector3.Distance(corns[i], corns[nextC]);
             DrawLine(corns[i], corns[nextC],  Color.green, $"L:{distance}");
         }
+
+        var currNum = 6;
+        
+        for (int i = 0; i < corns.Length; i++)
+        {
+            nextC = i == corns.Length - 1 ? 0 : nextC + 1;
+            var dir = (corns[nextC] - corns[i]).normalized;
+            
+            for (int j = 0; j < currNum; j++)
+            {
+                
+            }
+        }
         
         DrawLine(pos, pos +myDir * 100,  Color.green);
         //DrawLine(pos, pos +pUp * pSize.y,  Color.red);
