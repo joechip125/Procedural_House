@@ -437,18 +437,23 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var anAngle = Vector3.Angle(corns[1], corns[2]);
         var anAngle2 = Vector3.Angle(corns[0], corns[1]);
         GetDots2(corns[0], pUp, pRight, Vector3.zero);
-        var nextPos = GetPosAtIndex(new Vector3(0, 0), out var newPos);
+        GetDots2(testPos[vertIndices[new Vector3(1, 0)]], pUp, pRight, new Vector3(1,0));
+        var nextPos = GetPosAtIndex(new Vector3(1, 0), out var newPos);
         DrawLine(pos, newPos, Color.black);
-        GetPosAtIndex(new Vector3(0, 1), out var newPos2);
+        GetPosAtIndex(new Vector3(1, 1), out var newPos2);
         DrawLine(pos, newPos2, Color.black);
     }
-    private void GetDots2(Vector3 start, Vector3 planeU, Vector3 planeR, Vector3 firstIndex)
+    private void GetDots2(Vector3 start, Vector3 planeU, Vector3 planeR, Vector3 firstIndex, bool mainDir = true)
     {
         var dotC = 0;
         var hasFirst = vertIndices.ContainsKey(firstIndex);
         var rez = 6;
         var size = new Vector2(30, 400);
         var incY = size.y / rez;
+        if (mainDir)
+        {
+            
+        }
         
         for (int i = 0; i <= rez; i++)
         {
