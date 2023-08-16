@@ -61,11 +61,13 @@ public class TileInfo
     public WallTypes type;
     public Vector2 size;
 }
+
 [Serializable]
 public class PanelInfo
 {
     public Vector3 upVec;
     public Vector3 rightVec;
+    public Vector2 firstLastVert;
     public Vector3[] corners = new Vector3[8];
 }
 public class NewAdvancedMesh_Wall : NewAdvancedMesh
@@ -454,25 +456,34 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var nextC = 0;
         for (int i = 0; i < corns.Length; i++)
         {
-            PlaceDot(Color.green,corns[i], counter++);
+            //PlaceDot(Color.green,corns[i], counter++);
             
             nextC = i == corns.Length - 1 ? 0 : nextC + 1;
             var distance = Vector3.Distance(corns[i], corns[nextC]);
-            DrawLine(corns[i], corns[nextC],  Color.green, $"L:{distance}");
+            DrawLine(corns[i], corns[nextC],  Color.green, $"");
         }
-
-        var currNum = 6;
+        
+        var flip = true;
+        var first = counter;
         
         for (int i = 0; i < corns.Length; i++)
         {
             nextC = i == corns.Length - 1 ? 0 : nextC + 1;
-            var dir = (corns[nextC] - corns[i]).normalized;
+            var pos2 = corns[i];
+            var dir = (corns[nextC] - pos2).normalized;
+            var currNum = flip ? 3 : 6;
             
             for (int j = 0; j < currNum; j++)
             {
-                
+                PlaceDot(Color.green,pos2, counter++);
+                if (flip) pos2 += dir * pSize.x / currNum;
+                else pos2 += dir * pSize.y / currNum;
             }
+            flip = !flip;
         }
+
+        var last = counter - 1;
+        Debug.Log($"{first}, {last}");
         
         DrawLine(pos, pos +myDir * 100,  Color.green);
         //DrawLine(pos, pos +pUp * pSize.y,  Color.red);
