@@ -78,7 +78,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     [SerializeField]private Vector3 wallSize;
     [SerializeField]private Vector3 wallNormal;
     
-    [SerializeField]private float adjustDeg;
+    [SerializeField, Range(0, 180)]private float adjustDeg;
     
     [SerializeField, Range(1, 50)]private int resolution;
     
@@ -418,7 +418,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             numXY = new Vector2(xR, yR)
         };
         
-        GetDots(pRight,(pRight * (pSize.x / 2)).magnitude, dotPos);
+        //GetDots(pRight,(pRight * (pSize.x / 2)).magnitude, dotPos);
+        GetDots(pUp,(pUp * (pSize.x / 2)).magnitude, dotPos);
     }
 
     private void GetDots(Vector3 dir,float extent, List<Vector3> dotPos)
@@ -432,8 +433,12 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 var pex = (x - center).normalized;
                 var dot = Vector3.Dot(dir, pex);
                 var angle = Vector3.Angle(dir, pex);
-                Debug.Log($"{pex} angle: {angle}");
-                if (angle < 80) return true;
+                
+                if (angle <= adjustDeg)
+                {
+                    Debug.Log($"{pex} angle: {angle} dot: {dot}");
+                    return true;
+                }
                 
                 
                 return false;
