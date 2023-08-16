@@ -436,33 +436,35 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         DrawLine(pos, pos + pRight * 100, Color.magenta);
         var anAngle = Vector3.Angle(corns[1], corns[2]);
         var anAngle2 = Vector3.Angle(corns[0], corns[1]);
-        GetDots2(corns[0], pUp, pRight, Vector3.zero, 400);
-        //GetDots2(testPos[vertIndices[new Vector3(1, 0)]], pUp, pRight, new Vector3(1,0), 200);
-        var nextPos = GetPosAtIndex(new Vector3(1, 0), out var newPos);
-        DrawLine(pos, newPos, Color.black);
-        GetPosAtIndex(new Vector3(1, 1), out var newPos2);
-        DrawLine(pos, newPos2, Color.black);
+        var aPoint = GetDots2(corns[0], pUp, pRight, Vector3.zero, 400);
+        ExtendDots(new Vector3(1,0), 5, aPoint, pRight);
     }
 
-    private void ExtendDots(Vector3 firstIndex,Vector2 numTiles)
+    private void ExtendDots(Vector3 firstIndex,int numTiles, int startDot, Vector3 dir)
     {
-        var start = testPos[vertIndices[firstIndex]];
-        var fDot = Vector3.zero;
+        var sing = 40;
+        var start = testPos[vertIndices[firstIndex]]+ dir * sing;
+        var start2 = testPos[vertIndices[firstIndex + Vector3.up]] + dir * sing;
+        
+        for (int i = 0; i < numTiles; i++)
+        {
+            PlaceDot(Color.red, start, startDot++);
+            PlaceDot(Color.red, start2, startDot++);
+            start +=  dir * sing;
+            start2 +=  dir * sing;
+        }
     }
-    private void GetDots2(Vector3 start, Vector3 planeU, Vector3 planeR, Vector3 firstIndex, float len)
+    private int GetDots2(Vector3 start, Vector3 planeU, Vector3 planeR, Vector3 firstIndex, float len)
     {
         var dotC = 0;
-        var hasFirst = vertIndices.ContainsKey(firstIndex);
         var rez = 6;
         var size = new Vector2(30, 400);
         var incY = size.y / rez;
         
-
-        var next = Vector3.zero;
         for (int i = 0; i <= rez; i++)
         {
             testPos.Add(start);
-            next = start + planeR * size.x;
+            var next = start + planeR * size.x;
             PlaceDot(Color.red, start, dotC);
             vertIndices.Add(firstIndex, dotC++);
             testPos.Add(next);
@@ -471,6 +473,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             start += planeU * incY;
             firstIndex += Vector3.up;
         }
+
+        return dotC - 1;
     }
 
     private bool GetPosAtIndex(Vector3 index, out Vector3 newPos)
