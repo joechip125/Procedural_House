@@ -472,6 +472,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var hypo = Mathf.Sqrt(Mathf.Pow(pSize.y / 2, 2) + Mathf.Pow(pSize.x / 2, 2));
         var tan =Mathf.Atan(pSize.y / pSize.x) * (180 / Mathf.PI);
         var tan2 =Mathf.Atan(pSize.x / pSize.y) * (180 / Mathf.PI);
+        var myDir = new Vector3(xDir, yDir, zDir);
+        PlaneDirections(myDir, out var pUp, out var pRight);
         var counter = 0;
         var max = pos + planeU * pSize.y + planeR * pSize.x;
         PlaceDot(Color.magenta, pos, counter++);
