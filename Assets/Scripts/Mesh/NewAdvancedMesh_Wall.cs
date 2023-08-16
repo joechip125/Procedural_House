@@ -410,6 +410,16 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             flip = !flip;
         }
 
+        nextC = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            nextC = i == corns.Length - 1 ? 0 : nextC + 1;
+            var anAngle3 = Vector3.Angle(corns[i], corns[nextC]);
+            Debug.Log($" angle: {anAngle3}");
+            
+
+        }
+        
         var pInfo = new PanelInfo()
         {
             upVec =  pUp,
@@ -417,10 +427,19 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             firstLastVert = new Vector2(first, counter - 1),
             numXY = new Vector2(xR, yR)
         };
-        Debug.Log($" angle: {Vector3.Angle(corns[1], corns[2])}");
+        
         var anAngle = Vector3.Angle(corns[1], corns[2]);
-        GetDots(pRight,(pRight * (pSize.x / 2)).magnitude,anAngle / 2, dotPos);
+        var anAngle2 = Vector3.Angle(corns[0], corns[1]);
+        GetDots(pRight,(pRight * (pSize.x / 2)).magnitude,anAngle * 0.5f, dotPos);
+        GetDots(pUp,(pUp * (pSize.y / 2)).magnitude,anAngle2 * 0.5f, dotPos);
         //GetDots(pUp,(pUp * (pSize.x / 2)).magnitude, dotPos);
+    }
+    private void GetDots2(Vector3 cOne, Vector3 cTwo)
+    {
+        var dist = Vector3.Distance(cOne, cTwo);
+        var dir = (cTwo - cOne).normalized;
+
+
     }
 
     private void GetDots(Vector3 dir,float extent, float angle, List<Vector3> dotPos)
@@ -445,6 +464,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 return false;
             }).ToList();
 
+        PlaceDot(Color.black, dir * extent, 0);
         foreach (var s in selection)
         {
             PlaceDot(Color.magenta,s + dir * 20, count++);
