@@ -300,7 +300,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1638415911921875675, guid: 4558952e6c625164d90ea015e3641b49, type: 3}
       propertyPath: zDir
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1638415911921875675, guid: 4558952e6c625164d90ea015e3641b49, type: 3}
       propertyPath: height
@@ -316,7 +316,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1638415911921875675, guid: 4558952e6c625164d90ea015e3641b49, type: 3}
       propertyPath: adjustDeg
-      value: 15
+      value: 67
       objectReference: {fileID: 0}
     - target: {fileID: 1638415911921875675, guid: 4558952e6c625164d90ea015e3641b49, type: 3}
       propertyPath: resolution

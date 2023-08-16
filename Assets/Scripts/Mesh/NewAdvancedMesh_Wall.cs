@@ -417,12 +417,13 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             firstLastVert = new Vector2(first, counter - 1),
             numXY = new Vector2(xR, yR)
         };
-        
-        //GetDots(pRight,(pRight * (pSize.x / 2)).magnitude, dotPos);
-        GetDots(pUp,(pUp * (pSize.x / 2)).magnitude, dotPos);
+        Debug.Log($" angle: {Vector3.Angle(corns[1], corns[2])}");
+        var anAngle = Vector3.Angle(corns[1], corns[2]);
+        GetDots(pRight,(pRight * (pSize.x / 2)).magnitude,anAngle / 2, dotPos);
+        //GetDots(pUp,(pUp * (pSize.x / 2)).magnitude, dotPos);
     }
 
-    private void GetDots(Vector3 dir,float extent, List<Vector3> dotPos)
+    private void GetDots(Vector3 dir,float extent, float angle, List<Vector3> dotPos)
     {
         var test = dir * extent;
         var count = 0;
@@ -432,11 +433,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             {
                 var pex = (x - center).normalized;
                 var dot = Vector3.Dot(dir, pex);
-                var angle = Vector3.Angle(dir, pex);
+                var angle2 = Vector3.Angle(dir, pex);
                 
-                if (angle <= adjustDeg)
+                if (angle2 <= angle)
                 {
-                    Debug.Log($"{pex} angle: {angle} dot: {dot}");
+                   // Debug.Log($"{pex} angle: {angle} dot: {dot}");
                     return true;
                 }
                 
