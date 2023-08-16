@@ -437,18 +437,24 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         GetDots(pRight,(pRight * (pSize.x / 2)).magnitude,anAngle * 0.5f, dotPos);
         GetDots(pUp,(pUp * (pSize.y / 2)).magnitude,anAngle2 * 0.5f, dotPos);
         //GetDots(pUp,(pUp * (pSize.x / 2)).magnitude, dotPos);
-        GetDots2(corns[0], corns[1],0, myDir);
+        GetDots2(corns[0], pUp, myDir, Vector3.zero);
     }
-    private void GetDots2(Vector3 cOne, Vector3 cTwo, int firstVert, Vector3 planeNormal)
+    private void GetDots2(Vector3 start, Vector3 planeU, Vector3 planeNormal, Vector3 firstIndex)
     {
-        var dist = Vector3.Distance(cOne, cTwo);
-        var dir = (cTwo - cOne).normalized;
+        //if(vertIndices.Keys.SingleOrDefault(x => x == firstIndex) == default) return;
+        if (vertIndices.ContainsKey(firstIndex))
+        {
+            
+        }
+        var firstVert = 0;
+        var dist = Vector3.Distance(start, planeU);
+        var dir = (planeU - start).normalized;
         var dir2 = Quaternion.AngleAxis(90, planeNormal) *dir;
-        var cThree = cOne + dir2 * 20;
-        var cFour = cTwo + dir2 * 20;
+        var cThree = start + dir2 * 20;
+        var cFour = planeU + dir2 * 20;
         Debug.Log($" dist: {dist},  dir{dir}, dir2 {dir2}");
-        PlaceDot(Color.green,cOne, firstVert++);
-        PlaceDot(Color.green,cTwo, firstVert++);
+        PlaceDot(Color.green,start, firstVert++);
+        PlaceDot(Color.green,planeU, firstVert++);
         PlaceDot(Color.green,cThree, firstVert++);
         PlaceDot(Color.green,cFour, firstVert++);
     }
