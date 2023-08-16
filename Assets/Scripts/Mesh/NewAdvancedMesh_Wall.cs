@@ -366,6 +366,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void VizPlane(Vector3 pos)
     {
         lastVert = 0;
+        vertIndices.Clear();
         var myDir = new Vector3(xDir, yDir, zDir);
         var pSize = new Vector2(200, 400);
         var corns = new Vector3[4];
@@ -405,7 +406,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             
             for (int j = 0; j < currNum; j++)
             {
-                PlaceDot(Color.green,pos2, counter++);
+                //PlaceDot(Color.green,pos2, counter++);
                 dotPos.Add(pos2);
                 if (flip) pos2 += dir * pSize.x / currNum;
                 else pos2 += dir * pSize.y / currNum;
@@ -436,16 +437,23 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         GetDots(pRight,(pRight * (pSize.x / 2)).magnitude,anAngle * 0.5f, dotPos);
         GetDots(pUp,(pUp * (pSize.y / 2)).magnitude,anAngle2 * 0.5f, dotPos);
         //GetDots(pUp,(pUp * (pSize.x / 2)).magnitude, dotPos);
-        GetDots2(corns[0], corns[1],0);
+        GetDots2(corns[0], corns[1],0, myDir);
     }
-    private void GetDots2(Vector3 cOne, Vector3 cTwo, int firstVert)
+    private void GetDots2(Vector3 cOne, Vector3 cTwo, int firstVert, Vector3 planeNormal)
     {
         var dist = Vector3.Distance(cOne, cTwo);
         var dir = (cTwo - cOne).normalized;
-        Debug.Log($" dist: {dist},  dir{dir}");
-        
+        var dir2 = Quaternion.AngleAxis(90, planeNormal) *dir;
+        var cThree = cOne + dir2 * 20;
+        var cFour = cTwo + dir2 * 20;
+        Debug.Log($" dist: {dist},  dir{dir}, dir2 {dir2}");
+        PlaceDot(Color.green,cOne, firstVert++);
+        PlaceDot(Color.green,cTwo, firstVert++);
+        PlaceDot(Color.green,cThree, firstVert++);
+        PlaceDot(Color.green,cFour, firstVert++);
     }
-
+    
+    
     private void GetDots(Vector3 dir,float extent, float angle, List<Vector3> dotPos)
     {
         var test = dir * extent;
