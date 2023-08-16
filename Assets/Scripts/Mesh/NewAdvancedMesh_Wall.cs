@@ -87,7 +87,9 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private int lastVert;
 
     public Material aMaterial;
-    
+
+    private Dictionary<Vector3, int> vertIndices = new ();
+
     [Header("Direction")]
     [SerializeField, Range(-1,1)] private float xDir;
     [SerializeField, Range(-1,1)] private float yDir;
@@ -415,7 +417,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             nextC = i == corns.Length - 1 ? 0 : nextC + 1;
             var anAngle3 = Vector3.Angle(corns[i], corns[nextC]);
-            Debug.Log($" angle: {anAngle3}");
+         //   Debug.Log($" angle: {anAngle3}");
             
 
         }
@@ -433,12 +435,13 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         GetDots(pRight,(pRight * (pSize.x / 2)).magnitude,anAngle * 0.5f, dotPos);
         GetDots(pUp,(pUp * (pSize.y / 2)).magnitude,anAngle2 * 0.5f, dotPos);
         //GetDots(pUp,(pUp * (pSize.x / 2)).magnitude, dotPos);
+        GetDots2(corns[0], corns[1]);
     }
     private void GetDots2(Vector3 cOne, Vector3 cTwo)
     {
         var dist = Vector3.Distance(cOne, cTwo);
         var dir = (cTwo - cOne).normalized;
-
+        Debug.Log($" dist: {dist},  dir{dir}");
 
     }
 
