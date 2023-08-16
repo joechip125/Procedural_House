@@ -368,6 +368,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         lastVert = 0;
         vertIndices.Clear();
+        testPos.Clear();
         var myDir = new Vector3(xDir, yDir, zDir);
         var pSize = new Vector2(200, 400);
         var corns = new Vector3[4];
@@ -436,50 +437,35 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var anAngle = Vector3.Angle(corns[1], corns[2]);
         var anAngle2 = Vector3.Angle(corns[0], corns[1]);
         GetDots2(corns[0], pUp, pRight, Vector3.zero);
-        var nextPos = GetPosAtIndex(new Vector3(1, 3), out var newPos);
+        var nextPos = GetPosAtIndex(new Vector3(0, 0), out var newPos);
         DrawLine(pos, newPos, Color.black);
-        GetPosAtIndex(new Vector3(1, 4), out var newPos2);
+        GetPosAtIndex(new Vector3(0, 1), out var newPos2);
         DrawLine(pos, newPos2, Color.black);
     }
     private void GetDots2(Vector3 start, Vector3 planeU, Vector3 planeR, Vector3 firstIndex)
     {
         var dotC = 0;
-        var doFirst = !vertIndices.ContainsKey(firstIndex);
+        var hasFirst = vertIndices.ContainsKey(firstIndex);
+        var rez = 6;
         var size = new Vector2(30, 400);
+        var incY = size.y / rez;
         
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i <= rez; i++)
         {
-            if (doFirst)
+            if (hasFirst && i == 0)
             {
-                start += planeU * 20;
-                firstIndex += Vector3.up;
-                doFirst = false;
-                continue;
+                start += planeU * incY;    
             }
-            var next = start + planeR * 20;
+            var next = start + planeR * size.x;
             PlaceDot(Color.red, start, dotC);
             vertIndices.Add(firstIndex, dotC++);
             testPos.Add(start);
             testPos.Add(next);
             PlaceDot(Color.red, next, dotC);
             vertIndices.Add(firstIndex+ Vector3.right, dotC++);
-            start += planeU * 20;
+            start += planeU * incY;
             firstIndex += Vector3.up;
         }
-
-        var pC = 0;
-        for (int i = 0; i < 4; i++)
-        {
-            
-        }
-        
-        var firstVert = 0;
-        var dist = Vector3.Distance(start, planeU);
-        var dir = (planeU - start).normalized;
-        var dir2 = Quaternion.AngleAxis(90, planeR) *dir;
-        var cThree = start + dir2 * 20;
-        var cFour = planeU + dir2 * 20;
-       
     }
 
     private bool GetPosAtIndex(Vector3 index, out Vector3 newPos)
