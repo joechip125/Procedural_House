@@ -352,75 +352,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         UpdateMesh();
     }
 
-    private void NewSideVerts(Vector3 pos, Vector3 dir, Vector2 innerSize, Vector2 outerSize)
-    {
-        var vAmount = 8;
-        var vInc = outerSize.y / vAmount;
-        for (int i = 0; i < vAmount; i++)
-        {
-            Vertices.Add(pos);
-            pos += Vector3.up * vInc;
-        }
-    }
-
-    private void DoorFront(Vector3 pos, Vector3 dir, Vector2 innerSize, Vector2 outerSize)
-    {
-        var vAmount = 6;
-        var hAmount = 9;
-        var lowest = 5;
-        var vInc = outerSize.y / vAmount;
-        var hInc = outerSize.x / hAmount;
-        var counter = 0;
-        var iStart = pos + (dir * (outerSize.x - innerSize.x) /2) + Vector3.up * lowest;
-        var iEnd = iStart + dir * innerSize.x + Vector3.up * innerSize.y;
-       
-        var nextX = Vector3.zero;
-        var nextY = Vector3.zero;
-        var firstSet = false;
-
-        var start = pos;
-        var tempCount = 0;
-        var skipNext = false;
-        var vertC = Vertices.Count;
-        
-
-        for (int i = 0; i < hAmount; i++)
-        {
-            var cMin = pos;
-            var cMax = cMin + dir * hInc + Vector3.up * vInc;
-            if (skipNext)
-            {
-                skipNext = false;
-                break;
-            }
-            if (IsPointInSquare(cMin, cMax, iStart))
-            {
-                skipNext = true;
-                counter = StackEm(pos, counter, new Vector2(iStart.y, iEnd.y), outerSize.y, vAmount);
-                continue;
-            }
-            for (int j = 0; j < vAmount; j++)
-            {
-                nextY = pos + Vector3.up * vInc;
-                nextX = pos + dir * hInc;
-                cMin = pos;
-                cMax = (nextX + nextY ) / 2;
-                Vector3 nextAll = pos + Vector3.up * vInc + dir * hInc;
-
-                var currPlace = WhereIsPoint(iStart, iEnd, pos);
-                var nextPlace = WhereIsPoint(iStart, iEnd, nextAll);
-                
-                Debug.Log($"v {j}, h {i} pos: {pos} next: {nextAll}  current: {currPlace.ToString()}");
-               
-                
-                pos += Vector3.up * vInc;
-            }
-
-            start += dir * hInc;
-            pos = start; 
-        }
-    }
-
+    
     private void PlaneDirections(Vector3 normal, out Vector3 planeUp, out Vector3 planeRight)
     {
         planeUp = Vector3.ProjectOnPlane(normal.x + normal.z == 0 
@@ -477,6 +409,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             flip = !flip;
         }
 
+        for (int i = 0; i < 4; i++)
+        {
+            
+        }
+        
         var pInfo = new PanelInfo()
         {
             upVec =  pUp,
@@ -493,91 +430,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             PlaceDot(Color.magenta,s + pRight * 20, counter++);
         }
-    }
-
-    private void PlaceCorners(Vector3 planeR, Vector3 planeU, Vector2 pSize, Vector3 pos)
-    {
-        var hypo = Mathf.Sqrt(Mathf.Pow(pSize.y / 2, 2) + Mathf.Pow(pSize.x / 2, 2));
-        var tan =Mathf.Atan(pSize.y / pSize.x) * (180 / Mathf.PI);
-        var tan2 =Mathf.Atan(pSize.x / pSize.y) * (180 / Mathf.PI);
-        var myDir = new Vector3(xDir, yDir, zDir);
-        PlaneDirections(myDir, out var pUp, out var pRight);
-
-        var corners = new Vector3[4];
-        
-        
-        var counter = 0;
-        var max = pos + planeU * pSize.y + planeR * pSize.x;
-        PlaceDot(Color.magenta, pos, counter++);
-        PlaceDot(Color.magenta, pos + planeU * pSize.y, counter++);
-        PlaceDot(Color.magenta, max, counter++);
-        PlaceDot(Color.magenta, pos + planeR * pSize.x, counter++);
-        
-        for (int i = 0; i < 4; i++)
-        {
-            
-        }
-    }
-    private int PointShape(Vector3 pos, Vector2 pSize, int counter)
-    {
-        var myDir = new Vector3(xDir, yDir, zDir);
-        var corns = new Vector3[8];
-        var size2 = pSize + new Vector2(100, 100);
-        
-        PlaneDirections(myDir, out var pUp, out var pRight);
-
-        var hypo = Mathf.Sqrt(Mathf.Pow(pSize.y / 2, 2) + Mathf.Pow(pSize.x / 2, 2));
-        var hypo2 = Mathf.Sqrt(Mathf.Pow(size2.y / 2, 2) + Mathf.Pow(size2.x / 2, 2));
-        var tan =Mathf.Atan(pSize.y / pSize.x) * (180 / Mathf.PI);
-        var tan2 =Mathf.Atan(pSize.x / pSize.y) * (180 / Mathf.PI);
-        Debug.Log($"hyp {hypo} hyp2 {hypo2} nSize {size2}");
-        for (int i = 0; i < 4; i++)
-        {
-            var remain = i % 2 == 0 ? tan : tan2;
-            var cAngle = Quaternion.AngleAxis(remain + 90 * i, myDir) *pRight;
-            corns[i] = pos + cAngle.normalized * hypo;
-            corns[i + 4] = pos + cAngle.normalized * hypo2;
-            DrawLine(pos, pos + cAngle.normalized * hypo2, Color.white);
-        }
-
-        var flip = true;
-        var numPoints = new Vector3(4, 6);
-
-        for (int i = 0; i < 4; i++)
-        {
-            var cAngle = Quaternion.AngleAxis(90 * i, myDir) * -pRight;
-            var pos3 = corns[i];
-
-            var totalL = flip ? pSize.x : pSize.y;
-            var cCount = flip ? numPoints.x : numPoints.y;
-            var current = 0f;
-            flip = !flip;
-
-            for (int j = 0; j < cCount; j++)
-            {
-                PlaceDot(Color.blue, pos3 + cAngle * current, counter++);
-                current += totalL / cCount;
-            }
-            
-        }
-        
-        var nextC = 0;
-        for (int i = 0; i < 4; i++)
-        {
-            
-            PlaceDot(Color.green, corns[i +4], counter++);
-            nextC = i == 3 ? 0 : nextC + 1;
-            var distance = Vector3.Distance(corns[i], corns[nextC]);
-            var distance2 = Vector3.Distance(corns[i + 4], corns[nextC + 4]);
-            DrawLine(corns[i], corns[nextC],  Color.green, $"L:{distance}");
-            DrawLine(corns[i + 4], corns[nextC + 4],  Color.green, $"L:{distance2}");
-        }
-        
-        //DrawLine(pos, pos +myDir * 100,  Color.green);
-        //DrawLine(pos, pos +pUp * pSize.y,  Color.red);
-        //DrawLine(pos, pos +pRight * pSize.x,  Color.yellow);
-        //DrawLine(pos+pRight * pSize.x, pos +pRight * pSize.x,  Color.yellow);
-        return counter;
     }
     
     private void GizmoSideVerts2(Vector3 pos, Vector3 normal, Vector2 innerSize, Vector2 outerSize)
@@ -985,8 +837,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                     Gizmos.color = Color.yellow;
                     break;
             }
-            //Gizmos.DrawLine(pos, start);
-            //Gizmos.DrawLine(pos, next);
+            
+            
             if (t.type == WallTypes.Blank)
             {
                 Gizmos.DrawSphere(start, 7);
@@ -1009,24 +861,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
 
-    private void WallTracer()
-    {
-        
-    }
+   
     private void OnDrawGizmos()
     {
         if (Application.isPlaying) return;
         var pos = transform.position;
-        var pSize = new Vector2(200, 400);
-        var pSize2 = new Vector2(300, 500);
-        var counter = 0;
-        var myDir = new Vector3(xDir, yDir, zDir);
-        PlaneDirections(myDir, out var pUp, out var pRight);
-        //PointShape(pos, pSize, counter);
-        //PlaceCorners(pRight, pUp, pSize, pos);
         VizPlane(pos);
-        //GizmoSideVerts2(transform.position, direction, new Vector2(100,200), new Vector2(200, 300));
-        //SetWall(direction, 500, new Vector2(1000, 300));
-        //TangentWall2(direction, 500, 1000);
     }
 }
