@@ -89,6 +89,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     public Material aMaterial;
 
     private Dictionary<Vector3, int> vertIndices = new ();
+    private List<Vector3> testPos = new();
 
     [Header("Direction")]
     [SerializeField, Range(-1,1)] private float xDir;
@@ -434,31 +435,56 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         DrawLine(pos, pos + pRight * 100, Color.magenta);
         var anAngle = Vector3.Angle(corns[1], corns[2]);
         var anAngle2 = Vector3.Angle(corns[0], corns[1]);
-        GetDots(pRight,(pRight * (pSize.x / 2)).magnitude,anAngle * 0.5f, dotPos);
-        GetDots(pUp,(pUp * (pSize.y / 2)).magnitude,anAngle2 * 0.5f, dotPos);
-        //GetDots(pUp,(pUp * (pSize.x / 2)).magnitude, dotPos);
-        GetDots2(corns[0], pUp, myDir, Vector3.zero);
+        GetDots2(corns[0], pUp, pRight, Vector3.zero);
     }
-    private void GetDots2(Vector3 start, Vector3 planeU, Vector3 planeNormal, Vector3 firstIndex)
+    private void GetDots2(Vector3 start, Vector3 planeU, Vector3 planeR, Vector3 firstIndex)
     {
-        //if(vertIndices.Keys.SingleOrDefault(x => x == firstIndex) == default) return;
+        var dotC = 0;
         if (vertIndices.ContainsKey(firstIndex))
         {
             
         }
+        else
+        {
+            
+        }
+
+        for (int i = 0; i < 5; i++)
+        {
+            var next = start + planeR * 20;
+            PlaceDot(Color.red, start, dotC);
+            vertIndices.Add(firstIndex, dotC++);
+            testPos.Add(start);
+            testPos.Add(next);
+            PlaceDot(Color.red, next, dotC);
+            vertIndices.Add(firstIndex+ Vector3.right, dotC++);
+            start += planeU * 20;
+            firstIndex += Vector3.up;
+        }
+
+        var pC = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            
+        }
+        
         var firstVert = 0;
         var dist = Vector3.Distance(start, planeU);
         var dir = (planeU - start).normalized;
-        var dir2 = Quaternion.AngleAxis(90, planeNormal) *dir;
+        var dir2 = Quaternion.AngleAxis(90, planeR) *dir;
         var cThree = start + dir2 * 20;
         var cFour = planeU + dir2 * 20;
-        Debug.Log($" dist: {dist},  dir{dir}, dir2 {dir2}");
-        PlaceDot(Color.green,start, firstVert++);
-        PlaceDot(Color.green,planeU, firstVert++);
-        PlaceDot(Color.green,cThree, firstVert++);
-        PlaceDot(Color.green,cFour, firstVert++);
+       
     }
-    
+
+    private bool GetPosAtIndex(Vector3 index, out Vector3 newPos)
+    {
+        newPos = Vector3.zero;
+        if(!vertIndices.ContainsKey(index)) return false;
+
+        newPos = testPos[vertIndices[index]];
+        return true;
+    }
     
     private void GetDots(Vector3 dir,float extent, float angle, List<Vector3> dotPos)
     {
