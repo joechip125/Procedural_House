@@ -365,6 +365,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private void VizPlane(Vector3 pos)
     {
+        lastVert = 0;
         var myDir = new Vector3(xDir, yDir, zDir);
         var pSize = new Vector2(200, 400);
         var corns = new Vector3[4];
@@ -429,20 +430,20 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             firstLastVert = new Vector2(first, counter - 1),
             numXY = new Vector2(xR, yR)
         };
-        
+        DrawLine(pos, pos + pRight * 100, Color.magenta);
         var anAngle = Vector3.Angle(corns[1], corns[2]);
         var anAngle2 = Vector3.Angle(corns[0], corns[1]);
         GetDots(pRight,(pRight * (pSize.x / 2)).magnitude,anAngle * 0.5f, dotPos);
         GetDots(pUp,(pUp * (pSize.y / 2)).magnitude,anAngle2 * 0.5f, dotPos);
         //GetDots(pUp,(pUp * (pSize.x / 2)).magnitude, dotPos);
-        GetDots2(corns[0], corns[1]);
+        GetDots2(corns[0], corns[1],0);
     }
-    private void GetDots2(Vector3 cOne, Vector3 cTwo)
+    private void GetDots2(Vector3 cOne, Vector3 cTwo, int firstVert)
     {
         var dist = Vector3.Distance(cOne, cTwo);
         var dir = (cTwo - cOne).normalized;
         Debug.Log($" dist: {dist},  dir{dir}");
-
+        
     }
 
     private void GetDots(Vector3 dir,float extent, float angle, List<Vector3> dotPos)
