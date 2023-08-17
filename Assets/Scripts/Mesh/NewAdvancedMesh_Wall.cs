@@ -48,6 +48,7 @@ public class TileInfo
 {
     public WallTypes type;
     public Vector2 size;
+    public Vector3[] corners = new Vector3[4];
 }
 
 [Serializable]

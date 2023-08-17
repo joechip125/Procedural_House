@@ -38,6 +38,10 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     public int addCircle;
 
     public Material aMaterial;
+    
+    private int lastVert;
+    private Dictionary<Vector3, int> vertIndices = new ();
+    private List<Vector3> testPos = new();
 
     private readonly Vector3[] corners = new[]
     {   new Vector3(-1, 0, -1), 
@@ -196,14 +200,23 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             Handles.Label(newPos + Vector3.up * 10, $"{i}");
         }
     }
-
+    private void PlaceDot(Color color, Vector3 pos, int count)
+    {
+        Gizmos.color = color;
+        Handles.Label(pos,$"{count}");
+        Gizmos.DrawSphere(pos, 3);
+    }
     private void FloorTest(Vector3 pos)
     {
         MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
         
-        var pSize = new Vector2(800, 800);
+        var pSize = new Vector2(1000, 1000);
         var corns = new Vector3[4];
         var counter = 0;
+        var rez = 4;
+        var numTiles = new Vector2(5, 5);
+        var xInc = pSize.x / numTiles.x;
+        var yInc = pSize.y / numTiles.y;
         
         var test = Mathf.Sqrt(Mathf.Pow(pSize.y / 2, 2) + Mathf.Pow(pSize.x / 2, 2));
         var tan =Mathf.Atan(pSize.y / pSize.x) * (180 / Mathf.PI);
@@ -217,7 +230,19 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
 
             corns[i] = pos + cAngle.normalized * test;
         }
+        
+        var nPos = corns[1];
 
+        for (int i = 0; i <= numTiles.y; i++)
+        {
+            for (int j = 0; j <= numTiles.x; j++)
+            {
+                PlaceDot(Color.red, nPos + pRight * (xInc * j), counter++);
+            }
+
+            nPos += pUp * yInc;
+        }
+        
         var nextC = 0;
         for (int i = 0; i < corns.Length; i++)
         {
