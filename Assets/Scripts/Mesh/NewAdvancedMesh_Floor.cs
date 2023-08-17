@@ -197,15 +197,42 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         }
     }
 
-    private void FloorTest()
+    private void FloorTest(Vector3 pos)
     {
         MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
+        
+        var pSize = new Vector2(800, 800);
+        var corns = new Vector3[4];
+        var counter = 0;
+        
+        var test = Mathf.Sqrt(Mathf.Pow(pSize.y / 2, 2) + Mathf.Pow(pSize.x / 2, 2));
+        var tan =Mathf.Atan(pSize.y / pSize.x) * (180 / Mathf.PI);
+        var tan2 =Mathf.Atan(pSize.x / pSize.y) * (180 / Mathf.PI);
+        
+        for (int i = 0; i < corns.Length; i++)
+        {
+            var remain = i % 2 == 0 ? tan : tan2;
+            
+            var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
+
+            corns[i] = pos + cAngle.normalized * test;
+        }
+
+        var nextC = 0;
+        for (int i = 0; i < corns.Length; i++)
+        {
+            nextC = i == corns.Length - 1 ? 0 : nextC + 1;
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(corns[i], corns[nextC]);
+        }
+        
     }
     private void OnDrawGizmos()
     {
         var pos = transform.position;
         if (circleResolution <= 0) return;
-        FloorTest();
+        var aPos = transform.position;
+        FloorTest(aPos);
         
     }
 }
