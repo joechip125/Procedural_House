@@ -21,6 +21,12 @@ public enum TileType
     HalfCircle
 }
 
+[Serializable]
+public class DotInfo
+{
+    public int vertIndex;
+    public Vector3 vertPos;
+}
 
 public class NewAdvancedMesh_Floor : NewAdvancedMesh
 {
@@ -41,6 +47,8 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     
     private int lastVert;
     private Dictionary<Vector3, int> vertIndices = new ();
+    
+    private Dictionary<Vector3, DotInfo> dotInfos = new ();
     private List<Vector3> testPos = new();
 
     private readonly Vector3[] corners = new[]
@@ -212,6 +220,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         lastVert = 0;
         vertIndices.Clear();
         testPos.Clear();
+        dotInfos.Clear();
         
         var pSize = new Vector2(1000, 1000);
         var corns = new Vector3[4];
@@ -244,6 +253,11 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             {
                 var current = nPos + pRight * (xInc * j);
                 PlaceDot(Color.red, current, counter++);
+                dotInfos.Add(index + Vector3.right * j, new DotInfo()
+                {
+                    vertIndex = lastVert,
+                    vertPos = current
+                });
                 vertIndices.Add(index + Vector3.right * j, lastVert++);
                 testPos.Add(current);
             }
@@ -262,6 +276,11 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         ExtendFloor(pRight);
     }
 
+    private void AddSquare(Vector3 extendDir)
+    {
+        
+    }
+
     private void ExtendFloor(Vector3 extendDir)
     {
         var edge = vertIndices
@@ -271,7 +290,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         var pos = transform.position;
         var add = 200;
 
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 4; j++)
             {
