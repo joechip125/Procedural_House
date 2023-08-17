@@ -28,6 +28,13 @@ public class DotInfo
     public Vector3 vertPos;
 }
 
+[Serializable]
+public class SquareInfo
+{
+    public Vector3 minIndex;
+    public Vector3 maxIndex;
+}
+
 public class NewAdvancedMesh_Floor : NewAdvancedMesh
 {
     [SerializeField, Range(0, 30)] private int circleResolution;
@@ -50,6 +57,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     
     private Dictionary<Vector3, DotInfo> dotInfos = new ();
     private List<Vector3> testPos = new();
+    private List<SquareInfo> squares = new();
 
     private readonly Vector3[] corners = new[]
     {   new Vector3(-1, 0, -1), 
@@ -221,6 +229,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         vertIndices.Clear();
         testPos.Clear();
         dotInfos.Clear();
+        squares.Clear();
         
         var pSize = new Vector2(1000, 1000);
         var corns = new Vector3[4];
@@ -276,9 +285,13 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         ExtendFloor(pRight);
     }
 
-    private void AddSquare(Vector3 extendDir)
+    private void AddSquare(Vector3 minIndex, Vector3 size)
     {
-        
+        squares.Add(new SquareInfo()
+        {
+            maxIndex = size,
+            minIndex = minIndex
+        });
     }
 
     private void ExtendFloor(Vector3 extendDir)
