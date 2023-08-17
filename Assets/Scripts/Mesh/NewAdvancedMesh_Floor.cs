@@ -222,6 +222,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         var tan =Mathf.Atan(pSize.y / pSize.x) * (180 / Mathf.PI);
         var tan2 =Mathf.Atan(pSize.x / pSize.y) * (180 / Mathf.PI);
         
+        
         for (int i = 0; i < corns.Length; i++)
         {
             var remain = i % 2 == 0 ? tan : tan2;
@@ -232,11 +233,18 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         }
         
         var nPos = corns[1];
+        var nPos2 = nPos + pUp * yInc;
+        var nPos4 = nPos2 + pRight * xInc;
+        //PlaceDot(Color.red, nPos, counter++);
+        //PlaceDot(Color.red, nPos2, counter++);
+        //PlaceDot(Color.red, nPos + pRight * xInc, counter++);
+        //PlaceDot(Color.red, nPos4, counter++);
 
         for (int i = 0; i <= numTiles.y; i++)
         {
             for (int j = 0; j <= numTiles.x; j++)
             {
+                var nPos3 = nPos + pUp * yInc;
                 PlaceDot(Color.red, nPos + pRight * (xInc * j), counter++);
             }
 
