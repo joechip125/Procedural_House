@@ -20,18 +20,6 @@ public enum WallTypes
     Window
 }
 
-[System.Flags]
-public enum PPlace
-{
-    None     = 0,
-    LessX    = 1 << 0,
-    LessY    = 1 << 1,
-    MiddleX  = 1 << 2,
-    MiddleY  = 1 << 3,
-    GreaterX = 1 << 4,
-    GreaterY = 1 << 5
-}
-
 [Serializable]
 public class WallInfo
 {
@@ -442,10 +430,9 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 
                 if (angle2 <= angle)
                 {
-                   // Debug.Log($"{pex} angle: {angle} dot: {dot}");
+                   
                     return true;
                 }
-                
                 
                 return false;
             }).ToList();

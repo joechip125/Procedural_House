@@ -197,15 +197,15 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         }
     }
 
-    private void SidesTest()
+    private void FloorTest()
     {
-        
+        MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
     }
     private void OnDrawGizmos()
     {
         var pos = transform.position;
         if (circleResolution <= 0) return;
+        FloorTest();
         
-        CircleTest(pos, Vector3.forward, 360, circleResolution);
     }
 }
