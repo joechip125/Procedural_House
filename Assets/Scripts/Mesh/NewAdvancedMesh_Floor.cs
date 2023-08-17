@@ -209,6 +209,9 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     private void FloorTest(Vector3 pos)
     {
         MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
+        lastVert = 0;
+        vertIndices.Clear();
+        testPos.Clear();
         
         var pSize = new Vector2(1000, 1000);
         var corns = new Vector3[4];
@@ -233,21 +236,19 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         }
         
         var nPos = corns[1];
-        var nPos2 = nPos + pUp * yInc;
-        var nPos4 = nPos2 + pRight * xInc;
-        //PlaceDot(Color.red, nPos, counter++);
-        //PlaceDot(Color.red, nPos2, counter++);
-        //PlaceDot(Color.red, nPos + pRight * xInc, counter++);
-        //PlaceDot(Color.red, nPos4, counter++);
+        var index = Vector3.zero;
 
+        
         for (int i = 0; i <= numTiles.y; i++)
         {
             for (int j = 0; j <= numTiles.x; j++)
             {
-                var nPos3 = nPos + pUp * yInc;
-                PlaceDot(Color.red, nPos + pRight * (xInc * j), counter++);
+                var current = nPos + pRight * (xInc * j);
+                PlaceDot(Color.red, current, counter++);
+                vertIndices.Add(index + Vector3.right * j, lastVert++);
+                testPos.Add(current);
             }
-
+            index += Vector3.up;
             nPos += pUp * yInc;
         }
         
@@ -258,6 +259,8 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             Gizmos.color = Color.green;
             Gizmos.DrawLine(corns[i], corns[nextC]);
         }
+        
+        
         
     }
     private void OnDrawGizmos()
