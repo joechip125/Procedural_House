@@ -259,7 +259,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             Gizmos.DrawLine(corns[i], corns[nextC]);
         }
         
-        ExtendFloor(Vector3.right);
+        ExtendFloor(pRight);
     }
 
     private void ExtendFloor(Vector3 extendDir)
@@ -269,11 +269,17 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             .Select(x => x.Value)
             .ToList();
         var pos = transform.position;
+        var add = 200;
 
-        for (int i = 0; i < edge.Count; i++)
+        for (int i = 0; i < 2; i++)
         {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawLine(pos, testPos[edge[i]]);
+            for (int j = 0; j < 4; j++)
+            {
+                PlaceDot(Color.blue, testPos[edge[i]] + extendDir * add, lastVert++);
+                add += 200;
+            }
+
+            add = 200;
         }
     }
     
