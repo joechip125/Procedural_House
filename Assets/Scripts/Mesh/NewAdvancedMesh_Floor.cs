@@ -229,6 +229,12 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         lastVert = Vertices.Count;
     }
     
+    private void FloorVerts(Vector3 min, Vector3 max)
+    {
+        MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
+        lastVert = Vertices.Count;
+    }
+    
     private void FloorTest(Vector3 pos)
     {
         MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
