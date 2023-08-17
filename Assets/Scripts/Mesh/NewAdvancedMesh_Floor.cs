@@ -69,7 +69,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     {
         InitMesh();
         ApplyMaterial(aMaterial);
-        MakeGrid(new Vector3(sizeX,100,sizeY), new Vector2Int(5,5));
+        FloorVerts();
     }
 
 
@@ -222,6 +222,13 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         Handles.Label(pos,$"{count}");
         Gizmos.DrawSphere(pos, 3);
     }
+
+    private void FloorVerts()
+    {
+        MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
+        lastVert = Vertices.Count;
+    }
+    
     private void FloorTest(Vector3 pos)
     {
         MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
@@ -232,7 +239,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         squares.Clear();
         var square = new Vector3(6, 6);
         AddSquare(Vector3.zero, square);
-        AddSquare(new Vector3(square.x,0), new Vector3(3,2));
+        AddSquare(new Vector3(square.x,0), new Vector3(3,3));
         
         var pSize = new Vector2(1000, 1000);
         var corns = new Vector3[4];
@@ -244,24 +251,21 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         
         var test = Mathf.Sqrt(Mathf.Pow(pSize.y / 2, 2) + Mathf.Pow(pSize.x / 2, 2));
         var tan =Mathf.Atan(pSize.y / pSize.x) * (180 / Mathf.PI);
-        var tan2 =Mathf.Atan(pSize.x / pSize.y) * (180 / Mathf.PI);
-        var doNext = true;
-        var currentI = Vector3.zero;
+        var tan2 =Mathf.Atan(pSize.x / pSize.y) * (180 / Mathf.PI); 
+        
         for (int i = 0; i < corns.Length; i++)
         {
             var remain = i % 2 == 0 ? tan : tan2;
             var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
             corns[i] = pos + cAngle.normalized * test;
         }
-
-        var selection = dotInfos.Count(x => x.Key.y == 0);
+        
         var selection2 = dotInfos.Count(x => x.Key.x == 0);
-
         var aNewPos = corns[1];
         
         for (int i = 0; i < selection2; i++)
         {
-            selection = dotInfos.Count(x => x.Key.y == i);
+            var selection = dotInfos.Count(x => x.Key.y == i);
             for (int j = 0; j < selection; j++)
             {
                 var index3 = new Vector3(j,i);
@@ -274,22 +278,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         foreach (var d in dotInfos)
         {
             PlaceDot(Color.red, d.Value.vertPos, d.Value.vertIndex);
-            Debug.Log($"{d.Value.vertPos} {d.Value.vertIndex}");
-        }
-
-        var nPos = corns[1];
-        var index = Vector3.zero;
-        
-        for (int i = 0; i <= numTiles.y; i++)
-        {
-            for (int j = 0; j <= numTiles.x; j++)
-            {
-                var current = nPos + pRight * (xInc * j);
-               // PlaceDot(Color.red, current, counter++);
-               
-            }
-            index += Vector3.up;
-            nPos += pUp * yInc;
         }
         
         var nextC = 0;
@@ -299,8 +287,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             Gizmos.color = Color.green;
             Gizmos.DrawLine(corns[i], corns[nextC]);
         }
-        
-        //ExtendFloor(pRight);
     }
 
     private void AddSquare(Vector3 minIndex, Vector3 size)
