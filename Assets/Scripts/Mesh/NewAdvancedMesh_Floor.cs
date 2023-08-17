@@ -230,6 +230,9 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         testPos.Clear();
         dotInfos.Clear();
         squares.Clear();
+        var square = new Vector3(5, 5);
+        AddSquare(Vector3.zero, square);
+        AddSquare(new Vector3(square.x,0), new Vector3(3,2));
         
         var pSize = new Vector2(1000, 1000);
         var corns = new Vector3[4];
@@ -242,7 +245,22 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         var test = Mathf.Sqrt(Mathf.Pow(pSize.y / 2, 2) + Mathf.Pow(pSize.x / 2, 2));
         var tan =Mathf.Atan(pSize.y / pSize.x) * (180 / Mathf.PI);
         var tan2 =Mathf.Atan(pSize.x / pSize.y) * (180 / Mathf.PI);
+        var doNext = true;
+        var currentI = Vector3.zero;
+        var selection = dotInfos.Count(x => x.Key.y == 0);
+        var aNewPos = transform.position;
+        for (int i = 0; i < selection; i++)
+        {
+            var index3 = new Vector3(i,0);
+            dotInfos[index3].vertIndex = lastVert++;
+            dotInfos[index3].vertPos = aNewPos;
+            aNewPos += pRight * xInc;
+        }
         
+        while (doNext)
+        {
+            doNext = false;
+        }
         
         for (int i = 0; i < corns.Length; i++)
         {
@@ -261,14 +279,8 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             for (int j = 0; j <= numTiles.x; j++)
             {
                 var current = nPos + pRight * (xInc * j);
-                PlaceDot(Color.red, current, counter++);
-                dotInfos.Add(index + Vector3.right * j, new DotInfo()
-                {
-                    vertIndex = lastVert,
-                    vertPos = current
-                });
-                vertIndices.Add(index + Vector3.right * j, lastVert++);
-                testPos.Add(current);
+               // PlaceDot(Color.red, current, counter++);
+               
             }
             index += Vector3.up;
             nPos += pUp * yInc;
@@ -287,11 +299,14 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
 
     private void AddSquare(Vector3 minIndex, Vector3 size)
     {
-        squares.Add(new SquareInfo()
+        for (int i = 0; i < size.y; i++)
         {
-            maxIndex = size,
-            minIndex = minIndex
-        });
+            for (int j = 0; j < size.x; j++)
+            {
+                dotInfos.Add(minIndex + Vector3.right * j, new DotInfo());
+            }
+            minIndex += Vector3.up;
+        }
     }
 
     private void ExtendFloor(Vector3 extendDir)
