@@ -102,8 +102,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         ApplyMaterial(aMaterial);
         SetWall(direction, 500, new Vector3(1000,400,30));
         FillInfos(200);
-        
-        MakeWalls3();
+     
     }
     
     private void AddDoor(Vector3 addPos, Vector3 size, Vector3 aDirection)
@@ -152,35 +151,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         BuildWall();
     }
 
-    private void MakeWalls3()
-    {
-        var current = wallInfo.start;
-        var aNormal = Vector3.Cross(Vector3.up, wallInfo.direction);
-        var wallThick = 30;
-
-        foreach (var t in wallInfo.tileInfos)
-        {
-            switch (t.type)
-            {
-                case WallTypes.Blank:
-                    AWallTile(current, wallInfo.direction, t.size);
-                    AWallTile(current + aNormal * wallInfo.size.z, wallInfo.direction, t.size, true);
-                    break;
-                case WallTypes.Door:
-                    var outerSize = new Vector3(t.size.x, t.size.y, wallThick);
-                    var doorSize = new Vector3(t.size.x, t.size.y, wallThick);
-                    var innerSize = outerSize - new Vector3(50, 100, 0);
-                    var adjust = (outerSize.y - innerSize.y) / 2 - 5;
-                    AddDoor(current +(wallInfo.direction * t.size.x / 2) + Vector3.up * doorSize.y / 2, aNormal, innerSize, outerSize, -adjust);
-                    break;
-                case WallTypes.Window:
-                    break;
-            }
-            
-            current += wallInfo.direction * t.size.x;
-        }
-    }
-
     private void AWallTile(Vector3 start, Vector3 dir, Vector2 size, bool invert = false)
     {
         var vCount = Vertices.Count;
@@ -215,30 +185,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         UpdateMesh();
     }
     
-    private void MakeWalls()
-    {
-        var size = new Vector2(1000, 1000);
-        SetSquare(Vector3.up, transform.position, size);
-        var adjust = 90f;
-        var point = 0;
-        
-        for (int i = 0; i < 4; i++)
-        {
-            var aNormal = Quaternion.AngleAxis(adjust + i * 90, Vector3.up) *Vector3.right;
-            var wallRight = Vector3.Cross(Vector3.up, aNormal);
-            
-            var addVec = Vector3.zero;
-            for (int j = 0; j < 4; j++)
-            {
-                Gizmos.DrawSphere(Corners[i] + addVec, 4);
-                Handles.Label(Corners[i] + addVec, $"{point++}");
-                
-                Gizmos.DrawSphere(Corners[i] + addVec + Vector3.up * 100, 4);
-                Handles.Label(Corners[i] + addVec+ Vector3.up * 100, $"{point++}");
-                addVec += wallRight * size.x / 4;
-            }
-        }
-    }
     private void MakeWalls2()
     {
         var size = new Vector2(1000, 1000);
@@ -408,7 +354,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             
             for (int j = 0; j < currNum; j++)
             {
-                //PlaceDot(Color.green,pos2, counter++);
                 dotPos.Add(pos2);
                 if (flip) pos2 += dir * pSize.x / currNum;
                 else pos2 += dir * pSize.y / currNum;
@@ -421,9 +366,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             nextC = i == corns.Length - 1 ? 0 : nextC + 1;
             var anAngle3 = Vector3.Angle(corns[i], corns[nextC]);
-         //   Debug.Log($" angle: {anAngle3}");
-            
-
         }
         
         var pInfo = new PanelInfo()
