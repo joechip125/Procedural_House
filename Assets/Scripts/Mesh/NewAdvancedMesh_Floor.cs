@@ -35,23 +35,17 @@ public class SquareInfo
     public Vector3 size;
     public Vector2 numDots;
     public Vector2 tileSize;
+    public Vector3 normal;
+    public List<Vector3> corners = new();
 }
 
 public class NewAdvancedMesh_Floor : NewAdvancedMesh
 {
     [SerializeField, Range(0, 30)] private int circleResolution;
-    [SerializeField, Range(0, 30)] private int numberZ;
     [SerializeField, Range(1, 100)] private float tileSize;
     private List<Vector3> dots = new();
-    [SerializeField] private Edges edgeChoice;
-    
-    private List<TileInfo> info = new();
-    
     private List<Vector3> edgeList = new();
-
-    public int numberCircle;
-    public int addCircle;
-
+    
     public Material aMaterial;
     
     private int lastVert;
@@ -310,15 +304,23 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     private void AddSquare(Vector3 pos, Vector3 size, Vector3 normal)
     {
         MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
-        var start = pos - ((pUp * size.y) + (pRight * size.x))/ 2;
-        Debug.Log($"{start}");
-        Gizmos.DrawSphere(start, 12);
-        
         squares.Add(new SquareInfo()
         {
-            
+            normal = normal,
+            pos = pos,
+            size = size
         });
+        var start = pos - ((pUp * size.y) + (pRight * size.x))/ 2;
+        var test = Mathf.Sqrt(Mathf.Pow(size.y / 2, 2) + Mathf.Pow(size.x / 2, 2));
+        var tan =Mathf.Atan(size.y / size.x) * (180 / Mathf.PI);
+        var tan2 =Mathf.Atan(size.x / size.y) * (180 / Mathf.PI);
         
+        for (int i = 0; i < 4; i++)
+        {
+            var remain = i % 2 == 0 ? tan : tan2;
+            var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
+            squares[^1].corners.Add(pos + cAngle.normalized * test);
+        }
     }
 
     private void ExtendFloor(Vector3 extendDir)
