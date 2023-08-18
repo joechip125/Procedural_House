@@ -243,27 +243,16 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         AddSquare(Vector3.zero, square);
         AddSquare(new Vector3(square.x,0), new Vector3(3,3));
         AddSquare(pos, new Vector3(1000,1000), Vector3.up);
+        var aSquare = squares[^1];
         
         var pSize = new Vector2(1000, 1000);
-        var corns = new Vector3[4];
         var counter = 0;
         var rez = 4;
         var numTiles = new Vector2(5, 5);
         var xInc = pSize.x / numTiles.x;
         var yInc = pSize.y / numTiles.y;
-        
-        var test = Mathf.Sqrt(Mathf.Pow(pSize.y / 2, 2) + Mathf.Pow(pSize.x / 2, 2));
-        var tan =Mathf.Atan(pSize.y / pSize.x) * (180 / Mathf.PI);
-        var tan2 =Mathf.Atan(pSize.x / pSize.y) * (180 / Mathf.PI); 
-        
-        for (int i = 0; i < corns.Length; i++)
-        {
-            var remain = i % 2 == 0 ? tan : tan2;
-            var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
-            corns[i] = pos + cAngle.normalized * test;
-        }
-        
-        var aNewPos = corns[1];
+
+        var aNewPos = aSquare.corners[1];
         for (int i = 0; i < dotInfos.Count(x => x.Key.x == 0); i++)
         {
             for (int j = 0; j < dotInfos.Count(x => x.Key.y == i); j++)
@@ -281,11 +270,12 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         }
         
         var nextC = 0;
-        for (int i = 0; i < corns.Length; i++)
+        var theCount = aSquare.corners.Count;
+        for (int i = 0; i < theCount; i++)
         {
-            nextC = i == corns.Length - 1 ? 0 : nextC + 1;
+            nextC = i == theCount - 1 ? 0 : nextC + 1;
             Gizmos.color = Color.green;
-            Gizmos.DrawLine(corns[i], corns[nextC]);
+            Gizmos.DrawLine(aSquare.corners[i], aSquare.corners[nextC]);
         }
     }
 
@@ -300,7 +290,12 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             minIndex += Vector3.up;
         }
     }
-    
+
+    private void ExtendSquare(int index)
+    {
+        var pSquare = squares[index];
+        
+    }
     private void AddSquare(Vector3 pos, Vector3 size, Vector3 normal)
     {
         MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
@@ -310,8 +305,8 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             pos = pos,
             size = size
         });
-        var start = pos - ((pUp * size.y) + (pRight * size.x))/ 2;
-        var test = Mathf.Sqrt(Mathf.Pow(size.y / 2, 2) + Mathf.Pow(size.x / 2, 2));
+        
+        var mag = Mathf.Sqrt(Mathf.Pow(size.y / 2, 2) + Mathf.Pow(size.x / 2, 2));
         var tan =Mathf.Atan(size.y / size.x) * (180 / Mathf.PI);
         var tan2 =Mathf.Atan(size.x / size.y) * (180 / Mathf.PI);
         
@@ -319,7 +314,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         {
             var remain = i % 2 == 0 ? tan : tan2;
             var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
-            squares[^1].corners.Add(pos + cAngle.normalized * test);
+            squares[^1].corners.Add(pos + cAngle.normalized * mag);
         }
     }
 
