@@ -41,13 +41,7 @@ public class SquareInfo
 
 public class NewAdvancedMesh_Floor : NewAdvancedMesh
 {
-    [SerializeField, Range(0, 30)] private int circleResolution;
-    [SerializeField, Range(1, 100)] private float tileSize;
-    private List<Vector3> dots = new();
-    private List<Vector3> edgeList = new();
-    
     public Material aMaterial;
-    
     private int lastVert;
     private Dictionary<Vector3, int> vertIndices = new ();
     
@@ -67,8 +61,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         ApplyMaterial(aMaterial);
         FloorVerts();
     }
-
-
     
     public void SetValuesAndActivate(Vector3 size, int tilesX, int tilesZ)
     {
@@ -80,14 +72,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     {
         
     }
-
-    private void CylinderTest()
-    {
-        var pos = transform.position;
-        CircleFloor(pos, Vector3.forward, 360, circleResolution);
-        Sides(1, Vertices.Count);
-    }
-
+    
     private void Sides(int first, int last)
     {
         var depth = 20;
@@ -243,6 +228,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         AddSquare(Vector3.zero, square);
         AddSquare(new Vector3(square.x,0), new Vector3(3,3));
         AddSquare(pos, new Vector3(1000,1000), Vector3.up);
+        ExtendSquare(0, Vector2.right, new Vector3(300,300));
         var aSquare = squares[^1];
         
         var pSize = new Vector2(1000, 1000);
@@ -291,11 +277,17 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         }
     }
 
-    private void ExtendSquare(int index)
+    private void ExtendSquare(int index, Vector2 exDir, Vector3 newSize)
     {
         var pSquare = squares[index];
-        
+        MathHelpers.PlaneDirections(pSquare.normal, out var pUp, out var pRight);
+        var aDir = (pSquare.corners[1] - pSquare.corners[0]).normalized;
+        var aCross = Vector3.Cross(aDir, pSquare.normal);
+        Debug.Log($"{aDir}, {aCross}");
+        var startX = pRight * exDir.x;
+        var startY = pUp * exDir.y;
     }
+    
     private void AddSquare(Vector3 pos, Vector3 size, Vector3 normal)
     {
         MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
@@ -341,10 +333,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     
     private void OnDrawGizmos()
     {
-        var pos = transform.position;
-        if (circleResolution <= 0) return;
         var aPos = transform.position;
         FloorTest(aPos);
-        
     }
 }
