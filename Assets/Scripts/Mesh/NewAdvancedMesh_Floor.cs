@@ -33,6 +33,8 @@ public class SquareInfo
 {
     public Vector3 pos;
     public Vector3 size;
+    public Vector2 numDots;
+    public Vector2 tileSize;
 }
 
 public class NewAdvancedMesh_Floor : NewAdvancedMesh
@@ -301,6 +303,24 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
                 dotInfos.Add(minIndex + Vector3.right * j, new DotInfo());
             }
             minIndex += Vector3.up;
+        }
+    }
+    
+    private void AddSquare(Vector3 pos, Vector3 size, Vector2 normal)
+    {
+        MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
+        
+        squares.Add(new SquareInfo()
+        {
+            
+        });
+        for (int i = 0; i < size.y; i++)
+        {
+            for (int j = 0; j < size.x; j++)
+            {
+                dotInfos.Add(pos + Vector3.right * j, new DotInfo());
+            }
+            pos += Vector3.up;
         }
     }
 
