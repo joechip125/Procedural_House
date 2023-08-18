@@ -31,8 +31,8 @@ public class DotInfo
 [Serializable]
 public class SquareInfo
 {
-    public Vector3 minPos;
-    public Vector3 maxPos;
+    public Vector3 pos;
+    public Vector3 size;
 }
 
 public class NewAdvancedMesh_Floor : NewAdvancedMesh
@@ -266,10 +266,8 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             corns[i] = pos + cAngle.normalized * test;
         }
         
-        var selection2 = dotInfos.Count(x => x.Key.x == 0);
         var aNewPos = corns[1];
-        
-        for (int i = 0; i < selection2; i++)
+        for (int i = 0; i < dotInfos.Count(x => x.Key.x == 0); i++)
         {
             for (int j = 0; j < dotInfos.Count(x => x.Key.y == i); j++)
             {
