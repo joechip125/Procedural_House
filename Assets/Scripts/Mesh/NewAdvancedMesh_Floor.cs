@@ -31,8 +31,8 @@ public class DotInfo
 [Serializable]
 public class SquareInfo
 {
-    public Vector3 minIndex;
-    public Vector3 maxIndex;
+    public Vector3 minPos;
+    public Vector3 maxPos;
 }
 
 public class NewAdvancedMesh_Floor : NewAdvancedMesh
@@ -271,8 +271,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         
         for (int i = 0; i < selection2; i++)
         {
-            var selection = dotInfos.Count(x => x.Key.y == i);
-            for (int j = 0; j < selection; j++)
+            for (int j = 0; j < dotInfos.Count(x => x.Key.y == i); j++)
             {
                 var index3 = new Vector3(j,i);
                 dotInfos[index3].vertIndex = lastVert++;
