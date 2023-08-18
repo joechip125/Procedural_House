@@ -248,6 +248,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         var square = new Vector3(6, 6);
         AddSquare(Vector3.zero, square);
         AddSquare(new Vector3(square.x,0), new Vector3(3,3));
+        AddSquare(pos, new Vector3(1000,1000), Vector3.up);
         
         var pSize = new Vector2(1000, 1000);
         var corns = new Vector3[4];
@@ -306,22 +307,18 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         }
     }
     
-    private void AddSquare(Vector3 pos, Vector3 size, Vector2 normal)
+    private void AddSquare(Vector3 pos, Vector3 size, Vector3 normal)
     {
         MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
+        var start = pos - ((pUp * size.y) + (pRight * size.x))/ 2;
+        Debug.Log($"{start}");
+        Gizmos.DrawSphere(start, 12);
         
         squares.Add(new SquareInfo()
         {
             
         });
-        for (int i = 0; i < size.y; i++)
-        {
-            for (int j = 0; j < size.x; j++)
-            {
-                dotInfos.Add(pos + Vector3.right * j, new DotInfo());
-            }
-            pos += Vector3.up;
-        }
+        
     }
 
     private void ExtendFloor(Vector3 extendDir)
