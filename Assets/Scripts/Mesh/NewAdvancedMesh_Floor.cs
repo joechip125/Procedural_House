@@ -271,13 +271,15 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
 
                 if (i < numTiles.y && j < numTiles.x)
                 {
-                    Triangles.Add(firstVert + (int)numTiles.x);
-                    Triangles.Add(firstVert + 1);
-                    Triangles.Add(firstVert + (int)numTiles.x + 1);
-                    
+                    Debug.Log($"{firstVert}, {firstVert + (int)numTiles.x}");
                     Triangles.Add(firstVert);
                     Triangles.Add(firstVert + 1);
                     Triangles.Add(firstVert + (int)numTiles.x + 1);
+
+                    Triangles.Add(firstVert + (int)numTiles.x + 1);
+                    Triangles.Add(firstVert + 1);
+                    Triangles.Add(firstVert + (int)numTiles.x + 2);
+                    //Triangles.Add(firstVert + 1);
                 }
                 else
                 {
