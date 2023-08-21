@@ -85,7 +85,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         var start = transform.position;
         var size = new Vector3(1000,1000);
         SetValuesAndActivate();
-        FloorVerts(start, size, Vector3.up, 0, new Vector2(5,5));
+        lastVert = FloorVerts(start, size, Vector3.up, 0, new Vector2(5,5));
     }
 
     public void SetValuesAndActivate(Vector3 size, int tilesX, int tilesZ)
@@ -230,7 +230,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         Gizmos.DrawSphere(pos, 3);
     }
 
-    private void FloorVerts(Vector3 start, Vector3 size, Vector3 normal, int firstVert, Vector2 numTiles)
+    private int FloorVerts(Vector3 start, Vector3 size, Vector3 normal, int firstVert, Vector2 numTiles)
     {
         MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
         squares.Add(new SquareInfo()
@@ -286,6 +286,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         }
      
         UpdateMesh();
+        return firstVert;
     }
     private void FloorTest(Vector3 pos)
     {
@@ -297,7 +298,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         var numTiles = new Vector2(5, 5);
         var size = new Vector3(1000, 1000);
         AddSquare(pos, size, Vector3.up, lastVert, numTiles);
-        AddSquare2(Vector3.up, Vector3.right);
+        //AddSquare2(Vector3.up, Vector3.right);
        
         var aSquare = squares[^1];
         
@@ -310,7 +311,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             Gizmos.DrawLine(aSquare.corners[i], aSquare.corners[nextC]);
         }
         
-        SetSidePos(new Vector2(-1, 5));
+        //SetSidePos(new Vector2(-1, 5));
     }
 
     private void SetSidePos(Vector2 pIndex)
