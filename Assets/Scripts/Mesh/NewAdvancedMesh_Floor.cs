@@ -49,6 +49,8 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     private List<Vector3> testPos = new();
     private List<SquareInfo> squares = new();
 
+    private List<Vector3> sidePos = new();
+
     private readonly Vector3[] corners = new[]
     {   new Vector3(-1, 0, -1), 
         new Vector3(0, 0, 1),
@@ -277,6 +279,17 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         }
     }
 
+    private void SetSidePos(Vector3 pos, Vector3 direction, float length ,int numStops)
+    {
+        var inc = length / numStops;
+        sidePos.Clear();
+        for (var i = 0; i <= numStops; i++)
+        {
+            
+           
+        }
+    }
+    
     private void ExtendSquare(int index, Vector2 exDir, Vector3 newSize)
     {
         var pSquare = squares[index];
@@ -285,6 +298,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         var aCross = Vector3.Cross(aDir, pSquare.normal);
         var startX = pRight * exDir.x;
         var startY = pUp * exDir.y;
+        SetSidePos(pSquare.corners[0], aDir, 1000, 4);
     }
     
     private void AddSquare(Vector3 pos, Vector3 size, Vector3 normal)
