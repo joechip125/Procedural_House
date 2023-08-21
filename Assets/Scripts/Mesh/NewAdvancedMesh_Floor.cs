@@ -59,6 +59,8 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
 
     private List<Vector3> sidePos = new();
     private List<int> vertSelect = new();
+    private Vector3 panelR;
+    private Vector3 panelU;
 
     private readonly Vector3[] corners = new[]
     {   new Vector3(-1, 0, -1), 
@@ -316,6 +318,13 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             newPos += pRight * (size.y / numTiles.y);
         }
     }
+
+    private void SetRotatedVector(Vector3 axis, Vector3 rVec, float rAngle)
+    {
+        panelR = Quaternion.AngleAxis(rAngle, axis) *rVec;
+        panelU = Quaternion.AngleAxis(rAngle + 90, axis) *rVec;
+    }
+    
     private void AddSquare2(Vector3 center, Vector3 size, Vector3 normal, int firstVert, Vector2 numTiles)
     {
         MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
