@@ -58,6 +58,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     private List<SquareInfo> squares = new();
 
     private List<Vector3> sidePos = new();
+    private List<int> vertSelect = new();
 
     private readonly Vector3[] corners = new[]
     {   new Vector3(-1, 0, -1), 
@@ -259,20 +260,20 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         var doY = pIndex.y != -1f;
         if (!doX && !doY) return;
         
-        var temp = square.VertDict
+        vertSelect = square.VertDict
             .Where(x =>
             {
                 if (x.Key.x == pIndex.x) return true;
                 if (x.Key.y == pIndex.y) return true;
 
                 return false;
-            }).Select(x => x.Value).ToList();
+            })
+            .Select(x => x.Value)
+            .ToList();
 
-        
-        
-        foreach (var t in temp)
+        foreach (var t in vertSelect)
         {
-            Debug.Log($" {t} {testPos[t]}");
+            sidePos.Add(testPos[t]);
         }
     }
     
