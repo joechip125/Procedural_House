@@ -73,7 +73,14 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         InitMesh();
         ApplyMaterial(aMaterial);
     }
-    
+
+    private void Awake()
+    {
+        var start = transform.position;
+        var size= new Vector3(1000,1000);
+        FloorVerts(start, size, Vector3.up, 0, new Vector2(5,5));
+    }
+
     public void SetValuesAndActivate(Vector3 size, int tilesX, int tilesZ)
     {
         
@@ -255,18 +262,27 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
                 squares[^1].VertDict.Add(newIndex + Vector3.right * j, firstVert);
                 Vertices.Add(current);
 
-                if (i < numTiles.y)
+                if (i < numTiles.y && j < numTiles.x)
                 {
+                    Triangles.Add(firstVert + (int)numTiles.x);
+                    Triangles.Add(firstVert + 1);
+                    Triangles.Add(firstVert + (int)numTiles.x + 1);
                     
+                    Triangles.Add(firstVert);
+                    Triangles.Add(firstVert + 1);
+                    Triangles.Add(firstVert + (int)numTiles.x + 1);
                 }
                 else
                 {
                     
                 }
+
+                firstVert++;
             }
             newIndex += Vector3.up;
             newPos += pRight * (size.y / numTiles.y);
         }
+        UpdateMesh();
     }
     private void FloorTest(Vector3 pos)
     {
