@@ -33,10 +33,18 @@ public class SquareInfo
 {
     public Vector3 pos;
     public Vector3 size;
-    public Vector2 numDots;
+    public Vector2 numTiles;
     public Vector2 tileSize;
     public Vector3 normal;
+    public int firstVert;
     public List<Vector3> corners = new();
+    public List<int> vertIndices = new();
+    public Dictionary<Vector3,int> VertDict = new();
+
+    public void SetVertIndices()
+    {
+        
+    }
 }
 
 public class NewAdvancedMesh_Floor : NewAdvancedMesh
