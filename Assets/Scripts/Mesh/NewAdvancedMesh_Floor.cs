@@ -258,7 +258,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         }
 
         var newIndex = Vector3.zero;
-        var newPos = squares[^1].corners[1];
+        var newPos = squares[^1].corners[0];
         var incX = size.x / numTiles.x;
         
         for (int i = 0; i <= numTiles.y; i++)
@@ -271,15 +271,13 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
 
                 if (i < numTiles.y && j < numTiles.x)
                 {
-                    Debug.Log($"{firstVert}, {firstVert + (int)numTiles.x}");
                     Triangles.Add(firstVert);
-                    Triangles.Add(firstVert + 1);
                     Triangles.Add(firstVert + (int)numTiles.x + 1);
-
-                    Triangles.Add(firstVert + (int)numTiles.x + 1);
-                    Triangles.Add(firstVert + 1);
                     Triangles.Add(firstVert + (int)numTiles.x + 2);
-                    //Triangles.Add(firstVert + 1);
+                    
+                    Triangles.Add(firstVert);
+                    Triangles.Add(firstVert + (int)numTiles.x + 2);
+                    Triangles.Add(firstVert + 1);
                 }
                 else
                 {
@@ -289,7 +287,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
                 firstVert++;
             }
             newIndex += Vector3.up;
-            newPos += pRight * (size.y / numTiles.y);
+            newPos += -pRight * (size.y / numTiles.y);
         }
      
         UpdateMesh();
@@ -368,7 +366,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         }
 
         var newIndex = Vector3.zero;
-        var newPos = squares[^1].corners[1];
+        var newPos = squares[^1].corners[0];
         var incX = size.x / numTiles.x;
         
         for (int i = 0; i <= numTiles.y; i++)
@@ -381,7 +379,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
                 testPos.Add(current);
             }
             newIndex += Vector3.up;
-            newPos += pRight * (size.y / numTiles.y);
+            newPos += -pRight * (size.y / numTiles.y);
         }
     }
 
