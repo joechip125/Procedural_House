@@ -226,7 +226,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         squares.Clear();
         var square = new Vector3(6, 6);
         AddSquare(Vector3.zero, square);
-        AddSquare(new Vector3(square.x,0), new Vector3(3,3));
+        //AddSquare(new Vector3(square.x,0), new Vector3(3,3));
         AddSquare(pos, new Vector3(1000,1000), Vector3.up);
         ExtendSquare(0, Vector2.right, new Vector3(300,300));
         var aSquare = squares[^1];
@@ -283,7 +283,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         MathHelpers.PlaneDirections(pSquare.normal, out var pUp, out var pRight);
         var aDir = (pSquare.corners[1] - pSquare.corners[0]).normalized;
         var aCross = Vector3.Cross(aDir, pSquare.normal);
-        Debug.Log($"{aDir}, {aCross}");
         var startX = pRight * exDir.x;
         var startY = pUp * exDir.y;
     }
