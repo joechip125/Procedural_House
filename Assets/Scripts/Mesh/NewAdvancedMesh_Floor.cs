@@ -31,7 +31,7 @@ public class DotInfo
 [Serializable]
 public class SquareInfo
 {
-    public Vector3 pos;
+    public Vector3 center;
     public Vector3 size;
     public Vector2 numTiles;
     public Vector2 tileSize;
@@ -236,34 +236,10 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         squares.Clear();
         var square = new Vector3(6, 6);
         AddSquare(Vector3.zero, square);
-        //AddSquare(new Vector3(square.x,0), new Vector3(3,3));
-        AddSquare(pos, new Vector3(1000,1000), Vector3.up);
+        AddSquare(pos, new Vector3(1000,1000), Vector3.up, lastVert, new Vector2(5,5));
         ExtendSquare(0, Vector2.right, new Vector3(300,300));
         var aSquare = squares[^1];
         
-        var pSize = new Vector2(1000, 1000);
-        var counter = 0;
-        var rez = 4;
-        var numTiles = new Vector2(5, 5);
-        var xInc = pSize.x / numTiles.x;
-        var yInc = pSize.y / numTiles.y;
-
-        var aNewPos = aSquare.corners[1];
-        for (int i = 0; i < dotInfos.Count(x => x.Key.x == 0); i++)
-        {
-            for (int j = 0; j < dotInfos.Count(x => x.Key.y == i); j++)
-            {
-                var index3 = new Vector3(j,i);
-                dotInfos[index3].vertIndex = lastVert++;
-                dotInfos[index3].vertPos = aNewPos + pRight * (xInc * j);
-            }
-            aNewPos += pUp * yInc;
-        }
-        
-        foreach (var d in dotInfos)
-        {
-            PlaceDot(Color.red, d.Value.vertPos, d.Value.vertIndex);
-        }
         
         var nextC = 0;
         var theCount = aSquare.corners.Count;
@@ -309,14 +285,16 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         SetSidePos(pSquare.corners[0], aDir, 1000, 4);
     }
     
-    private void AddSquare(Vector3 pos, Vector3 size, Vector3 normal)
+    private void AddSquare(Vector3 center, Vector3 size, Vector3 normal, int firstVert, Vector2 numTiles)
     {
         MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
+        Debug.Log($"up {pUp}, right {pRight}");
         squares.Add(new SquareInfo()
         {
             normal = normal,
-            pos = pos,
-            size = size
+            center = center,
+            size = size,
+            firstVert = firstVert
         });
         
         var mag = Mathf.Sqrt(Mathf.Pow(size.y / 2, 2) + Mathf.Pow(size.x / 2, 2));
@@ -327,7 +305,24 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         {
             var remain = i % 2 == 0 ? tan : tan2;
             var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
-            squares[^1].corners.Add(pos + cAngle.normalized * mag);
+            squares[^1].corners.Add(center + cAngle.normalized * mag);
+        }
+
+        var newIndex = Vector3.zero;
+        var newPos = squares[^1].corners[1];
+        var incX = size.x / numTiles.x;
+        
+        for (int i = 0; i <= numTiles.y; i++)
+        {
+            for (int j = 0; j <= numTiles.x; j++)
+            {
+                var current = newPos + pUp * (incX * j);
+                PlaceDot(Color.red, current, firstVert);
+                squares[^1].VertDict.Add(newIndex + Vector3.right * j, firstVert++);
+                testPos.Add(current);
+            }
+            newIndex += Vector3.up;
+            newPos += pRight * (size.y / numTiles.y);
         }
     }
 
