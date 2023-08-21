@@ -297,7 +297,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         squares.Clear();
         var numTiles = new Vector2(5, 5);
         var size = new Vector3(1000, 1000);
-        AddSquare(pos, size, Vector3.up, lastVert, numTiles);
+        lastVert = AddSquare(pos, size, Vector3.up, lastVert, numTiles);
         AddSquare2(Vector3.up, Vector3.right);
        
         var aSquare = squares[^1];
@@ -310,8 +310,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             Gizmos.color = Color.green;
             Gizmos.DrawLine(aSquare.corners[i], aSquare.corners[nextC]);
         }
-        
-        //SetSidePos(new Vector2(-1, 5));
     }
 
     private void SetSidePos(Vector2 pIndex)
@@ -339,7 +337,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         }
     }
     
-    private void AddSquare(Vector3 center, Vector3 size, Vector3 normal, int firstVert, Vector2 numTiles)
+    private int AddSquare(Vector3 center, Vector3 size, Vector3 normal, int firstVert, Vector2 numTiles)
     {
         MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
         squares.Add(new SquareInfo()
@@ -377,6 +375,8 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             newIndex += Vector3.up;
             newPos += -pRight * (size.y / numTiles.y);
         }
+
+        return firstVert;
     }
 
     private void SetRotatedVector(Vector3 axis, Vector3 rVec, float rAngle)
@@ -392,7 +392,19 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             .Where(x => x.Key.x == maxX)
             .Select(x => x.Value)
             .ToList();
-        var start = new Vector3(maxX, 0);
+
+        var nEx = 200;
+        
+        foreach (var t in side)
+        {
+            var current = testPos[t] + exDir * nEx;
+            for (int j = 0; j < 4; j++)
+            {
+                PlaceDot(Color.black, current, lastVert++);
+                current += exDir * nEx;
+            }
+        }
+        
         MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
         SetRotatedVector(normal, pRight, 90);
     }
