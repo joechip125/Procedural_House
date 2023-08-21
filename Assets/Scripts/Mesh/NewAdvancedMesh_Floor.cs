@@ -72,7 +72,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     {
         InitMesh();
         ApplyMaterial(aMaterial);
-        FloorVerts();
     }
     
     public void SetValuesAndActivate(Vector3 size, int tilesX, int tilesZ)
@@ -217,18 +216,58 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         Gizmos.DrawSphere(pos, 3);
     }
 
-    private void FloorVerts()
-    {
-        MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
-        lastVert = Vertices.Count;
-    }
-    
     private void FloorVerts(Vector3 min, Vector3 max)
     {
         MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
         lastVert = Vertices.Count;
     }
-    
+    private void FloorVerts(Vector3 start, Vector3 size, Vector3 normal, int firstVert, Vector2 numTiles)
+    {
+        MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
+        squares.Add(new SquareInfo()
+        {
+            normal = normal,
+            center = start,
+            size = size,
+            firstVert = firstVert
+        });
+        
+        var mag = Mathf.Sqrt(Mathf.Pow(size.y / 2, 2) + Mathf.Pow(size.x / 2, 2));
+        var tan =Mathf.Atan(size.y / size.x) * (180 / Mathf.PI);
+        var tan2 =Mathf.Atan(size.x / size.y) * (180 / Mathf.PI);
+        
+        for (int i = 0; i < 4; i++)
+        {
+            var remain = i % 2 == 0 ? tan : tan2;
+            var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
+            squares[^1].corners.Add(start + cAngle.normalized * mag);
+        }
+
+        var newIndex = Vector3.zero;
+        var newPos = squares[^1].corners[1];
+        var incX = size.x / numTiles.x;
+        
+        for (int i = 0; i <= numTiles.y; i++)
+        {
+            for (int j = 0; j <= numTiles.x; j++)
+            {
+                var current = newPos + pUp * (incX * j);
+                squares[^1].VertDict.Add(newIndex + Vector3.right * j, firstVert);
+                Vertices.Add(current);
+
+                if (i < numTiles.y)
+                {
+                    
+                }
+                else
+                {
+                    
+                }
+            }
+            newIndex += Vector3.up;
+            newPos += pRight * (size.y / numTiles.y);
+        }
+    }
     private void FloorTest(Vector3 pos)
     {
         lastVert = 0;
@@ -239,6 +278,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         var numTiles = new Vector2(5, 5);
         var size = new Vector3(1000, 1000);
         AddSquare(pos, size, Vector3.up, lastVert, numTiles);
+        AddSquare2(Vector3.up);
        
         var aSquare = squares[^1];
         
@@ -325,44 +365,11 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         panelU = Quaternion.AngleAxis(rAngle + 90, axis) *rVec;
     }
     
-    private void AddSquare2(Vector3 center, Vector3 size, Vector3 normal, int firstVert, Vector2 numTiles)
+    private void AddSquare2(Vector3 normal)
     {
         MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
-        squares.Add(new SquareInfo()
-        {
-            normal = normal,
-            center = center,
-            size = size,
-            firstVert = firstVert
-        });
-        
-        var mag = Mathf.Sqrt(Mathf.Pow(size.y / 2, 2) + Mathf.Pow(size.x / 2, 2));
-        var tan =Mathf.Atan(size.y / size.x) * (180 / Mathf.PI);
-        var tan2 =Mathf.Atan(size.x / size.y) * (180 / Mathf.PI);
-        
-        for (int i = 0; i < 4; i++)
-        {
-            var remain = i % 2 == 0 ? tan : tan2;
-            var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
-            squares[^1].corners.Add(center + cAngle.normalized * mag);
-        }
-
-        var newIndex = Vector3.zero;
-        var newPos = squares[^1].corners[1];
-        var incX = size.x / numTiles.x;
-        
-        for (int i = 0; i < numTiles.y; i++)
-        {
-            for (int j = 0; j < numTiles.x; j++)
-            {
-                var current = newPos + pUp * (incX * j);
-                PlaceDot(Color.red, current, firstVert);
-                squares[^1].VertDict.Add(newIndex + Vector3.right * j, firstVert++);
-                testPos.Add(current);
-            }
-            newIndex += Vector3.up;
-            newPos += pRight * (size.y / numTiles.y);
-        }
+        SetRotatedVector(normal, pRight, 90);
+        Debug.Log($"{panelR}, {panelU}");
     }
     private void OnDrawGizmos()
     {
