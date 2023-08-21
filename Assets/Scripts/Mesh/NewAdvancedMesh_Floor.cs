@@ -298,7 +298,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         var numTiles = new Vector2(5, 5);
         var size = new Vector3(1000, 1000);
         AddSquare(pos, size, Vector3.up, lastVert, numTiles);
-        //AddSquare2(Vector3.up, Vector3.right);
+        AddSquare2(Vector3.up, Vector3.right);
        
         var aSquare = squares[^1];
         
@@ -387,7 +387,12 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     
     private void AddSquare2(Vector3 normal, Vector3 exDir)
     {
-        var maxI = squares[^1].VertDict.Max();
+        var maxX = squares[^1].VertDict.Keys.Max(x => x.x);
+        var side = squares[^1].VertDict
+            .Where(x => x.Key.x == maxX)
+            .Select(x => x.Value)
+            .ToList();
+        var start = new Vector3(maxX, 0);
         MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
         SetRotatedVector(normal, pRight, 90);
     }
