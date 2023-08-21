@@ -234,10 +234,8 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         testPos.Clear();
         dotInfos.Clear();
         squares.Clear();
-        var square = new Vector3(6, 6);
-        AddSquare(Vector3.zero, square);
         AddSquare(pos, new Vector3(1000,1000), Vector3.up, lastVert, new Vector2(5,5));
-        ExtendSquare(0, Vector2.right, new Vector3(300,300));
+       
         var aSquare = squares[^1];
         
         var nextC = 0;
@@ -250,41 +248,25 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         }
     }
 
-    private void AddSquare(Vector3 minIndex, Vector3 size)
-    {
-        for (int i = 0; i < size.y; i++)
-        {
-            for (int j = 0; j < size.x; j++)
-            {
-                dotInfos.Add(minIndex + Vector3.right * j, new DotInfo());
-            }
-            minIndex += Vector3.up;
-        }
-    }
-
-    private void SetSidePos()
+    private void SetSidePos(Vector2 side)
     {
         var square = squares[^1];
         sidePos.Clear();
         var temp = square.VertDict
-            .Where(x => x.Key.x > 0);
-    }
-    
-    private void ExtendSquare(int index, Vector2 exDir, Vector3 newSize)
-    {
-        var pSquare = squares[index];
-        MathHelpers.PlaneDirections(pSquare.normal, out var pUp, out var pRight);
-        var aDir = (pSquare.corners[1] - pSquare.corners[0]).normalized;
-        var aCross = Vector3.Cross(aDir, pSquare.normal);
-        var startX = pRight * exDir.x;
-        var startY = pUp * exDir.y;
-        SetSidePos();
+            .Where(x =>
+            {
+                if (x.Key.x >= 5)
+                {
+                    
+                }
+
+                return false;
+            });
     }
     
     private void AddSquare(Vector3 center, Vector3 size, Vector3 normal, int firstVert, Vector2 numTiles)
     {
         MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
-        Debug.Log($"up {pUp}, right {pRight}");
         squares.Add(new SquareInfo()
         {
             normal = normal,
