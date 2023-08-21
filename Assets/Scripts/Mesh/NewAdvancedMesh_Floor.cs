@@ -240,7 +240,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         ExtendSquare(0, Vector2.right, new Vector3(300,300));
         var aSquare = squares[^1];
         
-        
         var nextC = 0;
         var theCount = aSquare.corners.Count;
         for (int i = 0; i < theCount; i++)
@@ -263,15 +262,12 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         }
     }
 
-    private void SetSidePos(Vector3 pos, Vector3 direction, float length ,int numStops)
+    private void SetSidePos()
     {
-        var inc = length / numStops;
+        var square = squares[^1];
         sidePos.Clear();
-        for (var i = 0; i <= numStops; i++)
-        {
-            
-           
-        }
+        var temp = square.VertDict
+            .Where(x => x.Key.x > 0);
     }
     
     private void ExtendSquare(int index, Vector2 exDir, Vector3 newSize)
@@ -282,7 +278,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         var aCross = Vector3.Cross(aDir, pSquare.normal);
         var startX = pRight * exDir.x;
         var startY = pUp * exDir.y;
-        SetSidePos(pSquare.corners[0], aDir, 1000, 4);
+        SetSidePos();
     }
     
     private void AddSquare(Vector3 center, Vector3 size, Vector3 normal, int firstVert, Vector2 numTiles)
