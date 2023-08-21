@@ -230,11 +230,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         Gizmos.DrawSphere(pos, 3);
     }
 
-    private void FloorVerts(Vector3 min, Vector3 max)
-    {
-        MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
-        lastVert = Vertices.Count;
-    }
     private void FloorVerts(Vector3 start, Vector3 size, Vector3 normal, int firstVert, Vector2 numTiles)
     {
         MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
@@ -302,7 +297,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         var numTiles = new Vector2(5, 5);
         var size = new Vector3(1000, 1000);
         AddSquare(pos, size, Vector3.up, lastVert, numTiles);
-        AddSquare2(Vector3.up);
+        AddSquare2(Vector3.up, Vector3.right);
        
         var aSquare = squares[^1];
         
@@ -389,8 +384,9 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         panelU = Quaternion.AngleAxis(rAngle + 90, axis) *rVec;
     }
     
-    private void AddSquare2(Vector3 normal)
+    private void AddSquare2(Vector3 normal, Vector3 exDir)
     {
+        var maxI = squares[^1].VertDict.Max();
         MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
         SetRotatedVector(normal, pRight, 90);
     }
