@@ -74,10 +74,17 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         ApplyMaterial(aMaterial);
     }
 
+    private void SetValuesAndActivate()
+    {
+        InitMesh();
+        ApplyMaterial(aMaterial);
+    }
+
     private void Awake()
     {
         var start = transform.position;
-        var size= new Vector3(1000,1000);
+        var size = new Vector3(1000,1000);
+        SetValuesAndActivate();
         FloorVerts(start, size, Vector3.up, 0, new Vector2(5,5));
     }
 
@@ -282,6 +289,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             newIndex += Vector3.up;
             newPos += pRight * (size.y / numTiles.y);
         }
+     
         UpdateMesh();
     }
     private void FloorTest(Vector3 pos)
@@ -385,7 +393,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     {
         MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
         SetRotatedVector(normal, pRight, 90);
-        Debug.Log($"{panelR}, {panelU}");
     }
     private void OnDrawGizmos()
     {
