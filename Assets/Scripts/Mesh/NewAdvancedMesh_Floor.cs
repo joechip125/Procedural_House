@@ -228,13 +228,14 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
     
     private void FloorTest(Vector3 pos)
     {
-        MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
         lastVert = 0;
         vertIndices.Clear();
         testPos.Clear();
         dotInfos.Clear();
         squares.Clear();
-        AddSquare(pos, new Vector3(1000,1000), Vector3.up, lastVert, new Vector2(5,5));
+        var numTiles = new Vector2(5, 5);
+        var size = new Vector3(1000, 1000);
+        AddSquare(pos, size, Vector3.up, lastVert, numTiles);
        
         var aSquare = squares[^1];
         
@@ -246,22 +247,33 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             Gizmos.color = Color.green;
             Gizmos.DrawLine(aSquare.corners[i], aSquare.corners[nextC]);
         }
+        
+        SetSidePos(new Vector2(-1, 5));
     }
 
-    private void SetSidePos(Vector2 side)
+    private void SetSidePos(Vector2 pIndex)
     {
         var square = squares[^1];
         sidePos.Clear();
+        var doX = pIndex.x != -1f;
+        var doY = pIndex.y != -1f;
+        if (!doX && !doY) return;
+        
         var temp = square.VertDict
             .Where(x =>
             {
-                if (x.Key.x >= 5)
-                {
-                    
-                }
+                if (x.Key.x == pIndex.x) return true;
+                if (x.Key.y == pIndex.y) return true;
 
                 return false;
-            });
+            }).Select(x => x.Value).ToList();
+
+        
+        
+        foreach (var t in temp)
+        {
+            Debug.Log($" {t} {testPos[t]}");
+        }
     }
     
     private void AddSquare(Vector3 center, Vector3 size, Vector3 normal, int firstVert, Vector2 numTiles)
@@ -301,27 +313,6 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             }
             newIndex += Vector3.up;
             newPos += pRight * (size.y / numTiles.y);
-        }
-    }
-
-    private void ExtendFloor(Vector3 extendDir)
-    {
-        var edge = vertIndices
-            .Where(x => x.Key.x >= 5)
-            .Select(x => x.Value)
-            .ToList();
-        var pos = transform.position;
-        var add = 200;
-
-        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < 4; j++)
-            {
-                PlaceDot(Color.blue, testPos[edge[i]] + extendDir * add, lastVert++);
-                add += 200;
-            }
-
-            add = 200;
         }
     }
     
