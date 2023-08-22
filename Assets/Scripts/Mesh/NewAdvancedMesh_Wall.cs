@@ -90,137 +90,15 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         InitMesh();
         ApplyMaterial(aMaterial);
-        SetWall(direction, 500, new Vector3(1000,400,30));
-        FillInfos(200);
-     
+        
     }
     
-    private void AddDoor(Vector3 addPos, Vector3 size, Vector3 aDirection)
-    {
-        TunnelVerts(addPos, aDirection, size);
-        var shift = aDirection * size.z;
-        //SideVerts(addPos +shift, aDirection, size);
-        //SideVerts(addPos, -aDirection, size);
-    }
-    
-    private void AddDoor(Vector3 addPos,Vector3 aDirection, Vector3 innerSize, Vector3 outerSize, float adjustH = 0)
-    {
-        TunnelVerts(addPos + Vector3.up * adjustH, aDirection, innerSize);
-        var shift = aDirection * innerSize.z;
-        //SideVerts(addPos +shift, aDirection, outerSize);
-        SideVerts(addPos+ Vector3.up * adjustH, -aDirection, innerSize);
-    }
-
-    private void SetWall(Vector3 startDir, float startAm, Vector3 totalWSize)
-    {
-        wallInfo.ClearTiles();
-        wallInfo.direction = Vector3.Cross(Vector3.up, -startDir);
-        wallInfo.size = totalWSize;
-        wallInfo.start = startDir * startAm + -wallInfo.direction * totalWSize.x / 2;
-    }
-
-    private void SetTiles(int numTiles)
-    {
-        for (int i = 0; i < numTiles; i++)
-        {
-            wallInfo.AddTile(WallTypes.Blank, new Vector2(wallInfo.size.x / numTiles, wallInfo.size.y));
-        }
-    }
-    
-    
-    public void AddDoor(int place)
-    {
-        BuildWall();
-    }
-
     public void InitWall(Vector3 normal, Vector2 size, int numTiles)
     {
         wallNormal = normal;
         wallSize = size;
        
         BuildWall();
-    }
-
-    private void AWallTile(Vector3 start, Vector3 dir, Vector2 size, bool invert = false)
-    {
-        var vCount = Vertices.Count;
-        Vertices.Add(start);
-        Vertices.Add(start + Vector3.up * size.y);
-        start += dir * size.x;
-        Vertices.Add(start);
-        Vertices.Add(start + Vector3.up * size.y);
-
-        if (!invert)
-        {
-            Triangles.Add(vCount + 2);
-            Triangles.Add(vCount + 1);
-            Triangles.Add(vCount);
-            
-            Triangles.Add(vCount + 2);
-            Triangles.Add(vCount + 3);
-            Triangles.Add(vCount + 1);
-        }
-
-        else
-        {
-            Triangles.Add(vCount);
-            Triangles.Add(vCount + 1);
-            Triangles.Add(vCount + 3);
-            
-            Triangles.Add(vCount);
-            Triangles.Add(vCount + 3);
-            Triangles.Add(vCount + 2);
-        }
-
-        UpdateMesh();
-    }
-    
-    private void MakeWalls2()
-    {
-        var size = new Vector2(1000, 1000);
-        SetSquare(Vector3.up, transform.position, size);
-        var adjust = 90f;
-
-        for (int i = 0; i < 4; i++)
-        {
-            var aNormal = Quaternion.AngleAxis(adjust + i * 90, Vector3.up) *Vector3.right;
-            var wallRight = Vector3.Cross(Vector3.up, aNormal);
-            
-            var addVec = Vector3.zero;
-            for (int j = 0; j < 4; j++)
-            {
-                Vertices.Add(Corners[i] + addVec);
-                Vertices.Add(Corners[i] + addVec+ Vector3.up * 100);
-                addVec += wallRight * size.x / 4;
-              
-            }
-        }
-
-        var count = 0;
-        for (int i = 0; i < 16; i++)
-        {
-            if (i == 15)
-            {
-                Triangles.Add(count);
-                Triangles.Add(count + 1);
-                Triangles.Add(1);  
-                
-                Triangles.Add(count);
-                Triangles.Add(1);
-                Triangles.Add(0);  
-                continue;
-            }
-            
-            Triangles.Add(count);
-            Triangles.Add(count + 1);
-            Triangles.Add(count + 3);
-            
-            Triangles.Add(count);
-            Triangles.Add(count + 3);
-            Triangles.Add(count + 2);
-            count += 2;
-        }
-        UpdateMesh();
     }
     
     private void BuildWall()
