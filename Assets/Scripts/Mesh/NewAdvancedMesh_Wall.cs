@@ -52,6 +52,16 @@ public class TileInfo
 }
 
 [Serializable]
+public class CornerInfo
+{
+    public Vector3 center;
+    public Vector3 size;
+    public int firstVert;
+    public Dictionary<Vector3,int> VertDict = new();
+}
+
+
+[Serializable]
 public class PanelInfo
 {
     public Vector3 upVec;
@@ -755,6 +765,9 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private void BaseWall()
     {
+        squares.Clear();
+        testPos.Clear();
+        lastVert = 0;
         var pos = transform.position;
         var size = new Vector3(20, 20);
         AddSquare(pos, size, Vector3.up, 0);
@@ -787,11 +800,12 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             var remain = i % 2 == 0 ? tan : tan2;
             var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
             squares[^1].corners.Add(center + cAngle.normalized * mag);
+            testPos.Add(center + cAngle.normalized * mag);
         }
 
         foreach (var c in squares[^1].corners)
         {
-            PlaceDot(Color.red, c, firstVert++);
+            PlaceDot(Color.red, c, lastVert++);
         }
         
         return firstVert;
