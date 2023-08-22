@@ -36,7 +36,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     [SerializeField]private Vector3 wallSize;
     [SerializeField]private Vector3 wallNormal;
     private List<CornerInfo> corners = new();
-    private Dictionary<Vector3,CornerInfo> cornerDict = new();
+    private Dictionary<Vector3,BaseWall> cornerDict = new();
     
     [SerializeField, Range(0, 180)]private float adjustDeg;
     
@@ -689,6 +689,30 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         corners[^1].wallSegments.Add(bWall);
     }
 
+    private void AddSquare(Vector3 center, Vector3 size, Vector3 newIndex)
+    {
+        MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
+        var bWall = new BaseWall()
+        {
+            center = center,
+            size = size
+        };
+        
+        var mag = Mathf.Sqrt(Mathf.Pow(size.y / 2, 2) + Mathf.Pow(size.x / 2, 2));
+        var tan =Mathf.Atan(size.y / size.x) * (180 / Mathf.PI);
+        var tan2 =Mathf.Atan(size.x / size.y) * (180 / Mathf.PI);
+        
+        for (int i = 0; i < 4; i++)
+        {
+            var remain = i % 2 == 0 ? tan : tan2;
+            var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
+            testPos.Add(center + cAngle.normalized * mag);
+            bWall.cornerVerts.Add(lastVert);
+            PlaceDot(Color.red, center + cAngle.normalized * mag, lastVert++);
+        }
+        cornerDict.Add(newIndex, bWall);
+    }
+    
     private void ConnectDots(int cIndex)
     {
         var corner = corners[cIndex].wallSegments;
