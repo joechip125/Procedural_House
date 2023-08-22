@@ -778,17 +778,16 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void ExtendFromCorner(Vector3 cCenter, Vector3 exDir)
     {
         var startX = cCenter + exDir * corners[^1].size.x;
+        var startDir = Vector3.left;
+        var first = corners[^1].firstVert;
 
-        foreach (var t in testPos)
-        {
-            Debug.Log($"tPos {t} sqrMag {t.sqrMagnitude}");
-        }
+        PlaceDot(Color.red, testPos[first] +startDir * 200 , lastVert++);
+        PlaceDot(Color.red, testPos[first + 1] +startDir * 200 , lastVert++);
         
-        PlaceDot(Color.red, testPos[0] +Vector3.left * 200 , lastVert++);
-        PlaceDot(Color.red, testPos[1] +Vector3.left * 200 , lastVert++);
+        var next = Quaternion.AngleAxis(90, Vector3.up) *startDir;
         
-        PlaceDot(Color.red, testPos[1] +Vector3.forward * 200 , lastVert++);
-        PlaceDot(Color.red, testPos[2] +Vector3.forward * 200 , lastVert++);
+        PlaceDot(Color.red, testPos[first + 1] +next * 200 , lastVert++);
+        PlaceDot(Color.red, testPos[first + 2] +next * 200 , lastVert++);
     }
     
     private int AddSquare(Vector3 center, Vector3 size, Vector3 normal, int firstVert)
