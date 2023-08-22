@@ -635,7 +635,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         AddSquare(pos, size, true);
         AddSquare(pos + Vector3.left * 200, size);
         var cCount = corners[^1].wallSegments.Count;
-        var nextI = 1;
+        var nextI = 0;
         
         for (int i = 0; i < cCount; i++)
         {
@@ -646,11 +646,13 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 nextI = j >= 3 ? 0 : nextI + 1;
                 var cCorner = current.cornerVerts[j];
                 var nCorner = current.cornerVerts[nextI];
-                
+                DrawLine(testPos[cCorner],testPos[nCorner], Color.green);
             }
             
             nextI = 0;
         }
+        
+        DrawLine(testPos[1],testPos[6], Color.blue);
     }
 
     private void ExtendCorner(int cIndex, int vertI)
@@ -676,8 +678,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
         corners[cIndex].wallSegments.Add(bWall);
     }
-
-    
     
     private void AddSquare(Vector3 center, Vector3 size, bool addNew = false)
     {
