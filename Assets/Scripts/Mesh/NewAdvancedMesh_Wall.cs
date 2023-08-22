@@ -879,12 +879,17 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         var pos = transform.position;
         var size = new Vector3(20, 20);
-        AddSquare(pos, size, Vector3.up, 0, new Vector2(1, 1));
+        AddSquare(pos, size, Vector3.up, 0);
         var start = pos + Vector3.right * size.y / 2;
-        DrawLine(start, start + Vector3.right * size.y / 2, Color.green);
+        DrawLine(start, start + Vector3.right * 200, Color.green);
+    }
+
+    private void ExtendFromCorner()
+    {
+        
     }
     
-    private int AddSquare(Vector3 center, Vector3 size, Vector3 normal, int firstVert, Vector2 numTiles)
+    private int AddSquare(Vector3 center, Vector3 size, Vector3 normal, int firstVert)
     {
         MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
         squares.Add(new SquareInfo()
@@ -906,23 +911,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             squares[^1].corners.Add(center + cAngle.normalized * mag);
         }
 
-        var newIndex = Vector3.zero;
-        var newPos = squares[^1].corners[0];
-        var incX = size.x / numTiles.x;
-        
-        for (int i = 0; i <= numTiles.y; i++)
+        foreach (var c in squares[^1].corners)
         {
-            for (int j = 0; j <= numTiles.x; j++)
-            {
-                var current = newPos + pUp * (incX * j);
-                PlaceDot(Color.red, current, firstVert);
-                squares[^1].VertDict.Add(newIndex + Vector3.right * j, firstVert++);
-                testPos.Add(current);
-            }
-            newIndex += Vector3.up;
-            newPos += -pRight * (size.y / numTiles.y);
+            PlaceDot(Color.red, c, firstVert++);
         }
-
+        
         return firstVert;
     }
     private void OnDrawGizmos()
