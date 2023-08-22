@@ -16,15 +16,16 @@ using Vector4 = System.Numerics.Vector4;
 [Serializable]
 public class CornerInfo
 {
-    public Vector3 center;
-    public Vector3 size;
     public List<BaseWall> wallSegments = new();
 }
 
 [Serializable]
 public class BaseWall
 {
+    public Vector3 center;
+    public Vector3 size;
     public List<int> cornerVerts = new();
+    public int innerVert;
 }
 
 public class NewAdvancedMesh_Wall : NewAdvancedMesh
@@ -633,7 +634,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var size = new Vector3(20, 20);
         
         AddSquare(pos, size, true);
-        AddSquare(pos + Vector3.forward * 200, size);
+        AddSquare(pos + Vector3.back * 200, size);
         var cCount = corners[^1].wallSegments.Count;
         var nextI = 0;
         
@@ -648,24 +649,25 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 var nCorner = current.cornerVerts[nextI];
                 DrawLine(testPos[cCorner],testPos[nCorner], Color.green);
             }
-            
             nextI = 0;
         }
-        
-        DrawLine(testPos[2],testPos[7], Color.blue);
+
+        var aVert = 3;
+        DrawLine(testPos[aVert],testPos[aVert + 3], Color.blue);
     }
     
     private void AddSquare(Vector3 center, Vector3 size, bool addNew = false)
     {
         MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
-        var bWall = new BaseWall();
+        var bWall = new BaseWall()
+        {
+            center = center,
+            size = size
+        };
+        
         if(addNew)
         { 
-            corners.Add(new CornerInfo()
-            {
-            center = center,
-            size = size, 
-            });
+            corners.Add(new CornerInfo());
         }
         
         var mag = Mathf.Sqrt(Mathf.Pow(size.y / 2, 2) + Mathf.Pow(size.x / 2, 2));
@@ -682,6 +684,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
         
         corners[^1].wallSegments.Add(bWall);
+    }
+
+    private void ConnectDots(int cIndex)
+    {
+        
     }
     private void OnDrawGizmos()
     {
