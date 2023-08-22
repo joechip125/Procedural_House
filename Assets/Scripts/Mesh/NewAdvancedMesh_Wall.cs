@@ -633,7 +633,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var size = new Vector3(20, 20);
         
         AddSquare(pos, size, true);
-        AddSquare(pos + Vector3.left * 200, size);
+        AddSquare(pos + Vector3.forward * 200, size);
         var cCount = corners[^1].wallSegments.Count;
         var nextI = 0;
         
@@ -652,31 +652,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             nextI = 0;
         }
         
-        DrawLine(testPos[1],testPos[6], Color.blue);
-    }
-
-    private void ExtendCorner(int cIndex, int vertI)
-    {
-        var startDir = Quaternion.AngleAxis(vertI * 90, Vector3.up) *Vector3.left;
-        var verts = corners[cIndex].wallSegments[0].cornerVerts;
-        var firstV = verts[vertI];
-        var secondV = firstV >= 3 ? 0 : firstV + 1;
-        var bWall = new BaseWall();
-        var moveA = startDir * 200;
-        bWall.cornerVerts = new List<int>
-        {
-            firstV, secondV, lastVert++, lastVert++
-        };
-        testPos.Add(testPos[firstV] + moveA);
-        testPos.Add(testPos[secondV] + moveA);
-
-        for (int i = 0; i < 4; i++)
-        {
-            var cV = bWall.cornerVerts[i];
-            if(i > 1) PlaceDot(Color.red, testPos[cV], cV);
-        }
-
-        corners[cIndex].wallSegments.Add(bWall);
+        DrawLine(testPos[2],testPos[7], Color.blue);
     }
     
     private void AddSquare(Vector3 center, Vector3 size, bool addNew = false)
