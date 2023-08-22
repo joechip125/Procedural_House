@@ -35,7 +35,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     [SerializeField] private int numberTiles;
     [SerializeField]private Vector3 wallSize;
     [SerializeField]private Vector3 wallNormal;
-    private List<CornerInfo> corners = new();
+
     private Dictionary<Vector3,BaseWall> cornerDict = new();
     
     [SerializeField, Range(0, 180)]private float adjustDeg;
@@ -628,67 +628,35 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private void BaseWall()
     {
-        corners.Clear();
         testPos.Clear();
+        cornerDict.Clear();
         lastVert = 0;
+        
         var pos = transform.position;
         var mainCenter = pos - new Vector3(100, 0, 100);
         var size = new Vector3(20, 20);
+        var index = Vector3.zero;
         
-        AddSquare(pos, size, true);
-        AddSquare(pos + Vector3.back * 200, size);
-        var cCount = corners[^1].wallSegments.Count;
+        AddSquare(pos, size, index);
+        AddSquare(pos, size, index);
         var nextI = 0;
-        
-        for (int i = 0; i < cCount; i++)
-        {
-            var current = corners[^1].wallSegments[i];
 
-            for (int j = 0; j < current.cornerVerts.Count; j++)
+        foreach (var c in cornerDict)
+        {
+            for (int i = 0; i < c.Value.cornerVerts.Count; i++)
             {
-                nextI = j >= 3 ? 0 : nextI + 1;
-                var cCorner = current.cornerVerts[j];
-                var nCorner = current.cornerVerts[nextI];
+                nextI = i >= 3 ? 0 : nextI + 1;
+                var cCorner = c.Value.cornerVerts[i];
+                var nCorner = c.Value.cornerVerts[nextI];
                 DrawLine(testPos[cCorner],testPos[nCorner], Color.green);
             }
             nextI = 0;
         }
         
-        var aVert = 3;
-        DrawLine(testPos[aVert],testPos[aVert + 3], Color.blue);
+        //var aVert = 3;
+        //DrawLine(testPos[aVert],testPos[aVert + 3], Color.blue);
     }
     
-    
-    private void AddSquare(Vector3 center, Vector3 size, bool addNew = false)
-    {
-        MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
-        var bWall = new BaseWall()
-        {
-            center = center,
-            size = size
-        };
-        
-        if(addNew)
-        { 
-            corners.Add(new CornerInfo());
-        }
-        
-        var mag = Mathf.Sqrt(Mathf.Pow(size.y / 2, 2) + Mathf.Pow(size.x / 2, 2));
-        var tan =Mathf.Atan(size.y / size.x) * (180 / Mathf.PI);
-        var tan2 =Mathf.Atan(size.x / size.y) * (180 / Mathf.PI);
-        
-        for (int i = 0; i < 4; i++)
-        {
-            var remain = i % 2 == 0 ? tan : tan2;
-            var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
-            testPos.Add(center + cAngle.normalized * mag);
-            bWall.cornerVerts.Add(lastVert);
-            PlaceDot(Color.red, center + cAngle.normalized * mag, lastVert++);
-        }
-        
-        corners[^1].wallSegments.Add(bWall);
-    }
-
     private void AddSquare(Vector3 center, Vector3 size, Vector3 newIndex)
     {
         MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
@@ -715,8 +683,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     
     private void ConnectDots(int cIndex)
     {
-        var corner = corners[cIndex].wallSegments;
-        var first = corner[0].cornerVerts[0];
+       
     }
     private void OnDrawGizmos()
     {
