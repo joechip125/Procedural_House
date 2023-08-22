@@ -26,6 +26,7 @@ public class BaseWall
     public Vector3 size;
     public List<int> cornerVerts = new();
     public int innerVert;
+    public int firstVert;
 }
 
 public class NewAdvancedMesh_Wall : NewAdvancedMesh
@@ -636,6 +637,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var mainCenter = pos - new Vector3(100, 0, 100);
         var size = new Vector3(20, 20);
         var index = Vector3.zero;
+        var angle = Vector3.Angle(Vector3.left, Vector3.right);
+        Debug.Log($"{angle / 90}");
         
         AddSquare(pos, size, index);
         AddSquare(pos + Vector3.right * 200, size, index + Vector3.right);
