@@ -705,16 +705,18 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var size = new Vector3(20, 20);
         
         AddSquare(pos, size,Vector3.up);
-        ExtendFromCorner(0);
+        ExtendFromCorner(0, 0);
     }
 
-    private void ExtendFromCorner(int cIndex)
+    private void ExtendFromCorner(int cIndex, int vertI)
     {
         var startDir = Vector3.left;
         var verts = corners[cIndex].vertList;
+        var firstV = verts[vertI];
+        var secondV = firstV >= 3 ? 0 : firstV + 1;
         
-        PlaceDot(Color.red, testPos[verts[0]] +startDir * 200 , lastVert++);
-        PlaceDot(Color.red, testPos[verts[1]] +startDir * 200 , lastVert++);
+        PlaceDot(Color.red, testPos[verts[firstV]] +startDir * 200 , lastVert++);
+        PlaceDot(Color.red, testPos[verts[secondV]] +startDir * 200 , lastVert++);
         
         var next = Quaternion.AngleAxis(90, Vector3.up) *startDir;
         PlaceDot(Color.red, testPos[verts[1]] +next * 200 , lastVert++);
