@@ -57,7 +57,7 @@ public class CornerInfo
     public Vector3 center;
     public Vector3 size;
     public int firstVert;
-    public Dictionary<Vector3,int> VertDict = new();
+    public List<int> vertList = new();
 }
 
 
@@ -704,7 +704,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var pos = transform.position;
         var size = new Vector3(20, 20);
         AddSquare(pos, size, Vector3.up, 0);
-        var start = pos + Vector3.right * size.y / 2;
         ExtendFromCorner(corners[^1].center, Vector3.right);
     }
 
@@ -713,17 +712,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var startX = cCenter + exDir * corners[^1].size.x / 2;
         var startDir = Vector3.left;
         var first = corners[^1].firstVert;
-        for (int i = first; i < first + 4; i++)
-        {
-            var angle =Vector3.Angle(startX, testPos[i]);
-            Debug.Log($"{angle} index {i} start {startX}");    
-        }
-
+        
         PlaceDot(Color.red, testPos[first] +startDir * 200 , lastVert++);
         PlaceDot(Color.red, testPos[first + 1] +startDir * 200 , lastVert++);
         
         var next = Quaternion.AngleAxis(90, Vector3.up) *startDir;
-        
         PlaceDot(Color.red, testPos[first + 1] +next * 200 , lastVert++);
         PlaceDot(Color.red, testPos[first + 2] +next * 200 , lastVert++);
     }
