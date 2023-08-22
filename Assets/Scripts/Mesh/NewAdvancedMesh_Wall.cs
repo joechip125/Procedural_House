@@ -638,7 +638,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var index = Vector3.zero;
         
         AddSquare(pos, size, index);
-        AddSquare(pos, size, index);
+        AddSquare(pos + Vector3.right * 200, size, index + Vector3.right);
         var nextI = 0;
 
         foreach (var c in cornerDict)
@@ -653,8 +653,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             nextI = 0;
         }
         
-        //var aVert = 3;
-        //DrawLine(testPos[aVert],testPos[aVert + 3], Color.blue);
+        var aVert = 2;
+        DrawLine(testPos[aVert],testPos[aVert + 3], Color.blue);
     }
     
     private void AddSquare(Vector3 center, Vector3 size, Vector3 newIndex)
