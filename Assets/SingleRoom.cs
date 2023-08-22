@@ -11,8 +11,7 @@ public class SingleRoom : MonoBehaviour
     [HideInInspector]public List<NewAdvancedMesh> meshes = new();
     [SerializeField] private List<GameObject> spawnable;
     private Vector3 theSize;
-
-    private List<TileInfo> infos = new();
+    
     private List<Vector3> corners = new();
     private Vector3[] tempVectors;
     [SerializeField] private float adjust = 0;

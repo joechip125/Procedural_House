@@ -13,62 +13,21 @@ using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 using Vector4 = System.Numerics.Vector4;
 
-public enum WallTypes
-{
-    Blank,
-    Door,
-    Window
-}
-
-[Serializable]
-public class WallInfo
-{
-    public List<TileInfo> tileInfos = new();
-    public Vector3 direction;
-    public Vector3 start;
-    public Vector3 size;
-
-    public void AddTile(WallTypes type, Vector2 theSize)
-    {
-        tileInfos.Add(new TileInfo()
-        {
-            type = type,
-            size = theSize
-        });
-    }
-    
-    public void ClearTiles()
-    {
-        tileInfos.Clear();
-    }
-}
-
-[Serializable]
-public class TileInfo
-{
-    public WallTypes type;
-    public Vector2 size;
-    public Vector3[] corners = new Vector3[4];
-}
-
 [Serializable]
 public class CornerInfo
 {
     public Vector3 center;
     public Vector3 size;
-    public int firstVert;
     public List<int> vertList = new();
+    public List<BaseWall> wallSegments = new();
 }
-
 
 [Serializable]
-public class PanelInfo
+public class BaseWall
 {
-    public Vector3 upVec;
-    public Vector3 rightVec;
-    public Vector2 firstLastVert;
-    public Vector2 numXY;
+    public List<int> cornerVerts = new();
 }
+
 public class NewAdvancedMesh_Wall : NewAdvancedMesh
 {
     [SerializeField] private Vector3 direction;
@@ -80,10 +39,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     
     [SerializeField, Range(0, 180)]private float adjustDeg;
     
-    [SerializeField, Range(1, 50)]private int resolution;
-    
-    public WallInfo wallInfo = new();
-
     private int lastVert;
 
     public Material aMaterial;
@@ -107,27 +62,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         wallNormal = normal;
         wallSize = size;
-       
-        BuildWall();
     }
-    
-    private void BuildWall()
-    {
-        ClearMesh();
-        var wallRight = Vector3.Cross(Vector3.up, wallNormal);
-        var numTiles = wallInfo.tileInfos.Count();
 
-        var singlePanel = new Vector2(wallSize.x / numTiles, wallSize.y);
-        var start = wallRight * singlePanel.x / 2 + (Vector3.up * wallSize.y) / 2;
-        
-        var panelSize2 = new Vector3(singlePanel.x, singlePanel.y, 10);
-      
-        for (int i = 0; i < numTiles; i++)
-        {
-            start += wallRight * singlePanel.x;
-        }
-    }
-    
     protected override void Activate()
     {
         base.Activate();
@@ -246,13 +182,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             var anAngle3 = Vector3.Angle(corns[i], corns[nextC]);
         }
         
-        var pInfo = new PanelInfo()
-        {
-            upVec =  pUp,
-            rightVec = pRight,
-            firstLastVert = new Vector2(first, counter - 1),
-            numXY = new Vector2(xR, yR)
-        };
         DrawLine(pos, pos + pRight * 100, Color.magenta);
         var anAngle = Vector3.Angle(corns[1], corns[2]);
         var anAngle2 = Vector3.Angle(corns[0], corns[1]);
@@ -730,7 +659,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             center = center,
             size = size,
-            firstVert = lastVert
         });
         
         var mag = Mathf.Sqrt(Mathf.Pow(size.y / 2, 2) + Mathf.Pow(size.x / 2, 2));
