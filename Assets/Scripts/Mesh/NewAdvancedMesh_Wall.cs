@@ -632,8 +632,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var pos = transform.position;
         var size = new Vector3(20, 20);
         
-        AddSquare(pos, size,Vector3.up);
-        ExtendCorner(0, 0);
+        AddSquare(pos, size, true);
+        AddSquare(pos + Vector3.left * 200, size);
     }
 
     private void ExtendCorner(int cIndex, int vertI)
@@ -660,15 +660,20 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         corners[cIndex].wallSegments.Add(bWall);
     }
 
-    private void AddSquare(Vector3 center, Vector3 size, Vector3 normal)
+    
+    
+    private void AddSquare(Vector3 center, Vector3 size, bool addNew = false)
     {
-        MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
+        MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
         var bWall = new BaseWall();
-        corners.Add(new CornerInfo()
-        {
+        if(addNew)
+        { 
+            corners.Add(new CornerInfo()
+            {
             center = center,
-            size = size,
-        });
+            size = size, 
+            });
+        }
         
         var mag = Mathf.Sqrt(Mathf.Pow(size.y / 2, 2) + Mathf.Pow(size.x / 2, 2));
         var tan =Mathf.Atan(size.y / size.x) * (180 / Mathf.PI);
