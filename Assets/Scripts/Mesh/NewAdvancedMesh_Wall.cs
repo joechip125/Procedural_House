@@ -880,6 +880,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var pos = transform.position;
         var size = new Vector3(20, 20);
         AddSquare(pos, size, Vector3.up, 0, new Vector2(1, 1));
+        var start = pos + Vector3.right * size.y / 2;
+        DrawLine(start, start + Vector3.right * size.y / 2, Color.green);
     }
     
     private int AddSquare(Vector3 center, Vector3 size, Vector3 normal, int firstVert, Vector2 numTiles)
