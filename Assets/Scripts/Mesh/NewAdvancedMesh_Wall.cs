@@ -639,42 +639,26 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private void ExtendCorner(int cIndex, int vertI)
     {
-        var startDir = Vector3.right;
-        var verts = corners[cIndex].vertList;
-        var firstV = verts[vertI];
-        var secondV = firstV >= 3 ? 0 : firstV + 1;
-        var bWall = new BaseWall();
-        var moveA = startDir * 200;
-        bWall.cornerVerts.Add(firstV);
-        bWall.cornerVerts.Add(secondV);
-        bWall.cornerVerts.Add(lastVert++);
-        bWall.cornerVerts.Add(lastVert++);
-        testPos.Add(testPos[firstV] + moveA);
-        testPos.Add(testPos[secondV] + moveA);
-        var thirdV = bWall.cornerVerts[2];
-        var fourthV = bWall.cornerVerts[2];
-
-        PlaceDot(Color.red, testPos[thirdV], thirdV);
-        PlaceDot(Color.red, testPos[fourthV], fourthV);
-    }
-    private void ExtendFromCorner(int cIndex, int vertI)
-    {
         var startDir = Vector3.left;
         var verts = corners[cIndex].vertList;
         var firstV = verts[vertI];
         var secondV = firstV >= 3 ? 0 : firstV + 1;
         var bWall = new BaseWall();
-        bWall.cornerVerts.Add(firstV);
-        bWall.cornerVerts.Add(secondV);
-        
-        PlaceDot(Color.red, testPos[verts[firstV]] +startDir * 200 , lastVert++);
-        PlaceDot(Color.red, testPos[verts[secondV]] +startDir * 200 , lastVert++);
-        
-        var next = Quaternion.AngleAxis(90, Vector3.up) *startDir;
-        PlaceDot(Color.red, testPos[verts[1]] +next * 200 , lastVert++);
-        PlaceDot(Color.red, testPos[verts[2]] +next * 200 , lastVert++);
+        var moveA = startDir * 200;
+        bWall.cornerVerts = new List<int>
+        {
+            firstV, secondV, lastVert++, lastVert++
+        };
+        testPos.Add(testPos[firstV] + moveA);
+        testPos.Add(testPos[secondV] + moveA);
+        var thirdV = bWall.cornerVerts[2];
+        var fourthV = bWall.cornerVerts[3];
+        corners[cIndex].wallSegments.Add(bWall);
+
+        PlaceDot(Color.red, testPos[thirdV], thirdV);
+        PlaceDot(Color.red, testPos[fourthV], fourthV);
     }
-    
+
     private void AddSquare(Vector3 center, Vector3 size, Vector3 normal)
     {
         MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
