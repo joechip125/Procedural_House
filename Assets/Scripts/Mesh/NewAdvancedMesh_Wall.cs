@@ -18,7 +18,6 @@ public class CornerInfo
 {
     public Vector3 center;
     public Vector3 size;
-    public List<int> vertList = new();
     public List<BaseWall> wallSegments = new();
 }
 
@@ -639,8 +638,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private void ExtendCorner(int cIndex, int vertI)
     {
-        var startDir = Vector3.left;
-        var verts = corners[cIndex].vertList;
+        var startDir = Quaternion.AngleAxis(vertI * 90, Vector3.up) *Vector3.left;
+        var verts = corners[cIndex].wallSegments[0].cornerVerts;
         var firstV = verts[vertI];
         var secondV = firstV >= 3 ? 0 : firstV + 1;
         var bWall = new BaseWall();
@@ -651,17 +650,20 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         };
         testPos.Add(testPos[firstV] + moveA);
         testPos.Add(testPos[secondV] + moveA);
-        var thirdV = bWall.cornerVerts[2];
-        var fourthV = bWall.cornerVerts[3];
-        corners[cIndex].wallSegments.Add(bWall);
 
-        PlaceDot(Color.red, testPos[thirdV], thirdV);
-        PlaceDot(Color.red, testPos[fourthV], fourthV);
+        for (int i = 0; i < 4; i++)
+        {
+            var cV = bWall.cornerVerts[i];
+            if(i > 1) PlaceDot(Color.red, testPos[cV], cV);
+        }
+
+        corners[cIndex].wallSegments.Add(bWall);
     }
 
     private void AddSquare(Vector3 center, Vector3 size, Vector3 normal)
     {
         MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
+        var bWall = new BaseWall();
         corners.Add(new CornerInfo()
         {
             center = center,
@@ -677,10 +679,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             var remain = i % 2 == 0 ? tan : tan2;
             var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
             testPos.Add(center + cAngle.normalized * mag);
-            corners[^1].vertList.Add(lastVert);
-            
+            bWall.cornerVerts.Add(lastVert);
             PlaceDot(Color.red, center + cAngle.normalized * mag, lastVert++);
         }
+        
+        corners[^1].wallSegments.Add(bWall);
     }
     private void OnDrawGizmos()
     {
