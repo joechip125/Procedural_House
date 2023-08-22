@@ -637,12 +637,28 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         ExtendFromCorner(0, 0);
     }
 
+    private void ExtendCorner(int cIndex, int vertI)
+    {
+        var startDir = Vector3.left;
+        var verts = corners[cIndex].vertList;
+        var firstV = verts[vertI];
+        var secondV = firstV >= 3 ? 0 : firstV + 1;
+        var bWall = new BaseWall();
+        bWall.cornerVerts.Add(firstV);
+        bWall.cornerVerts.Add(secondV);
+        bWall.cornerVerts.Add(lastVert++);
+        bWall.cornerVerts.Add(lastVert++);
+        
+    }
     private void ExtendFromCorner(int cIndex, int vertI)
     {
         var startDir = Vector3.left;
         var verts = corners[cIndex].vertList;
         var firstV = verts[vertI];
         var secondV = firstV >= 3 ? 0 : firstV + 1;
+        var bWall = new BaseWall();
+        bWall.cornerVerts.Add(firstV);
+        bWall.cornerVerts.Add(secondV);
         
         PlaceDot(Color.red, testPos[verts[firstV]] +startDir * 200 , lastVert++);
         PlaceDot(Color.red, testPos[verts[secondV]] +startDir * 200 , lastVert++);
