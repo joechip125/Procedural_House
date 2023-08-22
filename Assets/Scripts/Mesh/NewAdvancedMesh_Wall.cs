@@ -76,7 +76,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     [SerializeField] private int numberTiles;
     [SerializeField]private Vector3 wallSize;
     [SerializeField]private Vector3 wallNormal;
-    private List<SquareInfo> squares = new();
+    private List<CornerInfo> corners = new();
     
     [SerializeField, Range(0, 180)]private float adjustDeg;
     
@@ -765,27 +765,37 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private void BaseWall()
     {
-        squares.Clear();
+        corners.Clear();
         testPos.Clear();
         lastVert = 0;
         var pos = transform.position;
         var size = new Vector3(20, 20);
         AddSquare(pos, size, Vector3.up, 0);
         var start = pos + Vector3.right * size.y / 2;
-        DrawLine(start, start + Vector3.right * 200, Color.green);
+        ExtendFromCorner(corners[^1].center, Vector3.right);
     }
 
-    private void ExtendFromCorner()
+    private void ExtendFromCorner(Vector3 cCenter, Vector3 exDir)
     {
+        var startX = cCenter + exDir * corners[^1].size.x;
+
+        foreach (var t in testPos)
+        {
+            Debug.Log($"tPos {t} sqrMag {t.sqrMagnitude}");
+        }
         
+        PlaceDot(Color.red, testPos[0] +Vector3.left * 200 , lastVert++);
+        PlaceDot(Color.red, testPos[1] +Vector3.left * 200 , lastVert++);
+        
+        PlaceDot(Color.red, testPos[1] +Vector3.forward * 200 , lastVert++);
+        PlaceDot(Color.red, testPos[2] +Vector3.forward * 200 , lastVert++);
     }
     
     private int AddSquare(Vector3 center, Vector3 size, Vector3 normal, int firstVert)
     {
         MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
-        squares.Add(new SquareInfo()
+        corners.Add(new CornerInfo()
         {
-            normal = normal,
             center = center,
             size = size,
             firstVert = firstVert
@@ -799,11 +809,10 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             var remain = i % 2 == 0 ? tan : tan2;
             var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
-            squares[^1].corners.Add(center + cAngle.normalized * mag);
             testPos.Add(center + cAngle.normalized * mag);
         }
 
-        foreach (var c in squares[^1].corners)
+        foreach (var c in testPos)
         {
             PlaceDot(Color.red, c, lastVert++);
         }
