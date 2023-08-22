@@ -36,6 +36,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     [SerializeField]private Vector3 wallSize;
     [SerializeField]private Vector3 wallNormal;
     private List<CornerInfo> corners = new();
+    private Dictionary<Vector3,CornerInfo> cornerDict = new();
     
     [SerializeField, Range(0, 180)]private float adjustDeg;
     
@@ -631,6 +632,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         testPos.Clear();
         lastVert = 0;
         var pos = transform.position;
+        var mainCenter = pos - new Vector3(100, 0, 100);
         var size = new Vector3(20, 20);
         
         AddSquare(pos, size, true);
@@ -651,10 +653,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             }
             nextI = 0;
         }
-
+        
         var aVert = 3;
         DrawLine(testPos[aVert],testPos[aVert + 3], Color.blue);
     }
+    
     
     private void AddSquare(Vector3 center, Vector3 size, bool addNew = false)
     {
@@ -688,7 +691,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private void ConnectDots(int cIndex)
     {
-        
+        var corner = corners[cIndex].wallSegments;
+        var first = corner[0].cornerVerts[0];
     }
     private void OnDrawGizmos()
     {
