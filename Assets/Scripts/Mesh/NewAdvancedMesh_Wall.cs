@@ -35,7 +35,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     [SerializeField] private float adjacent;
     [SerializeField] private int numberTiles;
     [SerializeField]private Vector3 wallSize;
-    [SerializeField]private Vector3 wallNormal;
+
 
     private Dictionary<Vector3,BaseWall> cornerDict = new();
     
@@ -62,7 +62,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     
     public void InitWall(Vector3 normal, Vector2 size, int numTiles)
     {
-        wallNormal = normal;
         wallSize = size;
     }
 
@@ -638,8 +637,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var size = new Vector3(20, 20);
         var index = Vector3.zero;
         var angle = Vector3.Angle(Vector3.left, Vector3.right);
-        Debug.Log($"{angle / 90}");
-        
+
         AddSquare(pos, size, index);
         AddSquare(pos + Vector3.right * 200, size, index + Vector3.right);
         var nextI = 0;
