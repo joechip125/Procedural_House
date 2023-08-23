@@ -655,9 +655,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             nextI = 0;
         }
         
-        var aVert = 2;
-        var firstNext = cornerDict[Vector3.right];
-        DrawLine(testPos[aVert],testPos[firstNext.firstVert + (int)angle], Color.blue);
+        ConnectDots(Vector3.zero, Vector3.right, new Vector2(2,1));
     }
     
     private void AddSquare(Vector3 center, Vector3 size, Vector3 newIndex)
@@ -685,9 +683,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         cornerDict.Add(newIndex, bWall);
     }
     
-    private void ConnectDots(int cIndex)
+    private void ConnectDots(Vector3 wIndex, Vector3 wNext, Vector2 cornerAdd)
     {
-       
+        var first = cornerDict[wIndex];
+        var next = cornerDict[wIndex + wNext];
+        DrawLine(testPos[first.firstVert + (int)cornerAdd.x],testPos[next.firstVert + (int)cornerAdd.y], Color.blue);
     }
     private void OnDrawGizmos()
     {
