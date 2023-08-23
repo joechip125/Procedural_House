@@ -655,10 +655,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             nextI = 0;
         }
 
-        var first = FindClosestPoint(Vector3.zero, mainCenter);
-        var second = FindClosestPoint(Vector3.right, mainCenter);
-        Debug.Log($"{first}, second {second}");
-        ConnectDots(Vector3.zero, Vector3.right, new Vector2(first,second));
+        ConnectDots(Vector3.zero, Vector3.right, mainCenter);
     }
     
     private void AddSquare(Vector3 center, Vector3 size, Vector3 newIndex)
@@ -695,8 +692,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         for (int i = first; i < first + 4; i++)
         {
             var dist  = Vector3.Distance(testPos[i], point);
-            Debug.Log($" dist {dist} index {i}");
-            
+
             if (!(dist < minDist)) continue;
             minDist = dist;
             rPoint = i;
@@ -705,11 +701,9 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         return rPoint;
     }
     
-    private void ConnectDots(Vector3 wIndex, Vector3 wNext, Vector2 cornerAdd)
+    private void ConnectDots(Vector3 wIndex, Vector3 wNext, Vector3 testPoint)
     {
-        var first = cornerDict[wIndex];
-        var next = cornerDict[wIndex + wNext];
-        DrawLine(testPos[(int)cornerAdd.x],testPos[(int)cornerAdd.y], Color.blue);
+        DrawLine(testPos[FindClosestPoint(wIndex, testPoint)],testPos[FindClosestPoint(wNext, testPoint)], Color.blue);
     }
     private void OnDrawGizmos()
     {
