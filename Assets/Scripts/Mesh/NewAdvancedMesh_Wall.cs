@@ -682,6 +682,25 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
         cornerDict.Add(newIndex, bWall);
     }
+
+    private int FindClosestPoint(Vector3 wIndex, Vector3 point)
+    {
+        var first = cornerDict[wIndex].firstVert;
+        var minDist = Vector3.Distance(testPos[first], point);
+        var rPoint = first;
+
+        for (int i = first; i < first + 4; i++)
+        {
+            var dist  = Vector3.Distance(testPos[i], point);
+            if (dist < minDist)
+            {
+                minDist = dist;
+                rPoint = i;
+            }
+        }
+
+        return rPoint;
+    }
     
     private void ConnectDots(Vector3 wIndex, Vector3 wNext, Vector2 cornerAdd)
     {
