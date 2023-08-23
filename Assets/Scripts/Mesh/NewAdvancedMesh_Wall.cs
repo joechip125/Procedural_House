@@ -633,7 +633,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         lastVert = 0;
         
         var pos = transform.position;
-        var mainCenter = pos - new Vector3(100, 0, 100);
+        var mainCenter = pos + new Vector3(100, 0, 100);
         var size = new Vector3(20, 20);
         var index = Vector3.zero;
         var newDir = Vector3.right;
@@ -654,8 +654,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             }
             nextI = 0;
         }
-        
-        ConnectDots(Vector3.zero, Vector3.right, new Vector2(2,1));
+
+        var first = FindClosestPoint(Vector3.zero, mainCenter);
+        var second = FindClosestPoint(Vector3.right, mainCenter);
+        Debug.Log($"{first}, second {second}");
+        ConnectDots(Vector3.zero, Vector3.right, new Vector2(first,second));
     }
     
     private void AddSquare(Vector3 center, Vector3 size, Vector3 newIndex)
@@ -692,11 +695,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         for (int i = first; i < first + 4; i++)
         {
             var dist  = Vector3.Distance(testPos[i], point);
-            if (dist < minDist)
-            {
-                minDist = dist;
-                rPoint = i;
-            }
+            Debug.Log($" dist {dist} index {i}");
+            
+            if (!(dist < minDist)) continue;
+            minDist = dist;
+            rPoint = i;
         }
 
         return rPoint;
@@ -706,7 +709,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         var first = cornerDict[wIndex];
         var next = cornerDict[wIndex + wNext];
-        DrawLine(testPos[first.firstVert + (int)cornerAdd.x],testPos[next.firstVert + (int)cornerAdd.y], Color.blue);
+        DrawLine(testPos[(int)cornerAdd.x],testPos[(int)cornerAdd.y], Color.blue);
     }
     private void OnDrawGizmos()
     {
