@@ -636,10 +636,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var mainCenter = pos - new Vector3(100, 0, 100);
         var size = new Vector3(20, 20);
         var index = Vector3.zero;
-        var angle = Vector3.Angle(Vector3.left, Vector3.right);
+        var newDir = Vector3.right;
+        var angle = Vector3.Angle(Vector3.left, newDir) / 90;
 
         AddSquare(pos, size, index);
-        AddSquare(pos + Vector3.right * 200, size, index + Vector3.right);
+        AddSquare(pos + newDir * 200, size, index + newDir);
         var nextI = 0;
 
         foreach (var c in cornerDict)
@@ -655,7 +656,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
         
         var aVert = 2;
-        DrawLine(testPos[aVert],testPos[aVert + 3], Color.blue);
+        var firstNext = cornerDict[Vector3.right];
+        DrawLine(testPos[aVert],testPos[firstNext.firstVert + (int)angle], Color.blue);
     }
     
     private void AddSquare(Vector3 center, Vector3 size, Vector3 newIndex)
@@ -664,7 +666,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var bWall = new BaseWall()
         {
             center = center,
-            size = size
+            size = size,
+            firstVert = lastVert
         };
         
         var mag = Mathf.Sqrt(Mathf.Pow(size.y / 2, 2) + Mathf.Pow(size.x / 2, 2));
