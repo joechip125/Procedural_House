@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Numerics;
@@ -8,6 +9,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using Zenject.ReflectionBaking.Mono.Cecil;
+using Color = UnityEngine.Color;
 using Quaternion = UnityEngine.Quaternion;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
@@ -434,29 +436,32 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             AddSquare(cPos.Value, cornerS, cPos.Key);
         }
-        FindClosestPoints(pos);
-        DrawCorners();
+
+        var edge = Vector3.right;
+        AddSquare(edge * (cornerS.x + roomS.x) /2, cornerS, edge);
+        
+        DrawCorners(pos);
     }
 
-    private void DrawCorners()
+    private void DrawCorners(Vector3 pos)
     {
         foreach (var t in testPos)
         {
             PlaceDot(Color.red, t, lastVert++);
         }
 
-        FindClosestPoints(Vector3.zero);
+        FindClosestPoints(pos);
         var count = vList.Count;
         for (int i = 0; i < count; i++)
         {
-            DrawLine(testPos[vList[i]], testPos[vList[i >= count - 1 ? 0 : i + 1]], Color.blue);
+            //DrawLine(testPos[vList[i]], testPos[vList[i >= count - 1 ? 0 : i + 1]], Color.blue);
         }
         
-        FindDistantPoints(Vector3.zero);
+        FindDistantPoints(pos);
         count = vList.Count;
         for (int i = 0; i < count; i++)
         {
-            DrawLine(testPos[vList[i]], testPos[vList[i >= count - 1 ? 0 : i + 1]], Color.red);
+            //DrawLine(testPos[vList[i]], testPos[vList[i >= count - 1 ? 0 : i + 1]], Color.red);
         }
         
         foreach (var c in cornerDict)
@@ -493,7 +498,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             var testIndex = new Vector3(Mathf.Round(cAngle.x), Mathf.Round(cAngle.y), Mathf.Round(cAngle.z));
             indices.Add(cAngle);
         }
-
     }
     
     private void FourCorners(Vector3 center, Vector3 size)
