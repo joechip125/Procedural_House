@@ -427,7 +427,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         lastVert = 0;
         
         var pos = transform.position;
-        var cornerS = new Vector3(20, 20);
+        var cornerS = new Vector3(15, 15);
         var roomS = new Vector3(200, 200);
         FourCorners(pos, roomS + cornerS);
         SetIndexFromAngle(90, roomS);
@@ -438,7 +438,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
 
         var edge = Vector3.right;
-        AddSquare(edge * (cornerS.x + roomS.x) /2, cornerS, edge);
+        var cross = Vector3.Cross(edge, Vector3.up);
+        var start = edge * (cornerS.x + roomS.x) / 2;
+        AddSquare(start + cross * 50, cornerS, edge);
+        
+        AddSquare(start + cross * -50, cornerS, edge + edge);
         
         DrawCorners(pos);
     }
