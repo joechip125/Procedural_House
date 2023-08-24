@@ -637,10 +637,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var size = new Vector3(20, 20);
         var index = Vector3.zero;
         var newDir = Vector3.right;
-        var angle = Vector3.Angle(Vector3.left, newDir) / 90;
 
         AddSquare(pos, size, index);
-        AddSquare(pos + newDir * 200, size, index + newDir);
+        AddSquare(size, newDir, index, 200);
+        AddSquare(size, Vector3.forward, index, 200);
+        AddSquare(size, newDir + Vector3.forward, index, 200);
         var nextI = 0;
 
         foreach (var c in cornerDict)
@@ -655,7 +656,10 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             nextI = 0;
         }
 
-        ConnectDots(Vector3.zero, Vector3.right, mainCenter);
+        ConnectDots(index, newDir, mainCenter);
+        ConnectDots(index, Vector3.forward, mainCenter);
+        ConnectDots(newDir, newDir + Vector3.forward, mainCenter);
+        ConnectDots(newDir + Vector3.forward, Vector3.forward, mainCenter);
     }
     
     private void AddSquare(Vector3 center, Vector3 size, Vector3 newIndex)
