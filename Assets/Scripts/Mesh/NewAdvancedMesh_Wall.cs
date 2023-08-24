@@ -31,12 +31,10 @@ public class BaseWall
 
 public class NewAdvancedMesh_Wall : NewAdvancedMesh
 {
-    
     [SerializeField] private float adjacent;
 
     private Dictionary<Vector3,BaseWall> cornerDict = new();
     
-    [SerializeField, Range(0, 180)]private float adjustDeg;
     
     private int lastVert;
 
@@ -99,7 +97,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
         UpdateMesh();
     }
-
     
     private void PlaneDirections(Vector3 normal, out Vector3 planeUp, out Vector3 planeRight)
     {
@@ -167,8 +164,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
         
         DrawLine(pos, pos + pRight * 100, Color.magenta);
-        var anAngle = Vector3.Angle(corns[1], corns[2]);
-        var anAngle2 = Vector3.Angle(corns[0], corns[1]);
         var aPoint = GetDots2(corns[0], pUp, pRight, Vector3.zero, 400);
         ExtendDots(new Vector3(1,0), 5, aPoint, pRight);
     }
@@ -224,7 +219,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 
                 if (angle2 <= angle)
                 {
-                   
                     return true;
                 }
                 
@@ -366,7 +360,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var pos = transform.position;
         var arcTan = 100f / adjacent;
         var newVal = arcTan * adjacent;
-        var addDegrees = adjustDeg;
+        var addDegrees = 0;
         var start = pos + aDir * adjacent;
         var nextDir = Vector3.Cross(Vector3.up, aDir);
         var hypo2 =Mathf.Sqrt( Mathf.Pow(adjacent, 2) + Mathf.Pow(100,2));
