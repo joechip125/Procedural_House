@@ -31,11 +31,9 @@ public class BaseWall
 
 public class NewAdvancedMesh_Wall : NewAdvancedMesh
 {
-    [SerializeField] private Vector3 direction;
-    [SerializeField] private float adjacent;
-    [SerializeField] private int numberTiles;
-    [SerializeField]private Vector3 wallSize;
     
+    [SerializeField] private float adjacent;
+
     private Dictionary<Vector3,BaseWall> cornerDict = new();
     
     [SerializeField, Range(0, 180)]private float adjustDeg;
@@ -49,11 +47,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private Dictionary<Vector3, Vector3> cornerPos = new();
     private List<Vector3> indices = new();
     private List<int> vList = new();
-
-    [Header("Direction")]
-    [SerializeField, Range(-1,1)] private float xDir;
-    [SerializeField, Range(-1,1)] private float yDir;
-    [SerializeField, Range(-1,1)] private float zDir;
     
     private void Awake()
     {
@@ -62,23 +55,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         
     }
     
-    public void InitWall(Vector3 normal, Vector2 size, int numTiles)
-    {
-        wallSize = size;
-    }
-
     protected override void Activate()
     {
         base.Activate();
         ApplyMaterial(aMaterial);
-        
-        var pos = transform.position;
-        var single = adjacent / numberTiles;
-       
-        for (int i = 0; i < numberTiles; i++)
-        {
-            pos += direction.normalized * single;
-        }
+        InitMesh();
     }
 
     private void TunnelVerts(Vector3 center, Vector3 aDir, Vector3 size)
@@ -132,7 +113,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         lastVert = 0;
         vertIndices.Clear();
         testPos.Clear();
-        var myDir = new Vector3(xDir, yDir, zDir);
+        var myDir = Vector3.right;
         var pSize = new Vector2(200, 400);
         var corns = new Vector3[4];
         var counter = 0;
@@ -380,19 +361,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
     
-    private void SetPoints2(Color pointColor,int num)
-    {
-        Gizmos.color = pointColor;
-        
-        for (int i = 0; i < Corners.Count; i++)
-        {
-            Gizmos.DrawSphere(Corners[i], 4);
-            Handles.Label(Corners[i], $"{num++}");
-            Gizmos.DrawSphere(Corners[i] + direction * wallSize.z, 4);
-            Handles.Label(Corners[i]+ direction * wallSize.z, $"{num++}");
-        }
-    }
-
     private void TangentWall(Vector3 aDir)
     {
         var pos = transform.position;
@@ -439,9 +407,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
         var edge = Vector3.right;
         var cross = Vector3.Cross(edge, Vector3.up);
-        var start = edge * (cornerS.x + roomS.x) / 2;
+        var start = pos + edge * ((cornerS.x + roomS.x) / 2);
         AddSquare(start + cross * 50, cornerS, edge);
-        
         AddSquare(start + cross * -50, cornerS, edge + edge);
         
         DrawCorners(pos);
