@@ -227,15 +227,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         return dotC - 1;
     }
 
-    private bool GetPosAtIndex(Vector3 index, out Vector3 newPos)
-    {
-        newPos = Vector3.zero;
-        if(!vertIndices.ContainsKey(index)) return false;
-
-        newPos = testPos[vertIndices[index]];
-        return true;
-    }
-    
     private void GetDots(Vector3 dir,float extent, float angle, List<Vector3> dotPos)
     {
         var test = dir * extent;
@@ -434,14 +425,14 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         lastVert = 0;
         
         var pos = transform.position;
-        var size = new Vector3(20, 20);
-        var roomSize = new Vector3(200, 200);
-        FourCorners(pos, roomSize + size);
-        SetIndexFromAngle(90, roomSize);
+        var cornerS = new Vector3(20, 20);
+        var roomS = new Vector3(200, 200);
+        FourCorners(pos, roomS + cornerS);
+        SetIndexFromAngle(90, roomS);
         
         foreach (var cPos in cornerPos)
         {
-            AddSquare(cPos.Value, size, cPos.Key);
+            AddSquare(cPos.Value, cornerS, cPos.Key);
         }
         FindClosestPoints(pos);
         DrawCorners();
@@ -453,7 +444,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             PlaceDot(Color.red, t, lastVert++);
         }
-
         
         for (int i = 0; i < vList.Count; i++)
         {
