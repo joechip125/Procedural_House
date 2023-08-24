@@ -44,6 +44,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private Dictionary<Vector3, int> vertIndices = new ();
     private List<Vector3> testPos = new();
+    private List<Vector3> cornerPos = new();
 
     [Header("Direction")]
     [SerializeField, Range(-1,1)] private float xDir;
@@ -636,11 +637,13 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var newDir = Vector3.right;
         FourCorners(pos, new Vector3(200,200));
 
-        AddSquare(pos, size, index);
-        AddSquare(size, newDir, index, 200);
-        AddSquare(size, Vector3.forward, index, 200);
-        AddSquare(size, newDir + Vector3.forward, index, 200);
-
+        var plus = 0;
+        foreach (var cPos in cornerPos)
+        {
+            AddSquare(cPos, size, index + Vector3.right * plus);
+            plus++;
+        }
+        
         foreach (var c in cornerDict)
         {
             var first = c.Value.firstVert;
@@ -651,15 +654,16 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 DrawLine(testPos[cCorner],testPos[nCorner], Color.green);
             }
         }
-
-        ConnectDots(index, newDir, mainCenter);
-        ConnectDots(index, Vector3.forward, mainCenter);
-        ConnectDots(newDir, newDir + Vector3.forward, mainCenter);
-        ConnectDots(newDir + Vector3.forward, Vector3.forward, mainCenter);
+        ConnectDots(index, newDir, pos);
+        //ConnectDots(index, newDir, mainCenter);
+        //ConnectDots(index, Vector3.forward, mainCenter);
+        //ConnectDots(newDir, newDir + Vector3.forward, mainCenter);
+        //ConnectDots(newDir + Vector3.forward, Vector3.forward, mainCenter);
     }
 
     private void FourCorners(Vector3 center, Vector3 size)
     {
+        cornerPos.Clear();
         MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
         
         var mag = Mathf.Sqrt(Mathf.Pow(size.y / 2, 2) + Mathf.Pow(size.x / 2, 2));
@@ -670,10 +674,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             var remain = i % 2 == 0 ? tan : tan2;
             var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
-            testPos.Add(center + cAngle.normalized * mag);
-            PlaceDot(Color.red, center + cAngle.normalized * mag, lastVert++);
+            cornerPos.Add(center + cAngle.normalized * mag);
         }
-     
     }
     
     private void AddSquare(Vector3 center, Vector3 size, Vector3 newIndex)
