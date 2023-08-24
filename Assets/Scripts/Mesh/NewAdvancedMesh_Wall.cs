@@ -44,7 +44,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private Dictionary<Vector3, int> vertIndices = new ();
     private List<Vector3> testPos = new();
-    private List<Vector3> cornerPos = new();
+    private Dictionary<Vector3, Vector3> cornerPos = new();
 
     [Header("Direction")]
     [SerializeField, Range(-1,1)] private float xDir;
@@ -631,7 +631,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         lastVert = 0;
         
         var pos = transform.position;
-        var mainCenter = pos + new Vector3(100, 0, 100);
         var size = new Vector3(20, 20);
         var index = Vector3.zero;
         var newDir = Vector3.right;
@@ -640,7 +639,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var plus = 0;
         foreach (var cPos in cornerPos)
         {
-            AddSquare(cPos, size, index + Vector3.right * plus);
+            AddSquare(cPos.Value, size, index + Vector3.right * plus);
             plus++;
         }
         
@@ -674,7 +673,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             var remain = i % 2 == 0 ? tan : tan2;
             var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
-            cornerPos.Add(center + cAngle.normalized * mag);
+            cornerPos.Add(cAngle,center + cAngle.normalized * mag);
         }
     }
     
