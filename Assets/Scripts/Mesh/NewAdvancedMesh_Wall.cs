@@ -444,18 +444,19 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             PlaceDot(Color.red, t, lastVert++);
         }
-        
-        for (int i = 0; i < vList.Count; i++)
+
+        FindClosestPoints(Vector3.zero);
+        var count = vList.Count;
+        for (int i = 0; i < count; i++)
         {
-            var index = i >= 3 ? 0 : i + 1;
-            DrawLine(testPos[vList[i]], testPos[vList[index]], Color.blue);
+            DrawLine(testPos[vList[i]], testPos[vList[i >= count - 1 ? 0 : i + 1]], Color.blue);
         }
-        FindDistantPoints(Vector3.zero);
         
-        for (int i = 0; i < vList.Count; i++)
+        FindDistantPoints(Vector3.zero);
+        count = vList.Count;
+        for (int i = 0; i < count; i++)
         {
-            var index = i >= 3 ? 0 : i + 1;
-            DrawLine(testPos[vList[i]], testPos[vList[index]], Color.red);
+            DrawLine(testPos[vList[i]], testPos[vList[i >= count - 1 ? 0 : i + 1]], Color.red);
         }
         
         foreach (var c in cornerDict)
@@ -463,7 +464,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             var first = c.Value.firstVert;
             for (int i = 0; i < 4; i++)
             {
-               // DrawLine(testPos[first+i],testPos[i >= 3 ? first : first+i+1], Color.green);
+                DrawLine(testPos[first+i],testPos[i >= 3 ? first : first+i+1], Color.green);
             }
         }
     }
