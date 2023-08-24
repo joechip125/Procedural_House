@@ -658,9 +658,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             var first = c.Value.firstVert;
             for (int i = 0; i < 4; i++)
             {
-                var cCorner = first + i;
-                var nCorner =  i >= 3 ? first : cCorner + 1;
-                DrawLine(testPos[cCorner],testPos[nCorner], Color.green);
+                DrawLine(testPos[first+i],testPos[i >= 3 ? first : first+i+1], Color.green);
             }
         }
         //ConnectDots(index, newDir, pos);
@@ -697,8 +695,10 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         cornerPos.Clear();
         MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
+        var cSize = new Vector3(20, 20);
+        var totalX = cSize.x / 2 + size.x / 2;
         
-        var mag = Mathf.Sqrt(Mathf.Pow(size.y / 2, 2) + Mathf.Pow(size.x / 2, 2));
+        var mag = Mathf.Sqrt(Mathf.Pow(cSize.y / 2 + size.y / 2, 2) + Mathf.Pow(cSize.x / 2 + size.x / 2, 2));
         var tan =Mathf.Atan(size.y / size.x) * (180 / Mathf.PI);
         var tan2 =Mathf.Atan(size.x / size.y) * (180 / Mathf.PI);
         
