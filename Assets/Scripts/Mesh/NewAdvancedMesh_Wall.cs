@@ -46,6 +46,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private List<Vector3> testPos = new();
     private Dictionary<Vector3, Vector3> cornerPos = new();
     private List<Vector3> indices = new();
+    private List<int> vList = new();
 
     [Header("Direction")]
     [SerializeField, Range(-1,1)] private float xDir;
@@ -634,7 +635,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var pos = transform.position;
         var size = new Vector3(20, 20);
         var roomSize = new Vector3(200, 200);
-        FourCorners(pos, new Vector3(200,200));
+        FourCorners(pos, roomSize + size);
 
         SetIndexFromAngle(90, roomSize);
         
@@ -669,8 +670,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
         var cAngle = Quaternion.AngleAxis(angle, Vector3.up) *pRight;
         var index = new Vector3(Mathf.Round(cAngle.x), Mathf.Round(cAngle.y), Mathf.Round(cAngle.z));
-
-
+        
         return index;
     }
     private void SetIndexFromAngle(float angle, Vector3 size)
@@ -680,8 +680,9 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         
         var tan =Mathf.Atan(size.y / size.x) * (180 / Mathf.PI);
         var tan2 =Mathf.Atan(size.x / size.y) * (180 / Mathf.PI);
+        var count = 360 / angle;
         
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < count; i++)
         {
             var remain = i % 2 == 0 ? tan : tan2;
             var cAngle = Quaternion.AngleAxis(remain + angle * i, Vector3.up) *pRight;
@@ -695,10 +696,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         cornerPos.Clear();
         MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
-        var cSize = new Vector3(20, 20);
-        var totalX = cSize.x / 2 + size.x / 2;
         
-        var mag = Mathf.Sqrt(Mathf.Pow(cSize.y / 2 + size.y / 2, 2) + Mathf.Pow(cSize.x / 2 + size.x / 2, 2));
+        var mag = Mathf.Sqrt(Mathf.Pow(size.y / 2, 2) + Mathf.Pow(size.x / 2, 2));
         var tan =Mathf.Atan(size.y / size.x) * (180 / Mathf.PI);
         var tan2 =Mathf.Atan(size.x / size.y) * (180 / Mathf.PI);
         
@@ -765,6 +764,37 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var first = cornerDict[wIndex].firstVert;
         var minDist = Vector3.Distance(testPos[first], point);
         var rPoint = first;
+
+        for (int i = first; i < first + 4; i++)
+        {
+            var dist  = Vector3.Distance(testPos[i], point);
+
+            if (!(dist < minDist)) continue;
+            minDist = dist;
+            rPoint = i;
+        }
+
+        return rPoint;
+    }
+    
+    private int FindClosestPoints(Vector3 wIndex, Vector3 point)
+    {
+        var first = cornerDict[wIndex].firstVert;
+        var minDist = Vector3.Distance(testPos[first], point);
+        var rPoint = first;
+
+        foreach (var c in cornerDict)
+        {
+            var f = c.Value.firstVert;
+            for (int i = f; i < f + 4; i++)
+            {
+                var dist  = Vector3.Distance(testPos[i], point);
+
+                if (!(dist < minDist)) continue;
+                minDist = dist;
+                rPoint = i;
+            }
+        }
 
         for (int i = first; i < first + 4; i++)
         {
