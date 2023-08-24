@@ -673,7 +673,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             var remain = i % 2 == 0 ? tan : tan2;
             var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
-            cornerPos.Add(cAngle,center + cAngle.normalized * mag);
+            var testIndex = new Vector3(Mathf.Round(cAngle.x), Mathf.Round(cAngle.y), Mathf.Round(cAngle.z));
+            cornerPos.Add(testIndex,center + cAngle.normalized * mag);
         }
     }
     
