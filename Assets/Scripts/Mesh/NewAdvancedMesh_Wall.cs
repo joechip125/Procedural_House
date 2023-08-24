@@ -633,10 +633,15 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         
         var pos = transform.position;
         var size = new Vector3(20, 20);
+        var roomSize = new Vector3(200, 200);
         FourCorners(pos, new Vector3(200,200));
-        GetIndexFromAngle(0);
-        GetIndexFromAngle(90);
-        GetIndexFromAngle(180);
+
+        SetIndexFromAngle(90, roomSize);
+
+        foreach (var i in indices)
+        {
+            Debug.Log($"{i}");
+        }
         foreach (var cPos in cornerPos)
         {
             AddSquare(cPos.Value, size, cPos.Key);
@@ -660,12 +665,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
         var cAngle = Quaternion.AngleAxis(angle, Vector3.up) *pRight;
         var index = new Vector3(Mathf.Round(cAngle.x), Mathf.Round(cAngle.y), Mathf.Round(cAngle.z));
-        Debug.Log($"angle {angle}, index {index}");
-        
+
 
         return index;
     }
-    private void SetIndexFromAngle(float angle, Vector3 center, Vector3 size)
+    private void SetIndexFromAngle(float angle, Vector3 size)
     {
         indices.Clear();
         MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
@@ -676,7 +680,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         for (int i = 0; i < 4; i++)
         {
             var remain = i % 2 == 0 ? tan : tan2;
-            var cAngle = Quaternion.AngleAxis(remain + angle * 90 , Vector3.up) *pRight;
+            var cAngle = Quaternion.AngleAxis(remain + angle * i, Vector3.up) *pRight;
             var testIndex = new Vector3(Mathf.Round(cAngle.x), Mathf.Round(cAngle.y), Mathf.Round(cAngle.z));
             indices.Add(testIndex);
         }
