@@ -646,11 +646,12 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
         foreach (var c in cornerDict)
         {
+            var first = c.Value.firstVert;
             for (int i = 0; i < c.Value.cornerVerts.Count; i++)
             {
-                nextI = i >= 3 ? 0 : nextI + 1;
-                var cCorner = c.Value.cornerVerts[i];
-                var nCorner = c.Value.cornerVerts[nextI];
+                nextI = i >= 3 ? first : nextI + 1;
+                var cCorner = first + i;
+                var nCorner =  i >= 3 ? first : cCorner + 1;
                 DrawLine(testPos[cCorner],testPos[nCorner], Color.green);
             }
             nextI = 0;
