@@ -45,6 +45,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private Dictionary<Vector3, int> vertIndices = new ();
     private List<Vector3> testPos = new();
     private Dictionary<Vector3, Vector3> cornerPos = new();
+    private List<Vector3> indices = new();
 
     [Header("Direction")]
     [SerializeField, Range(-1,1)] private float xDir;
@@ -632,15 +633,13 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         
         var pos = transform.position;
         var size = new Vector3(20, 20);
-        var index = Vector3.zero;
-        var newDir = Vector3.right;
         FourCorners(pos, new Vector3(200,200));
-
-        var plus = 0;
+        GetIndexFromAngle(0);
+        GetIndexFromAngle(90);
+        GetIndexFromAngle(180);
         foreach (var cPos in cornerPos)
         {
-            AddSquare(cPos.Value, size, index + Vector3.right * plus);
-            plus++;
+            AddSquare(cPos.Value, size, cPos.Key);
         }
         
         foreach (var c in cornerDict)
@@ -653,13 +652,37 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 DrawLine(testPos[cCorner],testPos[nCorner], Color.green);
             }
         }
-        ConnectDots(index, newDir, pos);
-        //ConnectDots(index, newDir, mainCenter);
-        //ConnectDots(index, Vector3.forward, mainCenter);
-        //ConnectDots(newDir, newDir + Vector3.forward, mainCenter);
-        //ConnectDots(newDir + Vector3.forward, Vector3.forward, mainCenter);
+        //ConnectDots(index, newDir, pos);
     }
 
+    private Vector3 GetIndexFromAngle(float angle)
+    {
+        MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
+        var cAngle = Quaternion.AngleAxis(angle, Vector3.up) *pRight;
+        var index = new Vector3(Mathf.Round(cAngle.x), Mathf.Round(cAngle.y), Mathf.Round(cAngle.z));
+        Debug.Log($"angle {angle}, index {index}");
+        
+
+        return index;
+    }
+    private void SetIndexFromAngle(float angle, Vector3 center, Vector3 size)
+    {
+        indices.Clear();
+        MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
+        
+        var tan =Mathf.Atan(size.y / size.x) * (180 / Mathf.PI);
+        var tan2 =Mathf.Atan(size.x / size.y) * (180 / Mathf.PI);
+        
+        for (int i = 0; i < 4; i++)
+        {
+            var remain = i % 2 == 0 ? tan : tan2;
+            var cAngle = Quaternion.AngleAxis(remain + angle * 90 , Vector3.up) *pRight;
+            var testIndex = new Vector3(Mathf.Round(cAngle.x), Mathf.Round(cAngle.y), Mathf.Round(cAngle.z));
+            indices.Add(testIndex);
+        }
+
+    }
+    
     private void FourCorners(Vector3 center, Vector3 size)
     {
         cornerPos.Clear();
