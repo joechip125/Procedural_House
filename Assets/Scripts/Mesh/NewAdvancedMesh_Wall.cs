@@ -450,13 +450,20 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             var index = i >= 3 ? 0 : i + 1;
             DrawLine(testPos[vList[i]], testPos[vList[index]], Color.blue);
         }
+        FindDistantPoints(Vector3.zero);
+        
+        for (int i = 0; i < vList.Count; i++)
+        {
+            var index = i >= 3 ? 0 : i + 1;
+            DrawLine(testPos[vList[i]], testPos[vList[index]], Color.red);
+        }
         
         foreach (var c in cornerDict)
         {
             var first = c.Value.firstVert;
             for (int i = 0; i < 4; i++)
             {
-                DrawLine(testPos[first+i],testPos[i >= 3 ? first : first+i+1], Color.green);
+               // DrawLine(testPos[first+i],testPos[i >= 3 ? first : first+i+1], Color.green);
             }
         }
     }
@@ -588,6 +595,26 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
                 if (!(dist < minDist)) continue;
                 minDist = dist;
+                rPoint = i;
+            }
+            vList.Add(rPoint);
+        }
+    }
+    private void FindDistantPoints(Vector3 point)
+    {
+        vList.Clear();
+
+        foreach (var c in cornerDict)
+        {
+            var f = c.Value.firstVert;
+            var max = Single.NegativeInfinity;
+            var rPoint = f;
+            for (int i = f; i < f + 4; i++)
+            {
+                var dist  = Vector3.Distance(testPos[i], point);
+
+                if (dist < max) continue;
+                max = dist;
                 rPoint = i;
             }
             vList.Add(rPoint);
