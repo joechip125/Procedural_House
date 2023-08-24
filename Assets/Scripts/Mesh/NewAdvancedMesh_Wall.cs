@@ -643,7 +643,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             AddSquare(cPos.Value, size, cPos.Key);
         }
-        
+        FindClosestPoints(pos);
         DrawCorners();
     }
 
@@ -654,6 +654,13 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             PlaceDot(Color.red, t, lastVert++);
         }
 
+        
+        for (int i = 0; i < vList.Count; i++)
+        {
+            var index = i >= 3 ? 0 : i + 1;
+            DrawLine(testPos[vList[i]], testPos[vList[index]], Color.blue);
+        }
+        
         foreach (var c in cornerDict)
         {
             var first = c.Value.firstVert;
@@ -662,6 +669,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 DrawLine(testPos[first+i],testPos[i >= 3 ? first : first+i+1], Color.green);
             }
         }
+        
         //ConnectDots(index, newDir, pos);
     }
     
