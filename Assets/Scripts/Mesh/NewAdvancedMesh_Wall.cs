@@ -637,16 +637,22 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         FourCorners(pos, new Vector3(200,200));
 
         SetIndexFromAngle(90, roomSize);
-
-        foreach (var i in indices)
-        {
-            Debug.Log($"{i}");
-        }
+        
         foreach (var cPos in cornerPos)
         {
             AddSquare(cPos.Value, size, cPos.Key);
         }
         
+        DrawCorners();
+    }
+
+    private void DrawCorners()
+    {
+        foreach (var t in testPos)
+        {
+            PlaceDot(Color.red, t, lastVert++);
+        }
+
         foreach (var c in cornerDict)
         {
             var first = c.Value.firstVert;
@@ -659,7 +665,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
         //ConnectDots(index, newDir, pos);
     }
-
+    
     private Vector3 GetIndexFromAngle(float angle)
     {
         MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
@@ -712,7 +718,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             center = center,
             size = size,
-            firstVert = lastVert
+            firstVert = testPos.Count
         };
         
         var mag = Mathf.Sqrt(Mathf.Pow(size.y / 2, 2) + Mathf.Pow(size.x / 2, 2));
@@ -724,7 +730,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             var remain = i % 2 == 0 ? tan : tan2;
             var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
             testPos.Add(center + cAngle.normalized * mag);
-            PlaceDot(Color.red, center + cAngle.normalized * mag, lastVert++);
         }
         cornerDict.Add(newIndex, bWall);
     }
@@ -738,7 +743,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             center = start,
             size = size,
-            firstVert = lastVert
+            firstVert = testPos.Count
         };
         
         var mag = Mathf.Sqrt(Mathf.Pow(size.y / 2, 2) + Mathf.Pow(size.x / 2, 2));
@@ -750,7 +755,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             var remain = i % 2 == 0 ? tan : tan2;
             var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
             testPos.Add(start + cAngle.normalized * mag);
-            PlaceDot(Color.red, start + cAngle.normalized * mag, lastVert++);
         }
         cornerDict.Add(oldIndex + newDir, bWall);
     }
