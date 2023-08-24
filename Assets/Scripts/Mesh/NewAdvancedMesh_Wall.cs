@@ -14,9 +14,9 @@ using Vector3 = UnityEngine.Vector3;
 using Vector4 = System.Numerics.Vector4;
 
 [Serializable]
-public class CornerInfo
+public class RoomSegment
 {
-    public List<BaseWall> wallSegments = new();
+    public Dictionary<Vector3,BaseWall> wallSegments = new();
 }
 
 [Serializable]
@@ -264,199 +264,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
     
-    private void GizmoSideVerts2(Vector3 pos, Vector3 normal, Vector2 innerSize, Vector2 outerSize)
-    {
-        var counter = 0;
-        var vAmount = 8;
-        var hAmount = 8;
-        var lowest = 5;
-        var vInc = outerSize.y / vAmount;
-        var hInc = outerSize.x / hAmount;
-
-        var iStart = new Vector2((outerSize.x - innerSize.x) /2, lowest);
-        var iEnd = iStart + innerSize;
-        var pPos = Vector2.zero;
-        var pDot = true;
-
-        PlaneDirections(normal, out var pUp, out var pRight);
-        VizPlane(pos);
-        for (int i = 0; i < vAmount; i++)
-        {
-            pPos.y = vInc * i;
-            
-            if (pos.y < iStart.y)
-            {
-                //if (pPos.y > iStart.y) pPos.y  = iStart.y;
-            }
-            else if (pos.y > iStart.y && pPos.y + vInc < iEnd.y)
-            {
-                //if (pPos.y > iEnd.y) pPos.y = iEnd.y;
-            }
-            pos = pUp * pPos.y;
-            
-            for (int j = 0; j < hAmount; j++)
-            {
-                pPos.x = hInc * j;
-                var addVec = pRight * hInc;
-
-                if (pPos.x < iStart.x)
-                {
-                    if (pPos.x + hInc >= iStart.x)
-                    {
-                       // addVec = pRight * iStart.x;
-                    }    
-                }
-                else if (pPos.x < iEnd.x)
-                {
-                    if (pPos.x + hInc >= iEnd.x)
-                    {
-                      //  addVec = pRight * iEnd.x;
-                    }    
-                }
-
-
-                if (pPos.x >= iStart.x && pPos.x < iEnd.x)
-                {
-                    if (pPos.y >= iStart.y && pPos.y < iEnd.y)
-                    {
-                        pDot = false;
-                    }
-                }
-                
-                else
-                {
-                    pDot = true;
-                }
-
-                if(pDot) PlaceDot(Color.red, pos, counter++);
-                else  PlaceDot(Color.green, pos, counter++);
-                pos += addVec;
-            }
-        }
-    }
-    
-    private void GizmoSideVerts(Vector3 pos, Vector3 dir, Vector2 innerSize, Vector2 outerSize)
-    {
-        var vAmount = 6;
-        var hAmount = 8;
-        var lowest = 5;
-        var vInc = outerSize.y / vAmount;
-        var hInc = outerSize.x / hAmount;
-        var counter = 0;
-        var iStart = pos + (dir * (outerSize.x - innerSize.x) /2) + Vector3.up * lowest;
-        var iEnd = iStart + dir * innerSize.x + Vector3.up * innerSize.y;
-        var side = dir * (outerSize - innerSize).x / 2;
-        var center = dir * innerSize.x;
-        var nextX = Vector3.zero;
-        var nextY = Vector3.zero;
-        var firstSet = false;
-
-        var start = pos;
-        var tempCount = 0;
-        var skipNext = false;
-        
-        for (int i = 0; i < 9; i++)
-        {
-            for (int j = 0; j < vAmount; j++)
-            {
-                if (skipNext)
-                {
-                    counter = StackEm(pos, counter, new Vector2(iStart.y, iEnd.y), outerSize.y, vAmount);
-                    skipNext = false;
-                    break;
-                }
-                
-                nextY = pos + Vector3.up * vInc;
-                nextX = pos + dir * hInc;
-                var nextAll = pos + (Vector3.up * vInc) + (dir * hInc);
-
-                var currPlace = WhereIsPoint(iStart, iEnd, pos);
-                var nextPlace = WhereIsPoint(iStart, iEnd, nextAll);
-                Debug.Log($"current {currPlace}, next {nextPlace}");
-
-
-                if (currPlace.x < 0 && currPlace.y < 0)
-                {
-                    if (nextPlace.x < 0)
-                    {
-                        
-                    }
-                    
-                    if (currPlace.x < 0 && currPlace.y < 0)
-                    {
-                    
-                    }    
-                }
-                
-                var cMin = pos;
-                var cMax = (nextX + nextY ) / 2;
-                if (IsPointInSquare(cMin, cMax, iStart))
-                {
-                    skipNext = true;
-                    continue;
-                }
-
-                if (IsPointInSquare(cMin, cMax, iStart + dir * innerSize.x))
-                {
-                    skipNext = true;
-                    continue;
-                }
-                
-                if (!IsPointInSquare(iStart, iEnd, pos))
-                {
-                    PlaceDot(Color.red, pos, counter++);
-                    
-                    if (IsPointInSquare(iStart, iEnd, nextX))
-                    {
-                        //PlaceDot(Color.green, new Vector3(iStart.x, pos.y, iStart.z), counter++);
-                    }
-
-                    if (nextY.y > iStart.y && nextY.y < iEnd.y && pos.y < 10)
-                    {
-                        PlaceDot(Color.green, new Vector3(pos.x, iStart.y + (Vector3.up * 10).y, pos.z), counter++);
-                    }
-                    
-                    else if (nextY.y > iEnd.y && nextY.y < outerSize.y)
-                    {
-                       PlaceDot(Color.green, new Vector3(pos.x, iEnd.y + (Vector3.up * 10).y, pos.z), counter++);
-                    }
-                    
-                }
-                else
-                {
-                    if (nextY.y > iEnd.y && nextY.y < outerSize.y)
-                    {
-                        PlaceDot(Color.green, new Vector3(pos.x, iEnd.y + (Vector3.up * 10).y, pos.z), counter++);
-                    }
-                    
-                    if (nextX.x > iEnd.x || nextX.z > iEnd.z)
-                    {
-                        //PlaceDot(Color.green, new Vector3(iEnd.x, pos.y, iEnd.z), counter++);
-                    }
-                }
-                
-                pos += Vector3.up * vInc;
-            }
-
-            start += dir * hInc;
-            pos = start; 
-        }
-    }
-
-    private int LineEm(Vector3 pos, int count, Vector3 dir, float length, int numDots)
-    {
-        var outVal = count;
-        
-        for (int i = 0; i < numDots; i++)
-        {
-            var next = pos + dir * (length / numDots);
-            PlaceDot(Color.green, pos, outVal++);
-            pos += dir * (length / numDots);
-        }
-
-        return outVal;
-    }
-    
     private int StackEm(Vector3 pos, int count, Vector2 startEnd, float height, int numDots)
     {
         var outVal = count;
@@ -511,12 +318,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         return outVec;
     }
     
-    private void SVerts2(Vector3 normalDir)
-    {
-        var aRight = Vector3.Cross(normalDir, Vector3.up).normalized;
-        
-    }
-
     private void DrawLine(Vector3 origin, Vector3 end, Color color, string label = "")
     {
         Gizmos.color = color;
@@ -636,7 +437,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var size = new Vector3(20, 20);
         var roomSize = new Vector3(200, 200);
         FourCorners(pos, roomSize + size);
-
         SetIndexFromAngle(90, roomSize);
         
         foreach (var cPos in cornerPos)
@@ -669,8 +469,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 DrawLine(testPos[first+i],testPos[i >= 3 ? first : first+i+1], Color.green);
             }
         }
-        
-        //ConnectDots(index, newDir, pos);
     }
     
     private Vector3 GetIndexFromAngle(float angle)
@@ -695,7 +493,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             var remain = i % 2 == 0 ? tan : tan2;
             var cAngle = Quaternion.AngleAxis(remain + angle * i, Vector3.up) *pRight;
             var testIndex = new Vector3(Mathf.Round(cAngle.x), Mathf.Round(cAngle.y), Mathf.Round(cAngle.z));
-            indices.Add(testIndex);
+            indices.Add(cAngle);
         }
 
     }
@@ -714,7 +512,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             var remain = i % 2 == 0 ? tan : tan2;
             var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
             var testIndex = new Vector3(Mathf.Round(cAngle.x), Mathf.Round(cAngle.y), Mathf.Round(cAngle.z));
-            cornerPos.Add(testIndex,center + cAngle.normalized * mag);
+            cornerPos.Add(cAngle,center + cAngle.normalized * mag);
         }
     }
     
