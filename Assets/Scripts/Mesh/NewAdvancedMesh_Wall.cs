@@ -683,12 +683,14 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         cornerDict.Add(newIndex, bWall);
     }
 
-    private void AddSquare(Vector3 center, Vector3 size, Vector3 newDir, Vector3 oldIndex)
+    private void AddSquare(Vector3 size, Vector3 newDir, Vector3 oldIndex, float extend)
     {
         MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
+        var start = cornerDict[oldIndex].center + newDir * extend;
+
         var bWall = new BaseWall()
         {
-            center = center,
+            center = start,
             size = size,
             firstVert = lastVert
         };
@@ -701,9 +703,9 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             var remain = i % 2 == 0 ? tan : tan2;
             var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
-            testPos.Add(center + cAngle.normalized * mag);
+            testPos.Add(start + cAngle.normalized * mag);
             bWall.cornerVerts.Add(lastVert);
-            PlaceDot(Color.red, center + cAngle.normalized * mag, lastVert++);
+            PlaceDot(Color.red, start + cAngle.normalized * mag, lastVert++);
         }
         cornerDict.Add(oldIndex + newDir, bWall);
     }
