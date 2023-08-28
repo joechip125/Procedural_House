@@ -389,7 +389,12 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         lastVert = 0;
         var pos = transform.position;
         SquareSegment(pos);
-        
+        var dir = -(Vector3.right + Vector3.back);
+        var angle= Quaternion.AngleAxis(45, Vector3.up) *dir;
+        var angle2= Quaternion.AngleAxis(-45, Vector3.up) *dir;
+        Gizmos.DrawLine(testPos[13], testPos[13] + angle.normalized * 100);
+        Gizmos.DrawLine(testPos[13], testPos[13] + angle2.normalized * 100);
+        Debug.Log($"{dir}");
        // var edge = Vector3.right;
        // var cross = Vector3.Cross(edge, Vector3.up);
        // var start = pos + edge * ((cornerS.x + roomS.x) / 2);
