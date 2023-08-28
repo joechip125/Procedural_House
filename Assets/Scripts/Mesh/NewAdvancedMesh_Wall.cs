@@ -387,8 +387,16 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         testPos.Clear();
         cornerDict.Clear();
         lastVert = 0;
-        
         var pos = transform.position;
+        SquareSegment(pos);
+        
+       // var edge = Vector3.right;
+       // var cross = Vector3.Cross(edge, Vector3.up);
+       // var start = pos + edge * ((cornerS.x + roomS.x) / 2);
+    }
+
+    private void SquareSegment(Vector3 pos)
+    {
         var cornerS = new Vector3(15, 15);
         var roomS = new Vector3(200, 200);
         FourCorners(pos, roomS + cornerS);
@@ -398,19 +406,10 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             AddSquare(cPos.Value, cornerS, cPos.Key);
         }
-
-        var edge = Vector3.right;
-        var cross = Vector3.Cross(edge, Vector3.up);
-        var start = pos + edge * ((cornerS.x + roomS.x) / 2);
-        AddSquare(start + cross * 50, cornerS, edge);
-        AddSquare(start + cross * -50, cornerS, edge + edge);
-        
-        AddSquare(start + edge * 200 + cross * 50, cornerS, edge * 3);
-        AddSquare(start + edge * 200 + cross * -50, cornerS, edge * 4);
         
         DrawCorners(pos);
     }
-
+    
     private void DrawCorners(Vector3 pos)
     {
         foreach (var t in testPos)
