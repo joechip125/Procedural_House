@@ -388,22 +388,20 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         cornerDict.Clear();
         lastVert = 0;
         var pos = transform.position;
-        SquareSegment(pos);
+        var size = new Vector3(200, 200);
+        var corner = new Vector3(15, 15);
+        SquareSegment(pos, size, corner);
         var dir = -(Vector3.right + Vector3.back);
         var angle= Quaternion.AngleAxis(45, Vector3.up) *dir;
         var angle2= Quaternion.AngleAxis(-45, Vector3.up) *dir;
         Gizmos.DrawLine(testPos[13], testPos[13] + angle.normalized * 100);
         Gizmos.DrawLine(testPos[13], testPos[13] + angle2.normalized * 100);
-        Debug.Log($"{dir}");
-       // var edge = Vector3.right;
-       // var cross = Vector3.Cross(edge, Vector3.up);
-       // var start = pos + edge * ((cornerS.x + roomS.x) / 2);
+        
+        FindClosestPoints(pos);
     }
 
-    private void SquareSegment(Vector3 pos)
+    private void SquareSegment(Vector3 pos, Vector3 roomS, Vector3 cornerS)
     {
-        var cornerS = new Vector3(15, 15);
-        var roomS = new Vector3(200, 200);
         FourCorners(pos, roomS + cornerS);
         SetIndexFromAngle(90, roomS);
         
@@ -422,19 +420,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             PlaceDot(Color.red, t, lastVert++);
         }
 
-        FindClosestPoints(pos);
-        var count = vList.Count;
-        for (int i = 0; i < count; i++)
-        {
-            //DrawLine(testPos[vList[i]], testPos[vList[i >= count - 1 ? 0 : i + 1]], Color.blue);
-        }
-        
-        FindDistantPoints(pos);
-        count = vList.Count;
-        for (int i = 0; i < count; i++)
-        {
-            //DrawLine(testPos[vList[i]], testPos[vList[i >= count - 1 ? 0 : i + 1]], Color.red);
-        }
+       
         
         foreach (var c in cornerDict)
         {
