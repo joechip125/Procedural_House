@@ -50,7 +50,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         InitMesh();
         ApplyMaterial(aMaterial);
-        
     }
     
     protected override void Activate()
@@ -389,20 +388,18 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         lastVert = 0;
         var pos = transform.position;
         var size = new Vector3(200, 200);
+        var size2 = new Vector3(100, 100);
         var corner = new Vector3(15, 15);
         SquareSegment(pos, size, corner, Vector3.zero);
         var dir = -(Vector3.right + Vector3.back);
-        var next = pos + Vector3.right * ((size.x + corner.x) * 1.5f);
-       // SquareSegment(next, size, corner, Vector3.right);
+        
+        var amount = ((size.x + corner.x) / 2) + ((size2.x + corner.x) / 2);
+        var next = pos + Vector3.right * amount;
+        SquareSegment(next, size2, corner, Vector3.right);
         var angle= Quaternion.AngleAxis(45, Vector3.up) *dir;
         var angle2= Quaternion.AngleAxis(-45, Vector3.up) *dir;
-
-       // FindClosestPoints(pos);
-       // var test = (testPos[vList[0]] - testPos[vList[3]]).normalized;
-       // Debug.Log($"{test}");
-       // var aPos = testPos[vList[3]];
-       // Gizmos.DrawLine(aPos, aPos + angle.normalized * 100);
-       // Gizmos.DrawLine(aPos, aPos + angle2.normalized * 100);
+        
+        DrawCorners(pos);
     }
 
     private void SquareSegment(Vector3 pos, Vector3 roomS, Vector3 cornerS, Vector3 currIndex)
@@ -414,8 +411,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             AddSquare(cPos.Value, cornerS, cPos.Key);
         }
-        
-        DrawCorners(pos);
     }
     
     private void DrawCorners(Vector3 pos)
@@ -424,7 +419,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             PlaceDot(Color.red, t, lastVert++);
         }
-
         
         foreach (var c in cornerDict)
         {
@@ -457,7 +451,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             var remain = i % 2 == 0 ? tan : tan2;
             var cAngle = Quaternion.AngleAxis(remain + angle * i, Vector3.up) *pRight;
-            var testIndex = new Vector3(Mathf.Round(cAngle.x), Mathf.Round(cAngle.y), Mathf.Round(cAngle.z));
             indices.Add(cAngle);
         }
     }
@@ -475,7 +468,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             var remain = i % 2 == 0 ? tan : tan2;
             var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
-            var testIndex = new Vector3(Mathf.Round(cAngle.x), Mathf.Round(cAngle.y), Mathf.Round(cAngle.z));
             cornerPos.Add(cAngle + mainIndex,center + cAngle.normalized * mag);
         }
     }
