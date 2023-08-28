@@ -405,6 +405,9 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         AddSquare(start + cross * 50, cornerS, edge);
         AddSquare(start + cross * -50, cornerS, edge + edge);
         
+        AddSquare(start + edge * 200 + cross * 50, cornerS, edge * 3);
+        AddSquare(start + edge * 200 + cross * -50, cornerS, edge * 4);
+        
         DrawCorners(pos);
     }
 
