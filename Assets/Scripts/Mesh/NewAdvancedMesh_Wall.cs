@@ -19,6 +19,9 @@ using Vector4 = System.Numerics.Vector4;
 public class RoomSegment
 {
     public Dictionary<Vector3,BaseWall> wallSegments = new();
+    public Vector3 center;
+    public Vector3 size;
+    public int firstVert;
 }
 
 [Serializable]
@@ -34,6 +37,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     [SerializeField] private float adjacent;
 
     private Dictionary<Vector3,BaseWall> cornerDict = new();
+    private Dictionary<Vector3,RoomSegment> segmentDict = new();
     
     private int lastVert;
     
