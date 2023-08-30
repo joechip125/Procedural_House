@@ -395,16 +395,18 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var size = new Vector3(200, 200);
         var size2 = new Vector3(100, 100);
         var corner = new Vector3(15, 15);
-        SquareSegment(pos, size, corner, Vector3.zero);
+        AddSegment(pos, size, corner, Vector3.zero);
+        
+       // SquareSegment(pos, size, corner, Vector3.zero);
         var dir = -(Vector3.right + Vector3.back);
         
         var amount = ((size.x + corner.x) / 2) + ((size2.x + corner.x) / 2);
         var next = pos + Vector3.right * amount;
-        SquareSegment(next, size2, corner, Vector3.right);
+       // SquareSegment(next, size2, corner, Vector3.right);
         var angle= Quaternion.AngleAxis(45, Vector3.up) *dir;
         var angle2= Quaternion.AngleAxis(-45, Vector3.up) *dir;
         
-        DrawCorners(pos);
+       // DrawCorners(pos);
     }
 
     private void AddSegment(Vector3 pos, Vector3 roomS, Vector3 cornerS, Vector3 currIndex)
@@ -418,6 +420,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             var seg = AddSquare(cPos.Value, cornerS, cPos.Key);
             segment.wallSegments.Add(cPos.Key, seg);
+            PlaceDot(Color.green, cPos.Value, lastVert++);
         }
         segmentDict.Add(currIndex, segment);
     }
