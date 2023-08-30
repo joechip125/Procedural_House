@@ -35,9 +35,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private Dictionary<Vector3,BaseWall> cornerDict = new();
     
-    
     private int lastVert;
-
+    
     public Material aMaterial;
 
     private Dictionary<Vector3, int> vertIndices = new ();
