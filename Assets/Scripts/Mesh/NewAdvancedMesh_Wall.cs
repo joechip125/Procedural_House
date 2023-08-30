@@ -21,7 +21,6 @@ public class RoomSegment
     public Dictionary<Vector3,BaseWall> wallSegments = new();
     public Vector3 center;
     public Vector3 size;
-    public int firstVert;
 }
 
 [Serializable]
@@ -420,9 +419,14 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             var seg = AddSquare(cPos.Value, cornerS, cPos.Key);
             segment.wallSegments.Add(cPos.Key, seg);
-            PlaceDot(Color.green, cPos.Value, lastVert++);
+           // PlaceDot(Color.green, cPos.Value, lastVert++);
         }
         segmentDict.Add(currIndex, segment);
+        
+        foreach (var w in segment.wallSegments)
+        {
+            PlaceDot(Color.green, w.Value.center, lastVert++);
+        }
     }
 
     private void SquareSegment(Vector3 pos, Vector3 roomS, Vector3 cornerS, Vector3 currIndex)
