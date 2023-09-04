@@ -397,21 +397,27 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private void DrawCorner(Vector3 pos)
     {
-        var size = new Vector3(200, 200);
+        var size = new Vector3(200, 1,200);
+        var size3 = new Vector3(200, 200);
         var size2 = new Vector3(100, 100);
         var corner = new Vector3(15, 15);
 
-        SquareSegment(pos, size, corner, Vector3.right);
-        DrawACube(pos, new Vector3(size.x,1, size.y), Color.green);
+        SquareSegment(pos, size3, corner, Vector3.right);
+        DrawACube(pos, size, Color.green);
 
         var amount = ((size.x + corner.x) / 2) + ((size2.x + corner.x) / 2);
         var next = pos + Vector3.right * amount;
 
         foreach (var c in cornerPos)
         {
-            DrawACube(c.Value, new Vector3(corner.x,1, corner.y), Color.red);
+           // DrawACube(c.Value, new Vector3(corner.x,1, corner.y), Color.red);
         }
+        var cAngle = Quaternion.AngleAxis(90, Vector3.up) * Vector3.right;
+        var cAngle2 = Quaternion.AngleAxis(180, Vector3.up) * Vector3.right;
+        var aScale = Vector3.Scale(size + corner, cAngle) / 2;
         
+        Debug.Log($"angle {cAngle} angle2 {cAngle2} scale {aScale} size {size + corner}");
+        DrawACube(pos + aScale, new Vector3(corner.x,1, 200), Color.blue);
         DrawCorners(pos);
     }
 
