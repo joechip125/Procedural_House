@@ -401,9 +401,10 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var size3 = new Vector3(200, 200);
         var size2 = new Vector3(100, 100);
         var corner = new Vector3(15, 15);
+        var corner2 = new Vector3(15, 1, 15);
 
         SquareSegment(pos, size3, corner, Vector3.right);
-        DrawACube(pos, size, Color.green);
+        DrawACube(pos, size3, Color.green);
 
         var amount = ((size.x + corner.x) / 2) + ((size2.x + corner.x) / 2);
         var next = pos + Vector3.right * amount;
@@ -414,17 +415,17 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
         var cAngle = Quaternion.AngleAxis(90, Vector3.up) * Vector3.right;
         var cAngle2 = Quaternion.AngleAxis(180, Vector3.up) * Vector3.right;
-        var aScale = Vector3.Scale(size + corner, cAngle) / 2;
+        var aScale = Vector3.Scale(size + corner2, cAngle) / 2;
         
-        Debug.Log($"angle {cAngle} angle2 {cAngle2} scale {aScale} size {size + corner}");
-        DrawACube(pos + aScale, new Vector3(corner.x,1, 200), Color.blue);
+        Debug.Log($"angle {cAngle} angle2 {cAngle2} scale {aScale} size {size + corner2}");
+        DrawACube(pos + aScale, new Vector2(200, corner2.z), Color.blue);
         DrawCorners(pos);
     }
 
-    private void DrawACube(Vector3 pos, Vector3 size, Color color)
+    private void DrawACube(Vector3 pos, Vector2 size, Color color)
     {
         Gizmos.color = color;
-        Gizmos.DrawCube(pos, size);
+        Gizmos.DrawCube(pos, new Vector3(size.x, 1, size.y));
     }
     
     private void AddSegment(Vector3 pos, Vector3 roomS, Vector3 cornerS, Vector3 currIndex)
