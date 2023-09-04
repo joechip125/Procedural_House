@@ -396,19 +396,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var corner = new Vector3(15, 15);
        // AddSegment(pos, size, corner, Vector3.zero);
         
-        SquareSegment(pos, size, corner, Vector3.right);
-        Gizmos.DrawCube(pos, new Vector3(size.x,1, size.y));
-
-        var amount = ((size.x + corner.x) / 2) + ((size2.x + corner.x) / 2);
-        var next = pos + Vector3.right * amount;
-        SquareSegment(next, size2, corner, Vector3.right * 2);
-        Gizmos.DrawCube(next, new Vector3(size2.x,1, size2.y));
-
-        var dir = -(Vector3.right + Vector3.back);
-        var angle= Quaternion.AngleAxis(45, Vector3.up) *dir;
-        var angle2= Quaternion.AngleAxis(-45, Vector3.up) *dir;
-        
-        DrawCorners(pos);
+        DrawCorner(pos);
     }
 
     private void DrawCorner(Vector3 pos)
@@ -424,10 +412,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var next = pos + Vector3.right * amount;
         SquareSegment(next, size2, corner, Vector3.right * 2);
         Gizmos.DrawCube(next, new Vector3(size2.x,1, size2.y));
-
-        var dir = -(Vector3.right + Vector3.back);
-        var angle= Quaternion.AngleAxis(45, Vector3.up) *dir;
-        var angle2= Quaternion.AngleAxis(-45, Vector3.up) *dir;
         
         DrawCorners(pos);
     }
