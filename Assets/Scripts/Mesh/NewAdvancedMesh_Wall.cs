@@ -413,12 +413,20 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
            // DrawACube(c.Value, new Vector3(corner.x,1, corner.y), Color.red);
         }
-        var cAngle = Quaternion.AngleAxis(90, Vector3.up) * Vector3.right;
-        var cAngle2 = Quaternion.AngleAxis(180, Vector3.up) * Vector3.right;
+        var cAngle = Quaternion.AngleAxis(0, Vector3.up) * Vector3.right;
+        var cAngle2 = Quaternion.AngleAxis(90, Vector3.up) * Vector3.right;
         var aScale = Vector3.Scale(size + corner2, cAngle) / 2;
-        
+
+
+        if (cAngle.x != 0)
+        {
+            DrawACube(pos + aScale, new Vector2(corner2.x, 200), Color.blue);
+        }
+        else if (cAngle.z != 0)
+        {
+            DrawACube(pos + aScale, new Vector2(200, corner2.z), Color.blue);
+        }
         Debug.Log($"angle {cAngle} angle2 {cAngle2} scale {aScale} size {size + corner2}");
-        DrawACube(pos + aScale, new Vector2(200, corner2.z), Color.blue);
         DrawCorners(pos);
     }
 
