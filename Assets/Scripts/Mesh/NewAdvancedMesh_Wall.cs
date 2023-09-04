@@ -10,6 +10,7 @@ using UnityEditor;
 using UnityEngine;
 using Zenject.ReflectionBaking.Mono.Cecil;
 using Color = UnityEngine.Color;
+using Matrix4x4 = UnityEngine.Matrix4x4;
 using Quaternion = UnityEngine.Quaternion;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
@@ -416,8 +417,12 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var cAngle = Quaternion.AngleAxis(0, Vector3.up) * Vector3.right;
         var cAngle2 = Quaternion.AngleAxis(90, Vector3.up) * Vector3.right;
         var aScale = Vector3.Scale(size + corner2, cAngle) / 2;
-
-
+        var oldGizmoMatrix = Gizmos.matrix;
+        
+        var cubeTransform = Matrix4x4.TRS(pos, Quaternion.identity, new Vector3(1,1,1));
+        Gizmos.matrix = oldGizmoMatrix * cubeTransform;
+        
+        Debug.Log($"{cubeTransform}");
         if (cAngle.x != 0)
         {
             DrawACube(pos + aScale, new Vector2(corner2.x, 200), Color.blue);
@@ -426,7 +431,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             DrawACube(pos + aScale, new Vector2(200, corner2.z), Color.blue);
         }
-        Debug.Log($"angle {cAngle} angle2 {cAngle2} scale {aScale} size {size + corner2}");
+        
         DrawCorners(pos);
     }
 
