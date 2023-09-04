@@ -428,15 +428,18 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             var aScale2 = Vector3.Scale(size + corner2, cAngle3) / 2;
             var cubePos = pos + aScale2;
             
-            if (cAngle3.x != 0)
+            
+            if (cAngle3.x is > 0.1f or < -0.1f)
             {
-               // DrawACube(cubePos, new Vector2(corner2.x, 200), Color.blue);
+                DrawACube(cubePos, new Vector2(corner2.x, 200), Color.blue);
+                continue;
             }
-            else if (cAngle3.z != 0)
+            
+            if (cAngle3.z is > 0.1f or < -0.1f)
             {
-                Debug.Log($"{cAngle3}");
                 DrawACube(cubePos, new Vector2(200, corner2.z), Color.blue);
             }
+         
         }
 
         DrawCorners(pos);
