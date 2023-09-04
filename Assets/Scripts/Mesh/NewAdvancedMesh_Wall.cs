@@ -391,11 +391,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         lastVert = 0;
         
         var pos = transform.position;
-        var size = new Vector3(200, 200);
-        var size2 = new Vector3(100, 100);
-        var corner = new Vector3(15, 15);
-       // AddSegment(pos, size, corner, Vector3.zero);
-        
+
         DrawCorner(pos);
     }
 
@@ -406,14 +402,23 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var corner = new Vector3(15, 15);
 
         SquareSegment(pos, size, corner, Vector3.right);
-        Gizmos.DrawCube(pos, new Vector3(size.x,1, size.y));
+        DrawACube(pos, new Vector3(size.x,1, size.y), Color.green);
 
         var amount = ((size.x + corner.x) / 2) + ((size2.x + corner.x) / 2);
         var next = pos + Vector3.right * amount;
-        SquareSegment(next, size2, corner, Vector3.right * 2);
-        Gizmos.DrawCube(next, new Vector3(size2.x,1, size2.y));
+
+        foreach (var c in cornerPos)
+        {
+            DrawACube(c.Value, new Vector3(corner.x,1, corner.y), Color.red);
+        }
         
         DrawCorners(pos);
+    }
+
+    private void DrawACube(Vector3 pos, Vector3 size, Color color)
+    {
+        Gizmos.color = color;
+        Gizmos.DrawCube(pos, size);
     }
     
     private void AddSegment(Vector3 pos, Vector3 roomS, Vector3 cornerS, Vector3 currIndex)
@@ -421,8 +426,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var segment = new RoomSegment();
 
         FourCorners(pos, roomS + cornerS, currIndex);
-        SetIndexFromAngle(90, roomS);
-        
+
         foreach (var cPos in cornerPos)
         {
             var seg = AddSquare(cPos.Value, cornerS, cPos.Key);
@@ -440,8 +444,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void SquareSegment(Vector3 pos, Vector3 roomS, Vector3 cornerS, Vector3 currIndex)
     {
         FourCorners(pos, roomS + cornerS, currIndex);
-        SetIndexFromAngle(90, roomS);
-        
+
         foreach (var cPos in cornerPos)
         {
             AddSquare(cPos.Value, cornerS, cPos.Key);
