@@ -420,19 +420,28 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var oldGizmoMatrix = Gizmos.matrix;
         
         var cubeTransform = Matrix4x4.TRS(pos, Quaternion.identity, new Vector3(1,1,1));
-        Gizmos.matrix = oldGizmoMatrix * cubeTransform;
-        
-        Debug.Log($"{cubeTransform}");
-        if (cAngle.x != 0)
+        //Gizmos.matrix = oldGizmoMatrix * cubeTransform;
+
+        for (int i = 0; i < 4; i++)
         {
-            DrawACube(pos + aScale, new Vector2(corner2.x, 200), Color.blue);
+            var cAngle3 = Quaternion.AngleAxis(i * 90, Vector3.up) * Vector3.right;
+            var aScale2 = Vector3.Scale(size + corner2, cAngle3) / 2;
+            var cubePos = pos + aScale2;
+            
+            if (cAngle3.x != 0)
+            {
+               // DrawACube(cubePos, new Vector2(corner2.x, 200), Color.blue);
+            }
+            else if (cAngle3.z != 0)
+            {
+                Debug.Log($"{cAngle3}");
+                DrawACube(cubePos, new Vector2(200, corner2.z), Color.blue);
+            }
         }
-        else if (cAngle.z != 0)
-        {
-            DrawACube(pos + aScale, new Vector2(200, corner2.z), Color.blue);
-        }
-        
+
         DrawCorners(pos);
+        
+        //Gizmos.matrix = oldGizmoMatrix;
     }
 
     private void DrawACube(Vector3 pos, Vector2 size, Color color)
