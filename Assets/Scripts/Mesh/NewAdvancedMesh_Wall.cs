@@ -420,7 +420,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var oldGizmoMatrix = Gizmos.matrix;
         
         var cubeTransform = Matrix4x4.TRS(pos, Quaternion.identity, new Vector3(1,1,1));
-        //Gizmos.matrix = oldGizmoMatrix * cubeTransform;
 
         for (int i = 0; i < 4; i++)
         {
@@ -442,8 +441,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
 
         DrawCorners(pos);
-        
-        //Gizmos.matrix = oldGizmoMatrix;
     }
 
     private void DrawACube(Vector3 pos, Vector2 size, Color color)
