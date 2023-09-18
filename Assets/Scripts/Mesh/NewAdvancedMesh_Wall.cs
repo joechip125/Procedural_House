@@ -459,7 +459,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             var seg = AddSquare(cPos.Value, cornerS, cPos.Key);
             segment.wallSegments.Add(cPos.Key, seg);
-           // PlaceDot(Color.green, cPos.Value, lastVert++);
         }
         segmentDict.Add(currIndex, segment);
         
