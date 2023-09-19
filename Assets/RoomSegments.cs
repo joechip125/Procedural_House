@@ -18,10 +18,7 @@ public class RoomSegments : MonoBehaviour
     [SerializeField] private float startAxis;
 
     public int numberX, numberZ;
-
     private int lastVert;
-
-    
     public Vector3 currentPos;
     
     private readonly Vector3[] corners = new[]
@@ -31,12 +28,9 @@ public class RoomSegments : MonoBehaviour
             new Vector3(1, 0, 0) };
 
     private Segment[] segArray;
-    
-    
-
     public float aDegree;
     
-    
+   
     private void Start()
     {
         mesh = GetComponent<AdvancedMesh>();
