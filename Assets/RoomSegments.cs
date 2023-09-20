@@ -29,8 +29,6 @@ public class RoomSegments : MonoBehaviour
 
     private Segment[] segArray;
     public float aDegree;
-    
-   
     private void Start()
     {
         mesh = GetComponent<AdvancedMesh>();
@@ -108,7 +106,6 @@ public class RoomSegments : MonoBehaviour
         {
             SetAPanel(new Vector3(-startDir.z,-1,0), size, new Vector3(0, 0,-startDir.z));
         }
-
         currentPos = start;
     }
     
@@ -162,7 +159,6 @@ public class RoomSegments : MonoBehaviour
             cross = Vector3.up.y > 0 ? Vector3.Cross(Vector3.forward, Vector3.right) 
                 : Vector3.Cross(Vector3.forward, -Vector3.right);
         }
-
         return Quaternion.AngleAxis(angle, direction)* cross;
     }
 
@@ -204,7 +200,6 @@ public class RoomSegments : MonoBehaviour
                 poss = (aCrossUp * (theSize.x / 2)) + addPos;
                 poss2 = aCrossUp2 * (theSize.y / 2) + addPos;
             }
-
             else
             {
                 poss = aCrossUp * theSize.y / 2 + addPos;
