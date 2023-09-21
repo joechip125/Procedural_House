@@ -439,8 +439,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             }
          
         }
-
-        DrawCorners(pos);
+        DrawCorners();
     }
 
     private void DrawACube(Vector3 pos, Vector2 size, Color color)
@@ -478,7 +477,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
     
-    private void DrawCorners(Vector3 pos)
+    private void DrawCorners()
     {
         foreach (var t in testPos)
         {
@@ -585,7 +584,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
         cornerDict.Add(oldIndex + newDir, bWall);
     }
-
     
     private int FindClosestPoint(Vector3 wIndex, Vector3 point)
     {
