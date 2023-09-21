@@ -62,6 +62,16 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         InitMesh();
     }
 
+    private void BrandNewWall()
+    {
+        testPos.Clear();
+        cornerDict.Clear();
+        segmentDict.Clear();
+        lastVert = 0;
+        
+        
+    }
+    
     private void TunnelVerts(Vector3 center, Vector3 aDir, Vector3 size)
     {
         SetSquare(aDir, center, new Vector2(size.x, size.y));
@@ -437,7 +447,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             {
                 DrawACube(cubePos, new Vector2(200, corner2.z), Color.blue);
             }
-         
         }
         DrawCorners();
     }
