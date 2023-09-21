@@ -76,7 +76,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
         foreach (var c in cornerDict)
         {
-            
+            Debug.Log($"{c.Value}");
         }
     }
     
@@ -500,6 +500,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         
         return index;
     }
+    
     private void SetIndexFromAngle(float angle, Vector3 size)
     {
         indices.Clear();
