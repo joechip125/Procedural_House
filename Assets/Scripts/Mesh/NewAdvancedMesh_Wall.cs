@@ -73,6 +73,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var size = new Vector3(400,0,400);
         var cSize = new Vector3(15,0,15);
         SquareSegment(pos,size, cSize, Vector3.zero);
+
+        foreach (var c in cornerDict)
+        {
+            
+        }
     }
     
     private void TunnelVerts(Vector3 center, Vector3 aDir, Vector3 size)
@@ -458,25 +463,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         Gizmos.color = color;
         Gizmos.DrawCube(pos, new Vector3(size.x, 1, size.y));
-    }
-    
-    private void AddSegment(Vector3 pos, Vector3 roomS, Vector3 cornerS, Vector3 currIndex)
-    {
-        var segment = new RoomSegment();
-
-        FourCorners(pos, roomS + cornerS, currIndex);
-
-        foreach (var cPos in cornerPos)
-        {
-            var seg = AddSquare(cPos.Value, cornerS, cPos.Key);
-            segment.wallSegments.Add(cPos.Key, seg);
-        }
-        segmentDict.Add(currIndex, segment);
-        
-        foreach (var w in segment.wallSegments)
-        {
-            PlaceDot(Color.green, w.Value.center, lastVert++);
-        }
     }
 
     private void SquareSegment(Vector3 pos, Vector3 roomS, Vector3 cornerS, Vector3 currIndex)
