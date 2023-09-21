@@ -68,8 +68,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         cornerDict.Clear();
         segmentDict.Clear();
         lastVert = 0;
-        
-        
+
+        var pos = transform.position;
+        var size = new Vector3(400,0,400);
+        var cSize = new Vector3(15,0,15);
+        SquareSegment(pos,size, cSize, Vector3.zero);
     }
     
     private void TunnelVerts(Vector3 center, Vector3 aDir, Vector3 size)
