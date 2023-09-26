@@ -74,15 +74,13 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var cSize = new Vector3(15,0,15);
         
         AddCorners(Vector3.right, 4, pos,size);
-
-        
     }
 
     private void AddCorners(Vector3 startDir, int numCorners, Vector3 pos, Vector3 size)
     {
         cornerPos.Clear();
         MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
-        FourCorners(pos, size, Vector3.right);
+        FourCorners(pos, size);
         
         foreach (var c in cornerPos)
         {
@@ -437,11 +435,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
         var amount = ((size.x + corner.x) / 2) + ((size2.x + corner.x) / 2);
         var next = pos + Vector3.right * amount;
-
-        foreach (var c in cornerPos)
-        {
-           // DrawACube(c.Value, new Vector3(corner.x,1, corner.y), Color.red);
-        }
+        
         var cAngle = Quaternion.AngleAxis(0, Vector3.up) * Vector3.right;
         var cAngle2 = Quaternion.AngleAxis(90, Vector3.up) * Vector3.right;
         var aScale = Vector3.Scale(size + corner2, cAngle) / 2;
@@ -541,6 +535,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             var remain = i % 2 == 0 ? tan : tan2;
             var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
+            Debug.Log(cAngle);
             cornerPos.Add(center + cAngle.normalized * mag);
         }
     }
