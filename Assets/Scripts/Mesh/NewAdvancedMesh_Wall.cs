@@ -82,7 +82,25 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private void AddCorners(Vector3 startDir, int numCorners)
     {
+        cornerPos.Clear();
+        MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
         
+        var mag = Mathf.Sqrt(Mathf.Pow(size.y / 2, 2) + Mathf.Pow(size.x / 2, 2));
+        var tan =Mathf.Atan(size.y / size.x) * (180 / Mathf.PI);
+        var tan2 =Mathf.Atan(size.x / size.y) * (180 / Mathf.PI);
+        
+        for (int i = 0; i < 4; i++)
+        {
+            var remain = i % 2 == 0 ? tan : tan2;
+            var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
+            cornerPos.Add(cAngle + mainIndex,center + cAngle.normalized * mag);
+        }
+        FourCorners(pos, roomS + cornerS, currIndex);
+
+        foreach (var cPos in cornerPos)
+        {
+            AddSquare(cPos.Value, cornerS, cPos.Key);
+        }
     }
 
     private void TunnelVerts(Vector3 center, Vector3 aDir, Vector3 size)
