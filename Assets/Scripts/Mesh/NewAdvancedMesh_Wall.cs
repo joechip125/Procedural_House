@@ -79,7 +79,12 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
            
         }
     }
-    
+
+    private void AddCorners(Vector3 startDir, int numCorners)
+    {
+        
+    }
+
     private void TunnelVerts(Vector3 center, Vector3 aDir, Vector3 size)
     {
         SetSquare(aDir, center, new Vector2(size.x, size.y));
