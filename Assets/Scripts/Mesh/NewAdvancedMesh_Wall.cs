@@ -45,21 +45,21 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private Dictionary<Vector3, int> vertIndices = new ();
     private List<Vector3> testPos = new();
-    private Dictionary<Vector3, Vector3> cornerPos = new();
+    private List<Vector3> cornerPos = new();
     private List<Vector3> indices = new();
     private List<int> vList = new();
     
     private void Awake()
     {
-        InitMesh();
-        ApplyMaterial(aMaterial);
+        Activate();
+        BrandNewWall();
     }
     
     protected override void Activate()
     {
         base.Activate();
-        ApplyMaterial(aMaterial);
         InitMesh();
+        ApplyMaterial(aMaterial);
     }
 
     private void BrandNewWall()
@@ -75,21 +75,18 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         
         AddCorners(Vector3.right, 4, pos,size);
 
-        foreach (var c in cornerDict)
-        {
-           
-        }
+        
     }
 
     private void AddCorners(Vector3 startDir, int numCorners, Vector3 pos, Vector3 size)
     {
         cornerPos.Clear();
         MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
-        FourCorners(pos, size, Vector3.zero);
-
-        foreach (var c in cornerDict)
+        FourCorners(pos, size, Vector3.right);
+        Debug.Log($"{cornerPos.Count}");
+        foreach (var c in cornerPos)
         {
-            Debug.Log($"{c.Value.center}");
+            Debug.Log($"{c}");
         }
     }
 
@@ -484,7 +481,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
         foreach (var cPos in cornerPos)
         {
-            AddSquare(cPos.Value, cornerS, cPos.Key);
+          //  AddSquare(cPos.Value, cornerS, cPos.Key);
         }
     }
     
@@ -544,7 +541,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             var remain = i % 2 == 0 ? tan : tan2;
             var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
-            cornerPos.Add(cAngle + mainIndex,center + cAngle.normalized * mag);
+            cornerPos.Add(center + cAngle.normalized * mag);
         }
     }
     
