@@ -76,7 +76,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
         foreach (var c in cornerDict)
         {
-            Debug.Log($"{c.Value}");
+           
         }
     }
     
