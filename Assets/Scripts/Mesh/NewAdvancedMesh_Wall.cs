@@ -72,7 +72,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var pos = transform.position;
         var size = new Vector3(400,0,400);
         var cSize = new Vector3(15,0,15);
-        SquareSegment(pos,size, cSize, Vector3.zero);
+        
+        AddCorners(Vector3.right, 4, pos,size);
 
         foreach (var c in cornerDict)
         {
@@ -80,26 +81,15 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
 
-    private void AddCorners(Vector3 startDir, int numCorners)
+    private void AddCorners(Vector3 startDir, int numCorners, Vector3 pos, Vector3 size)
     {
         cornerPos.Clear();
         MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
-        
-        var mag = Mathf.Sqrt(Mathf.Pow(size.y / 2, 2) + Mathf.Pow(size.x / 2, 2));
-        var tan =Mathf.Atan(size.y / size.x) * (180 / Mathf.PI);
-        var tan2 =Mathf.Atan(size.x / size.y) * (180 / Mathf.PI);
-        
-        for (int i = 0; i < 4; i++)
-        {
-            var remain = i % 2 == 0 ? tan : tan2;
-            var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
-            cornerPos.Add(cAngle + mainIndex,center + cAngle.normalized * mag);
-        }
-        FourCorners(pos, roomS + cornerS, currIndex);
+        FourCorners(pos, size, Vector3.zero);
 
-        foreach (var cPos in cornerPos)
+        foreach (var c in cornerDict)
         {
-            AddSquare(cPos.Value, cornerS, cPos.Key);
+            Debug.Log($"{c.Value.center}");
         }
     }
 
