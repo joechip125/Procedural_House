@@ -83,7 +83,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         cornerPos.Clear();
         MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
         FourCorners(pos, size, Vector3.right);
-        Debug.Log($"{cornerPos.Count}");
+        
         foreach (var c in cornerPos)
         {
             Debug.Log($"{c}");
@@ -477,7 +477,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private void SquareSegment(Vector3 pos, Vector3 roomS, Vector3 cornerS, Vector3 currIndex)
     {
-        FourCorners(pos, roomS + cornerS, currIndex);
+        FourCorners(pos, roomS + cornerS);
 
         foreach (var cPos in cornerPos)
         {
@@ -528,7 +528,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
     
-    private void FourCorners(Vector3 center, Vector3 size, Vector3 mainIndex)
+    private void FourCorners(Vector3 center, Vector3 size)
     {
         cornerPos.Clear();
         MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
