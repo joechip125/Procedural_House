@@ -73,7 +73,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var size = new Vector3(400,0,400);
         var cSize = new Vector3(15,0,15);
         
-        AddCorners(Vector3.right, 4, pos,size);
+        AddCorners(Vector3.right, 4, pos,size + cSize);
     }
 
     private void AddCorners(Vector3 startDir, int numCorners, Vector3 pos, Vector3 size)
@@ -430,7 +430,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var corner = new Vector3(15, 15);
         var corner2 = new Vector3(15, 1, 15);
 
-        SquareSegment(pos, size3, corner, Vector3.right);
+        SquareSegment(pos, size3, corner);
         DrawACube(pos, size3, Color.green);
 
         var amount = ((size.x + corner.x) / 2) + ((size2.x + corner.x) / 2);
@@ -469,13 +469,13 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         Gizmos.DrawCube(pos, new Vector3(size.x, 1, size.y));
     }
 
-    private void SquareSegment(Vector3 pos, Vector3 roomS, Vector3 cornerS, Vector3 currIndex)
+    private void SquareSegment(Vector3 pos, Vector3 roomS, Vector3 cornerS)
     {
         FourCorners(pos, roomS + cornerS);
 
         foreach (var cPos in cornerPos)
         {
-          //  AddSquare(cPos.Value, cornerS, cPos.Key);
+           // AddSquare(cPos, cornerS, cPos.Key);
         }
     }
     
@@ -526,7 +526,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         cornerPos.Clear();
         MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
-        
+
         var mag = Mathf.Sqrt(Mathf.Pow(size.y / 2, 2) + Mathf.Pow(size.x / 2, 2));
         var tan =Mathf.Atan(size.y / size.x) * (180 / Mathf.PI);
         var tan2 =Mathf.Atan(size.x / size.y) * (180 / Mathf.PI);
@@ -535,12 +535,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             var remain = i % 2 == 0 ? tan : tan2;
             var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
-            Debug.Log(cAngle);
             cornerPos.Add(center + cAngle.normalized * mag);
         }
     }
     
-    private BaseWall AddSquare(Vector3 center, Vector3 size, Vector3 newIndex)
+    private void AddSquare(Vector3 center, Vector3 size, Vector3 newIndex)
     {
         MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
         var bWall = new BaseWall()
@@ -561,7 +560,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             testPos.Add(center + cAngle.normalized * mag);
         }
         cornerDict.Add(newIndex, bWall);
-        return bWall;
     }
 
     private void AddSquare(Vector3 size, Vector3 newDir, Vector3 oldIndex, float extend)
@@ -603,7 +601,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             minDist = dist;
             rPoint = i;
         }
-
         return rPoint;
     }
     
