@@ -70,8 +70,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         lastVert = 0;
 
         var pos = transform.position;
-        var size = new Vector3(400,0,400);
-        var cSize = new Vector3(15,0,15);
+        var size = new Vector3(400,1,400);
+        var cSize = new Vector3(15,1,15);
         
         AddCorners(Vector3.right, 4, pos,size + cSize);
     }
@@ -79,7 +79,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void AddCorners(Vector3 startDir, int numCorners, Vector3 pos, Vector3 size)
     {
         cornerPos.Clear();
-        MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
+        var normal = Vector3.up;
+        MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
         
         var mag = Mathf.Sqrt(Mathf.Pow(size.y / 2, 2) + Mathf.Pow(size.x / 2, 2));
         var tan =Mathf.Atan(size.y / size.x) * (180 / Mathf.PI);
@@ -88,7 +89,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         for (int i = 0; i < 4; i++)
         {
             var remain = i % 2 == 0 ? tan : tan2;
-            var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
+            Debug.Log($"{remain}");
+            var cAngle = Quaternion.AngleAxis(remain + 90 * i, normal) *pRight;
             cornerPos.Add(pos + cAngle.normalized * mag);
         }
         
@@ -442,6 +444,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
         SquareSegment(pos, size3, corner);
         DrawACube(pos, size3, Color.green);
+        
+        AddSquare(pos, size + corner, Vector3.zero);
 
         var amount = ((size.x + corner.x) / 2) + ((size2.x + corner.x) / 2);
         var next = pos + Vector3.right * amount;
@@ -562,12 +566,14 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var mag = Mathf.Sqrt(Mathf.Pow(size.y / 2, 2) + Mathf.Pow(size.x / 2, 2));
         var tan =Mathf.Atan(size.y / size.x) * (180 / Mathf.PI);
         var tan2 =Mathf.Atan(size.x / size.y) * (180 / Mathf.PI);
+        Debug.Log($"tan {tan},tan2 {tan2}, mag {mag}");
         
         for (int i = 0; i < 4; i++)
         {
             var remain = i % 2 == 0 ? tan : tan2;
             var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
             testPos.Add(center + cAngle.normalized * mag);
+            Debug.Log($"{remain}, {center + cAngle.normalized * mag}, {cAngle}");
         }
         cornerDict.Add(newIndex, bWall);
     }
