@@ -90,7 +90,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             var remain = i % 2 == 0 ? tan : tan2;
             Debug.Log($"{remain}");
-            var cAngle = Quaternion.AngleAxis(remain + 90 * i, normal) *pRight;
+            var cAngle = Quaternion.AngleAxis( + 90 * i, normal) *pRight;
             cornerPos.Add(pos + cAngle.normalized * mag);
         }
         
@@ -571,7 +571,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         for (int i = 0; i < 4; i++)
         {
             var remain = i % 2 == 0 ? tan : tan2;
-            var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
+            var cAngle = Quaternion.AngleAxis( 90 * i, Vector3.up) *pRight;
             testPos.Add(center + cAngle.normalized * mag);
             Debug.Log($"{remain}, {center + cAngle.normalized * mag}, {cAngle}");
         }
