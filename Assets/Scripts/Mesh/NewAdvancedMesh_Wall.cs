@@ -661,7 +661,10 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     }
     private void OnDrawGizmos()
     {
-        if (Application.isPlaying) return;
+        if (Application.isPlaying)
+        {
+            return;
+        }
         var pos = transform.position;
         BaseWall();
     }
