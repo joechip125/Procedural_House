@@ -83,12 +83,16 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
         
         var mag = Mathf.Sqrt(Mathf.Pow(size.y / 2, 2) + Mathf.Pow(size.x / 2, 2));
+        var mag2 = size.x;
+        var mag3 = size.z;
         var tan =Mathf.Atan(size.y / size.x) * (180 / Mathf.PI);
         var tan2 =Mathf.Atan(size.x / size.y) * (180 / Mathf.PI);
         
         for (int i = 0; i < 4; i++)
         {
             var remain = i % 2 == 0 ? tan : tan2;
+            mag2 = i % 2 == 0 ? size.x : size.z;
+            mag3 = i % 2 == 0 ? size.z : size.x;
             Debug.Log($"{remain}");
             var cAngle = Quaternion.AngleAxis( + 90 * i, normal) *pRight;
             var cAngle2 = Quaternion.AngleAxis( + 180 * i, normal) *pUp;
