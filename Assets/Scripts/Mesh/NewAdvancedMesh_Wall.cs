@@ -672,10 +672,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var pos = transform.position;
         if (Application.isPlaying)
         {
-            return;
-        }
-        else
-        {
             var size = new Vector3(400,1,400);
             var cSize = new Vector3(15,1,15);
             AddCorners(Vector3.right, 4, pos,size + cSize);
@@ -685,7 +681,9 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 PlaceDot(Color.red, c, 0);
                 Debug.Log($"{c}");
             }
+            return;
         }
+      
         BaseWall();
     }
 }
