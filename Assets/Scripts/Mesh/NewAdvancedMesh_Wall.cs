@@ -460,13 +460,13 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             
             if (cAngle3.x is > 0.1f or < -0.1f)
             {
-                DrawACube(cubePos, new Vector2(corner2.x, 200), Color.blue);
+              //  DrawACube(cubePos, new Vector2(corner2.x, 200), Color.blue);
                 continue;
             }
             
             if (cAngle3.z is > 0.1f or < -0.1f)
             {
-                DrawACube(cubePos, new Vector2(200, corner2.z), Color.blue);
+                //DrawACube(cubePos, new Vector2(200, corner2.z), Color.blue);
             }
         }
         DrawCorners();
@@ -561,14 +561,13 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var mag = Mathf.Sqrt(Mathf.Pow(size.y / 2, 2) + Mathf.Pow(size.x / 2, 2));
         var tan =Mathf.Atan(size.y / size.x) * (180 / Mathf.PI);
         var tan2 =Mathf.Atan(size.x / size.y) * (180 / Mathf.PI);
-        Debug.Log($"tan {tan},tan2 {tan2}, mag {mag}");
-        
+        var add = 45;
+
         for (int i = 0; i < 4; i++)
         {
             var remain = i % 2 == 0 ? tan : tan2;
-            var cAngle = Quaternion.AngleAxis( 90 * i, Vector3.up) *pRight;
+            var cAngle = Quaternion.AngleAxis( add +90 * i, Vector3.up) *pRight;
             testPos.Add(center + cAngle.normalized * mag);
-            Debug.Log($"{remain}, {center + cAngle.normalized * mag}, {cAngle}");
         }
         cornerDict.Add(newIndex, bWall);
     }
