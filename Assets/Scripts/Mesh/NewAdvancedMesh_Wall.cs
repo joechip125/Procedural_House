@@ -72,8 +72,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var pos = transform.position;
         var size = new Vector3(400,1,400);
         var cSize = new Vector3(15,1,15);
-        
-       // AddCorners(Vector3.right, 4, pos,size + cSize);
     }
 
     private void AddCorners(Vector3 startDir, int numCorners, Vector3 pos, Vector3 size)
@@ -437,7 +435,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         cornerDict.Clear();
         segmentDict.Clear();
         lastVert = 0;
-        
         var pos = transform.position;
 
         DrawCorner(pos);
@@ -447,7 +444,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         var size = new Vector3(200, 1,200);
         var size3 = new Vector3(200, 200);
-        var size2 = new Vector3(100, 100);
         var corner = new Vector3(15, 15);
         var corner2 = new Vector3(15, 1, 15);
 
@@ -455,17 +451,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         DrawACube(pos, size3, Color.green);
         
         AddSquare(pos, size + corner, Vector3.zero);
-
-        var amount = ((size.x + corner.x) / 2) + ((size2.x + corner.x) / 2);
-        var next = pos + Vector3.right * amount;
         
-        var cAngle = Quaternion.AngleAxis(0, Vector3.up) * Vector3.right;
-        var cAngle2 = Quaternion.AngleAxis(90, Vector3.up) * Vector3.right;
-        var aScale = Vector3.Scale(size + corner2, cAngle) / 2;
-        var oldGizmoMatrix = Gizmos.matrix;
-        
-        var cubeTransform = Matrix4x4.TRS(pos, Quaternion.identity, new Vector3(1,1,1));
-
         for (int i = 0; i < 4; i++)
         {
             var cAngle3 = Quaternion.AngleAxis(i * 90, Vector3.up) * Vector3.right;
