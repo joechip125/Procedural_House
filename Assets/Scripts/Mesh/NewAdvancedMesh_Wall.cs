@@ -104,44 +104,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
 
-    private void TunnelVerts(Vector3 center, Vector3 aDir, Vector3 size)
-    {
-        SetSquare(aDir, center, new Vector2(size.x, size.y));
-        var add = Vertices.Count;
-        var first = add;
-
-        foreach (var c in Corners)
-        {
-            Vertices.Add(c);
-            Vertices.Add(c + aDir * size.z);
-        }
-        
-        for (int i = 0; i < Corners.Count; i++)
-        {
-            if (i == Corners.Count - 1)
-            {
-                Triangles.Add(add);
-                Triangles.Add(add + 1);
-                Triangles.Add(first + 1);
-                
-                Triangles.Add(first + 1);
-                Triangles.Add(first);
-                Triangles.Add(add);
-                continue;
-            }
-            Triangles.Add(add);
-            Triangles.Add(add + 1);
-            Triangles.Add(add + 2);
-            
-            Triangles.Add(add + 1);
-            Triangles.Add(add + 3);
-            Triangles.Add(add + 2);
-            
-            add+= 2;
-        }
-        UpdateMesh();
-    }
-    
     private void PlaneDirections(Vector3 normal, out Vector3 planeUp, out Vector3 planeRight)
     {
         planeUp = Vector3.ProjectOnPlane(normal.x + normal.z == 0 
