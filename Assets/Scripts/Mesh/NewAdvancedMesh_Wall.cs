@@ -91,14 +91,16 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         for (int i = 0; i < 4; i++)
         {
             var remain = i % 2 == 0 ? tan : tan2;
-            mag2 = i % 2 != 0 ? size.x : size.z;
-            mag3 = i % 2 != 0 ? size.z : size.x;
-            var cAngle = Quaternion.AngleAxis( + 90 * i, normal) *pRight;
-            var cAngle2 = Quaternion.AngleAxis( + 180 * i, normal) *pUp;
-            var aPlace = pos + cAngle.normalized * mag;
+            mag2 = (i % 2 != 0 ? size.x : size.z) / 2;
+            mag3 = (i % 2 != 0 ? size.z : size.x) / 2;
+            var cAngle = Quaternion.AngleAxis(90 * i, normal) *pRight;
+            var cAngle2 = Quaternion.AngleAxis(90 * i, normal) *pUp;
+            var aPlace = pos + cAngle.normalized * mag2;
+            var bPlace = pos + cAngle2.normalized * mag3;
+            Debug.Log($"index {i}, angle1 {cAngle}, angle2 {cAngle2}");
             cornerPos.Add(aPlace);
-            PlaceDot(Color.red, aPlace, 0);
-            PlaceDot(Color.green, aPlace +pos + cAngle2.normalized * mag, 0);
+            //PlaceDot(Color.red, bPlace, 0);
+            PlaceDot(Color.red,  bPlace + aPlace, i);
         }
     }
 
@@ -621,7 +623,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var pos = transform.position;
         if (Application.isPlaying)
         {
-            var size = new Vector3(400,1,400);
+            var size = new Vector3(300,1,600);
             var cSize = new Vector3(15,1,15);
             AddCorners(Vector3.right, 4, pos,size + cSize);
             return;
