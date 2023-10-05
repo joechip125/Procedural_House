@@ -82,13 +82,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
         for (int i = 0; i < 4; i++)
         {
-            var mag2 = (i % 2 != 0 ? size.x : size.z) / 2;
-            var mag3 = (i % 2 != 0 ? size.z : size.x) / 2;
             var cAngle = Quaternion.AngleAxis(90 * i, normal) *pRight;
             var cAngle2 = Quaternion.AngleAxis(90 * i, normal) *pUp;
             var aPlace = pos + cAngle.normalized * (i % 2 != 0 ? size.x : size.z) / 2;
             var bPlace = pos + cAngle2.normalized * (i % 2 != 0 ? size.z : size.x) / 2;
-            Debug.Log($"index {i}, angle1 {cAngle}, angle2 {cAngle2}");
+          
             cornerPos.Add(aPlace);
             PlaceDot(Color.red,  bPlace + aPlace, i);
         }
