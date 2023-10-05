@@ -79,27 +79,17 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         cornerPos.Clear();
         var normal = Vector3.up;
         MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
-        
-        var mag = Mathf.Sqrt(Mathf.Pow(size.y / 2, 2) + Mathf.Pow(size.x / 2, 2));
-        var mag2 = size.x;
-        var mag3 = size.z;
-        var add = 45;
-        var tan =Mathf.Atan(size.y / size.x) * (180 / Mathf.PI);
-        var tan2 =Mathf.Atan(size.x / size.y) * (180 / Mathf.PI);
-        var dCount = 0;
-        
+
         for (int i = 0; i < 4; i++)
         {
-            var remain = i % 2 == 0 ? tan : tan2;
-            mag2 = (i % 2 != 0 ? size.x : size.z) / 2;
-            mag3 = (i % 2 != 0 ? size.z : size.x) / 2;
+            var mag2 = (i % 2 != 0 ? size.x : size.z) / 2;
+            var mag3 = (i % 2 != 0 ? size.z : size.x) / 2;
             var cAngle = Quaternion.AngleAxis(90 * i, normal) *pRight;
             var cAngle2 = Quaternion.AngleAxis(90 * i, normal) *pUp;
-            var aPlace = pos + cAngle.normalized * mag2;
-            var bPlace = pos + cAngle2.normalized * mag3;
+            var aPlace = pos + cAngle.normalized * (i % 2 != 0 ? size.x : size.z) / 2;
+            var bPlace = pos + cAngle2.normalized * (i % 2 != 0 ? size.z : size.x) / 2;
             Debug.Log($"index {i}, angle1 {cAngle}, angle2 {cAngle2}");
             cornerPos.Add(aPlace);
-            //PlaceDot(Color.red, bPlace, 0);
             PlaceDot(Color.red,  bPlace + aPlace, i);
         }
     }
@@ -625,7 +615,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             var size = new Vector3(300,1,600);
             var cSize = new Vector3(15,1,15);
-            AddCorners(Vector3.right, 4, pos,size + cSize);
+            AddCorners(Vector3.right, 4, pos,size);
             return;
         }
       
