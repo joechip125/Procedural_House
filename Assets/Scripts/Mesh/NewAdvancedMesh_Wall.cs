@@ -340,33 +340,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
     
-    private void TangentWall(Vector3 aDir)
-    {
-        var pos = transform.position;
-        var arcTan = 100f / adjacent;
-        var newVal = arcTan * adjacent;
-        var addDegrees = 0;
-        var start = pos + aDir * adjacent;
-        var nextDir = Vector3.Cross(Vector3.up, aDir);
-        var hypo2 =Mathf.Sqrt( Mathf.Pow(adjacent, 2) + Mathf.Pow(100,2));
-        var opposite2 = adjacent * (Mathf.Sin(Mathf.PI / 180 * addDegrees) / Mathf.Cos(Mathf.PI / 180 * addDegrees));
-        var angle2= Quaternion.AngleAxis(23, Vector3.up) *aDir;
-        Gizmos.DrawLine(pos, pos + aDir * adjacent);
-        
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(pos, start + nextDir * -500);
-
-        Gizmos.color = Color.yellow;
-        for (int i = 0; i < 4; i++)
-        {
-            var opposite = adjacent * (Mathf.Sin(Mathf.PI / 180 * addDegrees) / Mathf.Cos(Mathf.PI / 180 * addDegrees));
-            var hypo= Mathf.Sqrt( Mathf.Pow(adjacent, 2) + Mathf.Pow(opposite,2));
-            var angle= Quaternion.AngleAxis(addDegrees, Vector3.up) *aDir;
-            Gizmos.DrawLine(pos, pos + angle * hypo);
-            addDegrees += 10;
-        }
-    }
-
     private void BaseWall()
     {
         testPos.Clear();
@@ -384,29 +357,12 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var size3 = new Vector3(200, 200);
         var corner = new Vector3(15, 15);
         var corner2 = new Vector3(15, 1, 15);
-
-        SquareSegment(pos, size3, corner);
+        
+        FourCorners(pos, size + corner);
         DrawACube(pos, size3, Color.green);
         
         AddSquare(pos, size + corner, Vector3.zero);
         
-        for (int i = 0; i < 4; i++)
-        {
-            var cAngle3 = Quaternion.AngleAxis(i * 90, Vector3.up) * Vector3.right;
-            var aScale2 = Vector3.Scale(size + corner2, cAngle3) / 2;
-            var cubePos = pos + aScale2;
-            
-            if (cAngle3.x is > 0.1f or < -0.1f)
-            {
-              //  DrawACube(cubePos, new Vector2(corner2.x, 200), Color.blue);
-                continue;
-            }
-            
-            if (cAngle3.z is > 0.1f or < -0.1f)
-            {
-                //DrawACube(cubePos, new Vector2(200, corner2.z), Color.blue);
-            }
-        }
         DrawCorners();
     }
 
@@ -416,16 +372,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         Gizmos.DrawCube(pos, new Vector3(size.x, 1, size.y));
     }
 
-    private void SquareSegment(Vector3 pos, Vector3 roomS, Vector3 cornerS)
-    {
-        FourCorners(pos, roomS + cornerS);
-
-        foreach (var cPos in cornerPos)
-        {
-           // AddSquare(cPos, cornerS, cPos.Key);
-        }
-    }
-    
     private void DrawCorners()
     {
         foreach (var t in testPos)
@@ -604,7 +550,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             var size = new Vector3(300,1,600);
             var cSize = new Vector3(15,1,15);
-            AddCorners(pos,size, Vector3.right);
+            AddCorners(pos,size, Vector3.up);
             return;
         }
         BaseWall();
