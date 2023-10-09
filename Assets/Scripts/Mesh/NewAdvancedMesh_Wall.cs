@@ -34,8 +34,6 @@ public class BaseWall
 
 public class NewAdvancedMesh_Wall : NewAdvancedMesh
 {
-    [SerializeField] private float adjacent;
-
     private Dictionary<Vector3,BaseWall> cornerDict = new();
     private Dictionary<Vector3,RoomSegment> segmentDict = new();
     
@@ -46,7 +44,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private Dictionary<Vector3, int> vertIndices = new ();
     private List<Vector3> testPos = new();
     private List<Vector3> cornerPos = new();
-    private List<Vector3> indices = new();
     private List<int> vList = new();
     
     private void Awake()
@@ -92,7 +89,18 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private void UseCorners()
     {
+        var place = cornerPos[1] + (cornerPos[2] - cornerPos[1]) / 2;
+        var dir = cornerPos[2] - cornerPos[1];
+        Debug.Log($"{dir.normalized}");
         
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(place, place + dir.normalized * 30);
+        var norm = Vector3.Cross(Vector3.up, dir.normalized);
+        
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(place, place + norm.normalized * 30);
+        
+        PlaceDot(Color.green,  place, 12);
     }
 
     private void VizPlane(Vector3 pos)
