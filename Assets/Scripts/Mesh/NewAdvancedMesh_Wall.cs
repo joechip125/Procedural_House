@@ -90,6 +90,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
 
+    private void UseCorners()
+    {
+        
+    }
+
     private void VizPlane(Vector3 pos)
     {
         lastVert = 0;
@@ -389,32 +394,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
     
-    private Vector3 GetIndexFromAngle(float angle)
-    {
-        MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
-        var cAngle = Quaternion.AngleAxis(angle, Vector3.up) *pRight;
-        var index = new Vector3(Mathf.Round(cAngle.x), Mathf.Round(cAngle.y), Mathf.Round(cAngle.z));
-        
-        return index;
-    }
-    
-    private void SetIndexFromAngle(float angle, Vector3 size)
-    {
-        indices.Clear();
-        MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
-        
-        var tan =Mathf.Atan(size.y / size.x) * (180 / Mathf.PI);
-        var tan2 =Mathf.Atan(size.x / size.y) * (180 / Mathf.PI);
-        var count = 360 / angle;
-        
-        for (int i = 0; i < count; i++)
-        {
-            var remain = i % 2 == 0 ? tan : tan2;
-            var cAngle = Quaternion.AngleAxis(remain + angle * i, Vector3.up) *pRight;
-            indices.Add(cAngle);
-        }
-    }
-    
     private void FourCorners(Vector3 center, Vector3 size)
     {
         cornerPos.Clear();
@@ -454,31 +433,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             testPos.Add(center + cAngle.normalized * mag);
         }
         cornerDict.Add(newIndex, bWall);
-    }
-
-    private void AddSquare(Vector3 size, Vector3 newDir, Vector3 oldIndex, float extend)
-    {
-        MathHelpers.PlaneDirections(Vector3.up, out var pUp, out var pRight);
-        var start = cornerDict[oldIndex].center + newDir * extend;
-
-        var bWall = new BaseWall()
-        {
-            center = start,
-            size = size,
-            firstVert = testPos.Count
-        };
-        
-        var mag = Mathf.Sqrt(Mathf.Pow(size.y / 2, 2) + Mathf.Pow(size.x / 2, 2));
-        var tan =Mathf.Atan(size.y / size.x) * (180 / Mathf.PI);
-        var tan2 =Mathf.Atan(size.x / size.y) * (180 / Mathf.PI);
-        
-        for (int i = 0; i < 4; i++)
-        {
-            var remain = i % 2 == 0 ? tan : tan2;
-            var cAngle = Quaternion.AngleAxis(remain + 90 * i, Vector3.up) *pRight;
-            testPos.Add(start + cAngle.normalized * mag);
-        }
-        cornerDict.Add(oldIndex + newDir, bWall);
     }
     
     private int FindClosestPoint(Vector3 wIndex, Vector3 point)
@@ -551,6 +505,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             var size = new Vector3(300,1,600);
             var cSize = new Vector3(15,1,15);
             AddCorners(pos,size, Vector3.up);
+            UseCorners();
             return;
         }
         BaseWall();
