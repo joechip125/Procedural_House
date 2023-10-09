@@ -90,13 +90,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
 
-    private void PlaneDirections(Vector3 normal, out Vector3 planeUp, out Vector3 planeRight)
-    {
-        planeUp = Vector3.ProjectOnPlane(normal.x + normal.z == 0 
-            ? new Vector2(1,0) : new Vector2(0,1), normal);
-        planeRight = Vector3.Cross(normal, planeUp);
-    }
-
     private void VizPlane(Vector3 pos)
     {
         lastVert = 0;
@@ -106,7 +99,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var pSize = new Vector2(200, 400);
         var corns = new Vector3[4];
         var counter = 0;
-        PlaneDirections(myDir, out var pUp, out var pRight);
+        MathHelpers.PlaneDirections(myDir, out var pUp, out var pRight);
         var endY = pUp.normalized * Mathf.Sqrt(Mathf.Pow(pSize.y, 2))/ 2;
         var endX = pRight.normalized * Mathf.Sqrt(Mathf.Pow(pSize.x, 2))/ 2;
         var rez = 2;
