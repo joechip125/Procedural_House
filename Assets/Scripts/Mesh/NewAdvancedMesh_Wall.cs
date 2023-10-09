@@ -89,8 +89,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private void UseCorners()
     {
-        var place = cornerPos[1] + (cornerPos[2] - cornerPos[1]) / 2;
         var dir = cornerPos[2] - cornerPos[1];
+        var place = cornerPos[1] + dir / 2;
         Debug.Log($"{dir.normalized}");
         
         Gizmos.color = Color.green;
