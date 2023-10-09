@@ -52,7 +52,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void Awake()
     {
         Activate();
-        BrandNewWall();
     }
     
     protected override void Activate()
@@ -76,7 +75,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private void AddCorners(Vector3 pos, Vector3 size, Vector3 normal)
     {
-        cornerPos.Clear()
+        cornerPos.Clear();
         MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
        
         for (int i = 0; i < 4; i++)
@@ -612,10 +611,9 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             var size = new Vector3(300,1,600);
             var cSize = new Vector3(15,1,15);
-            AddCorners(pos,size);
+            AddCorners(pos,size, Vector3.right);
             return;
         }
-      
         BaseWall();
     }
 }
