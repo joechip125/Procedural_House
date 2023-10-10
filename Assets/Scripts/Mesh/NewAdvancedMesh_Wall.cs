@@ -70,6 +70,16 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var cSize = new Vector3(15,1,15);
     }
 
+    private void ManyCorners()
+    {
+        cornerPos.Clear();
+        var pos = transform.position;
+        var size = new Vector3(300,1,600);
+        var cSize = new Vector3(15,1,15);
+        AddCorners(pos,size, Vector3.up);
+        
+    }
+
     private void AddCorners(Vector3 pos, Vector3 size, Vector3 normal)
     {
         cornerPos.Clear();
@@ -92,8 +102,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var nextNum = cornNum == 3 ? 0 : cornNum + 1;
         var dir = cornerPos[nextNum] - cornerPos[cornNum];
         var place = cornerPos[cornNum] + dir / 2;
-        Debug.Log($"{dir.normalized}");
-        
+
         Gizmos.color = Color.green;
         Gizmos.DrawLine(place, place + dir.normalized * 30);
         var norm = Vector3.Cross(Vector3.up, dir.normalized);
@@ -513,7 +522,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             var size = new Vector3(300,1,600);
             var cSize = new Vector3(15,1,15);
-            AddCorners(pos,size, Vector3.up);
+            ManyCorners();
             UseCorners(0);
             return;
         }
