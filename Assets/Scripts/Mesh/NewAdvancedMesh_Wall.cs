@@ -102,6 +102,22 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         
         PlaceDot(Color.green,  place, 12);
     }
+    private void UseCorners(int cornNum)
+    {
+        var nextNum = cornNum == 3 ? 0 : cornNum + 1;
+        var dir = cornerPos[nextNum] - cornerPos[cornNum];
+        var place = cornerPos[cornNum] + dir / 2;
+        Debug.Log($"{dir.normalized}");
+        
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(place, place + dir.normalized * 30);
+        var norm = Vector3.Cross(Vector3.up, dir.normalized);
+        
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(place, place + norm.normalized * 30);
+        
+        PlaceDot(Color.green,  place, 12);
+    }
 
     private void VizPlane(Vector3 pos)
     {
