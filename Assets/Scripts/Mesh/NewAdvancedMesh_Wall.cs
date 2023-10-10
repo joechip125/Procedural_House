@@ -77,12 +77,15 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var size = new Vector3(300,1,600);
         var cSize = new Vector3(15,1,15);
         AddCorners(pos,size, Vector3.up);
-        
+        var count = 0;
+        foreach (var c in cornerPos)
+        {
+            PlaceDot(Color.red,  c, count++);
+        }
     }
 
     private void AddCorners(Vector3 pos, Vector3 size, Vector3 normal)
     {
-        cornerPos.Clear();
         MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
        
         for (int i = 0; i < 4; i++)
@@ -93,7 +96,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             var bPlace = pos + cAngle2.normalized * (i % 2 != 0 ? size.z : size.x) / 2;
           
             cornerPos.Add(bPlace + aPlace);
-            PlaceDot(Color.red,  bPlace + aPlace, i);
         }
     }
     
