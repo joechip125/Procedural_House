@@ -98,6 +98,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             cornerPos.Add(bPlace + aPlace);
         }
     }
+
+    private void MoreCorners(int cornNum)
+    {
+        var nextNum = cornNum == 3 ? 0 : cornNum + 1;
+    }
     
     private void UseCorners(int cornNum)
     {
