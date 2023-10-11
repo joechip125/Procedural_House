@@ -102,6 +102,10 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void MoreCorners(int cornNum)
     {
         var nextNum = cornNum == 3 ? 0 : cornNum + 1;
+        var dir = cornerPos[nextNum] - cornerPos[cornNum];
+        var place = cornerPos[cornNum] + dir / 2;
+        var norm = Vector3.Cross(Vector3.up, dir.normalized);
+        
     }
     
     private void UseCorners(int cornNum)
