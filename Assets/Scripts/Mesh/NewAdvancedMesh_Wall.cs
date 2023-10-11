@@ -77,6 +77,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var size = new Vector3(300,1,600);
         var cSize = new Vector3(15,1,15);
         AddCorners(pos,size, Vector3.up);
+        MoreCorners(0);
         var count = 0;
         foreach (var c in cornerPos)
         {
@@ -106,6 +107,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var place = cornerPos[cornNum] + dir / 2;
         var norm = Vector3.Cross(Vector3.up, dir.normalized);
         
+        PlaceDot(Color.green,  place, 1);
+        PlaceDot(Color.green,  place + -norm * 100, 2);
     }
     
     private void UseCorners(int cornNum)
@@ -113,15 +116,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var nextNum = cornNum == 3 ? 0 : cornNum + 1;
         var dir = cornerPos[nextNum] - cornerPos[cornNum];
         var place = cornerPos[cornNum] + dir / 2;
-
-        Gizmos.color = Color.green;
-        Gizmos.DrawLine(place, place + dir.normalized * 30);
         var norm = Vector3.Cross(Vector3.up, dir.normalized);
         
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(place, place + norm.normalized * 30);
-        
-        PlaceDot(Color.green,  place, 12);
     }
 
     private void VizPlane(Vector3 pos)
