@@ -103,14 +103,17 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void MoreCorners(int cornNum)
     {
         var newSize = new Vector3(200, 0, 200);
+        var interp = 1f;
         var nextNum = cornNum == 3 ? 0 : cornNum + 1;
         var dir = cornerPos[nextNum] - cornerPos[cornNum];
         var place = cornerPos[cornNum] + dir / 2;
         var norm = Vector3.Cross(Vector3.up, dir.normalized);
-        
+        var aStart = Vector3.Lerp(cornerPos[cornNum], cornerPos[nextNum], interp)
+                     + Vector3.Scale(-norm, newSize / 2);
+
         PlaceDot(Color.green,  place, 1);
         var first = place + Vector3.Scale(-norm, newSize / 2);
-        PlaceDot(Color.green, first, 2);
+        PlaceDot(Color.green, aStart, 2);
     }
     
     private void UseCorners(int cornNum)
