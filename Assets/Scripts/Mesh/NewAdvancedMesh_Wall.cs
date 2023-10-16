@@ -102,6 +102,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private void MoreCorners(int cornNum)
     {
+        var newSize = new Vector3(200, 0, 200);
         var nextNum = cornNum == 3 ? 0 : cornNum + 1;
         var dir = cornerPos[nextNum] - cornerPos[cornNum];
         var place = cornerPos[cornNum] + dir / 2;
@@ -109,6 +110,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         
         PlaceDot(Color.green,  place, 1);
         PlaceDot(Color.green,  place + -norm * 100, 2);
+        
+        
     }
     
     private void UseCorners(int cornNum)
