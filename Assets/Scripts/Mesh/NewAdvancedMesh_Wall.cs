@@ -17,26 +17,18 @@ using Vector3 = UnityEngine.Vector3;
 using Vector4 = System.Numerics.Vector4;
 
 [Serializable]
-public class RoomSegment
-{
-    public Dictionary<Vector3,BaseWall> wallSegments = new();
-    public Vector3 center;
-    public Vector3 size;
-}
-
-[Serializable]
 public class BaseWall
 {
     public Vector3 center;
     public Vector3 size;
     public int firstVert;
+    public List<Vector3> points = new();
 }
 
 public class NewAdvancedMesh_Wall : NewAdvancedMesh
 {
     private Dictionary<Vector3,BaseWall> cornerDict = new();
-    private Dictionary<Vector3,RoomSegment> segmentDict = new();
-    
+
     private int lastVert;
     
     public Material aMaterial;
@@ -62,7 +54,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         testPos.Clear();
         cornerDict.Clear();
-        segmentDict.Clear();
         lastVert = 0;
 
         var pos = transform.position;
@@ -106,14 +97,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var interp = 1f;
         var nextNum = cornNum == 3 ? 0 : cornNum + 1;
         var dir = cornerPos[nextNum] - cornerPos[cornNum];
-        var place = cornerPos[cornNum] + dir / 2;
         var norm = Vector3.Cross(Vector3.up, dir.normalized);
-        var aStart = Vector3.Lerp(cornerPos[cornNum], cornerPos[nextNum], interp)
-                     + Vector3.Scale(-norm, newSize / 2);
+        var aStart = Vector3.Lerp(cornerPos[cornNum], cornerPos[nextNum], interp);
 
-        PlaceDot(Color.green,  place, 1);
-        var first = place + Vector3.Scale(-norm, newSize / 2);
-        PlaceDot(Color.green, aStart, 2);
+        PlaceDot(Color.green,  aStart, 1);
+        PlaceDot(Color.green, aStart  + Vector3.Scale(-norm, newSize / 2), 2);
     }
     
     private void UseCorners(int cornNum)
@@ -379,7 +367,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         testPos.Clear();
         cornerDict.Clear();
-        segmentDict.Clear();
         lastVert = 0;
         var pos = transform.position;
 
