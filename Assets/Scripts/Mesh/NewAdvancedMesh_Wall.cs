@@ -109,9 +109,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var norm = Vector3.Cross(Vector3.up, dir.normalized);
         
         PlaceDot(Color.green,  place, 1);
-        PlaceDot(Color.green,  place + -norm * 100, 2);
-        
-        
+        var first = place + Vector3.Scale(-norm, newSize / 2);
+        PlaceDot(Color.green, first, 2);
     }
     
     private void UseCorners(int cornNum)
