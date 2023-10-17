@@ -57,6 +57,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var size = new Vector3(300,1,600);
         var cSize = new Vector3(15,1,15);
         AddCorners(pos,size, Vector3.up);
+        AddCornersToDict(pos,size, Vector3.up, Vector3.zero);
         MoreCorners(0);
         var count = 0;
         foreach (var c in cornerPos)
@@ -102,7 +103,20 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         
         cornerDict.Add(index, theBase);
     }
+    
+    private void MoreCornersToDict(int cornNum, Vector3 index)
+    {
+        var newSize = new Vector3(200, 0, 200);
+        var interp = 1f;
+        var nextNum = cornNum == 3 ? 0 : cornNum + 1;
+        var dir = cornerPos[nextNum] - cornerPos[cornNum];
+        var norm = Vector3.Cross(Vector3.up, dir.normalized);
+        var aStart = Vector3.Lerp(cornerPos[cornNum], cornerPos[nextNum], interp);
 
+        PlaceDot(Color.green,  aStart, 1);
+        PlaceDot(Color.green, aStart  + Vector3.Scale(-norm, newSize / 2), 2);
+    }
+    
     private void MoreCorners(int cornNum)
     {
         var newSize = new Vector3(200, 0, 200);
@@ -122,10 +136,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var dir = cornerPos[nextNum] - cornerPos[cornNum];
         var place = cornerPos[cornNum] + dir / 2;
         var norm = Vector3.Cross(Vector3.up, dir.normalized);
-        
     }
-    
-    
+
     private int StackEm(Vector3 pos, int count, Vector2 startEnd, float height, int numDots)
     {
         var outVal = count;
