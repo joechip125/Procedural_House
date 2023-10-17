@@ -27,11 +27,6 @@ public class MeshGridTest : MonoBehaviour
         MakeGrid();
     }
 
-    void Start()
-    {
-        
-    }
-    
     public void ApplyMaterial(Material material)
     {
         GetComponent<MeshRenderer>().material = material;

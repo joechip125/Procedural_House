@@ -50,17 +50,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         ApplyMaterial(aMaterial);
     }
 
-    private void BrandNewWall()
-    {
-        testPos.Clear();
-        cornerDict.Clear();
-        lastVert = 0;
-
-        var pos = transform.position;
-        var size = new Vector3(400,1,400);
-        var cSize = new Vector3(15,1,15);
-    }
-
     private void ManyCorners()
     {
         cornerPos.Clear();
