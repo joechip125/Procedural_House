@@ -79,6 +79,29 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             cornerPos.Add(bPlace + aPlace);
         }
     }
+    
+    private void AddCornersToDict(Vector3 pos, Vector3 size, Vector3 normal, Vector3 index)
+    {
+        MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
+        var theBase = new BaseWall()
+        {
+            center = pos,
+            firstVert = 0,
+            size = size
+        };
+
+        for (int i = 0; i < 4; i++)
+        {
+            var cAngle = Quaternion.AngleAxis(90 * i, normal) *pRight;
+            var cAngle2 = Quaternion.AngleAxis(90 * i, normal) *pUp;
+            var aPlace = pos + cAngle.normalized * (i % 2 != 0 ? size.x : size.z) / 2;
+            var bPlace = pos + cAngle2.normalized * (i % 2 != 0 ? size.z : size.x) / 2;
+            
+            theBase.points.Add(bPlace + aPlace);
+        }
+        
+        cornerDict.Add(index, theBase);
+    }
 
     private void MoreCorners(int cornNum)
     {
