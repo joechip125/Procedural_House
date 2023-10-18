@@ -104,8 +104,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         cornerDict.Add(index, theBase);
     }
     
-    private void MoreCornersToDict(int cornNum, Vector3 index)
+    private bool MoreCornersToDict(int cornNum, Vector3 index)
     {
+
+        if (!cornerDict.ContainsKey(index)) return false;
+        
         var newSize = new Vector3(200, 0, 200);
         var interp = 1f;
         var nextNum = cornNum == 3 ? 0 : cornNum + 1;
@@ -115,6 +118,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
         PlaceDot(Color.green,  aStart, 1);
         PlaceDot(Color.green, aStart  + Vector3.Scale(-norm, newSize / 2), 2);
+        return true;
     }
     
     private void MoreCorners(int cornNum)
