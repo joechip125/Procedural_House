@@ -120,6 +120,12 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         PlaceDot(Color.green, aStart  + Vector3.Scale(-norm, newSize / 2), 2);
         return true;
     }
+
+    private void GetPositionFromCorner(int cornNum, Vector3 index)
+    {
+        
+    }
+    
     
     private void MoreCorners(int cornNum)
     {
