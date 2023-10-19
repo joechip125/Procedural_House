@@ -121,21 +121,13 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         return true;
     }
 
-    private bool GetPositionFromCorner(int cornNum, Vector3 index, out Vector3 newPos)
+    private bool GetPositionFromCorner(int cornNum, Vector3 index, float time, out Vector3 newPos)
     {
         newPos = Vector3.zero;
         if (!cornerDict.ContainsKey(index)) return false;
-        var aCorner = cornerDict[index];
-        
-        var newSize = new Vector3(200, 0, 200);
-        var time = 1f;
         var nextNum = cornNum == 3 ? 0 : cornNum + 1;
-        var dir = aCorner.points[nextNum] - aCorner.points[cornNum];
-        var norm = Vector3.Cross(Vector3.up, dir.normalized);
-        var aStart = Vector3.Lerp(aCorner.points[cornNum], aCorner.points[nextNum], time);
-
-        PlaceDot(Color.green,  aStart, 1);
-        PlaceDot(Color.green, aStart  + Vector3.Scale(-norm, newSize / 2), 2);
+        newPos = Vector3.Lerp(cornerDict[index].points[cornNum], cornerDict[index].points[nextNum], time);
+        
         return true;
     }
     
