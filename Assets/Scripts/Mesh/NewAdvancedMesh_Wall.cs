@@ -52,18 +52,21 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
     private void ManyCorners()
     {
-        cornerPos.Clear();
         cornerDict.Clear();
         var pos = transform.position;
         var size = new Vector3(300,1,600);
-        var cSize = new Vector3(15,1,15);
-        AddCorners(pos,size, Vector3.up);
         AddCornersToDict(pos,size, Vector3.up, Vector3.zero);
-        MoreCorners(0);
+        MoreCornersToDict(0, Vector3.zero);
         var count = 0;
-        foreach (var c in cornerPos)
+        
+        foreach (var cD in cornerDict)
         {
-            PlaceDot(Color.red,  c, count++);
+            foreach (var p in cD.Value.points)
+            {
+                PlaceDot(Color.red,  p, count++);    
+            }
+
+            count = 0;
         }
     }
 
