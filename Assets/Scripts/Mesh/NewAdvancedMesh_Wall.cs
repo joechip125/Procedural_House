@@ -53,6 +53,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private void ManyCorners()
     {
         cornerPos.Clear();
+        cornerDict.Clear();
         var pos = transform.position;
         var size = new Vector3(300,1,600);
         var cSize = new Vector3(15,1,15);
@@ -130,7 +131,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         
         return true;
     }
-    
     
     private void MoreCorners(int cornNum)
     {
