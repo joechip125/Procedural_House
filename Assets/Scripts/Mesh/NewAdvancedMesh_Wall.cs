@@ -70,21 +70,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
 
-    private void AddCorners(Vector3 pos, Vector3 size, Vector3 normal)
-    {
-        MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
-       
-        for (int i = 0; i < 4; i++)
-        {
-            var cAngle = Quaternion.AngleAxis(90 * i, normal) *pRight;
-            var cAngle2 = Quaternion.AngleAxis(90 * i, normal) *pUp;
-            var aPlace = pos + cAngle.normalized * (i % 2 != 0 ? size.x : size.z) / 2;
-            var bPlace = pos + cAngle2.normalized * (i % 2 != 0 ? size.z : size.x) / 2;
-          
-            cornerPos.Add(bPlace + aPlace);
-        }
-    }
-    
     private void AddCornersToDict(Vector3 pos, Vector3 size, Vector3 normal, Vector3 index)
     {
         MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
@@ -127,9 +112,12 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     
     private void GetInfoFromCorner(int cornNum, Vector3 index, float time, out Vector3 newPos, out Vector3 normal)
     {
+        var nextNum = cornNum == 3 ? 0 : cornNum + 1;
         newPos = Vector3.Lerp(cornerDict[index].points[cornNum],
-            cornerDict[index].points[cornNum == 3 ? 0 : cornNum + 1], time);
-        normal = Vector3.zero;
+            cornerDict[index].points[nextNum], time);
+        var dir = (cornerDict[index].points[nextNum] - cornerDict[index].points[cornNum]).normalized;
+        normal = Vector3.Cross(dir, Vector3.up);
+        Debug.Log($"dir {dir}, normal {normal}");
     }
     
     private void MoreCorners(int cornNum)
