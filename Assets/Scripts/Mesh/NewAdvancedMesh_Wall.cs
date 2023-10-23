@@ -97,10 +97,12 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         if (!cornerDict.ContainsKey(index)) return false;
 
-        GetPositionFromCorner(0, Vector3.zero, 0.5f, out var aPos);
+        GetInfoFromCorner(0, Vector3.zero, 0.5f, out var aPos, out var normal);
         var newSize = new Vector3(200, 0, 200);
+        var nextPos = Vector3.Scale(newSize, -normal) * 0.5f;
 
         PlaceDot(Color.green,  aPos, 1);
+        PlaceDot(Color.green, aPos+ nextPos, 2);
         return true;
     }
 
@@ -116,8 +118,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         newPos = Vector3.Lerp(cornerDict[index].points[cornNum],
             cornerDict[index].points[nextNum], time);
         var dir = (cornerDict[index].points[nextNum] - cornerDict[index].points[cornNum]).normalized;
-        normal = Vector3.Cross(dir, Vector3.up);
-        Debug.Log($"dir {dir}, normal {normal}");
+        normal = Vector3.Cross(Vector3.up, dir);
     }
     
     private void MoreCorners(int cornNum)
