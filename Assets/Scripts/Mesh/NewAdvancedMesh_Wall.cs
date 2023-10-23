@@ -119,14 +119,17 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         return true;
     }
 
-    private bool GetPositionFromCorner(int cornNum, Vector3 index, float time, out Vector3 newPos)
+    private void GetPositionFromCorner(int cornNum, Vector3 index, float time, out Vector3 newPos)
     {
-        newPos = Vector3.zero;
-        if (!cornerDict.ContainsKey(index)) return false;
-        var nextNum = cornNum == 3 ? 0 : cornNum + 1;
-        newPos = Vector3.Lerp(cornerDict[index].points[cornNum], cornerDict[index].points[nextNum], time);
-        
-        return true;
+        newPos = Vector3.Lerp(cornerDict[index].points[cornNum],
+            cornerDict[index].points[cornNum == 3 ? 0 : cornNum + 1], time);
+    }
+    
+    private void GetInfoFromCorner(int cornNum, Vector3 index, float time, out Vector3 newPos, out Vector3 normal)
+    {
+        newPos = Vector3.Lerp(cornerDict[index].points[cornNum],
+            cornerDict[index].points[cornNum == 3 ? 0 : cornNum + 1], time);
+        normal = Vector3.zero;
     }
     
     private void MoreCorners(int cornNum)
