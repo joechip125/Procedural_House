@@ -114,11 +114,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         var nextNum = cornNum == 3 ? 0 : cornNum + 1;
         var firstVec = cornerDict[index].points[cornNum];
-        var secondVec = cornerDict[index].points[cornNum];
-        var dir = (secondVec - firstVec).normalized;
-        Vector3.Cross(Vector3.up, (secondVec - firstVec).normalized);
+        var secondVec = cornerDict[index].points[nextNum];
+        
         newPos = Vector3.Lerp(firstVec, secondVec, time) + 
-                 Vector3.Scale(newSize,Vector3.Cross(Vector3.up, (secondVec - firstVec).normalized));
+                 Vector3.Scale(newSize, 
+               -Vector3.Cross(Vector3.up, (secondVec - firstVec).normalized) / 2);
     }
     
     private void MoreCorners(int cornNum)
