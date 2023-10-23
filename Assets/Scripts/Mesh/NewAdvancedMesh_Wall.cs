@@ -82,12 +82,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
         for (int i = 0; i < 4; i++)
         {
-            var cAngle = Quaternion.AngleAxis(90 * i, normal) *pRight;
-            var cAngle2 = Quaternion.AngleAxis(90 * i, normal) *pUp;
-            var aPlace = pos + cAngle.normalized * (i % 2 != 0 ? size.x : size.z) / 2;
-            var bPlace = pos + cAngle2.normalized * (i % 2 != 0 ? size.z : size.x) / 2;
-            
-            theBase.points.Add(bPlace + aPlace);
+            theBase.points.Add( 
+                pos + (Quaternion.AngleAxis(90 * i, normal) *pRight).normalized 
+                                    * (i % 2 != 0 ? size.x : size.z) / 2
+                                    + (Quaternion.AngleAxis(90 * i, normal) *pUp).normalized 
+                                    * (i % 2 != 0 ? size.z : size.x) / 2);
         }
         
         cornerDict.Add(index, theBase);
@@ -99,6 +98,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
 
         var newSize = new Vector3(200, 0, 200);
         GetNewStart(0, Vector3.zero, newSize,0.5f, out var aPos);
+        
+        AddCornersToDict(aPos, newSize, Vector3.up, Vector3.one);
         
         PlaceDot(Color.green,  aPos, 1);
         return true;
