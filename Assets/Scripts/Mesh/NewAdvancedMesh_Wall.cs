@@ -98,7 +98,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         if (!cornerDict.ContainsKey(index)) return false;
 
         var newSize = new Vector3(200, 0, 200);
-        GetInfoFromCorner(0, Vector3.zero, newSize,0.5f, out var aPos);
+        GetNewStart(0, Vector3.zero, newSize,0.5f, out var aPos);
         
         PlaceDot(Color.green,  aPos, 1);
         return true;
@@ -110,15 +110,12 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             cornerDict[index].points[cornNum == 3 ? 0 : cornNum + 1], time);
     }
     
-    private void GetInfoFromCorner(int cornNum, Vector3 index,Vector3 newSize, float time, out Vector3 newPos)
+    private void GetNewStart(int cornNum, Vector3 index,Vector3 newSize, float time, out Vector3 newPos)
     {
         var nextNum = cornNum == 3 ? 0 : cornNum + 1;
-        var firstVec = cornerDict[index].points[cornNum];
-        var secondVec = cornerDict[index].points[nextNum];
-        
-        newPos = Vector3.Lerp(firstVec, secondVec, time) + 
-                 Vector3.Scale(newSize, 
-               -Vector3.Cross(Vector3.up, (secondVec - firstVec).normalized) / 2);
+        newPos = Vector3.Lerp(cornerDict[index].points[cornNum], cornerDict[index].points[nextNum], time) + 
+                 Vector3.Scale(newSize, -Vector3.Cross(Vector3.up, 
+                     (cornerDict[index].points[nextNum] - cornerDict[index].points[cornNum]).normalized) / 2);
     }
     
     private void MoreCorners(int cornNum)
