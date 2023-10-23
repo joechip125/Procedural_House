@@ -111,19 +111,11 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     private bool MoreCornersToDict(int cornNum, Vector3 index)
     {
         if (!cornerDict.ContainsKey(index)) return false;
-        var aCorner = cornerDict[index];
 
         GetPositionFromCorner(0, Vector3.zero, 0.5f, out var aPos);
-        
         var newSize = new Vector3(200, 0, 200);
-        var time = 1f;
-        var nextNum = cornNum == 3 ? 0 : cornNum + 1;
-        var dir = aCorner.points[nextNum] - aCorner.points[cornNum];
-        var norm = Vector3.Cross(Vector3.up, dir.normalized);
-        var aStart = Vector3.Lerp(aCorner.points[cornNum], aCorner.points[nextNum], time);
 
         PlaceDot(Color.green,  aPos, 1);
-        PlaceDot(Color.green, aStart  + Vector3.Scale(-norm, newSize / 2), 2);
         return true;
     }
 
