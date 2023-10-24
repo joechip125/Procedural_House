@@ -70,6 +70,14 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
 
+    private Vector3 GetFreeIndex()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            
+        }
+    }
+    
     private void AddCornersToDict(Vector3 pos, Vector3 size, Vector3 normal, Vector3 index)
     {
         MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
