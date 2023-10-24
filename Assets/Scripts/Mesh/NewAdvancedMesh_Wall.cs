@@ -76,7 +76,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         
         for (int i = 0; i < 5; i++)
         {
-            var anIndex = Quaternion.AngleAxis(90 * i, normal) * pUp;
+            var anIndex = Quaternion.AngleAxis(90 * i, normal) * pUp + startIndex;
             if (cornerDict.ContainsKey(anIndex))
             {
                 return anIndex;
