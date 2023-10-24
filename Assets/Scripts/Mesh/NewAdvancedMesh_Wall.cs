@@ -70,18 +70,20 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
 
-    private Vector3 GetFreeIndex(Vector3  startIndex)
+    private Vector3 GetFreeIndex(Vector3 startIndex, Vector3 normal)
     {
-        var anIndex = Vector3.zero;
+        MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
+        
         for (int i = 0; i < 5; i++)
         {
+            var anIndex = Quaternion.AngleAxis(90 * i, normal) * pUp;
             if (cornerDict.ContainsKey(anIndex))
             {
                 return anIndex;
             }
         }
         
-        return Vector3.zero;
+        return startIndex;
     }
     
     private void AddCornersToDict(Vector3 pos, Vector3 size, Vector3 normal, Vector3 index)
