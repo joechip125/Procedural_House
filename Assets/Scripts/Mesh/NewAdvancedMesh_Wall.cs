@@ -70,12 +70,18 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         }
     }
 
-    private Vector3 GetFreeIndex()
+    private Vector3 GetFreeIndex(Vector3  startIndex)
     {
+        var anIndex = Vector3.zero;
         for (int i = 0; i < 5; i++)
         {
-            
+            if (cornerDict.ContainsKey(anIndex))
+            {
+                return anIndex;
+            }
         }
+        
+        return Vector3.zero;
     }
     
     private void AddCornersToDict(Vector3 pos, Vector3 size, Vector3 normal, Vector3 index)
