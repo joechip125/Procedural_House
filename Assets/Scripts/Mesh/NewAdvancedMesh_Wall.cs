@@ -63,8 +63,15 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             foreach (var p in cD.Value.points)
             {
-                 
+                Vertices.Add(p); 
             }
+            Triangles.Add(count+2);
+            Triangles.Add(count+3);
+            Triangles.Add(count);
+            
+            Triangles.Add(count+ 2);
+            Triangles.Add(count);
+            Triangles.Add(count +1);
         }
     }
 
