@@ -104,7 +104,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                                     + (Quaternion.AngleAxis(90 * i, normal) *pUp).normalized 
                                     * (i % 2 != 0 ? size.z : size.x) / 2);
         }
-        
         cornerDict.Add(index, theBase);
     }
     
@@ -116,8 +115,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         GetNewStart(0, Vector3.zero, newSize,0.5f, out var aPos);
         
         AddCornersToDict(aPos, newSize, Vector3.up, Vector3.one);
-        
-        PlaceDot(Color.green,  aPos, 1);
         return true;
     }
 
