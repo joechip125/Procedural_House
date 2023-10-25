@@ -50,6 +50,14 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         ApplyMaterial(aMaterial);
     }
 
+    private void SimpleBuild()
+    {
+        cornerDict.Clear();
+        var pos = transform.position;
+        var size = new Vector3(300,1,600);
+        AddCornersToDict(pos,size, Vector3.up, Vector3.zero);
+    }
+
     private void ManyCorners()
     {
         cornerDict.Clear();
