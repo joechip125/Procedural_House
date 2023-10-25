@@ -56,6 +56,16 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var pos = transform.position;
         var size = new Vector3(300,1,600);
         AddCornersToDict(pos,size, Vector3.up, Vector3.zero);
+
+        var count = Vertices.Count;
+        
+        foreach (var cD in cornerDict)
+        {
+            foreach (var p in cD.Value.points)
+            {
+                 
+            }
+        }
     }
 
     private void ManyCorners()
