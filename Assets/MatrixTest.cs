@@ -6,11 +6,9 @@ using UnityEngine;
 public class MatrixTest : MonoBehaviour
 {
     private List<Vector3> things = new();
-    
     public int points;
-
     public float length;
-
+    
     private void OnValidate()
     {
         for (int i = 0; i < points; i++)
