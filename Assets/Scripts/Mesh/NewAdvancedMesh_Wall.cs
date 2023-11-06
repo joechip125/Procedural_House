@@ -28,12 +28,9 @@ public class BaseWall
 public class NewAdvancedMesh_Wall : NewAdvancedMesh
 {
     private Dictionary<Vector3,BaseWall> cornerDict = new();
-
     private int lastVert;
-    
     public Material aMaterial;
-
-    private Dictionary<Vector3, int> vertIndices = new ();
+    
     private List<Vector3> testPos = new();
     private List<Vector3> cornerPos = new();
     private List<int> vList = new();
@@ -90,7 +87,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             {
                 PlaceDot(Color.red,  p, count++);    
             }
-
             count = 0;
         }
     }
