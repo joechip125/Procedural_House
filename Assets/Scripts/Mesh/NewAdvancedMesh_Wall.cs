@@ -45,6 +45,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         base.Activate();
         InitMesh();
         ApplyMaterial(aMaterial);
+        SimpleBuild();
     }
 
     private void SimpleBuild()
@@ -69,6 +70,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             Triangles.Add(count+ 2);
             Triangles.Add(count);
             Triangles.Add(count +1);
+            count += 4;
         }
     }
 
@@ -103,7 +105,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                 return anIndex;
             }
         }
-        
         return startIndex;
     }
     
