@@ -61,7 +61,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         {
             foreach (var p in cD.Value.points)
             {
-                Vertices.Add(p); 
+                Vertices.Add(p);
+                Debug.Log($"{p}");
             }
             Triangles.Add(count+2);
             Triangles.Add(count+3);
@@ -72,6 +73,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             Triangles.Add(count +1);
             count += 4;
         }
+        UpdateMesh();
     }
 
     private void ManyCorners()
