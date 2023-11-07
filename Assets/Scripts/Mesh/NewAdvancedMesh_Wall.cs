@@ -54,7 +54,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         var pos = transform.position;
         var size = new Vector3(300,1,600);
         AddCornersToDict(pos,size, Vector3.up, Vector3.zero);
-
         var count = Vertices.Count;
         
         foreach (var cD in cornerDict)
@@ -62,7 +61,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
             foreach (var p in cD.Value.points)
             {
                 Vertices.Add(p);
-                Debug.Log($"{p}");
             }
             Triangles.Add(count+2);
             Triangles.Add(count+3);
