@@ -40,18 +40,11 @@ public class MeshGridTest : MonoBehaviour
         TheMesh.SetTriangles(Triangles, 0);
         TheMesh.RecalculateNormals();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     
     private Vector3 Find(int x, int z)
     {
         return Vertices[z * numberX + x];
     }
-
 
     private void MakeGrid()
     {
@@ -109,6 +102,5 @@ public class MeshGridTest : MonoBehaviour
      
         Gizmos.color = Color.red;
         Gizmos.DrawLine(dots[^1], dots[^1] + new Vector3(0, 100,0));
-
     }
 }
