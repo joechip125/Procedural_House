@@ -48,6 +48,12 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         SimpleBuild();
     }
 
+
+    private void MakeSomePanels()
+    {
+        
+    }
+    
     private void SimpleBuild()
     {
         cornerDict.Clear();
