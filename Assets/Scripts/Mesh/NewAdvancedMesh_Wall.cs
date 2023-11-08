@@ -45,13 +45,15 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         base.Activate();
         InitMesh();
         ApplyMaterial(aMaterial);
-        SimpleBuild();
+        MakeSomePanels();
     }
 
 
     private void MakeSomePanels()
     {
-        
+        var pos = transform.position;
+        var size = new Vector3(300,1,600);
+        AddCornersToDict(pos,size, Vector3.up, Vector3.zero); 
     }
     
     private void SimpleBuild()
