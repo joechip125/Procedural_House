@@ -153,19 +153,6 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
                  Vector3.Scale(newSize, -Vector3.Cross(Vector3.up, 
                      (cornerDict[index].points[nextNum] - cornerDict[index].points[cornNum]).normalized) / 2);
     }
-    
-    private void MoreCorners(int cornNum)
-    {
-        var newSize = new Vector3(200, 0, 200);
-        var interp = 1f;
-        var nextNum = cornNum == 3 ? 0 : cornNum + 1;
-        var dir = cornerPos[nextNum] - cornerPos[cornNum];
-        var norm = Vector3.Cross(Vector3.up, dir.normalized);
-        var aStart = Vector3.Lerp(cornerPos[cornNum], cornerPos[nextNum], interp);
-
-        PlaceDot(Color.green,  aStart, 1);
-        PlaceDot(Color.green, aStart  + Vector3.Scale(-norm, newSize / 2), 2);
-    }
 
     private int StackEm(Vector3 pos, int count, Vector2 startEnd, float height, int numDots)
     {
