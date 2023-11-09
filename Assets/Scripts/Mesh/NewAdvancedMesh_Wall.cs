@@ -47,8 +47,7 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
         ApplyMaterial(aMaterial);
         MakeSomePanels();
     }
-
-
+    
     private void MakeSomePanels()
     {
         var pos = transform.position;
