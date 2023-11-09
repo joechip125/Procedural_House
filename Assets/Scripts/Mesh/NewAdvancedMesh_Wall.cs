@@ -52,7 +52,8 @@ public class NewAdvancedMesh_Wall : NewAdvancedMesh
     {
         var pos = transform.position;
         var size = new Vector3(300,1,600);
-        AddCornersToDict(pos,size, Vector3.up, Vector3.zero); 
+        AddCornersToDict(pos,size, Vector3.right, Vector3.zero); 
+        AddCornersToDict(pos,size + new Vector3(10,0,10), Vector3.right, Vector3.right); 
         var count = Vertices.Count;
         var normal = Vector3.right;
         MathHelpers.PlaneDirections(normal, out var pUp, out var pRight);
