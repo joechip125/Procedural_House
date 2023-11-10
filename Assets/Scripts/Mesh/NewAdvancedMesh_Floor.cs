@@ -99,6 +99,12 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
         
     }
     
+    private void PlaceDot(Color color, Vector3 pos, int count)
+    {
+        Gizmos.color = color;
+        Handles.Label(pos,$"{count}");
+        Gizmos.DrawSphere(pos, 3);
+    }
 
     private int FloorVerts(Vector3 start, Vector3 size, Vector3 normal, int firstVert, Vector2 numTiles)
     {
