@@ -311,31 +311,7 @@ public class NewAdvancedMesh_Floor : NewAdvancedMesh
             Gizmos.DrawLine(aSquare.corners[i], aSquare.corners[nextC]);
         }
     }
-
-    private void SetSidePos(Vector2 pIndex)
-    {
-        var square = squares[^1];
-        sidePos.Clear();
-        var doX = pIndex.x != -1f;
-        var doY = pIndex.y != -1f;
-        if (!doX && !doY) return;
-        
-        vertSelect = square.VertDict
-            .Where(x =>
-            {
-                if (x.Key.x == pIndex.x) return true;
-                if (x.Key.y == pIndex.y) return true;
-
-                return false;
-            })
-            .Select(x => x.Value)
-            .ToList();
-
-        foreach (var t in vertSelect)
-        {
-            sidePos.Add(testPos[t]);
-        }
-    }
+    
     
     private int AddSquare(Vector3 center, Vector3 size, Vector3 normal, int firstVert, Vector2 numTiles)
     {
