@@ -198,8 +198,12 @@ public class RoundedCube : MonoBehaviour
     {
         int quads = (xSize * ySize + xSize * zSize + ySize * zSize) * 2;
         int[] triangles = new int[quads * 6];
+        
+        int[] trianglesZ = new int[(xSize * ySize) * 12];
+        int[] trianglesX = new int[(ySize * zSize) * 12];
+        int[] trianglesY = new int[(xSize * zSize) * 12];
         int ring = (xSize + zSize) * 2;
-        int t = 0, v = 0;
+        int tZ = 0, tX = 0, tY = 0, v = 0, t = 0;
 
         for (int y = 0; y < ySize; y++, v++) 
         {
