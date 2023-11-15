@@ -124,15 +124,15 @@ public class RoundedCube : MonoBehaviour
         {
             for (int x = 0; x <= xSize; x++) 
             {
-                vertices[v++] = new Vector3(x, y, 0);
+                SetVertex(v++, x, y, 0);
             }
             for (int z = 1; z <= zSize; z++) 
             {
-                vertices[v++] = new Vector3(xSize, y, z);
+                SetVertex(v++, xSize, y, z);
             }
             for (int x = xSize - 1; x >= 0; x--) 
             {
-                vertices[v++] = new Vector3(x, y, zSize);
+                SetVertex(v++, x, y, zSize);
             }
             for (int z = zSize - 1; z > 0; z--) 
             {
@@ -144,14 +144,14 @@ public class RoundedCube : MonoBehaviour
         {
             for (int x = 1; x < xSize; x++) 
             {
-                vertices[v++] = new Vector3(x, ySize, z);
+                SetVertex(v++, x, ySize, z);
             }
         }
         for (int z = 1; z < zSize; z++) 
         {
             for (int x = 1; x < xSize; x++) 
             {
-                vertices[v++] = new Vector3(x, 0, z);
+                SetVertex(v++, x, 0, z);
             }
         }
         
@@ -159,6 +159,11 @@ public class RoundedCube : MonoBehaviour
         mesh.normals = normals;
     }
 
+    private void SetVertex (int i, int x, int y, int z) 
+    {
+        vertices[i] = new Vector3(x, y, z);
+    }
+    
     private void CreateTriangles () 
     {
         int quads = (xSize * ySize + xSize * zSize + ySize * zSize) * 2;
@@ -184,11 +189,13 @@ public class RoundedCube : MonoBehaviour
     {
         if (vertices == null) return;
         
-        Gizmos.color = Color.black;
-        
         for (int i = 0; i < vertices.Length; i++) 
         {
+            Gizmos.color = Color.black;
             Gizmos.DrawSphere(vertices[i], 0.1f);
+            
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawRay(vertices[i], normals[i]);
         }
     }
 }
