@@ -136,7 +136,7 @@ public class RoundedCube : MonoBehaviour
             }
             for (int z = zSize - 1; z > 0; z--) 
             {
-                vertices[v++] = new Vector3(0, y, z);
+                SetVertex(v++, 0, y, z);
             }
         }
         
@@ -161,7 +161,19 @@ public class RoundedCube : MonoBehaviour
 
     private void SetVertex (int i, int x, int y, int z) 
     {
-        vertices[i] = new Vector3(x, y, z);
+        Vector3 inner = vertices[i] = new Vector3(x, y, z);
+        if (x < roundness) 
+        {
+            inner.x = roundness;
+        }
+        else if (x > xSize - roundness) 
+        {
+            inner.x = xSize - roundness;
+        }
+
+        normals[i] = (vertices[i] - inner).normalized;
+        vertices[i] = inner + normals[i] * roundness;
+        //vertices[i] = new Vector3(x, y, z);
     }
     
     private void CreateTriangles () 
@@ -193,7 +205,7 @@ public class RoundedCube : MonoBehaviour
         {
             Gizmos.color = Color.black;
             Gizmos.DrawSphere(vertices[i], 0.1f);
-            
+
             Gizmos.color = Color.yellow;
             Gizmos.DrawRay(vertices[i], normals[i]);
         }
