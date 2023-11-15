@@ -170,6 +170,24 @@ public class RoundedCube : MonoBehaviour
         {
             inner.x = xSize - roundness;
         }
+        
+        if (y < roundness) 
+        {
+            inner.y = roundness;
+        }
+        else if (y > ySize - roundness) 
+        {
+            inner.y = ySize - roundness;
+        }
+        
+        if (z < roundness) 
+        {
+            inner.z = roundness;
+        }
+        else if (z > zSize - roundness) 
+        {
+            inner.z = zSize - roundness;
+        }
 
         normals[i] = (vertices[i] - inner).normalized;
         vertices[i] = inner + normals[i] * roundness;
@@ -203,8 +221,8 @@ public class RoundedCube : MonoBehaviour
         
         for (int i = 0; i < vertices.Length; i++) 
         {
-            Gizmos.color = Color.black;
-            Gizmos.DrawSphere(vertices[i], 0.1f);
+           // Gizmos.color = Color.black;
+           // Gizmos.DrawSphere(vertices[i], 0.1f);
 
             Gizmos.color = Color.yellow;
             Gizmos.DrawRay(vertices[i], normals[i]);
