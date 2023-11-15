@@ -15,6 +15,17 @@ public class Cube : MonoBehaviour
     {
         Generate();
     }
+
+    private void Generate () 
+    {
+        GetComponent<MeshFilter>().mesh = mesh = new Mesh();
+        mesh.name = "Procedural Cube";
+        GetComponent<MeshRenderer>().material = aMaterial;
+        
+        CreateVertices();
+        CreateTriangles();
+    }
+
     private int CreateBottomFace (int[] triangles, int t, int ring) 
     {
         int v = 1;
@@ -50,7 +61,7 @@ public class Cube : MonoBehaviour
 		
         return t;
     }
-    
+
     private int CreateTopFace (int[] triangles, int t, int ring) 
     {
         int v = ring * ySize;
@@ -84,6 +95,7 @@ public class Cube : MonoBehaviour
 
         return t;
     }
+
     private static int SetQuad (int[] triangles, int i, int v00, int v10, int v01, int v11) 
     {
         triangles[i] = v00;
@@ -92,7 +104,7 @@ public class Cube : MonoBehaviour
         triangles[i + 5] = v11;
         return i + 6;
     }
-    
+
     private void CreateVertices () 
     {
         var cornerVertices = 8;
@@ -141,7 +153,7 @@ public class Cube : MonoBehaviour
         
         mesh.vertices = vertices;
     }
-    
+
     private void CreateTriangles () 
     {
         int quads = (xSize * ySize + xSize * zSize + ySize * zSize) * 2;
@@ -161,16 +173,6 @@ public class Cube : MonoBehaviour
         t = CreateBottomFace(triangles, t, ring);
         
         mesh.triangles = triangles;
-    }
-
-    private void Generate () 
-    {
-        GetComponent<MeshFilter>().mesh = mesh = new Mesh();
-        mesh.name = "Procedural Cube";
-        GetComponent<MeshRenderer>().material = aMaterial;
-        
-        CreateVertices();
-        CreateTriangles();
     }
 
     private void OnDrawGizmos () 
