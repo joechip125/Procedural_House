@@ -4,12 +4,15 @@ using UnityEngine;
 
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
-public class Cube : MonoBehaviour
+public class RoundedCube : MonoBehaviour
 {
     public int xSize, ySize, zSize;
+    public int roundness;
     [SerializeField] private Material aMaterial;
     private Mesh mesh;
     private Vector3[] vertices;
+
+    private Vector3[] normals;
 
     private void Awake () 
     {
@@ -114,6 +117,7 @@ public class Cube : MonoBehaviour
             (xSize - 1) * (zSize - 1) +
             (ySize - 1) * (zSize - 1)) * 2;
         vertices = new Vector3[cornerVertices + edgeVertices + faceVertices];
+        normals = new Vector3[vertices.Length];
         
         int v = 0;
         for (int y = 0; y <= ySize; y++) 
@@ -152,6 +156,7 @@ public class Cube : MonoBehaviour
         }
         
         mesh.vertices = vertices;
+        mesh.normals = normals;
     }
 
     private void CreateTriangles () 
