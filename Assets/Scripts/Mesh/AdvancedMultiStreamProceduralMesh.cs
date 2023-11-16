@@ -19,14 +19,17 @@ public class AdvancedMultiStreamProceduralMesh : MonoBehaviour
         var vertexAttributes = new NativeArray<VertexAttributeDescriptor>(
             vertexAttributeCount, Allocator.Temp, NativeArrayOptions.UninitializedMemory);
         
-        meshData.SetIndexBufferParams(triangleIndexCount, IndexFormat.UInt32);
-        NativeArray<uint> triangleIndices = meshData.GetIndexData<uint>();
+        meshData.SetIndexBufferParams(triangleIndexCount, IndexFormat.UInt16);
+        NativeArray<ushort> triangleIndices = meshData.GetIndexData<ushort>();
         triangleIndices[0] = 0;
         triangleIndices[1] = 2;
         triangleIndices[2] = 1;
         triangleIndices[3] = 1;
         triangleIndices[4] = 2;
         triangleIndices[5] = 3;
+
+        meshData.subMeshCount = 1;
+        meshData.SetSubMesh(0, new SubMeshDescriptor(0, triangleIndexCount));
         
         var mesh = new Mesh 
         {
