@@ -26,5 +26,10 @@ public class SimpleProceduralMesh : MonoBehaviour
         {
             Vector3.back, Vector3.back, Vector3.back
         };
+        
+        mesh.uv = new Vector2[] 
+        {
+            Vector2.zero, Vector2.right, Vector2.up
+        };
     }
 }
