@@ -5,4 +5,5 @@ public interface IMeshGenerator
     
     int VertexCount { get; }
     int IndexCount { get; }
+    int JobLength { get; }
 }
