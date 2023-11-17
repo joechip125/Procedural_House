@@ -7,6 +7,16 @@ using UnityEngine.Rendering;
 
 public class SingleStream : IMeshStreams
 {
+    
+    [StructLayout(LayoutKind.Sequential)]
+    struct Stream0 
+    {
+        public float3 position, normal;
+        public float4 tangent;
+        public float2 texCoord0;
+    }
+		
+    NativeArray<Stream0> stream0;
     public void Setup(Mesh.MeshData meshData, int vertexCount, int indexCount)
     {
         var descriptor = new NativeArray<VertexAttributeDescriptor>(
@@ -24,6 +34,8 @@ public class SingleStream : IMeshStreams
 			
         meshData.subMeshCount = 1;
         meshData.SetSubMesh(0, new SubMeshDescriptor(0, indexCount));
+        
+        stream0 = meshData.GetVertexData<Stream0>();
     }
 
     public void SetVertex(int index, Vertex data)
