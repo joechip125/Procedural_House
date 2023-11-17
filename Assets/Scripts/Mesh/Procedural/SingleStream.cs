@@ -38,10 +38,13 @@ public class SingleStream : IMeshStreams
         stream0 = meshData.GetVertexData<Stream0>();
     }
 
-    public void SetVertex(int index, Vertex data)
+    public void SetVertex (int index, Vertex vertex) => stream0[index] = new Stream0 
     {
-        throw new System.NotImplementedException();
-    }
+        position = vertex.position,
+        normal = vertex.normal,
+        tangent = vertex.tangent,
+        texCoord0 = vertex.texCoord0
+    };
 
     public void SetTriangle(int index, int3 triangle)
     {
