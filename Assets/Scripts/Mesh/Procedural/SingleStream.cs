@@ -17,6 +17,9 @@ public class SingleStream : IMeshStreams
     }
 		
     NativeArray<Stream0> stream0;
+    
+    NativeArray<int3> triangles;
+    
     public void Setup(Mesh.MeshData meshData, int vertexCount, int indexCount)
     {
         var descriptor = new NativeArray<VertexAttributeDescriptor>(
@@ -36,8 +39,10 @@ public class SingleStream : IMeshStreams
         meshData.SetSubMesh(0, new SubMeshDescriptor(0, indexCount));
         
         stream0 = meshData.GetVertexData<Stream0>();
+        triangles = meshData.GetIndexData<int>().Reinterpret<int3>(4);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void SetVertex (int index, Vertex vertex) => stream0[index] = new Stream0 
     {
         position = vertex.position,
@@ -46,8 +51,6 @@ public class SingleStream : IMeshStreams
         texCoord0 = vertex.texCoord0
     };
 
-    public void SetTriangle(int index, int3 triangle)
-    {
-        throw new System.NotImplementedException();
-    }
+    public void SetTriangle (int index, int3 triangle) => triangles[index] = triangle;
+    
 }
