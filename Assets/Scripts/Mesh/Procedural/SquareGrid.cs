@@ -11,5 +11,5 @@ public struct SquareGrid : IMeshGenerator
 
     public int VertexCount { get; }
     public int IndexCount { get; }
-    public int JobLength { get; }
+    public int JobLength => 1;
 }

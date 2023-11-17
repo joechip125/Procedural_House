@@ -5,7 +5,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class SingleStream : IMeshStreams
+public struct SingleStream : IMeshStreams
 {
     
     [StructLayout(LayoutKind.Sequential)]
