@@ -1,6 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Unity.Collections;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -15,9 +16,10 @@ public struct SingleStream : IMeshStreams
         public float4 tangent;
         public float2 texCoord0;
     }
-		
-    NativeArray<Stream0> stream0;
     
+    [NativeDisableContainerSafetyRestriction]
+    NativeArray<Stream0> stream0;
+    [NativeDisableContainerSafetyRestriction]
     NativeArray<int3> triangles;
     
     public void Setup(Mesh.MeshData meshData, int vertexCount, int indexCount)
