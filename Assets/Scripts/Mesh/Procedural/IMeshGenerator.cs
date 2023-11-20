@@ -10,4 +10,6 @@ public interface IMeshGenerator
     int JobLength { get; }
     
     Bounds Bounds { get; }
+    
+    int Resolution { get; set; }
 }

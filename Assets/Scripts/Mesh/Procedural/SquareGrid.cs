@@ -28,8 +28,9 @@ public struct SquareGrid : IMeshGenerator
         streams.SetTriangle(1, int3(1, 2, 3));
     }
 
-    public int VertexCount => 4;
-    public int IndexCount => 6;
-    public int JobLength => 1;
+    public int VertexCount => 4 * Resolution * Resolution;
+    public int IndexCount => 6 * Resolution * Resolution;
+    public int JobLength => 1 * Resolution * Resolution;
     public Bounds Bounds => new Bounds(new Vector3(0.5f, 0.5f), new Vector3(1f, 1f));
+    public int Resolution { get; set; }
 }
