@@ -20,7 +20,7 @@ public struct SingleStream : IMeshStreams
     [NativeDisableContainerSafetyRestriction]
     NativeArray<Stream0> stream0;
     [NativeDisableContainerSafetyRestriction]
-    NativeArray<int3> triangles;
+    NativeArray<TriangleUInt16> triangles;
     
     public void Setup(Mesh.MeshData meshData,Bounds bounds, int vertexCount, int indexCount)
     {
@@ -35,7 +35,7 @@ public struct SingleStream : IMeshStreams
         meshData.SetVertexBufferParams(vertexCount, descriptor);
         descriptor.Dispose();
 
-        meshData.SetIndexBufferParams(indexCount, IndexFormat.UInt32);
+        meshData.SetIndexBufferParams(indexCount, IndexFormat.UInt16);
 			
         meshData.subMeshCount = 1;
         meshData.SetSubMesh(0, new SubMeshDescriptor(0, indexCount)
@@ -46,7 +46,7 @@ public struct SingleStream : IMeshStreams
             MeshUpdateFlags.DontRecalculateBounds | MeshUpdateFlags.DontValidateIndices);
         
         stream0 = meshData.GetVertexData<Stream0>();
-        triangles = meshData.GetIndexData<int>().Reinterpret<int3>(4);
+        triangles = meshData.GetIndexData<ushort>().Reinterpret<TriangleUInt16>(4);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
