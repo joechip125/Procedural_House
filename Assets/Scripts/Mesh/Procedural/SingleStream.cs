@@ -46,7 +46,7 @@ public struct SingleStream : IMeshStreams
             MeshUpdateFlags.DontRecalculateBounds | MeshUpdateFlags.DontValidateIndices);
         
         stream0 = meshData.GetVertexData<Stream0>();
-        triangles = meshData.GetIndexData<ushort>().Reinterpret<TriangleUInt16>(4);
+        triangles = meshData.GetIndexData<ushort>().Reinterpret<TriangleUInt16>(2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

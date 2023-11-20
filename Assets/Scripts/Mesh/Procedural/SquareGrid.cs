@@ -8,31 +8,37 @@ public struct SquareGrid : IMeshGenerator
     {
         int vi = 4 * i, ti = 2 * i;
         
+        int z = i / Resolution;
+        int x = i - Resolution * z;
+        
+        var coordinates = float4(x, x + 1f, z, z + 1f) / Resolution - 0.5f;
+        
         var vertex = new Vertex();
-        vertex.normal.z = -1f;
+        vertex.normal.y = 1f;
         vertex.tangent.xw = float2(1f, -1f);
         
+        vertex.position.xz = coordinates.xz;
         streams.SetVertex(vi+ 0, vertex);
         
-        vertex.position = right();
+        vertex.position.xz = coordinates.yz;
         vertex.texCoord0 = float2(1f, 0f);
         streams.SetVertex(vi +1, vertex);
 
-        vertex.position = up();
+        vertex.position.xz = coordinates.xw;
         vertex.texCoord0 = float2(0f, 1f);
         streams.SetVertex(vi +2, vertex);
 
-        vertex.position = float3(1f, 1f, 0f);
+        vertex.position.xz = coordinates.yw;
         vertex.texCoord0 = 1f;
         streams.SetVertex(vi +3, vertex);
         
-        streams.SetTriangle(0, int3(0, 2, 1));
-        streams.SetTriangle(1, int3(1, 2, 3));
+        streams.SetTriangle(ti +0, vi + int3(0, 2, 1));
+        streams.SetTriangle(ti +1, vi + int3(1, 2, 3));
     }
 
     public int VertexCount => 4 * Resolution * Resolution;
     public int IndexCount => 6 * Resolution * Resolution;
-    public int JobLength => 1 * Resolution * Resolution;
-    public Bounds Bounds => new Bounds(new Vector3(0.5f, 0.5f), new Vector3(1f, 1f));
+    public int JobLength => Resolution;
+    public Bounds Bounds => new Bounds(Vector3.zero, new Vector3(1f, 0f, 1f));
     public int Resolution { get; set; }
 }
