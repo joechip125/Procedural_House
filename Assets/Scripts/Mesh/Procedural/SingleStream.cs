@@ -38,7 +38,8 @@ public struct SingleStream : IMeshStreams
         meshData.SetIndexBufferParams(indexCount, IndexFormat.UInt32);
 			
         meshData.subMeshCount = 1;
-        meshData.SetSubMesh(0, new SubMeshDescriptor(0, indexCount));
+        meshData.SetSubMesh(0, new SubMeshDescriptor(0, indexCount), 
+            MeshUpdateFlags.DontRecalculateBounds | MeshUpdateFlags.DontValidateIndices);
         
         stream0 = meshData.GetVertexData<Stream0>();
         triangles = meshData.GetIndexData<int>().Reinterpret<int3>(4);

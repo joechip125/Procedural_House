@@ -23,9 +23,13 @@ public struct SquareGrid : IMeshGenerator
         vertex.position = float3(1f, 1f, 0f);
         vertex.texCoord0 = 1f;
         streams.SetVertex(3, vertex);
+        
+        streams.SetTriangle(0, int3(0, 2, 1));
+        streams.SetTriangle(1, int3(1, 2, 3));
     }
 
     public int VertexCount => 4;
     public int IndexCount => 6;
     public int JobLength => 1;
+    public Bounds Bounds => new Bounds(new Vector3(0.5f, 0.5f), new Vector3(1f, 1f));
 }
