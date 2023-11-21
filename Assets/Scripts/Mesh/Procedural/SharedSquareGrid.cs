@@ -33,6 +33,10 @@ public struct SharedSquareGrid : IMeshGenerator
             vertex.position.x = (float)x / Resolution - 0.5f;
             vertex.texCoord0.x = (float)x / Resolution;
             streams.SetVertex(vi, vertex);
+            
+            if(z <= 0) continue;
+            streams.SetTriangle(ti + 0, vi + int3(-Resolution - 2, -1, -Resolution - 1));
+            streams.SetTriangle(ti + 1, vi + int3(-Resolution - 1, -1, 0));
         }
     }
 }
