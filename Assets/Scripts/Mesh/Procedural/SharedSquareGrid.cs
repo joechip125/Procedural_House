@@ -12,15 +12,27 @@ public struct SharedSquareGrid : IMeshGenerator
 
     public void Execute<S>(int z, S streams) where S : struct, IMeshStreams
     {
-        int vi = (Resolution + 1) * z, ti = 2 * Resolution * z;
+        int vi = (Resolution + 1) * z, ti = 2 * Resolution * (z - 1);
         
         var vertex = new Vertex();
         vertex.normal.y = 1f;
         vertex.tangent.xw = float2(1f, -1f);
         
-        for (int x = 0; x < Resolution; x++, vi += 4, ti += 2) 
+        vertex.position.x = -0.5f;
+        vertex.position.z = (float)z / Resolution - 0.5f;
+        streams.SetVertex(vi, vertex);
+        
+        vertex.position.z = (float)z / Resolution - 0.5f;
+        vertex.texCoord0.y = (float)z / Resolution;
+        streams.SetVertex(vi, vertex);
+        
+        vi += 1;
+
+        for (int x = 1; x <= Resolution; x++, vi++, ti += 2)
         {
-            
+            vertex.position.x = (float)x / Resolution - 0.5f;
+            vertex.texCoord0.x = (float)x / Resolution;
+            streams.SetVertex(vi, vertex);
         }
     }
 }
