@@ -19,6 +19,7 @@ public struct SingleStream : IMeshStreams
     
     [NativeDisableContainerSafetyRestriction]
     NativeArray<Stream0> stream0;
+    
     [NativeDisableContainerSafetyRestriction]
     NativeArray<TriangleUInt16> triangles;
     
