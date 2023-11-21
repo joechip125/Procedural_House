@@ -43,8 +43,9 @@ public class ProceduralMesh : MonoBehaviour
     {
         Mesh.MeshDataArray meshDataArray = Mesh.AllocateWritableMeshData(1);
         Mesh.MeshData meshData = meshDataArray[0];
-
-        MeshJob<SquareGrid, SingleStream>.ScheduleParallel(mesh, meshData, resolution, default).Complete();
+        
+        jobs[(int)meshType](mesh, meshData, resolution, default).Complete();
+        //MeshJob<SquareGrid, SingleStream>.ScheduleParallel(mesh, meshData, resolution, default).Complete();
         Mesh.ApplyAndDisposeWritableMeshData(meshDataArray, mesh);
     }
 }

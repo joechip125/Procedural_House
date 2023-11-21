@@ -1,12 +1,15 @@
-﻿using Unity.Mathematics;
+﻿using System;
+using Unity.Mathematics;
 using UnityEngine;
 using static Unity.Mathematics.math;
 
 public struct SquareGrid : IMeshGenerator
 {
-    public int VertexCount => 4 * Resolution * Resolution;
+    public int VertexCount => 4 * (Resolution + 1) * (Resolution + 1);
+    //public int VertexCount => 4 * Resolution * Resolution;
     public int IndexCount => 6 * Resolution * Resolution;
-    public int JobLength => Resolution;
+    //public int JobLength => Resolution;
+    public int JobLength => Resolution + 1;
     public Bounds Bounds => new Bounds(Vector3.zero, new Vector3(1f, 0f, 1f));
     public int Resolution { get; set; }
 
