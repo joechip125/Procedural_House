@@ -32,3 +32,6 @@ public struct MeshJob<G, S> : IJobFor
         );
     }
 }
+
+public delegate JobHandle MeshJobScheduleDelegate (
+    Mesh mesh, Mesh.MeshData meshData, int resolution, JobHandle dependency);
