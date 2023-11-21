@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
-public class ProceduralMesh : MonoBehaviour
+public class ProceduralMesh : MonoBehaviour 
 {
-    Mesh mesh;
-    
+
     [SerializeField, Range(1, 10)]
     int resolution = 1;
+
+    Mesh mesh;
 
     void Awake () 
     {
@@ -24,15 +25,14 @@ public class ProceduralMesh : MonoBehaviour
         GenerateMesh();
         enabled = false;
     }
-    
-    void GenerateMesh()
-    {
+
+    void GenerateMesh () {
         Mesh.MeshDataArray meshDataArray = Mesh.AllocateWritableMeshData(1);
         Mesh.MeshData meshData = meshDataArray[0];
 
-        MeshJob<SquareGrid, SingleStream>
-            .ScheduleParallel(mesh, meshData, resolution,default).Complete();
-
+        MeshJob<SquareGrid, SingleStream>.ScheduleParallel(
+            mesh, meshData, resolution, default
+        ).Complete();
         Mesh.ApplyAndDisposeWritableMeshData(meshDataArray, mesh);
     }
 }
