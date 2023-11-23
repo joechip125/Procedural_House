@@ -58,10 +58,7 @@
             "m_Id": "0cf44ec548a040279cb3a7ce099b6de7"
         },
         {
-            "m_Id": "bded3e7c8006419db1f21aecee5fbdc8"
-        },
-        {
-            "m_Id": "d9ce8dbae69d4ae290bb0d713d9f1727"
+            "m_Id": "35076473607c4251a917d00844cadb7a"
         }
     ],
     "m_GroupDatas": [],
@@ -477,21 +474,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
-    "m_ObjectId": "2e23e4b5e5554244a43fd94dfe526485",
-    "m_Id": 3,
-    "m_DisplayName": "Speed",
-    "m_SlotType": 0,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "Speed",
-    "m_StageCapability": 3,
-    "m_Value": 0.0,
-    "m_DefaultValue": 0.0,
-    "m_Labels": []
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
     "m_ObjectId": "2f037960bc5749dc88990837df340607",
     "m_Id": 0,
@@ -547,6 +529,42 @@
         "m_SerializableColors": []
     },
     "m_SerializedDescriptor": "SurfaceDescription.NormalTS"
+}
+
+{
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.CustomFunctionNode",
+    "m_ObjectId": "35076473607c4251a917d00844cadb7a",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Ripple (Custom Function)",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -1353.3333740234375,
+            "y": 504.0000305175781,
+            "width": 209.33349609375,
+            "height": 246.66665649414063
+        }
+    },
+    "m_Slots": [],
+    "synonyms": [
+        "code",
+        "HLSL"
+    ],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_SourceType": 0,
+    "m_FunctionName": "Ripple",
+    "m_FunctionSource": "1e6705f97b864cf6b08c56c032fed6de",
+    "m_FunctionBody": "Enter function body here..."
 }
 
 {
@@ -739,29 +757,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector3MaterialSlot",
-    "m_ObjectId": "72dbc8b083b14c19bf8f2482ed745fd1",
-    "m_Id": 1,
-    "m_DisplayName": "Origin",
-    "m_SlotType": 0,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "Origin",
-    "m_StageCapability": 3,
-    "m_Value": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "m_Labels": []
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.PositionMaterialSlot",
     "m_ObjectId": "7622507b6980440593927d701b82f006",
     "m_Id": 0,
@@ -782,21 +777,6 @@
     },
     "m_Labels": [],
     "m_Space": 0
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
-    "m_ObjectId": "7cd64423729940a1ab83deb3db87c135",
-    "m_Id": 2,
-    "m_DisplayName": "Period",
-    "m_SlotType": 0,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "Period",
-    "m_StageCapability": 3,
-    "m_Value": 0.0,
-    "m_DefaultValue": 0.0,
-    "m_Labels": []
 }
 
 {
@@ -1178,21 +1158,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
-    "m_ObjectId": "add36de35f6e4f7cb37a4af573b15774",
-    "m_Id": 4,
-    "m_DisplayName": "Amplitude",
-    "m_SlotType": 0,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "Amplitude",
-    "m_StageCapability": 3,
-    "m_Value": 0.0,
-    "m_DefaultValue": 0.0,
-    "m_Labels": []
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.SamplerStateMaterialSlot",
     "m_ObjectId": "b2bf7eeb74444a359845607bd42558fe",
     "m_Id": 3,
@@ -1202,61 +1167,6 @@
     "m_ShaderOutputName": "Sampler",
     "m_StageCapability": 3,
     "m_BareResource": false
-}
-
-{
-    "m_SGVersion": 1,
-    "m_Type": "UnityEditor.ShaderGraph.CustomFunctionNode",
-    "m_ObjectId": "bded3e7c8006419db1f21aecee5fbdc8",
-    "m_Group": {
-        "m_Id": ""
-    },
-    "m_Name": "Custom Function",
-    "m_DrawState": {
-        "m_Expanded": true,
-        "m_Position": {
-            "serializedVersion": "2",
-            "x": -1196.0001220703125,
-            "y": -306.0000305175781,
-            "width": 215.99993896484376,
-            "height": 376.0
-        }
-    },
-    "m_Slots": [
-        {
-            "m_Id": "c4800e7978f044ea947f411963b9ce39"
-        },
-        {
-            "m_Id": "72dbc8b083b14c19bf8f2482ed745fd1"
-        },
-        {
-            "m_Id": "7cd64423729940a1ab83deb3db87c135"
-        },
-        {
-            "m_Id": "2e23e4b5e5554244a43fd94dfe526485"
-        },
-        {
-            "m_Id": "add36de35f6e4f7cb37a4af573b15774"
-        },
-        {
-            "m_Id": "e44411c9498b4185b5a040476c83c849"
-        }
-    ],
-    "synonyms": [
-        "code",
-        "HLSL"
-    ],
-    "m_Precision": 0,
-    "m_PreviewExpanded": true,
-    "m_DismissedVersion": 0,
-    "m_PreviewMode": 0,
-    "m_CustomColors": {
-        "m_SerializableColors": []
-    },
-    "m_SourceType": 0,
-    "m_FunctionName": "Enter function name here...",
-    "m_FunctionSource": "1e6705f97b864cf6b08c56c032fed6de",
-    "m_FunctionBody": "Enter function body here..."
 }
 
 {
@@ -1279,29 +1189,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector3MaterialSlot",
-    "m_ObjectId": "c4800e7978f044ea947f411963b9ce39",
-    "m_Id": 0,
-    "m_DisplayName": "PositionIn",
-    "m_SlotType": 0,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "PositionIn",
-    "m_StageCapability": 3,
-    "m_Value": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "m_Labels": []
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "d2fcd57a20864dc2aee1ab96adf02766",
     "m_Id": 5,
@@ -1313,42 +1200,6 @@
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
     "m_Labels": []
-}
-
-{
-    "m_SGVersion": 1,
-    "m_Type": "UnityEditor.ShaderGraph.CustomFunctionNode",
-    "m_ObjectId": "d9ce8dbae69d4ae290bb0d713d9f1727",
-    "m_Group": {
-        "m_Id": ""
-    },
-    "m_Name": "Ripple (Custom Function)",
-    "m_DrawState": {
-        "m_Expanded": true,
-        "m_Position": {
-            "serializedVersion": "2",
-            "x": -1346.0001220703125,
-            "y": 252.0,
-            "width": 214.6666259765625,
-            "height": 246.6666259765625
-        }
-    },
-    "m_Slots": [],
-    "synonyms": [
-        "code",
-        "HLSL"
-    ],
-    "m_Precision": 0,
-    "m_PreviewExpanded": true,
-    "m_DismissedVersion": 0,
-    "m_PreviewMode": 0,
-    "m_CustomColors": {
-        "m_SerializableColors": []
-    },
-    "m_SourceType": 0,
-    "m_FunctionName": "Ripple",
-    "m_FunctionSource": "1e6705f97b864cf6b08c56c032fed6de",
-    "m_FunctionBody": "Enter function body here..."
 }
 
 {
@@ -1375,29 +1226,6 @@
     "m_ShaderOutputName": "Out",
     "m_StageCapability": 3,
     "m_BareResource": false
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector3MaterialSlot",
-    "m_ObjectId": "e44411c9498b4185b5a040476c83c849",
-    "m_Id": 5,
-    "m_DisplayName": "PositionOut",
-    "m_SlotType": 1,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "PositionOut",
-    "m_StageCapability": 3,
-    "m_Value": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "m_Labels": []
 }
 
 {
