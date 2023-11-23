@@ -59,6 +59,9 @@
         },
         {
             "m_Id": "bded3e7c8006419db1f21aecee5fbdc8"
+        },
+        {
+            "m_Id": "d9ce8dbae69d4ae290bb0d713d9f1727"
         }
     ],
     "m_GroupDatas": [],
@@ -1310,6 +1313,42 @@
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
     "m_Labels": []
+}
+
+{
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.CustomFunctionNode",
+    "m_ObjectId": "d9ce8dbae69d4ae290bb0d713d9f1727",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Ripple (Custom Function)",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -1346.0001220703125,
+            "y": 252.0,
+            "width": 214.6666259765625,
+            "height": 246.6666259765625
+        }
+    },
+    "m_Slots": [],
+    "synonyms": [
+        "code",
+        "HLSL"
+    ],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_SourceType": 0,
+    "m_FunctionName": "Ripple",
+    "m_FunctionSource": "1e6705f97b864cf6b08c56c032fed6de",
+    "m_FunctionBody": "Enter function body here..."
 }
 
 {
