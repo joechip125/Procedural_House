@@ -313,6 +313,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Graph
       objectReference: {fileID: 0}
+    - target: {fileID: 4097982298936508098, guid: caf22b1d7567cc74c94e57d6f0aaf604, type: 3}
+      propertyPath: resolution
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 6742226201031645246, guid: caf22b1d7567cc74c94e57d6f0aaf604, type: 3}
       propertyPath: m_RootOrder
       value: 2
