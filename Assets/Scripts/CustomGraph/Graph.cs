@@ -10,18 +10,23 @@ namespace CustomGraph
 
         [SerializeField, Range(10,200)] 
         private int resolution;
-        
-        
+
+        private void OnValidate()
+        {
+            
+        }
+
         private void Awake()
         {
-          var point =  Instantiate(pointPrefab);
+          float step = 2f / resolution;
           var position = Vector3.zero;
-          var scale = Vector3.one / 5f;
+          var scale = Vector3.one *step;
 
           for (int i = 0; i < resolution; i++)
           {
-              position.x = (i + 0.5f) / 5f - 1f;
-              position.y = position.x;
+              var point =  Instantiate(pointPrefab, transform, false);
+              position.x = (i + 0.5f) * step - 1f;
+              position.y = position.x * position.x;
               point.localPosition = position;
               point.localScale = scale;
           }
