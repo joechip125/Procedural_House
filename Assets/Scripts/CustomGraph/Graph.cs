@@ -18,6 +18,18 @@ namespace CustomGraph
             
         }
 
+        private void Update()
+        {
+            for (int i = 0; i < points.Length; i++)
+            {
+                var point = points[i];
+                var position = point.localPosition;
+                //position.y = position.x * position.x * position.x;
+                position.y = Mathf.Sin(position.x);
+                point.localPosition = position;
+            }
+        }
+
         private void Awake()
         {
           float step = 2f / resolution;
@@ -29,7 +41,7 @@ namespace CustomGraph
           {
               var point = points[i] = Instantiate(pointPrefab, transform, false);
               position.x = (i + 0.5f) * step - 1f;
-              position.y = position.x * position.x * position.x;
+              //position.y = position.x * position.x * position.x;
               point.localPosition = position;
               point.localScale = scale;
           }
