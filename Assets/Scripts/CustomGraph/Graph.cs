@@ -11,6 +11,8 @@ namespace CustomGraph
         [SerializeField, Range(10,200)] 
         private int resolution;
 
+        private Transform[] points;
+
         private void OnValidate()
         {
             
