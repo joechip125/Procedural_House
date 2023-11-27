@@ -30,7 +30,7 @@ namespace CustomGraph
                 var point = points[i];
                 var position = point.localPosition;
                 FunctionLibrary.GetFunction(functionName);
-                position.y = f(position.x,0, time);
+                position.y = f(position.x,position.z, time);
                 point.localPosition = position;
             }
         }
