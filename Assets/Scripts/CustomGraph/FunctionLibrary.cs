@@ -5,6 +5,15 @@ namespace CustomGraph
 {
     public static class FunctionLibrary
     {
+        public delegate float Function(float x, float t);
+
+        private static Function[] functions = {Wave, MultiWave, Ripple};
+
+        public static Function GetFunction(int index)
+        {
+            return functions[index];
+        }
+        
         public static float Wave(float x, float t) 
             => Sin(PI * (x + t));
 
@@ -14,7 +23,6 @@ namespace CustomGraph
             y += 0.5f * Sin(2f * PI * (x + t));
             return y * (2f / 3f);
         }
-        
         
         public static float Ripple (float x, float t) 
         {

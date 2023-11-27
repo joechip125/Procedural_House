@@ -21,6 +21,7 @@ namespace CustomGraph
         private void Update()
         {
             var time = Time.time;
+            //FunctionLibrary.Function f = FunctionLibrary.GetFunction(function);
             for (int i = 0; i < points.Length; i++)
             {
                 var point = points[i];
