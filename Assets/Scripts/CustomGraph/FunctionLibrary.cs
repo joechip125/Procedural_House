@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using static UnityEngine.Mathf;
 
 namespace CustomGraph
@@ -8,10 +9,11 @@ namespace CustomGraph
         public delegate float Function(float x, float t);
 
         private static Function[] functions = {Wave, MultiWave, Ripple};
+        public enum FunctionName {Wave, MultiWave, Ripple}
 
-        public static Function GetFunction(int index)
+        public static Function GetFunction(FunctionName index)
         {
-            return functions[index];
+            return functions[(int)index];
         }
         
         public static float Wave(float x, float t) 

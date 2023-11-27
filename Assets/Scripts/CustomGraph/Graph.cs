@@ -11,6 +11,9 @@ namespace CustomGraph
         [SerializeField, Range(10,200)] 
         private int resolution;
 
+        [SerializeField] 
+        private FunctionLibrary.FunctionName functionName;
+
         private Transform[] points;
 
         private void OnValidate()
@@ -21,13 +24,13 @@ namespace CustomGraph
         private void Update()
         {
             var time = Time.time;
-            //FunctionLibrary.Function f = FunctionLibrary.GetFunction(function);
+            FunctionLibrary.Function f = FunctionLibrary.GetFunction(functionName);;
             for (int i = 0; i < points.Length; i++)
             {
                 var point = points[i];
                 var position = point.localPosition;
-                //position.y = position.x * position.x * position.x;
-                position.y = FunctionLibrary.MultiWave(position.x, time);
+                FunctionLibrary.GetFunction(functionName);
+                position.y = f(position.x, time);
                 point.localPosition = position;
             }
         }
