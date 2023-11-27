@@ -20,12 +20,13 @@ namespace CustomGraph
 
         private void Update()
         {
+            var time = Time.time;
             for (int i = 0; i < points.Length; i++)
             {
                 var point = points[i];
                 var position = point.localPosition;
                 //position.y = position.x * position.x * position.x;
-                position.y = Mathf.Sin(position.x);
+                position.y = Mathf.Sin(Mathf.PI * (position.x + time));
                 point.localPosition = position;
             }
         }
