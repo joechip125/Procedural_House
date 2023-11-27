@@ -26,7 +26,7 @@ namespace CustomGraph
                 var point = points[i];
                 var position = point.localPosition;
                 //position.y = position.x * position.x * position.x;
-                position.y = Mathf.Sin(Mathf.PI * (position.x + time));
+                position.y = FunctionLibrary.MultiWave(position.x, time);
                 point.localPosition = position;
             }
         }
