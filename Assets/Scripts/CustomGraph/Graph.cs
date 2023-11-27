@@ -23,10 +23,11 @@ namespace CustomGraph
           float step = 2f / resolution;
           var position = Vector3.zero;
           var scale = Vector3.one *step;
+          points = new Transform[resolution];
 
-          for (int i = 0; i < resolution; i++)
+          for (int i = 0; i < points.Length; i++)
           {
-              var point =  Instantiate(pointPrefab, transform, false);
+              var point = points[i] = Instantiate(pointPrefab, transform, false);
               position.x = (i + 0.5f) * step - 1f;
               position.y = position.x * position.x * position.x;
               point.localPosition = position;
