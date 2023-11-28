@@ -13,6 +13,9 @@ namespace CustomGraph
         [SerializeField] 
         private FunctionLibrary.FunctionName functionName;
 
+        [SerializeField] 
+        private ComputeShader computeShader;
+
         private ComputeBuffer positionBuffer;
         
         private void Update()
