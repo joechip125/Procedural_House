@@ -10,17 +10,13 @@ namespace RandomNoise
         [BurstCompile(FloatPrecision.Standard, FloatMode.Fast, CompileSynchronously = true)]
         struct HashJob : IJobFor
         {
-
             [WriteOnly] 
             public NativeArray<uint> hashes;
-
-            
             
             public void Execute(int i)
             {
                 hashes[i] = (uint)i;
             }
-            
         }
 
         static int hashesId = Shader.PropertyToID("_Hashes"),

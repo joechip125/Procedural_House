@@ -1,6 +1,6 @@
 #pragma kernel FunctionKernel
 
-float _Step;
+float _Step, _Time;
 uint _Resolution;
 
 RWStructuredBuffer<float3> _Positions;
@@ -16,9 +16,18 @@ void SetPosition (uint3 id, float3 position)
         _Positions[id.x + id.y * _Resolution] = position;
     }
 }
+float3 Wave (float u, float v, float t)
+{
+    float3 p;
+    p.x = u;
+    p.y = sin(3.1415927f * (u + v + t));
+    p.z = v;
+    return p;
+}
 
 [numthreads(8, 8, 1)]
 void FunctionKernel (uint3 id: SV_DispatchThreadID)
 {
-    
+    float2 uv = GetUV(id);
+    SetPosition(id, 0.0);
 }
