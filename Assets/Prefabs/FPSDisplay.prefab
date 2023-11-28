@@ -328,3 +328,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textDisplay: {fileID: 2893556329805442231}
+  sampleDuration: 1
