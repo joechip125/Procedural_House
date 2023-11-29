@@ -37,6 +37,9 @@ namespace CustomGraph
             computeShader.SetBuffer(0, positionsId, positionBuffer);
             var groups = Mathf.CeilToInt(resolution / 8f);
             computeShader.Dispatch(0, groups, groups, 1);
+            
+            var bounds = new Bounds(Vector3.zero, Vector3.one * (2f + 2f / resolution));
+            Graphics.DrawMeshInstancedProcedural(mesh, 0, material, bounds, 1);
         }
         
         private void Update()
