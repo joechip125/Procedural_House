@@ -44,6 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3c5b550290949d789af3043e9023050, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  material: {fileID: 2100000, guid: 64956e4a2c8d18e488aff495aea8d380, type: 2}
   resolution: 0
   functionName: 0
   computeShader: {fileID: 7200000, guid: 7b15223894e61f94ba8cbae48a1e428b, type: 3}

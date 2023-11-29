@@ -10,6 +10,12 @@ namespace CustomGraph
             timeId = Shader.PropertyToID("_Time"),
             resolutionId = Shader.PropertyToID("_Resolution");
 
+        [SerializeField] 
+        private Mesh mesh;
+        
+        [SerializeField] 
+        private Material material;
+        
         [SerializeField, Range(10,200)] 
         private int resolution;
 
@@ -35,10 +41,7 @@ namespace CustomGraph
         
         private void Update()
         {
-            var time = Time.time;
-            var step = 2f / resolution;
-            float v = 0.5f * step - 1f;
-            FunctionLibrary.Function f = FunctionLibrary.GetFunction(functionName);
+            UpdateFunctionOnGPU();
         }
 
         private void OnDisable()
