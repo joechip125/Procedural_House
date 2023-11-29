@@ -19,11 +19,17 @@
 		};
         float _Smoothness;
         float _Metallic;
-        StructuredBuffer<float3> _Positions;
+        #if defined(UNITY_PROCEDURAL_INSTANCING_ENABLED)
+			StructuredBuffer<float3> _Positions;
+		#endif;
 
         void ConfigureProcedural()
         {
-	        
+	        #if defined(UNITY_PROCEDURAL_INSTANCING_ENABLED)
+        	
+			float3 position = _Positions[unity_InstanceID];
+        	
+			#endif
         }
         
 		void ConfigureSurface (Input input, inout SurfaceOutputStandard surface)
