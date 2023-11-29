@@ -27,6 +27,10 @@ namespace CustomGraph
             computeShader.SetInt(resolutionId, resolution);
             computeShader.SetFloat(stepId, step);
             computeShader.SetFloat(timeId, Time.time);
+
+            computeShader.SetBuffer(0, positionsId, positionBuffer);
+            var groups = Mathf.CeilToInt(resolution / 8f);
+            computeShader.Dispatch(0, groups, groups, 1);
         }
         
         private void Update()
