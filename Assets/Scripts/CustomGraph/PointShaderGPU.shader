@@ -1,6 +1,4 @@
-﻿
-
-Shader "Graph/Point Surface GPU" 
+﻿Shader "Graph/Point Surface GPU" 
 {
 	Properties 
 	{
@@ -11,14 +9,22 @@ Shader "Graph/Point Surface GPU"
     SubShader
     {
         CGPROGRAM
-		#pragma surface ConfigureSurface Standard fullforwardshadows
-        #pragma target 3.0
+		#pragma surface ConfigureSurface Standard fullforwardshadows addshadow
+        #pragma instancing_options procedural:ConfigureProcedural
+        #pragma target 4.5
+        
         struct Input
         {
 			float3 worldPos;
 		};
         float _Smoothness;
         float _Metallic;
+        StructuredBuffer<float3> _Positions;
+
+        void ConfigureProcedural()
+        {
+	        
+        }
         
 		void ConfigureSurface (Input input, inout SurfaceOutputStandard surface)
 		{
