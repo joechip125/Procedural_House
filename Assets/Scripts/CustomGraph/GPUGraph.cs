@@ -5,7 +5,7 @@ namespace CustomGraph
 {
     public class GPUGraph : MonoBehaviour
     {
-        static int positionsId = Shader.PropertyToID("_Positions"),
+        static readonly int positionsId = Shader.PropertyToID("_Positions"),
             stepId = Shader.PropertyToID("_Steps"),
             timeId = Shader.PropertyToID("_Time"),
             resolutionId = Shader.PropertyToID("_Resolution");
@@ -20,6 +20,14 @@ namespace CustomGraph
         private ComputeShader computeShader;
 
         private ComputeBuffer positionBuffer;
+        
+        void UpdateFunctionOnGPU () 
+        {
+            float step = 2f / resolution;
+            computeShader.SetInt(resolutionId, resolution);
+            computeShader.SetFloat(stepId, step);
+            computeShader.SetFloat(timeId, Time.time);
+        }
         
         private void Update()
         {
