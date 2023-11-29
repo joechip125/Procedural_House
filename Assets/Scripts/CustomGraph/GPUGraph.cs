@@ -5,7 +5,10 @@ namespace CustomGraph
 {
     public class GPUGraph : MonoBehaviour
     {
-       
+        static int positionsId = Shader.PropertyToID("_Positions"),
+            stepId = Shader.PropertyToID("_Steps"),
+            timeId = Shader.PropertyToID("_Time"),
+            resolutionId = Shader.PropertyToID("_Resolution");
 
         [SerializeField, Range(10,200)] 
         private int resolution;
