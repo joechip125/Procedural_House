@@ -38,6 +38,8 @@ namespace CustomGraph
             var groups = Mathf.CeilToInt(resolution / 8f);
             computeShader.Dispatch(0, groups, groups, 1);
             
+            material.SetBuffer(positionsId, positionBuffer);
+            material.SetFloat(stepId, step);
             var bounds = new Bounds(Vector3.zero, Vector3.one * (2f + 2f / resolution));
             Graphics.DrawMeshInstancedProcedural(mesh, 0, material, bounds, positionBuffer.count);
         }

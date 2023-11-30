@@ -1,5 +1,3 @@
-
-
 Shader "Graph/Point Surface" 
 {
 	Properties 
