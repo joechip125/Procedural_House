@@ -17,8 +17,11 @@
         {
 			float3 worldPos;
 		};
+
         float _Smoothness;
         float _Metallic;
+		float _Scale;
+        
         #if defined(UNITY_PROCEDURAL_INSTANCING_ENABLED)
 			StructuredBuffer<float3> _Positions;
 		#endif;
@@ -28,11 +31,14 @@
 	        #if defined(UNITY_PROCEDURAL_INSTANCING_ENABLED)
         	
 			float3 position = _Positions[unity_InstanceID];
-        	
-			#endif
+        	unity_ObjectToWorld = 0.0;
+        	unity_ObjectToWorld._m03_m13_m23_m33 = float4(position, 1.0);
+        	unity_ObjectToWorld._m00_m11_m22 = _Step;
+	        #endif
         }
-        
-		void ConfigureSurface (Input input, inout SurfaceOutputStandard surface)
+
+
+        void ConfigureSurface (Input input, inout SurfaceOutputStandard surface)
 		{
 			surface.Smoothness = _Smoothness;
 			surface.Albedo.rg = input.worldPos.xy * 0.5 + 0.5;
