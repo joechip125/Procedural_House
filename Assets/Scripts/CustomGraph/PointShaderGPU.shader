@@ -21,6 +21,7 @@
         float _Smoothness;
         float _Metallic;
 		float _Scale;
+        float _Step;
         
         #if defined(UNITY_PROCEDURAL_INSTANCING_ENABLED)
 			StructuredBuffer<float3> _Positions;
