@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using static UnityEngine.Mathf;
+using Random = UnityEngine.Random;
 
 namespace CustomGraph
 {
@@ -10,6 +11,19 @@ namespace CustomGraph
 
         private static Function[] functions = {Wave, MultiWave, Ripple, Sphere, Torus};
         public enum FunctionName {Wave, MultiWave, Ripple, Sphere, Torus}
+        
+        public static int FunctionCount => functions.Length;
+
+   
+
+        public static FunctionName GetNextFunctionName (FunctionName name) =>
+            (int)name < functions.Length - 1 ? name + 1 : 0;
+
+        public static FunctionName GetRandomFunctionNameOtherThan (FunctionName name) 
+        {
+            var choice = (FunctionName)Random.Range(1, functions.Length);
+            return choice == name ? 0 : choice;
+        }
 
         public static Function GetFunction(FunctionName index)
         {
