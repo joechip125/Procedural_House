@@ -10,6 +10,15 @@ namespace CustomGraph
             timeId = Shader.PropertyToID("_Time"),
             resolutionId = Shader.PropertyToID("_Resolution");
 
+        
+        public enum TransitionMode { Cycle, Random }
+
+        [SerializeField]
+        TransitionMode transitionMode = TransitionMode.Cycle;
+
+        [SerializeField, Min(0f)]
+        float functionDuration = 1f, transitionDuration = 1f;
+
         [SerializeField] 
         private Mesh mesh;
         
