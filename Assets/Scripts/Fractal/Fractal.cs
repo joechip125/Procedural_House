@@ -13,6 +13,7 @@ namespace Fractal
         {
             public Vector3 direction;
             public Quaternion rotation;
+            public Transform transform;
         }
         
         [SerializeField, Range(1, 8)] 
@@ -23,7 +24,20 @@ namespace Fractal
         
         [SerializeField]
         private Material material;
-        
+
+        private FractalPart[][] parts;
+
+        private void Awake()
+        {
+            parts = new FractalPart[depth][];
+            parts[0] = new FractalPart[1];
+            
+            for (int i = 0, length = 1; i < parts.Length; i++, length *= 5) 
+            {
+                parts[i] = new FractalPart[length];
+            }
+        }
+
         static Vector3[] directions = 
         {
             Vector3.up, Vector3.right, Vector3.left, Vector3.forward, Vector3.back
