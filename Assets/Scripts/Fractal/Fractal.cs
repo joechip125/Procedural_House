@@ -12,25 +12,24 @@ namespace Fractal
         [SerializeField, Range(1, 8)] 
         private int depth = 4;
 
-        private void Start()
+        [SerializeField]
+        private Mesh mesh;
+        
+        [SerializeField]
+        private Material material;
+        
+        static Vector3[] directions = 
         {
-            name = $"Fractal {depth}";
-            if (depth <= 1) return;
+            Vector3.up, Vector3.right, Vector3.left, Vector3.forward, Vector3.back
+        };
 
-            var childB = CreateChild(Vector3.up, Quaternion.identity);
-            var childA = CreateChild(Vector3.right, Quaternion.Euler(0,0, -90f));
-            var childC = CreateChild(Vector3.left, Quaternion.Euler(0f, 0f, 90f));
-            var childD = CreateChild(Vector3.forward, Quaternion.Euler(90f, 0f, 0f));
-            var childE = CreateChild(Vector3.back, Quaternion.Euler(-90f, 0f, 0f));
-
-            childA.transform.SetParent(transform, false);
-            childB.transform.SetParent(transform, false);
-            childC.transform.SetParent(transform, false);
-            childD.transform.SetParent(transform, false);
-            childE.transform.SetParent(transform, false);
-        }
-
-
+        static Quaternion[] rotations = 
+        {
+            Quaternion.identity,
+            Quaternion.Euler(0f, 0f, -90f), Quaternion.Euler(0f, 0f, 90f),
+            Quaternion.Euler(90f, 0f, 0f), Quaternion.Euler(-90f, 0f, 0f)
+        };
+        
         private Fractal CreateChild(Vector3 direction, Quaternion rotation)
         {
             var child = Instantiate(this);
