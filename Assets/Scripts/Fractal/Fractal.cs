@@ -9,6 +9,12 @@ namespace Fractal
 {
     public class Fractal : MonoBehaviour
     {
+        private struct FractalPart
+        {
+            public Vector3 direction;
+            public Quaternion rotation;
+        }
+        
         [SerializeField, Range(1, 8)] 
         private int depth = 4;
 
@@ -34,6 +40,8 @@ namespace Fractal
         {
             var go = new GameObject($"Fractal part {depth}");
             go.transform.SetParent(transform, false);
+            go.AddComponent<MeshFilter>().mesh = mesh;
+            go.AddComponent<MeshRenderer>().material = material;
         }
         
         private Fractal CreateChild(Vector3 direction, Quaternion rotation)
