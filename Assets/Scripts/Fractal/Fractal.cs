@@ -17,15 +17,21 @@ namespace Fractal
             name = $"Fractal {depth}";
             if (depth <= 1) return;
 
-            var childB = CreateFractal(Vector3.up, Quaternion.identity);
-            var childA = CreateFractal(Vector3.right, Quaternion.identity);
+            var childB = CreateChild(Vector3.up, Quaternion.identity);
+            var childA = CreateChild(Vector3.right, Quaternion.Euler(0,0, -90f));
+            var childC = CreateChild(Vector3.left, Quaternion.Euler(0f, 0f, 90f));
+            var childD = CreateChild(Vector3.forward, Quaternion.Euler(90f, 0f, 0f));
+            var childE = CreateChild(Vector3.back, Quaternion.Euler(-90f, 0f, 0f));
 
             childA.transform.SetParent(transform, false);
             childB.transform.SetParent(transform, false);
+            childC.transform.SetParent(transform, false);
+            childD.transform.SetParent(transform, false);
+            childE.transform.SetParent(transform, false);
         }
 
 
-        private Fractal CreateFractal(Vector3 direction, Quaternion rotation)
+        private Fractal CreateChild(Vector3 direction, Quaternion rotation)
         {
             var child = Instantiate(this);
             child.depth = depth - 1;
