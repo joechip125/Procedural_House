@@ -13,18 +13,22 @@ namespace Fractal
         private void Start()
         {
             name = $"Fractal {depth}";
-            if (depth < 1) return;
+            if (depth <= 1) return;
             
+           var childA = CreateFractal(Vector3.right);
+           var childB = CreateFractal(Vector3.up);
+            
+        }
+
+
+        private Fractal CreateFractal(Vector3 direction)
+        {
             var child = Instantiate(this, transform,false);
-            child.transform.localPosition = 0.75f * Vector3.right;
+            child.transform.localPosition = 0.75f * direction;
             child.transform.localScale = 0.5f * Vector3.one;
             child.depth = -1;
-            
-            child = Instantiate(this);
-            child.depth = depth - 1;
-            child.transform.SetParent(transform, false);
-            child.transform.localPosition = 0.75f * Vector3.up;
-            child.transform.localScale = 0.5f* Vector3.one;
+
+            return child;
         }
     }
 }
