@@ -29,6 +29,12 @@ namespace Fractal
             Quaternion.Euler(0f, 0f, -90f), Quaternion.Euler(0f, 0f, 90f),
             Quaternion.Euler(90f, 0f, 0f), Quaternion.Euler(-90f, 0f, 0f)
         };
+
+        private void CreatePart()
+        {
+            var go = new GameObject($"Fractal part {depth}");
+            go.transform.SetParent(transform, false);
+        }
         
         private Fractal CreateChild(Vector3 direction, Quaternion rotation)
         {
