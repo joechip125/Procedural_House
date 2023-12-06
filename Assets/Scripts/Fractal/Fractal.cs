@@ -36,14 +36,18 @@ namespace Fractal
             {
                 parts[i] = new FractalPart[length];
             }
-            
-            CreatePart(0);
-            for (int i = 1; i < parts.Length; i++)
+
+            var scale = 1f;
+            CreatePart(0,0, scale);
+            for (int li = 1; li < parts.Length; li++)
             {
-                var levelParts = parts[i];
-                for (int j = 0; j < levelParts.Length; j++)
+                var levelParts = parts[li];
+                for (int fpi = 0; fpi < levelParts.Length; fpi += 5)
                 {
-                    CreatePart(j);
+                    for (int c = 0; c < 5; c++)
+                    {
+                        CreatePart(li,c, scale);
+                    }
                 }
             }
         }
@@ -60,10 +64,11 @@ namespace Fractal
             Quaternion.Euler(90f, 0f, 0f), Quaternion.Euler(-90f, 0f, 0f)
         };
 
-        private void CreatePart(int levelIndex)
+        private void CreatePart(int levelIndex, int childIndex, float scale)
         {
-            var go = new GameObject($"Fractal part {levelIndex}");
+            var go = new GameObject($"Fractal part L{levelIndex} C{childIndex}");
             go.transform.SetParent(transform, false);
+            go.transform.localScale = Vector3.one * scale; 
             go.AddComponent<MeshFilter>().mesh = mesh;
             go.AddComponent<MeshRenderer>().material = material;
         }
