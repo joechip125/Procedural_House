@@ -49,6 +49,9 @@ namespace Fractal
                 {
                     var parentTransform = parentParts[fpi / 5].transform;
                     var part = levelParts[fpi];
+                    part.transform.localRotation = parentTransform.localRotation * part.rotation;
+                    part.transform.localPosition = parentTransform.localRotation *
+                                                   (1.5f * part.transform.localScale.x * part.direction);
                 }
             }
         }
