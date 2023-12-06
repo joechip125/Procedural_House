@@ -50,9 +50,9 @@ namespace Fractal
             Quaternion.Euler(90f, 0f, 0f), Quaternion.Euler(-90f, 0f, 0f)
         };
 
-        private void CreatePart()
+        private void CreatePart(int levelIndex)
         {
-            var go = new GameObject($"Fractal part {depth}");
+            var go = new GameObject($"Fractal part {levelIndex}");
             go.transform.SetParent(transform, false);
             go.AddComponent<MeshFilter>().mesh = mesh;
             go.AddComponent<MeshRenderer>().material = material;
