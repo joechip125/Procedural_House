@@ -36,6 +36,16 @@ namespace Fractal
             {
                 parts[i] = new FractalPart[length];
             }
+            
+            CreatePart(0);
+            for (int i = 1; i < parts.Length; i++)
+            {
+                var levelParts = parts[i];
+                for (int j = 0; j < levelParts.Length; j++)
+                {
+                    CreatePart(j);
+                }
+            }
         }
 
         static Vector3[] directions = 
