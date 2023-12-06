@@ -41,12 +41,14 @@ namespace Fractal
         
         void Update () 
         {
-            for (int li = 1; li < parts.Length; li++) 
+            for (int li = 1; li < parts.Length; li++)
             {
-                FractalPart[] levelParts = parts[li];
-                for (int fpi = 0; fpi < levelParts.Length; fpi++) 
+                var parentParts = parts[li - 1];
+                var levelParts = parts[li];
+                for (int fpi = 0; fpi < levelParts.Length; fpi++)
                 {
-                    FractalPart part = levelParts[fpi];
+                    var parentTransform = parentParts[fpi / 5].transform;
+                    var part = levelParts[fpi];
                 }
             }
         }
