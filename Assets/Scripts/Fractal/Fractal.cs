@@ -41,19 +41,7 @@ namespace Fractal
         
         void Update () 
         {
-            for (int li = 1; li < parts.Length; li++)
-            {
-                var parentParts = parts[li - 1];
-                var levelParts = parts[li];
-                for (int fpi = 0; fpi < levelParts.Length; fpi++)
-                {
-                    var parentTransform = parentParts[fpi / 5].transform;
-                    var part = levelParts[fpi];
-                    part.transform.localRotation = parentTransform.localRotation * part.rotation;
-                    part.transform.localPosition = parentTransform.localRotation *
-                                                   (1.5f * part.transform.localScale.x * part.direction);
-                }
-            }
+            
         }
 
         private void Awake()
@@ -65,18 +53,16 @@ namespace Fractal
             {
                 parts[i] = new FractalPart[length];
             }
-
-            var scale = 1f;
-            parts[0][0] = CreatePart(0,0, scale);
+            
+            parts[0][0] = CreatePart(0);
             for (int li = 1; li < parts.Length; li++)
             {
-                scale *= 0.5f;
                 var levelParts = parts[li];
                 for (int fpi = 0; fpi < levelParts.Length; fpi += 5)
                 {
                     for (int c = 0; c < 5; c++)
                     {
-                        levelParts[fpi + c]=CreatePart(li,c, scale);
+                        levelParts[fpi + c] = CreatePart(c);
                     }
                 }
             }
