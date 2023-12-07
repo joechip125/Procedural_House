@@ -48,16 +48,20 @@ namespace Fractal
         {
             parts = new FractalPart[depth][];
             parts[0] = new FractalPart[1];
-            
+
+
             for (int i = 0, length = 1; i < parts.Length; i++, length *= 5) 
             {
                 parts[i] = new FractalPart[length];
             }
-            
+
+            var scale = 1f;
             parts[0][0] = CreatePart(0);
             for (int li = 1; li < parts.Length; li++)
             {
+                scale *= 0.5f;
                 var levelParts = parts[li];
+                FractalPart parent = parentParts[fpi / 5];
                 for (int fpi = 0; fpi < levelParts.Length; fpi += 5)
                 {
                     for (int c = 0; c < 5; c++)
