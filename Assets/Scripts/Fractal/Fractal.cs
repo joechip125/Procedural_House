@@ -11,9 +11,8 @@ namespace Fractal
     {
         private struct FractalPart
         {
-            public Vector3 direction;
-            public Quaternion rotation;
-            public Transform transform;
+            public Vector3 direction, worldDirection;
+            public Quaternion rotation, worldRotation;
         }
         
         [SerializeField, Range(1, 8)] 
@@ -93,7 +92,6 @@ namespace Fractal
             {
                 direction = directions[childIndex],
                 rotation = rotations[childIndex],
-                transform = go.transform
             };
         }
         
