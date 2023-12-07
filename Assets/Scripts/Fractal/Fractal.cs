@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Numerics;
 using Unity.Mathematics;
+using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
@@ -80,6 +81,12 @@ namespace Fractal
                 }
             }
         }
+
+        private FractalPart CreatePart(int childIndex) => new FractalPart()
+        {
+            direction = directions[childIndex],
+            rotation = rotations[childIndex],
+        };
 
         private FractalPart CreatePart(int levelIndex, int childIndex, float scale)
         {
