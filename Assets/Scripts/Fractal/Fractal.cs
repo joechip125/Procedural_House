@@ -3,6 +3,7 @@ using System.Numerics;
 using Unity.Mathematics;
 using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEngine;
+using Matrix4x4 = UnityEngine.Matrix4x4;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
@@ -12,7 +13,7 @@ namespace Fractal
     {
         private struct FractalPart
         {
-            public Vector3 direction, worldDirection;
+            public Vector3 direction, worldPosition;
             public Quaternion rotation, worldRotation;
         }
         
@@ -26,6 +27,7 @@ namespace Fractal
         private Material material;
 
         private FractalPart[][] parts;
+        private Matrix4x4[][] matrices;
 
         static Vector3[] directions = 
         {
@@ -48,15 +50,17 @@ namespace Fractal
         {
             parts = new FractalPart[depth][];
             parts[0] = new FractalPart[1];
-
-
+            matrices = new Matrix4x4[depth][];
+            
             for (int i = 0, length = 1; i < parts.Length; i++, length *= 5) 
             {
                 parts[i] = new FractalPart[length];
+                matrices[i] = new Matrix4x4[length];
             }
 
             var scale = 1f;
             parts[0][0] = CreatePart(0);
+            Quaternion deltaRotation = Quaternion.Euler(0f, 22.5f * Time.deltaTime, 0f);
             for (int li = 1; li < parts.Length; li++)
             {
                 scale *= 0.5f;
@@ -65,10 +69,13 @@ namespace Fractal
                 for (int fpi = 0; fpi < levelParts.Length; fpi += 5)
                 {
                     var parent = parentParts[fpi / 5];
-                    for (int c = 0; c < 5; c++)
-                    {
-                        levelParts[fpi + c] = CreatePart(c);
-                    }
+                    var part = levelParts[fpi];
+                    part.rotation *= deltaRotation;
+                    part.worldRotation = parent.worldRotation * part.rotation;
+                    part.worldPosition =
+                        parent.worldPosition +
+                        parent.worldRotation * (1.5f * scale * part.direction);
+                    levelParts[fpi] = part;
                 }
             }
         }
