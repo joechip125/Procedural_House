@@ -60,10 +60,11 @@ namespace Fractal
             for (int li = 1; li < parts.Length; li++)
             {
                 scale *= 0.5f;
+                var parentParts = parts[li - 1];
                 var levelParts = parts[li];
-                FractalPart parent = parentParts[fpi / 5];
                 for (int fpi = 0; fpi < levelParts.Length; fpi += 5)
                 {
+                    var parent = parentParts[fpi / 5];
                     for (int c = 0; c < 5; c++)
                     {
                         levelParts[fpi + c] = CreatePart(c);
