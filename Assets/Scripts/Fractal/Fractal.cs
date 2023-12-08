@@ -64,13 +64,24 @@ namespace Fractal
             }
             
         }
-        
+
+        private void OnValidate()
+        {
+            if (parts == null || !enabled) return;
+            OnDisable();
+            OnEnable();
+        }
+
         void OnDisable () 
         {
             for (int i = 0; i < matricesBuffers.Length; i++) 
             {
                 matricesBuffers[i].Release();
             }
+
+            parts = null;
+            matrices = null;
+            matricesBuffers = null;
         }
 
         private FractalPart CreatePart(int childIndex) => new FractalPart()
