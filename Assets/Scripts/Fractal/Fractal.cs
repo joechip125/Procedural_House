@@ -15,6 +15,7 @@ namespace Fractal
         {
             public Vector3 direction, worldPosition;
             public Quaternion rotation, worldRotation;
+            public float spinAngle;
         }
         
         [SerializeField, Range(1, 8)] 
@@ -28,6 +29,7 @@ namespace Fractal
 
         private FractalPart[][] parts;
         private Matrix4x4[][] matrices;
+        private ComputeBuffer[] matricesBuffers;
 
         static Vector3[] directions = 
         {
@@ -46,37 +48,28 @@ namespace Fractal
             
         }
 
-        private void Awake()
+        private void OnEnable()
         {
             parts = new FractalPart[depth][];
             parts[0] = new FractalPart[1];
             matrices = new Matrix4x4[depth][];
+            matricesBuffers = new ComputeBuffer[depth];
+            int stride = 16 * 4;
             
             for (int i = 0, length = 1; i < parts.Length; i++, length *= 5) 
             {
                 parts[i] = new FractalPart[length];
                 matrices[i] = new Matrix4x4[length];
+                matricesBuffers[i] = new ComputeBuffer(length, stride);
             }
-
-            var scale = 1f;
-            parts[0][0] = CreatePart(0);
-            Quaternion deltaRotation = Quaternion.Euler(0f, 22.5f * Time.deltaTime, 0f);
-            for (int li = 1; li < parts.Length; li++)
+            
+        }
+        
+        void OnDisable () 
+        {
+            for (int i = 0; i < matricesBuffers.Length; i++) 
             {
-                scale *= 0.5f;
-                var parentParts = parts[li - 1];
-                var levelParts = parts[li];
-                for (int fpi = 0; fpi < levelParts.Length; fpi += 5)
-                {
-                    var parent = parentParts[fpi / 5];
-                    var part = levelParts[fpi];
-                    part.rotation *= deltaRotation;
-                    part.worldRotation = parent.worldRotation * part.rotation;
-                    part.worldPosition =
-                        parent.worldPosition +
-                        parent.worldRotation * (1.5f * scale * part.direction);
-                    levelParts[fpi] = part;
-                }
+                matricesBuffers[i].Release();
             }
         }
 
