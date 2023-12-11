@@ -62,6 +62,9 @@ namespace Fractal
         
         [SerializeField]
         private Material material;
+
+        [SerializeField] 
+        private Gradient gradient;
         
         NativeArray<FractalPart>[] parts;
         NativeArray<float3x4>[] matrices;
@@ -117,7 +120,7 @@ namespace Fractal
                 buffer.SetData(matrices[i]);
                 
                 propertyBlock.SetColor(baseColorId,
-                    Color.Lerp(Color.yellow, Color.red, i / (matricesBuffers.Length - 1f)));
+                    gradient.Evaluate(i / (matricesBuffers.Length - 1f)));
                 
                 propertyBlock.SetBuffer(matricesId, buffer);
                 Graphics.DrawMeshInstancedProcedural(

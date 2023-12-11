@@ -13,12 +13,25 @@ void ConfigureProcedural ()
     #endif
 }
 
-void ShaderGraphFunction_float (float3 In, out float3 Out)
+float4 _BaseColor;
+
+float4 GetFractalColor()
 {
-    Out = In;
+    #if defined(UNITY_PROCEDURAL_INSTANCING_ENABLED)
+    return (unity_InstanceID % 5.0) / 4.0;
+    #else
+    return _BaseColor;
+    #endif
 }
 
-void ShaderGraphFunction_half (half3 In, out half3 Out)
+void ShaderGraphFunction_float (float3 In, out float3 Out, out float4 fractalColor)
 {
     Out = In;
+    fractalColor = _BaseColor;
+}
+
+void ShaderGraphFunction_half (half3 In, out half3 Out, out half4 fractalColor)
+{
+    Out = In;
+    fractalColor = _BaseColor;
 }
