@@ -19,7 +19,8 @@ namespace Fractal
         }
         
         static readonly int matricesId = Shader.PropertyToID("_Matrices");
-        
+        private static MaterialPropertyBlock propertyBlock;
+
         [SerializeField, Range(1, 8)] 
         private int depth = 4;
 
@@ -57,6 +58,8 @@ namespace Fractal
             matrices = new Matrix4x4[depth][];
             matricesBuffers = new ComputeBuffer[depth];
             int stride = 16 * 4;
+
+            propertyBlock ??= new MaterialPropertyBlock();
             
             for (int i = 0, length = 1; i < parts.Length; i++, length *= 5) 
             {
