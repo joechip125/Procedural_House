@@ -52,6 +52,8 @@ namespace Fractal
         
         static readonly int matricesId = Shader.PropertyToID("_Matrices"), 
             baseColorId = Shader.PropertyToID("_BaseColor"),
+            colorAId = Shader.PropertyToID("_ColorA"),
+            colorBId = Shader.PropertyToID("_ColorB"),
             sequenceNumbersId = Shader.PropertyToID("_SequenceNumbers");
         
         private static MaterialPropertyBlock propertyBlock;
@@ -66,7 +68,7 @@ namespace Fractal
         private Material material;
 
         [SerializeField] 
-        private Gradient gradient;
+        private Gradient gradientA, gradientB;
         
         NativeArray<FractalPart>[] parts;
         NativeArray<float3x4>[] matrices;
@@ -124,7 +126,7 @@ namespace Fractal
                 buffer.SetData(matrices[i]);
                 
                 propertyBlock.SetColor(baseColorId,
-                    gradient.Evaluate(i / (matricesBuffers.Length - 1f)));
+                    gradientA.Evaluate(i / (matricesBuffers.Length - 1f)));
                 propertyBlock.SetVector(sequenceNumbersId, sequenceNumbers[i]);
                 
                 propertyBlock.SetBuffer(matricesId, buffer);
