@@ -14,11 +14,12 @@ void ConfigureProcedural ()
 }
 
 float4 _BaseColor;
+float2 _SequenceNumbers;
 
 float4 GetFractalColor()
 {
     #if defined(UNITY_PROCEDURAL_INSTANCING_ENABLED)
-    return (unity_InstanceID % 5.0) / 4.0;
+    return frac(unity_InstanceID * _SequenceNumbers.x + _SequenceNumbers.y);
     #else
     return _BaseColor;
     #endif

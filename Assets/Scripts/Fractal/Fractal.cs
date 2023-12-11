@@ -6,6 +6,7 @@ using UnityEngine;
 
 using static Unity.Mathematics.math;
 using quaternion = Unity.Mathematics.quaternion;
+using Random = UnityEngine.Random;
 
 namespace Fractal
 {
@@ -50,7 +51,8 @@ namespace Fractal
         }
         
         static readonly int matricesId = Shader.PropertyToID("_Matrices"), 
-            baseColorId = Shader.PropertyToID("_BaseColor");
+            baseColorId = Shader.PropertyToID("_BaseColor"),
+            sequenceNumbersId = Shader.PropertyToID("_SequenceNumbers");
         
         private static MaterialPropertyBlock propertyBlock;
 
@@ -70,6 +72,8 @@ namespace Fractal
         NativeArray<float3x4>[] matrices;
         
         private ComputeBuffer[] matricesBuffers;
+
+        private Vector4[] sequenceNumbers;
 
         static float3[] directions = 
         {
@@ -121,6 +125,7 @@ namespace Fractal
                 
                 propertyBlock.SetColor(baseColorId,
                     gradient.Evaluate(i / (matricesBuffers.Length - 1f)));
+                propertyBlock.SetVector(sequenceNumbersId, sequenceNumbers[i]);
                 
                 propertyBlock.SetBuffer(matricesId, buffer);
                 Graphics.DrawMeshInstancedProcedural(
@@ -133,12 +138,15 @@ namespace Fractal
             parts = new NativeArray<FractalPart>[depth];
             matrices = new NativeArray<float3x4>[depth];
             matricesBuffers = new ComputeBuffer[depth];
+            sequenceNumbers = new Vector4[depth];
+            
             int stride = 12 * 4;
             for (int i = 0, length = 1; i < parts.Length; i++, length *= 5) 
             {
                 parts[i] = new NativeArray<FractalPart>(length, Allocator.Persistent);
                 matrices[i] = new NativeArray<float3x4>(length, Allocator.Persistent);
                 matricesBuffers[i] = new ComputeBuffer(length, stride);
+                sequenceNumbers[i] = new Vector4(Random.value, Random.value);
             }
 
             parts[0][0] = CreatePart(0);
@@ -175,6 +183,7 @@ namespace Fractal
             parts = null;
             matrices = null;
             matricesBuffers = null;
+            sequenceNumbers = null;
         }
 
         private FractalPart CreatePart(int childIndex) => new FractalPart()
