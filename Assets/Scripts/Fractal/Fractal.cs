@@ -41,7 +41,6 @@ namespace Fractal
                 matrices[i] = float3x4(r.c0, r.c1, r.c2, part.worldPosition);
             }
         }
-
         
         private struct FractalPart
         {
@@ -61,24 +60,22 @@ namespace Fractal
         
         [SerializeField]
         private Material material;
-
-       
+        
         NativeArray<FractalPart>[] parts;
         NativeArray<float3x4>[] matrices;
         
-        
         private ComputeBuffer[] matricesBuffers;
 
-        static Vector3[] directions = 
+        static float3[] directions = 
         {
-            Vector3.up, Vector3.right, Vector3.left, Vector3.forward, Vector3.back
+            up(), right(), left(), forward(), back()
         };
 
-        static Quaternion[] rotations = 
+        static quaternion[] rotations = 
         {
-            Quaternion.identity,
-            Quaternion.Euler(0f, 0f, -90f), Quaternion.Euler(0f, 0f, 90f),
-            Quaternion.Euler(90f, 0f, 0f), Quaternion.Euler(-90f, 0f, 0f)
+            quaternion.identity,
+            quaternion.RotateZ(-0.5f * PI), quaternion.RotateZ(0.5f * PI),
+            quaternion.RotateX(0.5f * PI), quaternion.RotateX(-0.5f * PI)
         };
         
         void Update () 
@@ -129,7 +126,8 @@ namespace Fractal
             matrices = new NativeArray<float3x4>[depth];
             matricesBuffers = new ComputeBuffer[depth];
             int stride = 12 * 4;
-            for (int i = 0, length = 1; i < parts.Length; i++, length *= 5) {
+            for (int i = 0, length = 1; i < parts.Length; i++, length *= 5) 
+            {
                 parts[i] = new NativeArray<FractalPart>(length, Allocator.Persistent);
                 matrices[i] = new NativeArray<float3x4>(length, Allocator.Persistent);
                 matricesBuffers[i] = new ComputeBuffer(length, stride);
@@ -176,30 +174,5 @@ namespace Fractal
             direction = directions[childIndex],
             rotation = rotations[childIndex],
         };
-
-        private FractalPart CreatePart(int levelIndex, int childIndex, float scale)
-        {
-            var go = new GameObject($"Fractal part L{levelIndex} C{childIndex}");
-            go.transform.SetParent(transform, false);
-            go.transform.localScale = Vector3.one * scale; 
-            go.AddComponent<MeshFilter>().mesh = mesh;
-            go.AddComponent<MeshRenderer>().material = material;
-            return new FractalPart()
-            {
-                direction = directions[childIndex],
-                rotation = rotations[childIndex],
-            };
-        }
-        
-        private Fractal CreateChild(Vector3 direction, Quaternion rotation)
-        {
-            var child = Instantiate(this);
-            child.depth = depth - 1;
-            child.transform.localPosition = 0.75f * direction;
-            child.transform.localScale = 0.5f * Vector3.one;
-            child.transform.localRotation = rotation;
-
-            return child;
-        }
     }
 }
