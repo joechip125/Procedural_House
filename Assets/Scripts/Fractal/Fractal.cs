@@ -50,8 +50,7 @@ namespace Fractal
             public float spinAngle;
         }
         
-        static readonly int matricesId = Shader.PropertyToID("_Matrices"), 
-            baseColorId = Shader.PropertyToID("_BaseColor"),
+        static readonly int matricesId = Shader.PropertyToID("_Matrices"),
             colorAId = Shader.PropertyToID("_ColorA"),
             colorBId = Shader.PropertyToID("_ColorB"),
             sequenceNumbersId = Shader.PropertyToID("_SequenceNumbers");
@@ -125,8 +124,9 @@ namespace Fractal
                 ComputeBuffer buffer = matricesBuffers[i];
                 buffer.SetData(matrices[i]);
                 
-                propertyBlock.SetColor(baseColorId,
-                    gradientA.Evaluate(i / (matricesBuffers.Length - 1f)));
+                float gradientInterpolator = i / (matricesBuffers.Length - 1f);
+                propertyBlock.SetColor(colorAId, gradientA.Evaluate(gradientInterpolator));
+                propertyBlock.SetColor(colorBId, gradientB.Evaluate(gradientInterpolator));
                 propertyBlock.SetVector(sequenceNumbersId, sequenceNumbers[i]);
                 
                 propertyBlock.SetBuffer(matricesId, buffer);
