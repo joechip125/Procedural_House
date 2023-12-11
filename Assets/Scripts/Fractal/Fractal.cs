@@ -26,7 +26,6 @@ namespace Fractal
             [WriteOnly]
             public NativeArray<float3x4> matrices;
             
-
             public void Execute (int i) 
             {
                 FractalPart parent = parents[i / 5];
@@ -34,7 +33,7 @@ namespace Fractal
                 part.spinAngle += spinAngleDelta;
                 part.worldRotation = mul(parent.worldRotation,
                     mul(part.rotation, quaternion.RotateY(part.spinAngle)));
-                part.worldPosition = parent.worldPosition + 
+                part.worldPosition = (float3)parent.worldPosition + 
                 mul(parent.worldRotation, 1.5f * scale * part.direction);
                 parts[i] = part;
 
@@ -151,6 +150,7 @@ namespace Fractal
 
             propertyBlock ??= new MaterialPropertyBlock();
         }
+        
         private void OnValidate()
         {
             if (parts == null || !enabled) return;
