@@ -18,6 +18,8 @@ namespace Fractal
             public float spinAngle;
         }
         
+        static readonly int matricesId = Shader.PropertyToID("_Matrices");
+        
         [SerializeField, Range(1, 8)] 
         private int depth = 4;
 
