@@ -68,6 +68,9 @@ namespace Fractal
 
         [SerializeField] 
         private Gradient gradientA, gradientB;
+
+        [SerializeField] 
+        private Color leafColorA, leafColorB;
         
         NativeArray<FractalPart>[] parts;
         NativeArray<float3x4>[] matrices;
@@ -119,6 +122,7 @@ namespace Fractal
             jobHandle.Complete();
 
             var bounds = new Bounds(rootPart.worldPosition, 3f * objectScale * Vector3.one);
+            var leafIndex = matricesBuffers.Length - 1;
             for (int i = 0; i < matricesBuffers.Length; i++) 
             {
                 ComputeBuffer buffer = matricesBuffers[i];

@@ -29,11 +29,11 @@ float4 GetFractalColor()
 void ShaderGraphFunction_float (float3 In, out float3 Out, out float4 fractalColor)
 {
     Out = In;
-    fractalColor = _BaseColor;
+    fractalColor = _ColorA;
 }
 
 void ShaderGraphFunction_half (half3 In, out half3 Out, out half4 fractalColor)
 {
     Out = In;
-    fractalColor = _BaseColor;
+    fractalColor = _ColorA;
 }
