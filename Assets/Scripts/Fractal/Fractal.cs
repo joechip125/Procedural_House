@@ -13,11 +13,9 @@ namespace Fractal
 {
     public class Fractal : MonoBehaviour
     {
-        
         [BurstCompile(FloatPrecision.Standard, FloatMode.Fast, CompileSynchronously = true)]
         struct UpdateFractalLevelJob : IJobFor 
         {
-            //public float spinAngleDelta;
             public float scale;
             public float deltaTime;
 
@@ -96,7 +94,10 @@ namespace Fractal
         private float maxSagAngleA = 15f, maxSagAngleB = 25f;
         
         [SerializeField, Range(0f, 90f)]
-        float spinVelocityA = 20f, spinVelocityB = 25f;
+        float spinSpeedA = 20f, spinSpeedB = 25f;
+        
+        [SerializeField, Range(0f, 1f)]
+        float reverseSpinChance = 0.25f;
         
         NativeArray<FractalPart>[] parts;
         NativeArray<float3x4>[] matrices;
@@ -234,7 +235,8 @@ namespace Fractal
         {
             rotation = rotations[childIndex],
             maxSagAngle = radians(Random.Range(maxSagAngleA, maxSagAngleB)),
-            spinVelocity = radians(Random.Range(spinVelocityA, spinVelocityB)),
+            spinVelocity =(Random.value < reverseSpinChance ? -1f : 1f) 
+                          * radians(Random.Range(spinSpeedA, spinSpeedB)),
         };
     }
 }
