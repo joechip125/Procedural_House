@@ -41,7 +41,7 @@ namespace Fractal
                 if (sagMagnitude > 0f) 
                 {
                     sagAxis /= sagMagnitude;
-                    quaternion sagRotation = quaternion.AxisAngle(sagAxis, PI * 0.25f);
+                    quaternion sagRotation = quaternion.AxisAngle(sagAxis, PI * 0.25f * sagMagnitude);
                     baseRotation = mul(sagRotation, parent.worldRotation);
                 }
                 else 
@@ -51,8 +51,9 @@ namespace Fractal
                 
                 part.worldRotation = mul(baseRotation,
                     mul(part.rotation, quaternion.RotateY(part.spinAngle)));
-                part.worldPosition = (float3)parent.worldPosition + 
-                mul(parent.worldRotation, 1.5f * scale * part.direction);
+                
+                part.worldPosition = parent.worldPosition + 
+                                     mul(part.worldRotation, float3(0f, 1.5f * scale, 0f));
                 parts[i] = part;
 
                 float3x3 r = float3x3(part.worldRotation) * scale;
@@ -62,7 +63,7 @@ namespace Fractal
         
         private struct FractalPart
         {
-            public Vector3 direction, worldPosition;
+            public float3 worldPosition;
             public Quaternion rotation, worldRotation;
             public float spinAngle;
         }
@@ -95,11 +96,6 @@ namespace Fractal
         private ComputeBuffer[] matricesBuffers;
 
         private Vector4[] sequenceNumbers;
-
-        static float3[] directions = 
-        {
-            up(), right(), left(), forward(), back()
-        };
 
         static quaternion[] rotations = 
         {
@@ -227,7 +223,6 @@ namespace Fractal
 
         private FractalPart CreatePart(int childIndex) => new FractalPart()
         {
-            direction = directions[childIndex],
             rotation = rotations[childIndex],
         };
     }
