@@ -123,14 +123,27 @@ namespace Fractal
 
             var bounds = new Bounds(rootPart.worldPosition, 3f * objectScale * Vector3.one);
             var leafIndex = matricesBuffers.Length - 1;
-            for (int i = 0; i < matricesBuffers.Length; i++) 
+            
+            for (int i = 0; i < matricesBuffers.Length; i++)
             {
+                Color colorA, colorB;
+                if (i == leafIndex)
+                {
+                    colorA = leafColorA;
+                    colorB = leafColorB;
+                }
+                else 
+                {
+                    float gradientInterpolator = i / (matricesBuffers.Length - 2f);
+                    colorA = gradientA.Evaluate(gradientInterpolator);
+                    colorB = gradientB.Evaluate(gradientInterpolator);
+                }
+                
                 ComputeBuffer buffer = matricesBuffers[i];
                 buffer.SetData(matrices[i]);
                 
-                float gradientInterpolator = i / (matricesBuffers.Length - 1f);
-                propertyBlock.SetColor(colorAId, gradientA.Evaluate(gradientInterpolator));
-                propertyBlock.SetColor(colorBId, gradientB.Evaluate(gradientInterpolator));
+                propertyBlock.SetColor(colorAId, colorA);
+                propertyBlock.SetColor(colorBId, colorB);
                 propertyBlock.SetVector(sequenceNumbersId, sequenceNumbers[i]);
                 
                 propertyBlock.SetBuffer(matricesId, buffer);
