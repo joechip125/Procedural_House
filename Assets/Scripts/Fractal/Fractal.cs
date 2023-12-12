@@ -57,11 +57,11 @@ namespace Fractal
         
         private static MaterialPropertyBlock propertyBlock;
 
-        [SerializeField, Range(1, 8)] 
+        [SerializeField, Range(3, 8)] 
         private int depth = 4;
 
         [SerializeField]
-        private Mesh mesh;
+        private Mesh mesh, leafMesh;
         
         [SerializeField]
         private Material material;
@@ -127,16 +127,19 @@ namespace Fractal
             for (int i = 0; i < matricesBuffers.Length; i++)
             {
                 Color colorA, colorB;
+                Mesh instanceMesh;
                 if (i == leafIndex)
                 {
                     colorA = leafColorA;
                     colorB = leafColorB;
+                    instanceMesh = leafMesh;
                 }
                 else 
                 {
                     float gradientInterpolator = i / (matricesBuffers.Length - 2f);
                     colorA = gradientA.Evaluate(gradientInterpolator);
                     colorB = gradientB.Evaluate(gradientInterpolator);
+                    instanceMesh = mesh;
                 }
                 
                 ComputeBuffer buffer = matricesBuffers[i];
@@ -148,7 +151,7 @@ namespace Fractal
                 
                 propertyBlock.SetBuffer(matricesId, buffer);
                 Graphics.DrawMeshInstancedProcedural(
-                    mesh, 0, material, bounds, buffer.count, propertyBlock);
+                    instanceMesh, 0, material, bounds, buffer.count, propertyBlock);
             }
         }
 

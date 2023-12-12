@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   depth: 4
   mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  leafMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   material: {fileID: 2100000, guid: e6caa0cca8ed46e419284b908cd109f4, type: 2}
   gradientA:
     serializedVersion: 2
