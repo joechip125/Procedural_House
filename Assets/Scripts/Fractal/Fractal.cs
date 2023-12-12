@@ -2,6 +2,7 @@
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
+using UnityEditor;
 using UnityEngine;
 
 using static Unity.Mathematics.math;
@@ -16,8 +17,9 @@ namespace Fractal
         [BurstCompile(FloatPrecision.Standard, FloatMode.Fast, CompileSynchronously = true)]
         struct UpdateFractalLevelJob : IJobFor 
         {
-            public float spinAngleDelta;
+            //public float spinAngleDelta;
             public float scale;
+            public float deltaTime;
 
             [ReadOnly]
             public NativeArray<FractalPart> parents;
@@ -31,7 +33,7 @@ namespace Fractal
             {
                 FractalPart parent = parents[i / 5];
                 FractalPart part = parts[i];
-                part.spinAngle += spinAngleDelta;
+                part.spinAngle += part.spinVelocity * deltaTime;
                 
                 float3 upAxis = mul(mul(parent.worldRotation, part.rotation), up());
                 float3 sagAxis = cross(up(), upAxis);
@@ -41,7 +43,7 @@ namespace Fractal
                 if (sagMagnitude > 0f) 
                 {
                     sagAxis /= sagMagnitude;
-                    quaternion sagRotation = quaternion.AxisAngle(sagAxis, PI * 0.25f * sagMagnitude);
+                    quaternion sagRotation = quaternion.AxisAngle(sagAxis, part.maxSagAngle * sagMagnitude);
                     baseRotation = mul(sagRotation, parent.worldRotation);
                 }
                 else 
@@ -65,7 +67,7 @@ namespace Fractal
         {
             public float3 worldPosition;
             public Quaternion rotation, worldRotation;
-            public float spinAngle;
+            public float spinAngle, maxSagAngle, spinVelocity;
         }
         
         static readonly int matricesId = Shader.PropertyToID("_Matrices"),
@@ -89,6 +91,12 @@ namespace Fractal
 
         [SerializeField] 
         private Color leafColorA, leafColorB;
+
+        [SerializeField, Range(0f, 90f)]
+        private float maxSagAngleA = 15f, maxSagAngleB = 25f;
+        
+        [SerializeField, Range(0f, 90f)]
+        float spinVelocityA = 20f, spinVelocityB = 25f;
         
         NativeArray<FractalPart>[] parts;
         NativeArray<float3x4>[] matrices;
@@ -106,9 +114,10 @@ namespace Fractal
         
         void Update () 
         {
-            float spinAngleDelta = 0.125f * PI * Time.deltaTime;
+            var deltaTime = Time.deltaTime;
             FractalPart rootPart = parts[0][0];
-            rootPart.spinAngle += spinAngleDelta;
+            
+            rootPart.spinAngle += rootPart.spinVelocity * deltaTime;
             rootPart.worldRotation = mul(transform.rotation,
                 mul(rootPart.rotation, quaternion.RotateY(rootPart.spinAngle)));
             rootPart.worldPosition = transform.position;
@@ -125,7 +134,7 @@ namespace Fractal
                 scale *= 0.5f;
                 jobHandle = new UpdateFractalLevelJob 
                 {
-                    spinAngleDelta = spinAngleDelta,
+                    deltaTime =  deltaTime,
                     scale = scale,
                     parents = parts[li - 1],
                     parts = parts[li],
@@ -224,6 +233,8 @@ namespace Fractal
         private FractalPart CreatePart(int childIndex) => new FractalPart()
         {
             rotation = rotations[childIndex],
+            maxSagAngle = radians(Random.Range(maxSagAngleA, maxSagAngleB)),
+            spinVelocity = radians(Random.Range(spinVelocityA, spinVelocityB)),
         };
     }
 }
