@@ -27,7 +27,7 @@ Shader "Fractal/Fractal Surface GPU"
 		void ConfigureSurface (Input input, inout SurfaceOutputStandard surface)
 		{
 			surface.Albedo = GetFractalColor().rgb;
-			surface.Smoothness = _Smoothness;
+			surface.Smoothness = GetFractalColor().a;
 		}
 		ENDCG
 	}
