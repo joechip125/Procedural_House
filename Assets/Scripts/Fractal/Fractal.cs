@@ -32,9 +32,24 @@ namespace Fractal
                 FractalPart parent = parents[i / 5];
                 FractalPart part = parts[i];
                 part.spinAngle += spinAngleDelta;
-                float3 upAxis = mul(mul(parent.worldRotation, part.rotation), up());
                 
-                part.worldRotation = mul(parent.worldRotation,
+                float3 upAxis = mul(mul(parent.worldRotation, part.rotation), up());
+                float3 sagAxis = cross(up(), upAxis);
+                sagAxis = normalize(sagAxis);
+                float sagMagnitude = length(sagAxis);
+                quaternion baseRotation;
+                if (sagMagnitude > 0f) 
+                {
+                    sagAxis /= sagMagnitude;
+                    quaternion sagRotation = quaternion.AxisAngle(sagAxis, PI * 0.25f);
+                    baseRotation = mul(sagRotation, parent.worldRotation);
+                }
+                else 
+                {
+                    baseRotation = parent.worldRotation;
+                }
+                
+                part.worldRotation = mul(baseRotation,
                     mul(part.rotation, quaternion.RotateY(part.spinAngle)));
                 part.worldPosition = (float3)parent.worldPosition + 
                 mul(parent.worldRotation, 1.5f * scale * part.direction);

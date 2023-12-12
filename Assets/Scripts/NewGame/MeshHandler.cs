@@ -1,5 +1,6 @@
-﻿
-public class MeshHandler
+﻿using UnityEngine;
+
+public class MeshHandler : MonoBehaviour
 {
-    
+        
 }
