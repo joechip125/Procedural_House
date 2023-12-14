@@ -14,7 +14,7 @@
 
 		#pragma target 4.5
 		
-		#include "Hashprocedural.hlsl"
+		#include "HashProcedural.hlsl"
 
 		struct Input
 		{
