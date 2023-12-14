@@ -1,6 +1,5 @@
 ﻿Shader "RandomNoise/HashGPU" 
 {
-
 	Properties 
 	{
 		_Smoothness ("Smoothness", Range(0,1)) = 0.5
