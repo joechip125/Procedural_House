@@ -76,7 +76,7 @@ MonoBehaviour:
   m_Model: {fileID: 0}
   m_InferenceDevice: 0
   m_BehaviorType: 0
-  m_BehaviorName: My Behavior
+  m_BehaviorName: Watcher
   TeamId: 0
   m_UseChildSensors: 1
   m_UseChildActuators: 1
@@ -109,7 +109,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SensorName: RayPerceptionSensor
-  m_DetectableTags: []
+  m_DetectableTags:
+  - SimpleTarget
   m_RaysPerDirection: 3
   m_MaxRayDegrees: 43.3
   m_SphereCastRadius: 0.5
