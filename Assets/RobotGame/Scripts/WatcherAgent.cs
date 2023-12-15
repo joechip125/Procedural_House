@@ -13,7 +13,7 @@ namespace RobotGame.Scripts
 
         public override void CollectObservations(VectorSensor sensor)
         {
-            
+           
         }
 
         public override void WriteDiscreteActionMask(IDiscreteActionMask actionMask)
@@ -23,7 +23,7 @@ namespace RobotGame.Scripts
 
         public override void OnActionReceived(ActionBuffers actions)
         {
-            
+           
         }
 
         public override void OnEpisodeBegin()
