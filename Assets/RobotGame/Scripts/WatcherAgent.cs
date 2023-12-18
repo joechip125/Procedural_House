@@ -13,7 +13,7 @@ namespace RobotGame.Scripts
 
         public override void CollectObservations(VectorSensor sensor)
         {
-           sensor.AddObservation(transform.localRotation);
+           sensor.AddObservation(transform.localRotation.y);
         }
 
         public override void WriteDiscreteActionMask(IDiscreteActionMask actionMask)
