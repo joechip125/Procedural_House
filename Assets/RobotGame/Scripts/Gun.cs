@@ -7,6 +7,9 @@ namespace RobotGame.Scripts
 
         [SerializeField] 
         private Transform exit;
+
+        [SerializeField] 
+        private GameObject bullet;
         
         public void Use()
         {
