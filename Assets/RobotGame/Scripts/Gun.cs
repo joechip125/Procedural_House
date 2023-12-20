@@ -13,7 +13,8 @@ namespace RobotGame.Scripts
         
         public void Use()
         {
-            
+            var dir =transform.InverseTransformDirection(Vector3.forward);
+            var tempB =Instantiate(bullet, exit.localPosition, Quaternion.identity, transform);
         }
     }
 }

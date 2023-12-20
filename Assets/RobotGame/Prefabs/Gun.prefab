@@ -144,6 +144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   exit: {fileID: 5274616648596270168}
+  bullet: {fileID: 6260432477386141207, guid: 91426ff13d8fd5841aeb0a47e3bb54d1, type: 3}
 --- !u!1 &7593919012111881680
 GameObject:
   m_ObjectHideFlags: 0
