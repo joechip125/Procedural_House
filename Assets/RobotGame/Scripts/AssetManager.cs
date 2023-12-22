@@ -12,6 +12,19 @@ namespace RobotGame.Scripts
 
         [SerializeField, Range(5,100)] 
         private int maxObjects = 10;
+
+        public GameObject GetAvailable()
+        {
+            for (int i = 0; i < objects.Length; i++)
+            {
+                if (!objects[i].activeInHierarchy)
+                {
+                    return objects[i];
+                }
+            }
+            
+            return null;
+        }
         
         private void OnEnable()
         {
