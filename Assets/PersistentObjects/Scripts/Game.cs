@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace PersistentObjects.Scripts
 {
@@ -19,7 +20,8 @@ namespace PersistentObjects.Scripts
 
         private void CreateObject()
         {
-            Instantiate(prefab, transform);
+            var t =Instantiate(prefab, transform);
+            t.localPosition = Random.insideUnitSphere * 5f;
         }
     }
 }
