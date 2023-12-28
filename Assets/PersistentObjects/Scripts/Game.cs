@@ -22,6 +22,7 @@ namespace PersistentObjects.Scripts
         {
             var t =Instantiate(prefab, transform);
             t.localPosition = Random.insideUnitSphere * 5f;
+            t.localRotation = Random.rotation;
         }
     }
 }
