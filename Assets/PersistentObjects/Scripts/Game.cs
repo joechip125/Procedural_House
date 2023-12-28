@@ -9,6 +9,7 @@ namespace PersistentObjects.Scripts
         public Transform prefab;
 
         public KeyCode createKey = KeyCode.C;
+        public KeyCode newGameKey = KeyCode.N;
 
         private void Update()
         {
@@ -16,6 +17,15 @@ namespace PersistentObjects.Scripts
             {
                 CreateObject();
             }
+            else if (Input.GetKeyDown(newGameKey))
+            {
+                BeginNewGame();
+            }
+        }
+
+        private void BeginNewGame()
+        {
+            
         }
 
         private void CreateObject()
@@ -23,6 +33,7 @@ namespace PersistentObjects.Scripts
             var t =Instantiate(prefab, transform);
             t.localPosition = Random.insideUnitSphere * 5f;
             t.localRotation = Random.rotation;
+            t.localScale = Vector3.one * Random.Range(0.1f, 1f);
         }
     }
 }
