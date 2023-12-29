@@ -12,7 +12,8 @@ namespace PersistentObjects.Scripts
 
         public KeyCode createKey = KeyCode.C;
         public KeyCode newGameKey = KeyCode.N;
-
+        public KeyCode saveKey = KeyCode.S;
+        
         private List<Transform> objects;
         private string savePath;
 
@@ -32,6 +33,10 @@ namespace PersistentObjects.Scripts
             {
                 BeginNewGame();
             }
+            else if (Input.GetKeyDown(saveKey))
+            {
+                Save();
+            }
         }
         
         private void Save()
@@ -39,6 +44,14 @@ namespace PersistentObjects.Scripts
             using (var writer = new BinaryWriter(File.Open(savePath, FileMode.Create)))
             {
                 writer.Write(objects.Count);
+
+                for (int i = 0; i < objects.Count; i++)
+                {
+                    var t = objects[i];
+                    writer.Write(t.localPosition.x);
+                    writer.Write(t.localPosition.y);
+                    writer.Write(t.localPosition.z);
+                }
             }
         }
         
