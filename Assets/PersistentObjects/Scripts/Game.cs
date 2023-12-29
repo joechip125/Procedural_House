@@ -13,6 +13,7 @@ namespace PersistentObjects.Scripts
         public KeyCode createKey = KeyCode.C;
         public KeyCode newGameKey = KeyCode.N;
         public KeyCode saveKey = KeyCode.S;
+        public KeyCode loadKey = KeyCode.L;
         
         private List<Transform> objects;
         private string savePath;
@@ -37,6 +38,10 @@ namespace PersistentObjects.Scripts
             {
                 Save();
             }
+            else if (Input.GetKeyDown(loadKey))
+            {
+                Load();
+            }
         }
         
         private void Save()
@@ -52,6 +57,26 @@ namespace PersistentObjects.Scripts
                     writer.Write(t.localPosition.y);
                     writer.Write(t.localPosition.z);
                 }
+            }
+        }
+        
+        void Load () 
+        {
+            BeginNewGame();
+            using (var reader = new BinaryReader(File.Open(savePath, FileMode.Open)))
+            {
+                int count = reader.ReadInt32();
+                for (int i = 0; i < count; i++) 
+                {
+                    Vector3 p;
+                    p.x = reader.ReadSingle();
+                    p.y = reader.ReadSingle();
+                    p.z = reader.ReadSingle();
+                    Transform t = Instantiate(prefab);
+                    t.localPosition = p;
+                    objects.Add(t);
+                }
+                
             }
         }
         
