@@ -53,20 +53,28 @@ namespace PersistentObjects.Scripts
         
         public override void Save (GameDataWriter writer) 
         {
-            writer.Write(saveVersion);
+            writer.Write(-saveVersion);
             writer.Write(shapes.Count);
             for (int i = 0; i < shapes.Count; i++) 
             {
+                writer.Write(shapes[i].ShapeID);
                 shapes[i].Save(writer);
             }
         }
         public override void Load (GameDataReader reader)
         {
-            int version = reader.ReadInt();
-            int count = reader.ReadInt();
+            int version = -reader.ReadInt();
+            if (version > saveVersion) 
+            {
+                Debug.LogError("Unsupported future save version " + version);
+                return;
+            }
+            int count = version <= 0 ? -version : reader.ReadInt();
+            
             for (int i = 0; i < count; i++) 
             {
-                var o = shapeFactory.Get(0);
+                int shapeId = version > 0 ? reader.ReadInt() : 0;
+                var o = shapeFactory.Get(shapeId);
                 o.Load(reader);
                 shapes.Add(o);
             }

@@ -7,6 +7,9 @@ namespace PersistentObjects.Scripts
     {
         [SerializeField] 
         private Shape[] prefabs;
+        
+        [SerializeField]
+        Material[] materials;
 
         public Shape Get(int shapeID)
         {
