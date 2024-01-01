@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RobotGame.Scripts
 {
-    public class Gun : MonoBehaviour, IComponent
+    public class Gun : PersistentObject, IComponent
     {
 
         [SerializeField] 

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RobotGame.Scripts
 {
-    public class Bullet : MonoBehaviour
+    public class Bullet : PersistentObject
     {
         public Vector3 direction;
         public float speed;
