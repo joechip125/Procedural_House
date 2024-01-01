@@ -8,19 +8,19 @@ namespace PersistentObjects.Scripts
 {
     public class Game : MonoBehaviour
     {
-        public Transform prefab;
+        public PersistableObject prefab;
 
         public KeyCode createKey = KeyCode.C;
         public KeyCode newGameKey = KeyCode.N;
         public KeyCode saveKey = KeyCode.S;
         public KeyCode loadKey = KeyCode.L;
         
-        private List<Transform> objects;
+        private List<PersistableObject> objects;
         private string savePath;
 
         private void Awake()
         {
-            objects = new List<Transform>();
+            objects = new List<PersistableObject>();
             savePath = Path.Combine(Application.persistentDataPath, "saveFile");
         }
 
@@ -52,7 +52,7 @@ namespace PersistentObjects.Scripts
 
                 for (int i = 0; i < objects.Count; i++)
                 {
-                    var t = objects[i];
+                    var t = objects[i].transform;
                     writer.Write(t.localPosition.x);
                     writer.Write(t.localPosition.y);
                     writer.Write(t.localPosition.z);
@@ -72,8 +72,8 @@ namespace PersistentObjects.Scripts
                     p.x = reader.ReadSingle();
                     p.y = reader.ReadSingle();
                     p.z = reader.ReadSingle();
-                    Transform t = Instantiate(prefab);
-                    t.localPosition = p;
+                    var t = Instantiate(prefab);
+                    t.transform.localPosition = p;
                     objects.Add(t);
                 }
                 
@@ -90,11 +90,12 @@ namespace PersistentObjects.Scripts
 
         private void CreateObject()
         {
-            var t =Instantiate(prefab, transform);
+            var o =Instantiate(prefab, transform);
+            var t = o.transform;
             t.localPosition = Random.insideUnitSphere * 5f;
             t.localRotation = Random.rotation;
             t.localScale = Vector3.one * Random.Range(0.1f, 1f);
-            objects.Add(t);
+            objects.Add(o);
         }
     }
 }
