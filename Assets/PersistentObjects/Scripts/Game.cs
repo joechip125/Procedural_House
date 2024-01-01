@@ -23,6 +23,8 @@ namespace PersistentObjects.Scripts
         
         private List<Shape> shapes;
         private string savePath;
+        
+        public float CreationSpeed { get; set; }
 
         private void Awake()
         {
