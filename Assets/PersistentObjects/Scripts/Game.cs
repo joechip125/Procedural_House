@@ -11,19 +11,21 @@ namespace PersistentObjects.Scripts
         
         public PersistentStorage storage;
         
-        public PersistableObject prefab;
+       // public PersistableObject prefab;
+        
+        public ShapeFactory shapeFactory;
 
         public KeyCode createKey = KeyCode.C;
         public KeyCode newGameKey = KeyCode.N;
         public KeyCode saveKey = KeyCode.S;
         public KeyCode loadKey = KeyCode.L;
         
-        private List<PersistableObject> objects;
+        private List<Shape> shapes;
         private string savePath;
 
         private void Awake()
         {
-            objects = new List<PersistableObject>();
+            shapes = new List<Shape>();
             savePath = Path.Combine(Application.persistentDataPath, "saveFile");
             
         }
@@ -51,10 +53,10 @@ namespace PersistentObjects.Scripts
         
         public override void Save (GameDataWriter writer) 
         {
-            writer.Write(objects.Count);
-            for (int i = 0; i < objects.Count; i++) 
+            writer.Write(shapes.Count);
+            for (int i = 0; i < shapes.Count; i++) 
             {
-                objects[i].Save(writer);
+                shapes[i].Save(writer);
             }
         }
         public override void Load (GameDataReader reader) 
@@ -62,28 +64,28 @@ namespace PersistentObjects.Scripts
             int count = reader.ReadInt();
             for (int i = 0; i < count; i++) 
             {
-                PersistableObject o = Instantiate(prefab);
+                var o = shapeFactory.Get(0);
                 o.Load(reader);
-                objects.Add(o);
+                shapes.Add(o);
             }
         }
         
         private void BeginNewGame()
         {
-            for (int i = 0; i < objects.Count; i++)
+            for (int i = 0; i < shapes.Count; i++)
             {
-                Destroy(objects[i].gameObject);
+                Destroy(shapes[i].gameObject);
             }
         }
 
         private void CreateObject()
         {
-            var o =Instantiate(prefab, transform);
+            var o = shapeFactory.GetRandom();
             var t = o.transform;
             t.localPosition = Random.insideUnitSphere * 5f;
             t.localRotation = Random.rotation;
             t.localScale = Vector3.one * Random.Range(0.1f, 1f);
-            objects.Add(o);
+            shapes.Add(o);
         }
     }
 }
