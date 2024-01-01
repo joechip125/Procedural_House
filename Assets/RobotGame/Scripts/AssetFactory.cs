@@ -41,7 +41,7 @@ namespace RobotGame.Scripts
             }
         }
         
-        public PersistentObject Get (int shapeId = 0, int materialId = 0) 
+        public PersistentObject Get (int shapeId = 0) 
         {
             PersistentObject instance;
             if (recycle) 
