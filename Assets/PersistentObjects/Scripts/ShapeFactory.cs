@@ -10,17 +10,19 @@ namespace PersistentObjects.Scripts
         
         [SerializeField]
         Material[] materials;
-
-        public Shape Get(int shapeID)
+        
+        public Shape Get (int shapeId = 0, int materialId = 0) 
         {
-            var instance = Instantiate(prefabs[shapeID]);
-            instance.ShapeID = shapeID;
+            Shape instance = Instantiate(prefabs[shapeId]);
+            instance.ShapeID = shapeId;
+            instance.SetMaterial(materials[materialId], materialId);
             return instance;
         }
         
         public Shape GetRandom () 
         {
-            return Get(Random.Range(0, prefabs.Length));
+            return Get(Random.Range(0, prefabs.Length), 
+                Random.Range(0, prefabs.Length));
         }
     }
 }

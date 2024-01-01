@@ -17,6 +17,13 @@ namespace PersistentObjects.Scripts
             }
             
         }
+        public int MaterialId { get; private set; }
+        
+        public void SetMaterial (Material material, int materialId) 
+        {
+            GetComponent<MeshRenderer>().material = material;
+            MaterialId = materialId;
+        }
         
         private int shapeID;
     }

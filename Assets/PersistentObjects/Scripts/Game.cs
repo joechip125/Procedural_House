@@ -58,6 +58,7 @@ namespace PersistentObjects.Scripts
             for (int i = 0; i < shapes.Count; i++) 
             {
                 writer.Write(shapes[i].ShapeID);
+                writer.Write(shapes[i].MaterialId);
                 shapes[i].Save(writer);
             }
         }
@@ -74,9 +75,10 @@ namespace PersistentObjects.Scripts
             for (int i = 0; i < count; i++) 
             {
                 int shapeId = version > 0 ? reader.ReadInt() : 0;
-                var o = shapeFactory.Get(shapeId);
-                o.Load(reader);
-                shapes.Add(o);
+                int materialId = version > 0 ? reader.ReadInt() : 0;
+                var instance = shapeFactory.Get(shapeId, materialId);
+                instance.Load(reader);
+                shapes.Add(instance);
             }
         }
         
