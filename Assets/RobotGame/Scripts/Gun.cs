@@ -16,10 +16,7 @@ namespace RobotGame.Scripts
         [SerializeField] 
         private KeyCode shoot = KeyCode.C;
 
-        private List<Bullet> bullets = new();
-
-       
-
+        
         private void Hit(string hitTag)
         {
             
@@ -36,9 +33,8 @@ namespace RobotGame.Scripts
         public void Use()
         {
             var dir =transform.InverseTransformDirection(Vector3.forward);
-            var tempB =Instantiate(bullet, exit.localPosition, Quaternion.identity, transform);
-            var b =tempB.GetComponent<Bullet>().OnTargetHit = Hit;
-            
+            var tempB =Instantiate(bullet, exit.localPosition, Quaternion.identity, transform).GetComponent<Bullet>();
+            tempB.OnTargetHit = Hit;
         }
     }
 }

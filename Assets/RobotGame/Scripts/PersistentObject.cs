@@ -4,6 +4,6 @@ namespace RobotGame.Scripts
 {
     public class PersistentObject : MonoBehaviour
     {
-        
+        public int assetID;
     }
 }
