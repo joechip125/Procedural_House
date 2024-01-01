@@ -7,10 +7,7 @@ namespace RobotGame.Scripts
     {
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.CompareTag("SimpleTarget"))
-            {
-                
-            }
+            
             gameObject.SetActive(false);
         }
     }

@@ -36,6 +36,11 @@ namespace PersistentObjects.Scripts
                     CreatePools();
                 }
                 pools[shapeToRecycle.ShapeID].Add(shapeToRecycle);
+                shapeToRecycle.gameObject.SetActive(false);
+            }
+            else 
+            {
+                Destroy(shapeToRecycle.gameObject);
             }
         }
         
