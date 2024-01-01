@@ -6,8 +6,11 @@ using Random = UnityEngine.Random;
 
 namespace PersistentObjects.Scripts
 {
-    public class Game : MonoBehaviour
+    public class Game : PersistableObject
     {
+        
+        public PersistentStorage storage;
+        
         public PersistableObject prefab;
 
         public KeyCode createKey = KeyCode.C;
@@ -36,11 +39,12 @@ namespace PersistentObjects.Scripts
             }
             else if (Input.GetKeyDown(saveKey))
             {
-                Save();
+                storage.Save(this);
             }
             else if (Input.GetKeyDown(loadKey))
             {
-                Load();
+                BeginNewGame();
+                storage.Load(this);
             }
         }
         

@@ -5,6 +5,7 @@ namespace PersistentObjects.Scripts
     [DisallowMultipleComponent]
     public class PersistableObject : MonoBehaviour
     {
+        
         public void Save (GameDataWriter writer) 
         {
             writer.Write(transform.localPosition);
