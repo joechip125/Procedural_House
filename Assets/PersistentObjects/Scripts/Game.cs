@@ -42,7 +42,7 @@ namespace PersistentObjects.Scripts
             }
             else if (Input.GetKeyDown(saveKey))
             {
-                storage.Save(this);
+                storage.Save(this, saveVersion);
             }
             else if (Input.GetKeyDown(loadKey))
             {
@@ -53,7 +53,6 @@ namespace PersistentObjects.Scripts
         
         public override void Save (GameDataWriter writer) 
         {
-            writer.Write(-saveVersion);
             writer.Write(shapes.Count);
             for (int i = 0; i < shapes.Count; i++) 
             {
@@ -62,9 +61,11 @@ namespace PersistentObjects.Scripts
                 shapes[i].Save(writer);
             }
         }
+        
+        
         public override void Load (GameDataReader reader)
         {
-            int version = -reader.ReadInt();
+            int version = reader.Version;
             if (version > saveVersion) 
             {
                 Debug.LogError("Unsupported future save version " + version);
