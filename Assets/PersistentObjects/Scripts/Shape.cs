@@ -16,22 +16,34 @@ namespace PersistentObjects.Scripts
                 }
             }
         }
+        
+        MeshRenderer meshRenderer;
+
+        void Awake () 
+        {
+            meshRenderer = GetComponent<MeshRenderer>();
+        }
 
         private int shapeID;
         public int MaterialId { get; private set; }
 
         private Color Color;
         
+        static int colorPropertyId = Shader.PropertyToID("_Color");
+        static MaterialPropertyBlock sharedPropertyBlock;
+        
         public void SetMaterial (Material material, int materialId) 
         {
-            GetComponent<MeshRenderer>().material = material;
+            meshRenderer.material= material;
             MaterialId = materialId;
         }
 
         public void SetColor (Color color)
         {
             Color = color;
-            GetComponent<MeshRenderer>().material.color = color;
+            sharedPropertyBlock ??= new MaterialPropertyBlock();
+            sharedPropertyBlock.SetColor(colorPropertyId, color);
+            meshRenderer.SetPropertyBlock(sharedPropertyBlock);
         }
         
         public override void Save (GameDataWriter writer) 
