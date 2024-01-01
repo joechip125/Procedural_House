@@ -19,6 +19,7 @@ namespace PersistentObjects.Scripts
         public KeyCode newGameKey = KeyCode.N;
         public KeyCode saveKey = KeyCode.S;
         public KeyCode loadKey = KeyCode.L;
+        public KeyCode destroyKey = KeyCode.X;
         
         private List<Shape> shapes;
         private string savePath;
@@ -48,6 +49,23 @@ namespace PersistentObjects.Scripts
             {
                 BeginNewGame();
                 storage.Load(this);
+            }
+            else if (Input.GetKeyDown(destroyKey))
+            {
+               DestroyShape();
+            }
+        }
+        
+        void DestroyShape () 
+        {
+            if (shapes.Count > 0) 
+            {
+                int index = Random.Range(0, shapes.Count);
+                Destroy(shapes[index].gameObject);
+                
+                int lastIndex = shapes.Count - 1;
+                shapes[index] = shapes[lastIndex];
+                shapes.RemoveAt(lastIndex);
             }
         }
         
