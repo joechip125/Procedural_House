@@ -25,6 +25,7 @@ namespace PersistentObjects.Scripts
         {
             objects = new List<PersistableObject>();
             savePath = Path.Combine(Application.persistentDataPath, "saveFile");
+            
         }
 
         private void Update()
@@ -48,39 +49,22 @@ namespace PersistentObjects.Scripts
             }
         }
         
-        private void Save()
+        public override void Save (GameDataWriter writer) 
         {
-            using (var writer = new BinaryWriter(File.Open(savePath, FileMode.Create)))
+            writer.Write(objects.Count);
+            for (int i = 0; i < objects.Count; i++) 
             {
-                writer.Write(objects.Count);
-
-                for (int i = 0; i < objects.Count; i++)
-                {
-                    var t = objects[i].transform;
-                    writer.Write(t.localPosition.x);
-                    writer.Write(t.localPosition.y);
-                    writer.Write(t.localPosition.z);
-                }
+                objects[i].Save(writer);
             }
         }
-        
-        void Load () 
+        public override void Load (GameDataReader reader) 
         {
-            BeginNewGame();
-            using (var reader = new BinaryReader(File.Open(savePath, FileMode.Open)))
+            int count = reader.ReadInt();
+            for (int i = 0; i < count; i++) 
             {
-                int count = reader.ReadInt32();
-                for (int i = 0; i < count; i++) 
-                {
-                    Vector3 p;
-                    p.x = reader.ReadSingle();
-                    p.y = reader.ReadSingle();
-                    p.z = reader.ReadSingle();
-                    var t = Instantiate(prefab);
-                    t.transform.localPosition = p;
-                    objects.Add(t);
-                }
-                
+                PersistableObject o = Instantiate(prefab);
+                o.Load(reader);
+                objects.Add(o);
             }
         }
         
