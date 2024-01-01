@@ -18,7 +18,7 @@ namespace RobotGame.Scripts
 
         private List<Bullet> bullets = new();
 
-        private Action<string> OnTargetHit;
+       
 
         private void Hit(string hitTag)
         {
@@ -37,7 +37,7 @@ namespace RobotGame.Scripts
         {
             var dir =transform.InverseTransformDirection(Vector3.forward);
             var tempB =Instantiate(bullet, exit.localPosition, Quaternion.identity, transform);
-            var b =tempB.GetComponent<Bullet>();
+            var b =tempB.GetComponent<Bullet>().OnTargetHit = Hit;
             
         }
     }

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4712731611238996291}
   m_Layer: 0
   m_Name: TargetDummy
-  m_TagString: SimpleTarget
+  m_TagString: EnemyCommander
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
