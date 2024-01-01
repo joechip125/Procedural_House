@@ -25,6 +25,9 @@ namespace PersistentObjects.Scripts
         private string savePath;
         
         public float CreationSpeed { get; set; }
+        public float DestructionSpeed { get; set; }
+        
+        float creationProgress, destructionProgress;
 
         private void Awake()
         {
@@ -35,6 +38,21 @@ namespace PersistentObjects.Scripts
 
         private void Update()
         {
+            creationProgress += Time.deltaTime * CreationSpeed;
+
+            while (creationProgress >= 1f)
+            {
+                creationProgress -= 1f;
+                CreateShape();
+            }
+            destructionProgress += Time.deltaTime * DestructionSpeed;
+            while (destructionProgress >= 1f) 
+            {
+                destructionProgress -= 1f;
+                DestroyShape();
+            }
+            
+            
             if (Input.GetKeyDown(createKey))
             {
                 CreateShape();
