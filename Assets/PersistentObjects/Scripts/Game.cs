@@ -11,7 +11,7 @@ namespace PersistentObjects.Scripts
         
         public PersistentStorage storage;
         
-       // public PersistableObject prefab;
+        const int saveVersion = 1;
         
         public ShapeFactory shapeFactory;
 
@@ -53,14 +53,16 @@ namespace PersistentObjects.Scripts
         
         public override void Save (GameDataWriter writer) 
         {
+            writer.Write(saveVersion);
             writer.Write(shapes.Count);
             for (int i = 0; i < shapes.Count; i++) 
             {
                 shapes[i].Save(writer);
             }
         }
-        public override void Load (GameDataReader reader) 
+        public override void Load (GameDataReader reader)
         {
+            int version = reader.ReadInt();
             int count = reader.ReadInt();
             for (int i = 0; i < count; i++) 
             {
