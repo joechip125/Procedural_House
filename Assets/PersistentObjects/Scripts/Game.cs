@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -30,16 +31,19 @@ namespace PersistentObjects.Scripts
         
         float creationProgress, destructionProgress;
         
-        void LoadLevel () 
+        IEnumerator LoadLevel ()
         {
-            SceneManager.LoadScene("Level1", LoadSceneMode.Additive);
+            enabled = false;
+            yield return SceneManager.LoadSceneAsync("Level1", LoadSceneMode.Additive);
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName("Level1"));
+            enabled = true;
         }
         
         private void Awake()
         {
             shapes = new List<Shape>();
             savePath = Path.Combine(Application.persistentDataPath, "saveFile");
-            LoadLevel();
+            StartCoroutine(LoadLevel());
         }
 
         private void Update()
