@@ -39,10 +39,21 @@ namespace PersistentObjects.Scripts
             enabled = true;
         }
         
-        private void Awake()
+        private void Start()
         {
             shapes = new List<Shape>();
             savePath = Path.Combine(Application.persistentDataPath, "saveFile");
+
+            if (Application.isEditor)
+            {
+                var loadedLevel = SceneManager.GetSceneByName("Level1");
+                if (loadedLevel.isLoaded)
+                {
+                    SceneManager.SetActiveScene(loadedLevel);
+                    return;
+                }
+            }
+
             StartCoroutine(LoadLevel());
         }
 
