@@ -10,11 +10,8 @@ namespace PersistentObjects.Scripts
 {
     public class Game : PersistableObject
     {
-        
         public PersistentStorage storage;
-        
-        const int saveVersion = 1;
-        
+        const int saveVersion = 2;
         public ShapeFactory shapeFactory;
 
         public KeyCode createKey = KeyCode.C;
@@ -36,6 +33,11 @@ namespace PersistentObjects.Scripts
         IEnumerator LoadLevel (int levelBuildIndex)
         {
             enabled = false;
+            if (loadedLevelBuildIndex > 0) 
+            {
+                yield return SceneManager.UnloadSceneAsync(loadedLevelBuildIndex);
+            }
+            loadedLevelBuildIndex = levelBuildIndex;
             yield return SceneManager.LoadSceneAsync(levelBuildIndex, LoadSceneMode.Additive);
             SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(levelBuildIndex));
             enabled = true;
@@ -54,6 +56,7 @@ namespace PersistentObjects.Scripts
                     if (loadedScene.name.Contains("Level ")) 
                     {
                         SceneManager.SetActiveScene(loadedScene);
+                        loadedLevelBuildIndex = loadedScene.buildIndex;
                         return;
                     }
                 }
@@ -107,6 +110,7 @@ namespace PersistentObjects.Scripts
                 {
                     if (Input.GetKeyDown(KeyCode.Alpha0 + i)) 
                     {
+                        BeginNewGame();
                         StartCoroutine(LoadLevel(i));
                         return;
                     }
@@ -130,6 +134,7 @@ namespace PersistentObjects.Scripts
         public override void Save (GameDataWriter writer) 
         {
             writer.Write(shapes.Count);
+            writer.Write(loadedLevelBuildIndex);
             for (int i = 0; i < shapes.Count; i++) 
             {
                 writer.Write(shapes[i].ShapeID);
@@ -148,6 +153,7 @@ namespace PersistentObjects.Scripts
                 return;
             }
             int count = version <= 0 ? -version : reader.ReadInt();
+            StartCoroutine(LoadLevel(version < 2 ? 1 : reader.ReadInt()));
             
             for (int i = 0; i < count; i++) 
             {
