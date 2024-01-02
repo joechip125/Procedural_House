@@ -24,12 +24,23 @@ namespace PersistentObjects.Scripts
         void CreatePools ()
         {
             pools = new List<Shape>[prefabs.Length];
-            poolScene = SceneManager.CreateScene(name);
-            
+
             for (int i = 0; i < pools.Length; i++) 
             {
                 pools[i] = new List<Shape>();
             }
+
+            if (Application.isEditor)
+            {
+                poolScene = SceneManager.GetSceneByName(name);
+                if (poolScene.isLoaded)
+                {
+                    GameObject[] rootObjects = poolScene.GetRootGameObjects();
+                    return;
+                }
+            }
+
+            poolScene = SceneManager.CreateScene(name);
         }
         
         public void Reclaim (Shape shapeToRecycle) 
@@ -70,6 +81,7 @@ namespace PersistentObjects.Scripts
             
             instance = Instantiate(prefabs[shapeId]);
             instance.ShapeID = shapeId;
+            SceneManager.MoveGameObjectToScene(instance.gameObject, poolScene);
             instance.SetMaterial(materials[materialId], materialId);
             return instance;
         }
