@@ -22,6 +22,8 @@ namespace PersistentObjects.Scripts
         public KeyCode saveKey = KeyCode.S;
         public KeyCode loadKey = KeyCode.L;
         public KeyCode destroyKey = KeyCode.X;
+        public int levelCount;
+        int loadedLevelBuildIndex;
         
         private List<Shape> shapes;
         private string savePath;
@@ -57,7 +59,7 @@ namespace PersistentObjects.Scripts
                 }
             }
 
-            StartCoroutine(LoadLevel());
+            StartCoroutine(LoadLevel(1));
         }
 
         private void Update()
@@ -98,6 +100,19 @@ namespace PersistentObjects.Scripts
             {
                DestroyShape();
             }
+            
+            else 
+            {
+                for (int i = 1; i <= levelCount; i++) 
+                {
+                    if (Input.GetKeyDown(KeyCode.Alpha0 + i)) 
+                    {
+                        StartCoroutine(LoadLevel(i));
+                        return;
+                    }
+                }
+            }
+
         }
         
         void DestroyShape () 

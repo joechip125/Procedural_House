@@ -586,6 +586,10 @@ PrefabInstance:
       propertyPath: storage
       value: 
       objectReference: {fileID: 1526737730}
+    - target: {fileID: 4336446752851708378, guid: 33fa0bf463b69924a9c0a1125e480b80, type: 3}
+      propertyPath: levelCount
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 33fa0bf463b69924a9c0a1125e480b80, type: 3}
