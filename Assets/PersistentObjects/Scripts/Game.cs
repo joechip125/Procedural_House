@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 namespace PersistentObjects.Scripts
@@ -28,12 +29,17 @@ namespace PersistentObjects.Scripts
         public float DestructionSpeed { get; set; }
         
         float creationProgress, destructionProgress;
-
+        
+        void LoadLevel () 
+        {
+            SceneManager.LoadScene("Level1", LoadSceneMode.Additive);
+        }
+        
         private void Awake()
         {
             shapes = new List<Shape>();
             savePath = Path.Combine(Application.persistentDataPath, "saveFile");
-            
+            LoadLevel();
         }
 
         private void Update()
