@@ -31,11 +31,11 @@ namespace PersistentObjects.Scripts
         
         float creationProgress, destructionProgress;
         
-        IEnumerator LoadLevel ()
+        IEnumerator LoadLevel (int levelBuildIndex)
         {
             enabled = false;
-            yield return SceneManager.LoadSceneAsync("Level1", LoadSceneMode.Additive);
-            SceneManager.SetActiveScene(SceneManager.GetSceneByName("Level1"));
+            yield return SceneManager.LoadSceneAsync(levelBuildIndex, LoadSceneMode.Additive);
+            SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(levelBuildIndex));
             enabled = true;
         }
         
@@ -46,11 +46,14 @@ namespace PersistentObjects.Scripts
 
             if (Application.isEditor)
             {
-                var loadedLevel = SceneManager.GetSceneByName("Level1");
-                if (loadedLevel.isLoaded)
+                for (int i = 0; i < SceneManager.sceneCount; i++) 
                 {
-                    SceneManager.SetActiveScene(loadedLevel);
-                    return;
+                    Scene loadedScene = SceneManager.GetSceneAt(i);
+                    if (loadedScene.name.Contains("Level ")) 
+                    {
+                        SceneManager.SetActiveScene(loadedScene);
+                        return;
+                    }
                 }
             }
 
