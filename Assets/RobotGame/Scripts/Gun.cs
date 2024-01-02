@@ -16,6 +16,9 @@ namespace RobotGame.Scripts
         [SerializeField] 
         private KeyCode shoot = KeyCode.C;
 
+        [SerializeField, Range(1, 100)] 
+        private float range;
+
         
         private void Hit(string hitTag)
         {
@@ -32,9 +35,16 @@ namespace RobotGame.Scripts
 
         public void Use()
         {
-            var dir =transform.InverseTransformDirection(Vector3.forward);
+            var dir =transform.TransformDirection(Vector3.forward);
             var tempB =Instantiate(bullet, exit.localPosition, Quaternion.identity, transform).GetComponent<Bullet>();
             tempB.OnTargetHit = Hit;
+        }
+
+        private void OnDrawGizmos()
+        {
+            var start = exit.position;
+            var dir =transform.TransformDirection(Vector3.forward);
+            Gizmos.DrawLine(start, start + dir * range);
         }
     }
 }
