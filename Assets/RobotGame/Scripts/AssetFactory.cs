@@ -24,7 +24,7 @@ namespace RobotGame.Scripts
             }
         }
         
-        public void Reclaim (PersistentObject shapeToRecycle) 
+        public void Reclaim (PersistentObject assetToRecycle) 
         {
             if (recycle) 
             {
@@ -32,16 +32,16 @@ namespace RobotGame.Scripts
                 {
                     CreatePools();
                 }
-                pools[shapeToRecycle.assetID].Add(shapeToRecycle);
-                shapeToRecycle.gameObject.SetActive(false);
+                pools[assetToRecycle.assetID].Add(assetToRecycle);
+                assetToRecycle.gameObject.SetActive(false);
             }
             else 
             {
-                Destroy(shapeToRecycle.gameObject);
+                Destroy(assetToRecycle.gameObject);
             }
         }
         
-        public PersistentObject Get (int shapeId = 0) 
+        public PersistentObject Get (int assetId = 0) 
         {
             PersistentObject instance;
             if (recycle) 
@@ -50,7 +50,7 @@ namespace RobotGame.Scripts
                 {
                     CreatePools();
                 }
-                List<PersistentObject> pool = pools[shapeId];
+                List<PersistentObject> pool = pools[assetId];
                 int lastIndex = pool.Count - 1;
                 if (lastIndex >= 0) 
                 {
@@ -60,8 +60,8 @@ namespace RobotGame.Scripts
                 }
             }
             
-            instance = Instantiate(prefabs[shapeId]);
-            instance.assetID = shapeId;
+            instance = Instantiate(prefabs[assetId]);
+            instance.assetID = assetId;
             return instance;
         }
     }
