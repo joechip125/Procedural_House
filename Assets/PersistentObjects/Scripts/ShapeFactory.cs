@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace PersistentObjects.Scripts
 {
@@ -17,10 +18,14 @@ namespace PersistentObjects.Scripts
         
         List<Shape>[] pools;
 
+        private Scene poolScene;
+
         
         void CreatePools ()
         {
             pools = new List<Shape>[prefabs.Length];
+            poolScene = SceneManager.CreateScene(name);
+            
             for (int i = 0; i < pools.Length; i++) 
             {
                 pools[i] = new List<Shape>();
