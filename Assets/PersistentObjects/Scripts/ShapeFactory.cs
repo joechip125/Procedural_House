@@ -36,6 +36,14 @@ namespace PersistentObjects.Scripts
                 if (poolScene.isLoaded)
                 {
                     GameObject[] rootObjects = poolScene.GetRootGameObjects();
+                    for (int i = 0; i < rootObjects.Length; i++) 
+                    {
+                        var pooledShape = rootObjects[i].GetComponent<Shape>();
+                        if (!pooledShape.gameObject.activeSelf) 
+                        {
+                            pools[pooledShape.ShapeID].Add(pooledShape);
+                        }
+                    }
                     return;
                 }
             }
