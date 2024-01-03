@@ -273,6 +273,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gun
       objectReference: {fileID: 0}
+    - target: {fileID: 3968114746338337991, guid: 70865c158d140e8409614b17609ecda2, type: 3}
+      propertyPath: range
+      value: 4.3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 70865c158d140e8409614b17609ecda2, type: 3}
