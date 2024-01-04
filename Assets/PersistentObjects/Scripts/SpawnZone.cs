@@ -19,6 +19,7 @@ namespace PersistentObjects.Scripts
         void OnDrawGizmos () 
         {
             Gizmos.color = Color.cyan;
+            Gizmos.matrix = transform.localToWorldMatrix;
             Gizmos.DrawWireSphere(Vector3.zero, 1f);
         }
     }
