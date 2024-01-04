@@ -21,6 +21,8 @@ namespace PersistentObjects.Scripts
         public KeyCode destroyKey = KeyCode.X;
         public int levelCount;
         int loadedLevelBuildIndex;
+
+        public SpawnZone spawnZone;
         
         private List<Shape> shapes;
         private string savePath;
