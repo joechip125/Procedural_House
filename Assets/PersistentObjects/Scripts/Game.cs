@@ -179,7 +179,7 @@ namespace PersistentObjects.Scripts
         {
             var instance = shapeFactory.GetRandom();
             var t = instance.transform;
-            t.localPosition = Random.insideUnitSphere * 5f;
+            t.localPosition = spawnZone.SpawnPoint;
             t.localRotation = Random.rotation;
             t.localScale = Vector3.one * Random.Range(0.1f, 1f);
             instance.SetColor(Random.ColorHSV(0f, 1f, 0.5f, 1f, 0.25f, 1f, 1f, 1f));

@@ -581,6 +581,17 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: e6b61b3c6d7ba154a8ccff15474598a3, type: 3}
+--- !u!114 &6756778324455958924 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6756778323408571350, guid: e6b61b3c6d7ba154a8ccff15474598a3, type: 3}
+  m_PrefabInstance: {fileID: 6756778324455958923}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0894a465c2c0489a939fa859e56a431c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7078054589069625455
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -645,6 +656,10 @@ PrefabInstance:
       propertyPath: storage
       value: 
       objectReference: {fileID: 1526737730}
+    - target: {fileID: 4336446752851708378, guid: 33fa0bf463b69924a9c0a1125e480b80, type: 3}
+      propertyPath: spawnZone
+      value: 
+      objectReference: {fileID: 6756778324455958924}
     - target: {fileID: 4336446752851708378, guid: 33fa0bf463b69924a9c0a1125e480b80, type: 3}
       propertyPath: levelCount
       value: 2

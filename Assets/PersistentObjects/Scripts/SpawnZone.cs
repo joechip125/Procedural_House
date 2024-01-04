@@ -8,7 +8,7 @@ namespace PersistentObjects.Scripts
         {
             get 
             {
-                return Random.insideUnitSphere * 5f;
+                return Random.insideUnitSphere * 5f + transform.position;
             }
         }
     }
