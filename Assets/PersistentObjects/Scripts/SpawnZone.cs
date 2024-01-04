@@ -4,12 +4,22 @@ namespace PersistentObjects.Scripts
 {
     public class SpawnZone : MonoBehaviour
     {
+        [SerializeField]
+        bool surfaceOnly;
+        
+        
         public Vector3 SpawnPoint 
         {
             get 
             {
-                return Random.insideUnitSphere * 5f + transform.position;
+                return transform.TransformPoint(surfaceOnly ? Random.onUnitSphere : Random.insideUnitSphere);
             }
+        }
+        
+        void OnDrawGizmos () 
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireSphere(Vector3.zero, 1f);
         }
     }
 }
