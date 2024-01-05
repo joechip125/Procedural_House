@@ -12,7 +12,9 @@ namespace PersistentObjects.Scripts
     {
         public PersistentStorage storage;
         const int saveVersion = 2;
-        public ShapeFactory shapeFactory;
+        
+        [SerializeField]
+        private ShapeFactory shapeFactory;
 
         public KeyCode createKey = KeyCode.C;
         public KeyCode newGameKey = KeyCode.N;
@@ -45,10 +47,14 @@ namespace PersistentObjects.Scripts
             SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(levelBuildIndex));
             enabled = true;
         }
-        
-        private void Start()
+
+        private void OnEnable()
         {
             Instance = this;
+        }
+
+        private void Start()
+        {
             shapes = new List<Shape>();
             savePath = Path.Combine(Application.persistentDataPath, "saveFile");
 
