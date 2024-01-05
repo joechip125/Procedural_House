@@ -10,18 +10,26 @@ namespace PersistentObjects.Scripts
 {
     public class Game : PersistableObject
     {
-        public PersistentStorage storage;
-        const int saveVersion = 2;
-        
         [SerializeField]
         private ShapeFactory shapeFactory;
 
-        public KeyCode createKey = KeyCode.C;
-        public KeyCode newGameKey = KeyCode.N;
-        public KeyCode saveKey = KeyCode.S;
-        public KeyCode loadKey = KeyCode.L;
-        public KeyCode destroyKey = KeyCode.X;
-        public int levelCount;
+        [SerializeField]
+        private PersistentStorage storage;
+
+        const int saveVersion = 2;
+
+        [SerializeField]
+        private KeyCode createKey = KeyCode.C;
+        [SerializeField]
+        private KeyCode newGameKey = KeyCode.N;
+        [SerializeField]
+        private KeyCode saveKey = KeyCode.S;
+        [SerializeField]
+        private KeyCode loadKey = KeyCode.L;
+        [SerializeField]
+        private KeyCode destroyKey = KeyCode.X;
+        [SerializeField]
+        private int levelCount;
         int loadedLevelBuildIndex;
 
         public SpawnZone spawnZoneOfLevel{get; private set; }
