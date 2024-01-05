@@ -32,7 +32,7 @@ namespace PersistentObjects.Scripts
         private int levelCount;
         int loadedLevelBuildIndex;
 
-        public SpawnZone spawnZoneOfLevel{get; private set; }
+        public SpawnZone SpawnZoneOfLevel{get; set; }
         public static Game Instance { get; private set; }
         
         private List<Shape> shapes;
@@ -195,7 +195,7 @@ namespace PersistentObjects.Scripts
         {
             var instance = shapeFactory.GetRandom();
             var t = instance.transform;
-            t.localPosition = spawnZoneOfLevel.SpawnPoint;
+            t.localPosition = SpawnZoneOfLevel.SpawnPoint;
             t.localRotation = Random.rotation;
             t.localScale = Vector3.one * Random.Range(0.1f, 1f);
             instance.SetColor(Random.ColorHSV(0f, 1f, 0.5f, 1f, 0.25f, 1f, 1f, 1f));
