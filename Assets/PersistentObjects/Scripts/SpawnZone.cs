@@ -2,25 +2,9 @@
 
 namespace PersistentObjects.Scripts
 {
-    public class SpawnZone : MonoBehaviour
+    public abstract class SpawnZone : MonoBehaviour
     {
-        [SerializeField]
-        bool surfaceOnly;
+        public abstract Vector3 SpawnPoint { get; }
         
-        
-        public Vector3 SpawnPoint 
-        {
-            get 
-            {
-                return transform.TransformPoint(surfaceOnly ? Random.onUnitSphere : Random.insideUnitSphere);
-            }
-        }
-        
-        void OnDrawGizmos () 
-        {
-            Gizmos.color = Color.cyan;
-            Gizmos.matrix = transform.localToWorldMatrix;
-            Gizmos.DrawWireSphere(Vector3.zero, 1f);
-        }
     }
 }
