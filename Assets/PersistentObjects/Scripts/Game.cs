@@ -43,6 +43,8 @@ namespace PersistentObjects.Scripts
         
         float creationProgress, destructionProgress;
         
+        private Random.State mainRandomState;
+        
         IEnumerator LoadLevel (int levelBuildIndex)
         {
             enabled = false;
@@ -63,6 +65,7 @@ namespace PersistentObjects.Scripts
 
         private void Start()
         {
+            BeginNewGame();
             shapes = new List<Shape>();
             savePath = Path.Combine(Application.persistentDataPath, "saveFile");
 
@@ -190,6 +193,12 @@ namespace PersistentObjects.Scripts
         
         private void BeginNewGame()
         {
+            Random.state = mainRandomState;
+                                                    //bitwise exclusive or
+            int seed = Random.Range(0, int.MaxValue) ^ (int)Time.unscaledTime;
+            mainRandomState = Random.state;
+            Random.InitState(seed);
+            
             for (int i = 0; i < shapes.Count; i++)
             {
                 shapeFactory.Reclaim(shapes[i]);
