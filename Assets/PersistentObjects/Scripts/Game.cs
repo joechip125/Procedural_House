@@ -16,7 +16,7 @@ namespace PersistentObjects.Scripts
         [SerializeField]
         private PersistentStorage storage;
 
-        const int saveVersion = 2;
+        const int saveVersion = 3;
 
         [SerializeField]
         private KeyCode createKey = KeyCode.C;
@@ -152,6 +152,7 @@ namespace PersistentObjects.Scripts
         public override void Save (GameDataWriter writer) 
         {
             writer.Write(shapes.Count);
+            writer.Write(Random.state);
             writer.Write(loadedLevelBuildIndex);
             for (int i = 0; i < shapes.Count; i++) 
             {
@@ -171,6 +172,10 @@ namespace PersistentObjects.Scripts
                 return;
             }
             int count = version <= 0 ? -version : reader.ReadInt();
+            if (version >= 3) {
+                Random.state = reader.ReadRandomState();
+            }
+            
             StartCoroutine(LoadLevel(version < 2 ? 1 : reader.ReadInt()));
             
             for (int i = 0; i < count; i++) 

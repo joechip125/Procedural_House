@@ -14,7 +14,7 @@ namespace PersistentObjects.Scripts
 
         public void Write(Random.State value)
         {
-            
+            writer.Write(JsonUtility.ToJson(value));
         }
 
         public void Write (float value) 
