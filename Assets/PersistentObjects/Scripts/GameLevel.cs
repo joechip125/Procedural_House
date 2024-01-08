@@ -6,9 +6,12 @@ namespace PersistentObjects.Scripts
     {
         [SerializeField]
         SpawnZone spawnZone;
+        
+        public static GameLevel Current { get; private set; }
 
-        void Start () 
+        void Start ()
         {
+            Current = this;
             Game.Instance.SpawnZoneOfLevel = spawnZone;
         }
     }

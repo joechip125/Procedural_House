@@ -32,6 +32,9 @@ namespace PersistentObjects.Scripts
         private int levelCount;
         int loadedLevelBuildIndex;
 
+        [SerializeField] 
+        private bool reseedOnLoad;
+
         public SpawnZone SpawnZoneOfLevel{get; set; }
         public static Game Instance { get; private set; }
         
@@ -175,8 +178,13 @@ namespace PersistentObjects.Scripts
                 return;
             }
             int count = version <= 0 ? -version : reader.ReadInt();
-            if (version >= 3) {
-                Random.state = reader.ReadRandomState();
+            if (version >= 3) 
+            {
+                var state = reader.ReadRandomState();
+                if (!reseedOnLoad) 
+                {
+                    Random.state = state;
+                }
             }
             
             StartCoroutine(LoadLevel(version < 2 ? 1 : reader.ReadInt()));
