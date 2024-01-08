@@ -12,6 +12,11 @@ namespace PersistentObjects.Scripts
             
         }
 
+        public void Write(Random.State value)
+        {
+            
+        }
+
         public void Write (float value) 
         {
             writer.Write(value);
