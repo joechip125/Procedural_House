@@ -36,8 +36,7 @@ namespace PersistentObjects.Scripts
         private bool reseedOnLoad;
 
         public SpawnZone SpawnZoneOfLevel{get; set; }
-        public static Game Instance { get; private set; }
-        
+
         private List<Shape> shapes;
         private string savePath;
         
@@ -59,11 +58,6 @@ namespace PersistentObjects.Scripts
             yield return SceneManager.LoadSceneAsync(levelBuildIndex, LoadSceneMode.Additive);
             SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(levelBuildIndex));
             enabled = true;
-        }
-
-        private void OnEnable()
-        {
-            Instance = this;
         }
 
         private void Start()
@@ -217,7 +211,7 @@ namespace PersistentObjects.Scripts
         {
             var instance = shapeFactory.GetRandom();
             var t = instance.transform;
-            t.localPosition = SpawnZoneOfLevel.SpawnPoint;
+            t.localPosition = GameLevel.Current.SpawnPoint;
             t.localRotation = Random.rotation;
             t.localScale = Vector3.one * Random.Range(0.1f, 1f);
             instance.SetColor(Random.ColorHSV(0f, 1f, 0.5f, 1f, 0.25f, 1f, 1f, 1f));
