@@ -20,6 +20,7 @@ namespace PersistentObjects.Scripts
                 if (surfaceOnly)
                 {
                     int axis = Random.Range(0, 3);
+                    p[axis] = p[axis] < 0f ? -0.5f : 0.5f;
                 }
 
                 return transform.TransformPoint(p);
