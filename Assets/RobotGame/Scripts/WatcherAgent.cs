@@ -1,4 +1,5 @@
-﻿using Unity.MLAgents;
+﻿using System;
+using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 using UnityEngine;
@@ -13,7 +14,24 @@ namespace RobotGame.Scripts
         private Gun gun;
 
         private Transform start;
-        
+
+        [SerializeField, Range(0.5f,5)] 
+        private float shootInterval = 1f;
+
+        private float timeSinceShoot;
+        private bool canShoot;
+
+        private void Update()
+        {
+            timeSinceShoot += Time.deltaTime;
+
+            if (timeSinceShoot >= shootInterval)
+            {
+                timeSinceShoot -= shootInterval;
+                canShoot = true;
+            }
+        }
+
         public override void Initialize()
         {
             start = gun.transform;
@@ -40,7 +58,11 @@ namespace RobotGame.Scripts
            var shoot = actions.DiscreteActions[0];
 
            gun.Rotation(rotation);
-           if(shoot == 1) gun.Use();
+           if (shoot == 1 && canShoot)
+           {
+               gun.Use();
+               canShoot = false;
+           }
            
            if (targetHit)
            {
