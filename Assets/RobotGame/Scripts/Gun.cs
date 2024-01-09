@@ -15,6 +15,10 @@ namespace RobotGame.Scripts
 
         [SerializeField] 
         private KeyCode shoot = KeyCode.C;
+        [SerializeField] 
+        private KeyCode rotateR = KeyCode.Z;
+        [SerializeField] 
+        private KeyCode rotateL = KeyCode.X;
 
         [SerializeField, Range(1, 100)] 
         private float range;
@@ -28,6 +32,15 @@ namespace RobotGame.Scripts
         private void Update()
         {
             if (Input.GetKeyDown(shoot))
+            {
+                Use();
+            }
+            
+            if (Input.GetKey(rotateR))
+            {
+                Use();
+            }
+            else if (Input.GetKey(rotateL))
             {
                 Use();
             }
