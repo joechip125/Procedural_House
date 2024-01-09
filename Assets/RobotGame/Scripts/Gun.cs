@@ -27,6 +27,14 @@ namespace RobotGame.Scripts
         
         private void Hit(string hitTag)
         {
+            if (hitTag == "Player")
+            {
+                
+            }
+        }
+
+        private void Start()
+        {
             
         }
 
@@ -50,8 +58,10 @@ namespace RobotGame.Scripts
         public void Use()
         {
             var dir =transform.TransformDirection(Vector3.forward);
-            var tempB =Instantiate(bullet, exit.localPosition, Quaternion.identity).GetComponent<Bullet>();
+            var tempB =Instantiate(bullet, exit.localPosition, Quaternion.identity).GetComponentInChildren<Bullet>();
             tempB.OnTargetHit = Hit;
+            tempB.direction = dir;
+            tempB.speed = 5f;
         }
 
         private void OnDrawGizmos()
@@ -59,6 +69,7 @@ namespace RobotGame.Scripts
             var start = exit.position;
             var dir =transform.TransformDirection(Vector3.forward);
             Gizmos.DrawLine(start, start + dir * range);
+            Gizmos.DrawSphere(start, 0.1f);
         }
     }
 }

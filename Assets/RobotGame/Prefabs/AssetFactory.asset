@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: AssetFactory
   m_EditorClassIdentifier: 
   prefabs:
-  - {fileID: 332192726843202863, guid: 91426ff13d8fd5841aeb0a47e3bb54d1, type: 3}
+  - {fileID: 11364017319544019, guid: cf1209fb5c43f724683fcd5374696e56, type: 3}
   recycle: 1

@@ -145,8 +145,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   assetID: 0
   exit: {fileID: 5274616648596270168}
-  bullet: {fileID: 6260432477386141207, guid: 91426ff13d8fd5841aeb0a47e3bb54d1, type: 3}
+  bullet: {fileID: 8516698102822206463, guid: cf1209fb5c43f724683fcd5374696e56, type: 3}
   shoot: 99
+  rotateR: 122
+  rotateL: 120
   range: 22.5
 --- !u!1 &7593919012111881680
 GameObject:
