@@ -38,7 +38,7 @@ namespace RobotGame.Scripts
             start = transform;
             gun.TargetHit = SetHitValue;
             
-            gun.ATest(SetHitValue);
+            gun.SetTargetAction(SetHitValue);
         }
 
         private void SetHitValue(int hitValue)

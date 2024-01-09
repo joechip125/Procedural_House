@@ -39,9 +39,9 @@ namespace RobotGame.Scripts
             TargetHit?.Invoke(value);
         }
 
-        public void ATest(Action<int> testing)
+        public void SetTargetAction(Action<int> anAction)
         {
-            TargetHit = testing;
+            TargetHit = anAction;
         }
         
         private void Start()
@@ -86,7 +86,6 @@ namespace RobotGame.Scripts
             var start = exit.position;
             var dir =transform.TransformDirection(Vector3.forward);
             Gizmos.DrawLine(start, start + dir * range);
-            Gizmos.DrawSphere(start, 0.1f);
         }
     }
 }
