@@ -39,7 +39,7 @@ namespace RobotGame.Scripts
 
         public override void CollectObservations(VectorSensor sensor)
         {
-           sensor.AddObservation(transform.localRotation.y);
+           sensor.AddObservation(gun.transform.localRotation.y);
         }
 
         public override void WriteDiscreteActionMask(IDiscreteActionMask actionMask)
@@ -74,6 +74,7 @@ namespace RobotGame.Scripts
         public override void OnEpisodeBegin()
         {
             gun.transform.rotation = start.transform.rotation;
+            targetHit = false;
         }
     }
 }
