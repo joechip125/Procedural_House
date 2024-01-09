@@ -229,6 +229,14 @@ PrefabInstance:
       propertyPath: spawnZone
       value: 
       objectReference: {fileID: 6756778324455958924}
+    - target: {fileID: 2307500344603645760, guid: aafc7009ae112564f9ecbe59ad8cec7f, type: 3}
+      propertyPath: persistentObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2307500344603645760, guid: aafc7009ae112564f9ecbe59ad8cec7f, type: 3}
+      propertyPath: persistentObjects.Array.data[0]
+      value: 
+      objectReference: {fileID: 6756778324455958924}
     - target: {fileID: 2307500344603645761, guid: aafc7009ae112564f9ecbe59ad8cec7f, type: 3}
       propertyPath: m_RootOrder
       value: 2
