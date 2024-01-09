@@ -38,6 +38,11 @@ namespace RobotGame.Scripts
             
         }
 
+        public void Rotation(float rotateDir)
+        {
+            transform.Rotate(Vector3.up, rotateSpeed * rotateDir);
+        }
+        
         private void Update()
         {
             if (Input.GetKeyDown(shoot))

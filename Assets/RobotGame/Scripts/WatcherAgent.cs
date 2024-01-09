@@ -21,9 +21,15 @@ namespace RobotGame.Scripts
             
         }
 
+        public override void Heuristic(in ActionBuffers actionsOut)
+        {
+            base.Heuristic(in actionsOut);
+        }
+
         public override void OnActionReceived(ActionBuffers actions)
         {
-           
+           var rotation = actions.ContinuousActions[0];
+           var shoot = actions.DiscreteActions[0];
         }
 
         public override void OnEpisodeBegin()
