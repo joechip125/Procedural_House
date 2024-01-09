@@ -9,10 +9,19 @@ namespace RobotGame.Scripts
         public float speed;
         public Action<string> OnTargetHit;
         private bool hit;
+
+        private float lifeSpan = 10;
+
+        private float timeAlive = 0;
         
         private void Update()
         {
             if (hit) return;
+            timeAlive += Time.deltaTime;
+            if (timeAlive >= lifeSpan)
+            {
+                gameObject.SetActive(false);
+            }
             transform.localPosition += direction * (speed * Time.deltaTime);
         }
 
