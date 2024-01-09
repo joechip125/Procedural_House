@@ -14,8 +14,6 @@ namespace PersistentObjects.Scripts
 
         public void Save (PersistableObject o, int version)
         {
-           
-            
             using (var writer = new BinaryWriter(File.Open(savePath, FileMode.Create))) 
             {
                 writer.Write(-version);
