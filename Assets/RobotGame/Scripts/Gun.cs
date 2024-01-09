@@ -23,6 +23,7 @@ namespace RobotGame.Scripts
         [SerializeField, Range(1, 100)] 
         private float range;
 
+        private float rotateSpeed = 20f;
         
         private void Hit(string hitTag)
         {
@@ -38,18 +39,18 @@ namespace RobotGame.Scripts
             
             if (Input.GetKey(rotateR))
             {
-                
+                transform.Rotate(Vector3.up, -rotateSpeed * Time.deltaTime);
             }
             else if (Input.GetKey(rotateL))
             {
-                
+                transform.Rotate(Vector3.up, rotateSpeed * Time.deltaTime);
             }
         }
 
         public void Use()
         {
             var dir =transform.TransformDirection(Vector3.forward);
-            var tempB =Instantiate(bullet, exit.localPosition, Quaternion.identity, transform).GetComponent<Bullet>();
+            var tempB =Instantiate(bullet, exit.localPosition, Quaternion.identity).GetComponent<Bullet>();
             tempB.OnTargetHit = Hit;
         }
 
