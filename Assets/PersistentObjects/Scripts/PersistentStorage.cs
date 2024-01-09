@@ -12,8 +12,10 @@ namespace PersistentObjects.Scripts
             savePath = Path.Combine(Application.persistentDataPath, "saveFile");
         }
 
-        public void Save (PersistableObject o, int version) 
+        public void Save (PersistableObject o, int version)
         {
+           
+            
             using (var writer = new BinaryWriter(File.Open(savePath, FileMode.Create))) 
             {
                 writer.Write(-version);
@@ -23,10 +25,14 @@ namespace PersistentObjects.Scripts
 
         public void Load (PersistableObject o) 
         {
-            using (var reader = new BinaryReader(File.Open(savePath, FileMode.Open))) 
-            {
-                o.Load(new GameDataReader(reader, -reader.ReadInt32()));
-            }
+            var data = File.ReadAllBytes(savePath);
+            var reader = new BinaryReader(new MemoryStream(data));
+            o.Load(new GameDataReader(reader, -reader.ReadInt32()));
+            
+            //using (var reader = new BinaryReader(File.Open(savePath, FileMode.Open))) 
+            //{
+            //    o.Load(new GameDataReader(reader, -reader.ReadInt32()));
+            //}
         }
     }
 }
