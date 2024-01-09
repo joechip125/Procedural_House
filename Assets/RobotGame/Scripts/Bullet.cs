@@ -27,7 +27,6 @@ namespace RobotGame.Scripts
 
         private void OnCollisionEnter(Collision collision)
         {
-            Debug.Log(collision.body.tag);
             if (hit) return;
             OnTargetHit?.Invoke(collision.body.tag);
             gameObject.SetActive(false);
