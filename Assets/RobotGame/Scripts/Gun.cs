@@ -38,11 +38,11 @@ namespace RobotGame.Scripts
             
             if (Input.GetKey(rotateR))
             {
-                Use();
+                
             }
             else if (Input.GetKey(rotateL))
             {
-                Use();
+                
             }
         }
 

@@ -10,15 +10,15 @@ namespace RobotGame.Scripts
         public Action<string> OnTargetHit;
         private bool hit;
 
-        private float lifeSpan = 10;
+        private const float LifeSpan = 8;
 
-        private float timeAlive = 0;
+        private float timeAlive;
         
         private void Update()
         {
             if (hit) return;
             timeAlive += Time.deltaTime;
-            if (timeAlive >= lifeSpan)
+            if (timeAlive >= LifeSpan)
             {
                 gameObject.SetActive(false);
             }
