@@ -30,12 +30,15 @@ namespace RobotGame.Scripts
                 timeSinceShoot -= shootInterval;
                 canShoot = true;
             }
+           
         }
-
+        
         public override void Initialize()
         {
-            start = gun.transform;
+            start = transform;
             gun.TargetHit = SetHitValue;
+            
+            gun.ATest(SetHitValue);
         }
 
         private void SetHitValue(int hitValue)
@@ -64,7 +67,7 @@ namespace RobotGame.Scripts
            var shoot = actions.DiscreteActions[0];
             
            transform.Rotate(Vector3.up, rotation);
-           gun.Rotation(rotation);
+           
            if (shoot == 1 && canShoot)
            {
                gun.Use();

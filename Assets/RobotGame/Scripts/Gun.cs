@@ -6,7 +6,6 @@ namespace RobotGame.Scripts
 {
     public class Gun : PersistentObject, IComponent
     {
-
         [SerializeField] 
         private Transform exit;
 
@@ -40,6 +39,11 @@ namespace RobotGame.Scripts
             TargetHit?.Invoke(value);
         }
 
+        public void ATest(Action<int> testing)
+        {
+            TargetHit = testing;
+        }
+        
         private void Start()
         {
             
@@ -72,6 +76,7 @@ namespace RobotGame.Scripts
             var dir =transform.TransformDirection(Vector3.forward);
             var tempB =Instantiate(bullet, exit.localPosition, Quaternion.identity).GetComponentInChildren<Bullet>();
             tempB.OnTargetHit = Hit;
+            tempB.BulletHitTarget = TargetHit;
             tempB.direction = dir;
             tempB.speed = 5f;
         }

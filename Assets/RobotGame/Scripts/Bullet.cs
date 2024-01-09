@@ -8,6 +8,7 @@ namespace RobotGame.Scripts
         public Vector3 direction;
         public float speed;
         public Action<string> OnTargetHit;
+        public Action<int> BulletHitTarget;
         private bool hit;
 
         private const float LifeSpan = 8;
@@ -29,6 +30,14 @@ namespace RobotGame.Scripts
         {
             if (hit) return;
             OnTargetHit?.Invoke(collision.body.tag);
+            if (collision.body.CompareTag("Player"))
+            {
+                BulletHitTarget?.Invoke(1);    
+            }
+            else if (collision.body.CompareTag("EnemyCommander"))
+            {
+                BulletHitTarget?.Invoke(2);
+            }
             gameObject.SetActive(false);
             hit = true;
         }
