@@ -46,19 +46,6 @@ namespace PersistentObjects.Scripts
         float creationProgress, destructionProgress;
         
         private Random.State mainRandomState;
-        
-        IEnumerator LoadLevel (int levelBuildIndex)
-        {
-            enabled = false;
-            if (loadedLevelBuildIndex > 0) 
-            {
-                yield return SceneManager.UnloadSceneAsync(loadedLevelBuildIndex);
-            }
-            loadedLevelBuildIndex = levelBuildIndex;
-            yield return SceneManager.LoadSceneAsync(levelBuildIndex, LoadSceneMode.Additive);
-            SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(levelBuildIndex));
-            enabled = true;
-        }
 
         private void Start()
         {
@@ -136,7 +123,7 @@ namespace PersistentObjects.Scripts
             }
 
         }
-        
+
         void DestroyShape () 
         {
             if (shapes.Count > 0) 
@@ -148,7 +135,7 @@ namespace PersistentObjects.Scripts
                 shapes.RemoveAt(lastIndex);
             }
         }
-        
+
         public override void Save (GameDataWriter writer) 
         {
             writer.Write(shapes.Count);
@@ -161,8 +148,8 @@ namespace PersistentObjects.Scripts
                 shapes[i].Save(writer);
             }
         }
-        
-        
+
+
         public override void Load (GameDataReader reader)
         {
             int version = reader.Version;
@@ -171,7 +158,14 @@ namespace PersistentObjects.Scripts
                 Debug.LogError("Unsupported future save version " + version);
                 return;
             }
-            int count = version <= 0 ? -version : reader.ReadInt();
+            StartCoroutine(LoadGame(reader));
+        }
+
+        IEnumerator LoadGame(GameDataReader reader)
+        {
+            var version = reader.Version;
+            var count = version <= 0 ? -version : reader.ReadInt();
+
             if (version >= 3) 
             {
                 var state = reader.ReadRandomState();
@@ -181,18 +175,36 @@ namespace PersistentObjects.Scripts
                 }
             }
             
-            StartCoroutine(LoadLevel(version < 2 ? 1 : reader.ReadInt()));
-            
+            yield return LoadLevel(version < 2 ? 1 : reader.ReadInt());
+            if (version >= 3) 
+            {
+                GameLevel.Current.Load(reader);
+            }
+
             for (int i = 0; i < count; i++) 
             {
                 int shapeId = version > 0 ? reader.ReadInt() : 0;
                 int materialId = version > 0 ? reader.ReadInt() : 0;
-                var instance = shapeFactory.Get(shapeId, materialId);
+                Shape instance = shapeFactory.Get(shapeId, materialId);
                 instance.Load(reader);
                 shapes.Add(instance);
             }
+            
         }
         
+        IEnumerator LoadLevel (int levelBuildIndex)
+        {
+            enabled = false;
+            if (loadedLevelBuildIndex > 0) 
+            {
+                yield return SceneManager.UnloadSceneAsync(loadedLevelBuildIndex);
+            }
+            loadedLevelBuildIndex = levelBuildIndex;
+            yield return SceneManager.LoadSceneAsync(levelBuildIndex, LoadSceneMode.Additive);
+            SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(levelBuildIndex));
+            enabled = true;
+        }
+
         private void BeginNewGame()
         {
             Random.state = mainRandomState;
