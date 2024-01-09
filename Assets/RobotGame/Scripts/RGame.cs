@@ -1,10 +1,10 @@
-﻿using PersistentObjects.Scripts;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RobotGame.Scripts
 {
-    public class RGame : PersistableObject
+    public class RGame : PersistentObject
     {
-        
+        [SerializeField]
+        private AssetFactory assetFactory;
     }
 }
