@@ -33,5 +33,15 @@ namespace PersistentObjects.Scripts
                 return spawnZones[index].SpawnPoint;
             }
         }
+
+        public override void Save(GameDataWriter writer)
+        {
+            writer.Write(nextSequentialIndex);
+        }
+
+        public override void Load(GameDataReader reader)
+        {
+           nextSequentialIndex = reader.ReadInt();
+        }
     }
 }
