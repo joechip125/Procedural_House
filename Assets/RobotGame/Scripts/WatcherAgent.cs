@@ -62,7 +62,8 @@ namespace RobotGame.Scripts
         {
            var rotation = actions.ContinuousActions[0];
            var shoot = actions.DiscreteActions[0];
-
+            
+           transform.Rotate(Vector3.up, rotation);
            gun.Rotation(rotation);
            if (shoot == 1 && canShoot)
            {
