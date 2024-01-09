@@ -45,4 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   assetID: 0
-  assetFactory: {fileID: 0}
+  assetFactory: {fileID: 11400000, guid: 2c940f595c642f346a5106762e1cf0ae, type: 2}

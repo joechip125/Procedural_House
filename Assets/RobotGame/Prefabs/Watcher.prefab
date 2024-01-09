@@ -53,6 +53,7 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 0
+  gun: {fileID: 0}
 --- !u!114 &5561903057319469188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,7 +113,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SensorName: RayPerceptionSensor
   m_DetectableTags:
-  - SimpleTarget
+  - Player
+  - EnemyCommander
   m_RaysPerDirection: 3
   m_MaxRayDegrees: 43.3
   m_SphereCastRadius: 0.5
