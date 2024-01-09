@@ -4,12 +4,16 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 namespace PersistentObjects.Scripts
 {
     public class Game : PersistableObject
     {
+        [SerializeField] Slider creationSpeedSlider;
+        [SerializeField] Slider destructionSpeedSlider;
+        
         [SerializeField]
         private ShapeFactory shapeFactory;
 
@@ -72,21 +76,6 @@ namespace PersistentObjects.Scripts
 
         private void Update()
         {
-            creationProgress += Time.deltaTime * CreationSpeed;
-
-            while (creationProgress >= 1f)
-            {
-                creationProgress -= 1f;
-                CreateShape();
-            }
-            destructionProgress += Time.deltaTime * DestructionSpeed;
-            while (destructionProgress >= 1f) 
-            {
-                destructionProgress -= 1f;
-                DestroyShape();
-            }
-            
-            
             if (Input.GetKeyDown(createKey))
             {
                 CreateShape();
@@ -125,6 +114,23 @@ namespace PersistentObjects.Scripts
 
         }
 
+        private void FixedUpdate()
+        {
+            creationProgress += Time.deltaTime * CreationSpeed;
+            while (creationProgress >= 1f) 
+            {
+                creationProgress -= 1f;
+                CreateShape();
+            }
+
+            destructionProgress += Time.deltaTime * DestructionSpeed;
+            while (destructionProgress >= 1f) 
+            {
+                destructionProgress -= 1f;
+                DestroyShape();
+            }
+        }
+
         void DestroyShape () 
         {
             if (shapes.Count > 0) 
@@ -141,6 +147,10 @@ namespace PersistentObjects.Scripts
         {
             writer.Write(shapes.Count);
             writer.Write(Random.state);
+            writer.Write(CreationSpeed);
+            writer.Write(creationProgress);
+            writer.Write(DestructionSpeed);
+            writer.Write(destructionProgress);
             writer.Write(loadedLevelBuildIndex);
             for (int i = 0; i < shapes.Count; i++) 
             {
@@ -174,6 +184,10 @@ namespace PersistentObjects.Scripts
                 {
                     Random.state = state;
                 }
+                creationSpeedSlider.value = CreationSpeed = reader.ReadFloat();
+                creationProgress = reader.ReadFloat();
+                destructionSpeedSlider.value = DestructionSpeed = reader.ReadFloat();
+                destructionProgress = reader.ReadFloat();
             }
             
             yield return LoadLevel(version < 2 ? 1 : reader.ReadInt());
@@ -208,6 +222,9 @@ namespace PersistentObjects.Scripts
 
         private void BeginNewGame()
         {
+            creationSpeedSlider.value = CreationSpeed = 0;
+            destructionSpeedSlider.value = DestructionSpeed = 0;
+
             Random.state = mainRandomState;
                                                     //bitwise exclusive or
             int seed = Random.Range(0, int.MaxValue) ^ (int)Time.unscaledTime;
