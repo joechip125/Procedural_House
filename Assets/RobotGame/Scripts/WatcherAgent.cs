@@ -1,14 +1,22 @@
 ﻿using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
+using UnityEngine;
 
 namespace RobotGame.Scripts
 {
     public class WatcherAgent : Agent
     {
+        private bool targetHit;
+
+        [SerializeField] 
+        private Gun gun;
+
+        private Transform start;
+        
         public override void Initialize()
         {
-            
+            start = gun.transform;
         }
 
         public override void CollectObservations(VectorSensor sensor)
@@ -30,11 +38,20 @@ namespace RobotGame.Scripts
         {
            var rotation = actions.ContinuousActions[0];
            var shoot = actions.DiscreteActions[0];
+
+           gun.Rotation(rotation);
+           if(shoot == 1) gun.Use();
+           
+           if (targetHit)
+           {
+               SetReward(1.0f);
+               EndEpisode();
+           }
         }
 
         public override void OnEpisodeBegin()
         {
-           
+            gun.transform.rotation = start.transform.rotation;
         }
     }
 }
