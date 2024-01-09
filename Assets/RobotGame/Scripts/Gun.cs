@@ -24,13 +24,20 @@ namespace RobotGame.Scripts
         private float range;
 
         private float rotateSpeed = 20f;
-        
+        public Action<int> TargetHit;
+
         private void Hit(string hitTag)
         {
+            int value = 0;
             if (hitTag == "Player")
             {
-                
+                value = 1;
             }
+            else if (hitTag == "EnemyCommander")
+            {
+                value = 2;
+            }
+            TargetHit?.Invoke(value);
         }
 
         private void Start()

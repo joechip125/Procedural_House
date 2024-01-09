@@ -8,7 +8,7 @@ namespace RobotGame.Scripts
 {
     public class WatcherAgent : Agent
     {
-        private bool targetHit;
+        private int targetHit;
 
         [SerializeField] 
         private Gun gun;
@@ -35,8 +35,14 @@ namespace RobotGame.Scripts
         public override void Initialize()
         {
             start = gun.transform;
+            gun.TargetHit = SetHitValue;
         }
 
+        private void SetHitValue(int hitValue)
+        {
+            targetHit = hitValue;
+        }
+        
         public override void CollectObservations(VectorSensor sensor)
         {
            sensor.AddObservation(gun.transform.localRotation.y);
@@ -64,9 +70,14 @@ namespace RobotGame.Scripts
                canShoot = false;
            }
            
-           if (targetHit)
+           if (targetHit == 1)
            {
                SetReward(1.0f);
+               EndEpisode();
+           }
+           else if (targetHit == 2)
+           {
+               SetReward(-1.0f);
                EndEpisode();
            }
         }
@@ -74,7 +85,7 @@ namespace RobotGame.Scripts
         public override void OnEpisodeBegin()
         {
             gun.transform.rotation = start.transform.rotation;
-            targetHit = false;
+            targetHit = 0;
         }
     }
 }
