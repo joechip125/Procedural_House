@@ -2,7 +2,7 @@
 
 namespace RobotGame.Scripts
 {
-    public class CubeSpawnZone : SpawnZone
+    public class TrainerSpawnZone : SpawnZone
     {
         public override Vector3 SpawnPoint
         {
