@@ -38,6 +38,11 @@ namespace PersistentObjects.Scripts
             MaterialId = materialId;
         }
 
+        void FixedUpdate () 
+        {
+            transform.Rotate(Vector3.forward * (50f * Time.deltaTime));
+        }
+        
         public void SetColor (Color color)
         {
             Color = color;
