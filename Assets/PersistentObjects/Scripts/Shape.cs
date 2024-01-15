@@ -16,7 +16,7 @@ namespace PersistentObjects.Scripts
                 }
             }
         }
-        
+        public Vector3 AngularVelocity { get; set; }
         MeshRenderer meshRenderer;
 
         void Awake () 

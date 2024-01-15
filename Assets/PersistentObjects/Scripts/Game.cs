@@ -240,6 +240,7 @@ namespace PersistentObjects.Scripts
         private void CreateShape()
         {
             var instance = shapeFactory.GetRandom();
+            instance.AngularVelocity = Random.onUnitSphere * 50f;
             var t = instance.transform;
             t.localPosition = GameLevel.Current.SpawnPoint;
             t.localRotation = Random.rotation;
