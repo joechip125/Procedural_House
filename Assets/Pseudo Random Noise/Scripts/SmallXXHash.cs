@@ -12,6 +12,16 @@
         
         public static implicit operator uint (SmallXXHash hash) => hash.accumulator;
         
+        static uint RotateLeft (uint data, int steps) =>
+            (data << steps) | (data >> 32 - steps);
+        public void Eat (int data) 
+        {
+            accumulator = RotateLeft(accumulator + (uint)data * primeC, 17) * primeD;
+        }
+        public void Eat (byte data) 
+        {
+            accumulator = RotateLeft(accumulator + data * primeE, 11) * primeA;
+        }
         public SmallXXHash (int seed) 
         {
             accumulator = (uint)seed + primeE;
