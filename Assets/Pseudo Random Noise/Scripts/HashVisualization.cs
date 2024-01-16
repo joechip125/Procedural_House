@@ -15,12 +15,15 @@ namespace RandomNoise
         {
             [WriteOnly] 
             public NativeArray<uint> hashes;
+            
+            public int resolution;
+            public float invResolution;
 
             public void Execute(int i)
             {
-                //hashes[i] = (uint)i;
-                hashes[i] = (uint)(frac(i * 0.381f) * 256f);
-                
+                float v = floor(invResolution * i + 0.00001f);
+                float u = i - resolution * v;
+                hashes[i] = (uint)(frac(u * v * 0.381f) * 255f);
             }
         }
 
@@ -46,7 +49,9 @@ namespace RandomNoise
 
             new HashJob 
             {
-                hashes = hashes
+                hashes = hashes,
+                resolution = resolution,
+                invResolution = 1f / resolution
             }.ScheduleParallel(hashes.Length, resolution, default).Complete();
 
             hashesBuffer.SetData(hashes);
