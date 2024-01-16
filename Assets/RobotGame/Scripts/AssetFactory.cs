@@ -39,6 +39,7 @@ namespace RobotGame.Scripts
             {
                 Destroy(assetToRecycle.gameObject);
             }
+            
         }
         
         public PersistentObject Get (int assetId = 0) 

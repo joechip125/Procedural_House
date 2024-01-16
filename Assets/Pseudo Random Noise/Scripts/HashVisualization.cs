@@ -1,7 +1,10 @@
-﻿using Unity.Burst;
+﻿using System;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
 using UnityEngine;
+using Unity.Mathematics;
+using static Unity.Mathematics.math;
 
 namespace RandomNoise
 {
@@ -12,10 +15,12 @@ namespace RandomNoise
         {
             [WriteOnly] 
             public NativeArray<uint> hashes;
-            
+
             public void Execute(int i)
             {
-                hashes[i] = (uint)i;
+                //hashes[i] = (uint)i;
+                hashes[i] = (uint)(frac(i * 0.381f) * 256f);
+                
             }
         }
 
