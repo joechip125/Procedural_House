@@ -19,13 +19,15 @@ namespace RandomNoise
             public int resolution;
             public float invResolution;
 
+            public SmallXXHash hash;
+            
             public void Execute(int i)
             {
                 int v = (int)floor(invResolution * i + 0.00001f);
                 int u = i - resolution * v - resolution / 2;
                 v -= resolution / 2;
                 
-                hashes[i] = SmallXXHash.Seed(0).Eat(u).Eat(v);
+                hashes[i] = hash.Eat(u).Eat(v);
             }
         }
 
@@ -38,6 +40,12 @@ namespace RandomNoise
         Material material;
         [SerializeField, Range(1, 512)]
         int resolution = 16;
+
+        [SerializeField]
+        private int seed;
+        
+        [SerializeField, Range(-2f, 2f)]
+        float verticalOffset = 1f;
 
         NativeArray<uint> hashes;
         ComputeBuffer hashesBuffer;
@@ -53,14 +61,15 @@ namespace RandomNoise
             {
                 hashes = hashes,
                 resolution = resolution,
-                invResolution = 1f / resolution
+                invResolution = 1f / resolution,
+                hash = SmallXXHash.Seed(seed)
             }.ScheduleParallel(hashes.Length, resolution, default).Complete();
 
             hashesBuffer.SetData(hashes);
 
             propertyBlock ??= new MaterialPropertyBlock();
             propertyBlock.SetBuffer(hashesId, hashesBuffer);
-            propertyBlock.SetVector(configId, new Vector4(resolution, 1f / resolution));
+            propertyBlock.SetVector(configId, new Vector4(resolution, 1f / resolution, verticalOffset / resolution));
         }
         
         void OnDisable () 
