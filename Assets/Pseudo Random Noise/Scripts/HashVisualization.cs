@@ -22,11 +22,10 @@ namespace RandomNoise
             public void Execute(int i)
             {
                 int v = (int)floor(invResolution * i + 0.00001f);
-                int u = i - resolution * v;
+                int u = i - resolution * v - resolution / 2;
+                v -= resolution / 2;
                 
-                var hash = new SmallXXHash(0);
-                hash.Eat(u);
-                hash.Eat(v);
+                var hash = new SmallXXHash(0).Eat(u).Eat(v);
                 hashes[i] = hash;
             }
         }
