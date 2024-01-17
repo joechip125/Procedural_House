@@ -21,14 +21,18 @@ namespace RandomNoise
 
             public SmallXXHash hash;
             
+            public float3x4 domainTRS;
+            
             public void Execute(int i)
             {
                 float vf = floor(invResolution * i + 0.00001f);
                 float uf = invResolution * (i - resolution * vf + 0.5f) - 0.5f;
                 vf = invResolution * (vf + 0.5f) - 0.5f;
 
-                int u = (int)floor(uf * 32f / 4f);
-                int v = (int)floor(vf * 32f / 4f);
+                float3 p = float3(uf, 0f, vf);
+
+                int u = (int)floor(p.x);
+                int v = (int)floor(p.z);
                 
                 hashes[i] = hash.Eat(u).Eat(v);
             }
