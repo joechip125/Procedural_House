@@ -23,12 +23,12 @@ namespace RandomNoise
             
             public void Execute(int i)
             {
-                int v = (int)floor(invResolution * i + 0.00001f);
-                int u = i - resolution * v - resolution / 2;
-                v -= resolution / 2;
-                
-                u *= 2;
-                v *= 2;
+                float vf = floor(invResolution * i + 0.00001f);
+                float uf = invResolution * (i - resolution * vf + 0.5f) - 0.5f;
+                vf = invResolution * (vf + 0.5f) - 0.5f;
+
+                int u = (int)floor(uf * 32f / 4f);
+                int v = (int)floor(vf * 32f / 4f);
                 
                 hashes[i] = hash.Eat(u).Eat(v);
             }
