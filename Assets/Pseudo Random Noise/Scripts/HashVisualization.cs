@@ -27,6 +27,9 @@ namespace RandomNoise
                 int u = i - resolution * v - resolution / 2;
                 v -= resolution / 2;
                 
+                u *= 2;
+                v *= 2;
+                
                 hashes[i] = hash.Eat(u).Eat(v);
             }
         }
