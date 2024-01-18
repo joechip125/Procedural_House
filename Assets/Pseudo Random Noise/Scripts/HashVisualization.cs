@@ -23,9 +23,15 @@ namespace RandomNoise
             
             public float3x4 domainTRS;
             
+            float4x3 TransformPositions (float3x4 trs, float4x3 p) => float4x3(
+                trs.c0.x * p.c0 + trs.c1.x * p.c1 + trs.c2.x * p.c2 + trs.c3.x,
+                trs.c0.y * p.c0 + trs.c1.y * p.c1 + trs.c2.y * p.c2 + trs.c3.y,
+                trs.c0.z * p.c0 + trs.c1.z * p.c1 + trs.c2.z * p.c2 + trs.c3.z
+            );
+            
             public void Execute(int i)
             {
-                float4x3 p = transpose(positions[i]);
+                float4x3 p = TransformPositions(domainTRS, transpose(positions[i]));
 
                 int4 u = (int4)floor(p.c0);
                 int4 v = (int4)floor(p.c1);
@@ -62,7 +68,7 @@ namespace RandomNoise
         };
 
         NativeArray<uint4> hashes;
-        NativeArray<float3> positions, normals;
+        NativeArray<float3x4> positions, normals;
         
         ComputeBuffer hashesBuffer, positionsBuffer, normalsBuffer;
         
@@ -74,12 +80,13 @@ namespace RandomNoise
         {
             
             int length = resolution * resolution;
+            length /= 4;
             hashes = new NativeArray<uint4>(length, Allocator.Persistent);
-            positions = new NativeArray<float3>(length, Allocator.Persistent);
-            normals = new NativeArray<float3>(length, Allocator.Persistent);
-            hashesBuffer = new ComputeBuffer(length, 4);
-            positionsBuffer = new ComputeBuffer(length, 3 * 4);
-            normalsBuffer = new ComputeBuffer(length, 3 * 4);
+            positions = new NativeArray<float3x4>(length, Allocator.Persistent);
+            normals = new NativeArray<float3x4>(length, Allocator.Persistent);
+            hashesBuffer = new ComputeBuffer(length * 4, 4);
+            positionsBuffer = new ComputeBuffer(length * 4, 3 * 4);
+            normalsBuffer = new ComputeBuffer(length * 4, 3 * 4);
 
             
             propertyBlock ??= new MaterialPropertyBlock();
@@ -126,17 +133,18 @@ namespace RandomNoise
                     positions, normals,resolution, transform.localToWorldMatrix, default
                 );
 
+                
                 new HashJob 
                 {
-                    positions = positions,
-                    hashes = hashes,
+                    positions = positions.Reinterpret<float3x4>(3 * 4),
+                    hashes = hashes.Reinterpret<uint4>(4),
                     hash = SmallXXHash.Seed(seed),
                     domainTRS = domain.Matrix
-                }.ScheduleParallel(hashes.Length, resolution, handle).Complete();
-
-                hashesBuffer.SetData(hashes);
-                positionsBuffer.SetData(positions);
-                normalsBuffer.SetData(normals);
+                }.ScheduleParallel(hashes.Length / 4, resolution, handle).Complete();
+              
+                hashesBuffer.SetData(hashes.Reinterpret<uint>(4 * 4));
+                positionsBuffer.SetData(positions.Reinterpret<float3>(3 * 4 * 4));
+                normalsBuffer.SetData(normals.Reinterpret<float3>(3 * 4 * 4));
             }
             
             Graphics.DrawMeshInstancedProcedural
