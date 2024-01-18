@@ -33,9 +33,10 @@ namespace RandomNoise
                 float3 p = mul(domainTRS, float4(uf, 0f, vf, 1f));
 
                 int u = (int)floor(p.x);
-                int v = (int)floor(p.z);
+                int v = (int)floor(p.y);
+                int w = (int)floor(p.z);
                 
-                hashes[i] = hash.Eat(u).Eat(v);
+                hashes[i] = hash.Eat(u).Eat(v).Eat(w);
             }
         }
 
