@@ -1,6 +1,6 @@
 ﻿#if defined(UNITY_PROCEDURAL_INSTANCING_ENABLED)
 StructuredBuffer<uint> _Hashes;
-StructuredBuffer<float3> _Positions;
+StructuredBuffer<float3> _Positions, _Normals;
 #endif
 
 float4 _Config;
@@ -13,8 +13,9 @@ void ConfigureProcedural ()
         _Positions[unity_InstanceID],
         1.0
     );
-    unity_ObjectToWorld._m13 +=
-        _Config.z * ((1.0 / 255.0) * (_Hashes[unity_InstanceID] >> 24) - 0.5);
+    unity_ObjectToWorld._m03_m13_m23 +=
+        (_Config.z * ((1.0 / 255.0) * (_Hashes[unity_InstanceID] >> 24) - 0.5)) *
+        _Normals[unity_InstanceID];
     unity_ObjectToWorld._m00_m11_m22 = _Config.y;
     #endif
 }

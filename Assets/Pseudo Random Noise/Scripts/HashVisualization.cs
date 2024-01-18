@@ -39,6 +39,7 @@ namespace RandomNoise
         private bool isDirty;
         static int hashesId = Shader.PropertyToID("_Hashes"),
             positionsId = Shader.PropertyToID("_Positions"),
+            normalsId = Shader.PropertyToID("_Normals"),
             configId = Shader.PropertyToID("_Config");
 
         [SerializeField]
@@ -61,24 +62,29 @@ namespace RandomNoise
         };
 
         NativeArray<uint> hashes;
-        NativeArray<float3> positions;
+        NativeArray<float3> positions, normals;
         
-        ComputeBuffer hashesBuffer, positionsBuffer;
+        ComputeBuffer hashesBuffer, positionsBuffer, normalsBuffer;
         
         MaterialPropertyBlock propertyBlock;
 
         void OnEnable ()
         {
-            isDirty = true;
+            
             int length = resolution * resolution;
             hashes = new NativeArray<uint>(length, Allocator.Persistent);
             positions = new NativeArray<float3>(length, Allocator.Persistent);
+            normals = new NativeArray<float3>(length, Allocator.Persistent);
             hashesBuffer = new ComputeBuffer(length, 4);
             positionsBuffer = new ComputeBuffer(length, 3 * 4);
+            normalsBuffer = new ComputeBuffer(length, 3 * 4);
+
             
             propertyBlock ??= new MaterialPropertyBlock();
             propertyBlock.SetBuffer(hashesId, hashesBuffer);
             propertyBlock.SetBuffer(positionsId, positionsBuffer);
+            propertyBlock.SetBuffer(normalsId, normalsBuffer);
+            
             propertyBlock.SetVector(configId, new Vector4(
                 resolution, 1f / resolution, displacement));
         }
@@ -87,10 +93,13 @@ namespace RandomNoise
         {
             hashes.Dispose();
             positions.Dispose();
+            normals.Dispose();
             hashesBuffer.Release();
             positionsBuffer.Release();
+            normalsBuffer.Release();
             hashesBuffer = null;
             positionsBuffer = null;
+            normalsBuffer = null;
         }
 
         void OnValidate () 
@@ -109,7 +118,7 @@ namespace RandomNoise
                 transform.hasChanged = false;
 
                 JobHandle handle = Shapes.Job.ScheduleParallel(
-                    positions, resolution, transform.localToWorldMatrix, default
+                    positions, normals,resolution, transform.localToWorldMatrix, default
                 );
 
                 new HashJob 
@@ -122,6 +131,7 @@ namespace RandomNoise
 
                 hashesBuffer.SetData(hashes);
                 positionsBuffer.SetData(positions);
+                normalsBuffer.SetData(normals);
             }
             
             Graphics.DrawMeshInstancedProcedural
