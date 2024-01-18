@@ -68,6 +68,8 @@ namespace RandomNoise
         
         MaterialPropertyBlock propertyBlock;
 
+        private Bounds bounds;
+
         void OnEnable ()
         {
             
@@ -116,6 +118,9 @@ namespace RandomNoise
             {
                 isDirty = false;
                 transform.hasChanged = false;
+                
+                bounds = new Bounds(transform.position,
+                    float3(2f * cmax(abs(transform.lossyScale)) + displacement));
 
                 JobHandle handle = Shapes.Job.ScheduleParallel(
                     positions, normals,resolution, transform.localToWorldMatrix, default
@@ -135,8 +140,7 @@ namespace RandomNoise
             }
             
             Graphics.DrawMeshInstancedProcedural
-            (instanceMesh, 0, material, new Bounds(Vector3.zero, Vector3.one),
-                hashes.Length, propertyBlock);
+            (instanceMesh, 0, material, bounds, hashes.Length, propertyBlock);
         }
     }
 }
