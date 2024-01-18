@@ -41,6 +41,7 @@ namespace RandomNoise
         }
 
         static int hashesId = Shader.PropertyToID("_Hashes"),
+            positionsId = Shader.PropertyToID("_Positions"),
             configId = Shader.PropertyToID("_Config");
 
         [SerializeField]
@@ -63,14 +64,19 @@ namespace RandomNoise
         };
 
         NativeArray<uint> hashes;
-        ComputeBuffer hashesBuffer;
+        NativeArray<float3> positions;
+        
+        ComputeBuffer hashesBuffer, positionsBuffer;
+        
         MaterialPropertyBlock propertyBlock;
 
         void OnEnable () 
         {
             int length = resolution * resolution;
             hashes = new NativeArray<uint>(length, Allocator.Persistent);
+            positions = new NativeArray<float3>(length, Allocator.Persistent);
             hashesBuffer = new ComputeBuffer(length, 4);
+            positionsBuffer = new ComputeBuffer(length, 3 * 4);
 
             new HashJob 
             {
