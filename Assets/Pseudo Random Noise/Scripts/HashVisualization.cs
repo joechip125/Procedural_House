@@ -76,19 +76,6 @@ namespace RandomNoise
             hashesBuffer = new ComputeBuffer(length, 4);
             positionsBuffer = new ComputeBuffer(length, 3 * 4);
             
-            JobHandle handle = Shapes.Job.ScheduleParallel(positions, resolution, transform.localToWorldMatrix,default);
-
-            new HashJob 
-            {
-                hashes = hashes,
-                positions = positions,
-                hash = SmallXXHash.Seed(seed),
-                domainTRS = domain.Matrix
-            }.ScheduleParallel(hashes.Length, resolution, handle).Complete();
-
-            hashesBuffer.SetData(hashes);
-            positionsBuffer.SetData(positions);
-
             propertyBlock ??= new MaterialPropertyBlock();
             propertyBlock.SetBuffer(hashesId, hashesBuffer);
             propertyBlock.SetBuffer(positionsId, positionsBuffer);
@@ -116,9 +103,10 @@ namespace RandomNoise
         }
         void Update () 
         {
-            if (isDirty) 
+            if (isDirty || transform.hasChanged) 
             {
                 isDirty = false;
+                transform.hasChanged = false;
 
                 JobHandle handle = Shapes.Job.ScheduleParallel(
                     positions, resolution, transform.localToWorldMatrix, default
