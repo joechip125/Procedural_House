@@ -12,6 +12,16 @@ namespace RandomNoise
         [BurstCompile(FloatPrecision.Standard, FloatMode.Fast, CompileSynchronously = true)]
         public struct Job : IJobFor 
         {
+            
+            public static JobHandle ScheduleParallel (NativeArray<float3> positions, int resolution, JobHandle dependency) 
+            {
+                return new Job 
+                {
+                    positions = positions,
+                    resolution = resolution,
+                    invResolution = 1f / resolution
+                }.ScheduleParallel(positions.Length, resolution, dependency);
+            }
 
             [WriteOnly]
             NativeArray<float3> positions;
