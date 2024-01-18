@@ -8,9 +8,6 @@ float4 _Config;
 void ConfigureProcedural ()
 {
     #if defined(UNITY_PROCEDURAL_INSTANCING_ENABLED)
-    //float v = floor(_Config.y * unity_InstanceID + 0.00001);
-    //float u = unity_InstanceID - _Config.x * v;
-		
     unity_ObjectToWorld = 0.0;
     unity_ObjectToWorld._m03_m13_m23_m33 = float4(
         _Positions[unity_InstanceID],

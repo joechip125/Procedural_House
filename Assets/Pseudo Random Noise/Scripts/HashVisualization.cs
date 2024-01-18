@@ -35,6 +35,8 @@ namespace RandomNoise
             }
         }
 
+
+        private bool isDirty;
         static int hashesId = Shader.PropertyToID("_Hashes"),
             positionsId = Shader.PropertyToID("_Positions"),
             configId = Shader.PropertyToID("_Config");
@@ -65,8 +67,9 @@ namespace RandomNoise
         
         MaterialPropertyBlock propertyBlock;
 
-        void OnEnable () 
+        void OnEnable ()
         {
+            isDirty = true;
             int length = resolution * resolution;
             hashes = new NativeArray<uint>(length, Allocator.Persistent);
             positions = new NativeArray<float3>(length, Allocator.Persistent);
@@ -113,6 +116,26 @@ namespace RandomNoise
         }
         void Update () 
         {
+            if (isDirty) 
+            {
+                isDirty = false;
+
+                JobHandle handle = Shapes.Job.ScheduleParallel(
+                    positions, resolution, transform.localToWorldMatrix, default
+                );
+
+                new HashJob 
+                {
+                    positions = positions,
+                    hashes = hashes,
+                    hash = SmallXXHash.Seed(seed),
+                    domainTRS = domain.Matrix
+                }.ScheduleParallel(hashes.Length, resolution, handle).Complete();
+
+                hashesBuffer.SetData(hashes);
+                positionsBuffer.SetData(positions);
+            }
+            
             Graphics.DrawMeshInstancedProcedural
             (instanceMesh, 0, material, new Bounds(Vector3.zero, Vector3.one),
                 hashes.Length, propertyBlock);
