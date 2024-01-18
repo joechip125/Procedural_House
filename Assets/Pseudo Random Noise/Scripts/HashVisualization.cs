@@ -29,7 +29,8 @@ namespace RandomNoise
                 float uf = invResolution * (i - resolution * vf + 0.5f) - 0.5f;
                 vf = invResolution * (vf + 0.5f) - 0.5f;
 
-                float3 p = float3(uf, 0f, vf);
+                
+                float3 p = mul(domainTRS, float4(uf, 0f, vf, 1f));
 
                 int u = (int)floor(p.x);
                 int v = (int)floor(p.z);
@@ -75,7 +76,8 @@ namespace RandomNoise
                 hashes = hashes,
                 resolution = resolution,
                 invResolution = 1f / resolution,
-                hash = SmallXXHash.Seed(seed)
+                hash = SmallXXHash.Seed(seed),
+                domainTRS = domain.Matrix
             }.ScheduleParallel(hashes.Length, resolution, default).Complete();
 
             hashesBuffer.SetData(hashes);
