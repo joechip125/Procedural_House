@@ -77,6 +77,8 @@ namespace RandomNoise
             positions = new NativeArray<float3>(length, Allocator.Persistent);
             hashesBuffer = new ComputeBuffer(length, 4);
             positionsBuffer = new ComputeBuffer(length, 3 * 4);
+            
+            JobHandle handle = Shapes.Job.ScheduleParallel(positions, resolution, default);
 
             new HashJob 
             {
@@ -85,20 +87,26 @@ namespace RandomNoise
                 invResolution = 1f / resolution,
                 hash = SmallXXHash.Seed(seed),
                 domainTRS = domain.Matrix
-            }.ScheduleParallel(hashes.Length, resolution, default).Complete();
+            }.ScheduleParallel(hashes.Length, resolution, handle).Complete();
 
             hashesBuffer.SetData(hashes);
+            positionsBuffer.SetData(positions);
 
             propertyBlock ??= new MaterialPropertyBlock();
             propertyBlock.SetBuffer(hashesId, hashesBuffer);
+            propertyBlock.SetBuffer(positionsId, positionsBuffer);
+            
             propertyBlock.SetVector(configId, new Vector4(resolution, 1f / resolution, verticalOffset / resolution));
         }
         
         void OnDisable () 
         {
             hashes.Dispose();
+            positions.Dispose();
             hashesBuffer.Release();
+            positionsBuffer.Release();
             hashesBuffer = null;
+            positionsBuffer = null;
         }
 
         void OnValidate () 
