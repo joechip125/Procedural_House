@@ -73,7 +73,7 @@ namespace RandomNoise
             hashesBuffer = new ComputeBuffer(length, 4);
             positionsBuffer = new ComputeBuffer(length, 3 * 4);
             
-            JobHandle handle = Shapes.Job.ScheduleParallel(positions, resolution, default);
+            JobHandle handle = Shapes.Job.ScheduleParallel(positions, resolution, transform.localToWorldMatrix,default);
 
             new HashJob 
             {
