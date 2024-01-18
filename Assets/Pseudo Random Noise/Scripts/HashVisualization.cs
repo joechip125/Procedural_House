@@ -50,9 +50,9 @@ namespace RandomNoise
 
         [SerializeField]
         private int seed;
-        
-        [SerializeField, Range(-2f, 2f)]
-        float verticalOffset = 1f;
+
+        [SerializeField, Range(-0.5f, 0.5f)]
+        float displacement = 0.1f;
         
         [SerializeField]
         SpaceTRS domain = new SpaceTRS()
@@ -79,8 +79,8 @@ namespace RandomNoise
             propertyBlock ??= new MaterialPropertyBlock();
             propertyBlock.SetBuffer(hashesId, hashesBuffer);
             propertyBlock.SetBuffer(positionsId, positionsBuffer);
-            
-            propertyBlock.SetVector(configId, new Vector4(resolution, 1f / resolution, verticalOffset / resolution));
+            propertyBlock.SetVector(configId, new Vector4(
+                resolution, 1f / resolution, displacement));
         }
         
         void OnDisable () 
