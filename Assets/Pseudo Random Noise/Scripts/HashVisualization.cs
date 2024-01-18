@@ -14,22 +14,22 @@ namespace RandomNoise
         struct HashJob : IJobFor
         {
             [ReadOnly]
-            public NativeArray<float3> positions;
+            public NativeArray<float3x4> positions;
             
             [WriteOnly] 
-            public NativeArray<uint> hashes;
+            public NativeArray<uint4> hashes;
             
-            public SmallXXHash hash;
+            public SmallXXHash4 hash;
             
             public float3x4 domainTRS;
             
             public void Execute(int i)
             {
-                float3 p = mul(domainTRS, float4(positions[i], 1f));
+                float4x3 p = transpose(positions[i]);
 
-                int u = (int)floor(p.x);
-                int v = (int)floor(p.y);
-                int w = (int)floor(p.z);
+                int4 u = (int4)floor(p.c0);
+                int4 v = (int4)floor(p.c1);
+                int4 w = (int4)floor(p.c2);
                 
                 hashes[i] = hash.Eat(u).Eat(v).Eat(w);
             }
@@ -61,7 +61,7 @@ namespace RandomNoise
             scale = 8
         };
 
-        NativeArray<uint> hashes;
+        NativeArray<uint4> hashes;
         NativeArray<float3> positions, normals;
         
         ComputeBuffer hashesBuffer, positionsBuffer, normalsBuffer;
@@ -74,7 +74,7 @@ namespace RandomNoise
         {
             
             int length = resolution * resolution;
-            hashes = new NativeArray<uint>(length, Allocator.Persistent);
+            hashes = new NativeArray<uint4>(length, Allocator.Persistent);
             positions = new NativeArray<float3>(length, Allocator.Persistent);
             normals = new NativeArray<float3>(length, Allocator.Persistent);
             hashesBuffer = new ComputeBuffer(length, 4);

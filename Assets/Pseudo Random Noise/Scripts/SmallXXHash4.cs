@@ -10,7 +10,7 @@ namespace RandomNoise
         const uint primeD = 0b00100111110101001110101100101111;
         const uint primeE = 0b00010110010101100110011110110001;
         
-        readonly uint accumulator;
+        public readonly uint accumulator;
 
         public static implicit operator uint (SmallXXHash hash) 
         {
@@ -71,6 +71,9 @@ namespace RandomNoise
         
         public static implicit operator SmallXXHash4 (uint4 accumulator) =>
             new SmallXXHash4(accumulator);
+        
+        public static implicit operator SmallXXHash4 (SmallXXHash hash) =>
+            new SmallXXHash4(hash.accumulator);
         
         public static SmallXXHash4 Seed (int4 seed) => (uint4)seed + primeE;
         
