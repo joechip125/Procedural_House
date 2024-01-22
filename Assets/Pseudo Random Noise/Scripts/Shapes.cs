@@ -44,7 +44,7 @@ namespace RandomNoise
         }
         
         [BurstCompile(FloatPrecision.Standard, FloatMode.Fast, CompileSynchronously = true)]
-        public struct Job : IJobFor 
+        public struct Job<S> : IJobFor where S : struct, IShape 
         {
             [WriteOnly]
             NativeArray<float3x4> positions, normals;
