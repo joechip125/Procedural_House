@@ -56,7 +56,7 @@ namespace RandomNoise
             public static JobHandle ScheduleParallel 
                 (NativeArray<float3x4> positions, NativeArray<float3x4> normals, int resolution, float4x4 trs,JobHandle dependency) 
             {
-                return new Job 
+                return new Job<S> 
                 {
                     positions = positions,
                     resolution = resolution,
@@ -74,7 +74,7 @@ namespace RandomNoise
             
             public void Execute (int i) 
             {
-                Point4 p = default(Plane).GetPoint4(i, resolution, invResolution);
+                Point4 p = default(S).GetPoint4(i, resolution, invResolution);
                 positions[i] = transpose(TransformVectors(positionTRS, p.positions));
                 float3x4 n = transpose(TransformVectors(positionTRS, p.normals, 0f));
                 normals[i] = float3x4(normalize(n.c0), normalize(n.c1), normalize(n.c2), normalize(n.c3));
