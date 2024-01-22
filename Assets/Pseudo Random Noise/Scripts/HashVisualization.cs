@@ -80,7 +80,7 @@ namespace RandomNoise
         {
             
             int length = resolution * resolution;
-            length /= 4;
+            length = length / 4 + (length & 1);
             hashes = new NativeArray<uint4>(length, Allocator.Persistent);
             positions = new NativeArray<float3x4>(length, Allocator.Persistent);
             normals = new NativeArray<float3x4>(length, Allocator.Persistent);
@@ -136,11 +136,11 @@ namespace RandomNoise
                 
                 new HashJob 
                 {
-                    positions = positions.Reinterpret<float3x4>(3 * 4),
-                    hashes = hashes.Reinterpret<uint4>(4),
+                    positions = positions,
+                    hashes = hashes,
                     hash = SmallXXHash.Seed(seed),
                     domainTRS = domain.Matrix
-                }.ScheduleParallel(hashes.Length / 4, resolution, handle).Complete();
+                }.ScheduleParallel(hashes.Length, resolution, handle).Complete();
               
                 hashesBuffer.SetData(hashes.Reinterpret<uint>(4 * 4));
                 positionsBuffer.SetData(positions.Reinterpret<float3>(3 * 4 * 4));
@@ -148,7 +148,7 @@ namespace RandomNoise
             }
             
             Graphics.DrawMeshInstancedProcedural
-            (instanceMesh, 0, material, bounds, hashes.Length, propertyBlock);
+            (instanceMesh, 0, material, bounds, resolution * resolution, propertyBlock);
         }
     }
 }
