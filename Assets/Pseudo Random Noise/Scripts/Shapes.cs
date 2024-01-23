@@ -91,7 +91,8 @@ namespace Pseudo_Random_Noise.Scripts
 
 			public float3x4 positionTRS, normalTRS;
 			
-			public void Execute (int i) {
+			public void Execute (int i) 
+			{
 				Point4 p = default(S).GetPoint4(i, resolution, invResolution);
 
 				positions[i] = transpose(positionTRS.TransformVectors(p.positions));
@@ -112,8 +113,8 @@ namespace Pseudo_Random_Noise.Scripts
 					normals = normals,
 					resolution = resolution,
 					invResolution = 1f / resolution,
-					positionTRS = float3x4(trs.c0.xyz, trs.c1.xyz, trs.c2.xyz, trs.c3.xyz),
-					normalTRS = float3x4(tim.c0.xyz, tim.c1.xyz, tim.c2.xyz, tim.c3.xyz)
+					positionTRS = trs.Get3x4(),
+					normalTRS = transpose(inverse(trs)).Get3x4()
 				}.ScheduleParallel(positions.Length, resolution, dependency);
 			}
 		}
