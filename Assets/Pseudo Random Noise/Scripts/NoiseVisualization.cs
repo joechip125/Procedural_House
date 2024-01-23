@@ -44,7 +44,7 @@ namespace Pseudo_Random_Noise.Scripts
 		}
 		
 		private static int
-			hashesId = Shader.PropertyToID("_Hashes");
+			noiseId = Shader.PropertyToID("_Noise");
 		
 		[SerializeField]
 		int seed;
@@ -55,33 +55,33 @@ namespace Pseudo_Random_Noise.Scripts
 			scale = 8f
 		};
 
-		NativeArray<uint4> hashes;
-		ComputeBuffer hashesBuffer;
+		NativeArray<uint4> noise;
+		ComputeBuffer noiseBuffer;
 		
 		protected override void EnableVisualization(int dataLength, MaterialPropertyBlock propertyBlock)
 		{
-			hashes = new NativeArray<uint4>(dataLength, Allocator.Persistent);
-			hashesBuffer = new ComputeBuffer(dataLength * 4,4);
-			propertyBlock.SetBuffer(hashesId, hashesBuffer);
+			noise = new NativeArray<uint4>(dataLength, Allocator.Persistent);
+			noiseBuffer = new ComputeBuffer(dataLength * 4,4);
+			propertyBlock.SetBuffer(noiseId, noiseBuffer);
 		}
 
 		protected override void DisableVisualization()
 		{
-			hashes.Dispose();
-			hashesBuffer.Release();
-			hashesBuffer = null;
+			noise.Dispose();
+			noiseBuffer.Release();
+			noiseBuffer = null;
 		}
 
 		protected override void UpdateVisualization(NativeArray<float3x4> positions, int resolution, JobHandle handle)
 		{
 			new HashJob {
 				positions = positions,
-				hashes = hashes,
+				hashes = noise,
 				hash = SmallXXHash.Seed(seed),
 				domainTRS = domain.Matrix
-			}.ScheduleParallel(hashes.Length, resolution, handle).Complete();
+			}.ScheduleParallel(noise.Length, resolution, handle).Complete();
 
-			hashesBuffer.SetData(hashes.Reinterpret<uint>(4 * 4));
+			noiseBuffer.SetData(noise.Reinterpret<uint>(4 * 4));
 		}
 	}
 }
