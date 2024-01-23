@@ -7,7 +7,7 @@ using static Unity.Mathematics.math;
 
 namespace Pseudo_Random_Noise.Scripts
 {
-    public static class Noise
+    public static partial class Noise
     {
         public interface INoise 
         {
