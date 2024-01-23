@@ -4,6 +4,7 @@ using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
 using static Unity.Mathematics.math;
+using static Pseudo_Random_Noise.Scripts.Noise;
 
 namespace Pseudo_Random_Noise.Scripts
 {
@@ -41,7 +42,9 @@ namespace Pseudo_Random_Noise.Scripts
 
 		protected override void UpdateVisualization(NativeArray<float3x4> positions, int resolution, JobHandle handle)
 		{
-			handle.Complete();
+			Job<Lattice1D>.ScheduleParallel(
+				positions, noise, seed, domain, resolution, handle
+			).Complete();
 			noiseBuffer.SetData(noise.Reinterpret<float>(4 * 4));
 		}
 	}
