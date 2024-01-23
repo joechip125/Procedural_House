@@ -26,8 +26,9 @@ namespace Pseudo_Random_Noise.Scripts
 			configId = Shader.PropertyToID("_Config");
 
 		
-		public abstract void EnableVisualization ();
-		public abstract void DisableVisualization ();
+		protected abstract void EnableVisualization (int dataLength, MaterialPropertyBlock propertyBlock);
+		protected abstract void DisableVisualization ();
+		protected abstract void UpdateVisualization (NativeArray<float3x4> positions, int resolution, JobHandle handle);
 		
 		[SerializeField]
 		Mesh instanceMesh;
@@ -74,6 +75,8 @@ namespace Pseudo_Random_Noise.Scripts
 			propertyBlock.SetVector(configId, new Vector4(
 				resolution, instanceScale / resolution, displacement
 			));
+			
+			EnableVisualization(length, propertyBlock);
 		}
 
 		void OnDisable () 
@@ -84,6 +87,8 @@ namespace Pseudo_Random_Noise.Scripts
 			normalsBuffer.Release();
 			positionsBuffer = null;
 			normalsBuffer = null;
+			
+			DisableVisualization();
 		}
 
 		void OnValidate ()
@@ -101,10 +106,11 @@ namespace Pseudo_Random_Noise.Scripts
 			{
 				isDirty = false;
 				transform.hasChanged = false;
-
-				JobHandle handle = shapeJobs[(int)shape](
-					positions, normals, resolution, transform.localToWorldMatrix, default
-				);
+				
+				UpdateVisualization(
+					positions, resolution,
+					shapeJobs[(int)shape](
+						positions, normals, resolution, transform.localToWorldMatrix, default));
 				
 				positionsBuffer.SetData(positions.Reinterpret<float3>(3 * 4 * 4));
 				normalsBuffer.SetData(normals.Reinterpret<float3>(3 * 4 * 4));
