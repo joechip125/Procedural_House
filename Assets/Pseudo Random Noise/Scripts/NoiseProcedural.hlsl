@@ -19,14 +19,11 @@ void ConfigureProcedural ()
     #endif
 }
 
-float3 GetHashColor ()
+float3 GetNoiseColor ()
 {
     #if defined(UNITY_PROCEDURAL_INSTANCING_ENABLED)
-    uint hash = _Hashes[unity_InstanceID];
-    return (1.0 / 255.0) * float3(
-            hash & 255,
-            (hash >> 8) & 255,
-            (hash >> 16) & 255);
+    float noise = _Noise[unity_InstanceID];
+    return noise < 0.0 ? float3(-noise, 0.0, 0.0) : noise;
     #else
     return 1.0;
     #endif
@@ -35,12 +32,12 @@ float3 GetHashColor ()
 void ShaderGraphFunction_float (float3 In, out float3 Out, out float3 Color)
 {
     Out = In;
-    Color = GetHashColor();
+    Color = GetNoiseColor();
     
 }
 
 void ShaderGraphFunction_half (half3 In, out half3 Out, out half3 Color)
 {
     Out = In;
-    Color = GetHashColor();
+    Color = GetNoiseColor();
 }

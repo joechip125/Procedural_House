@@ -25,8 +25,8 @@
 
 		void ConfigureSurface (Input input, inout SurfaceOutputStandard surface)
 		{
-			surface.Albedo = GetHashColor().rgb;
-			surface.Smoothness = GetHashColor().a;
+			surface.Albedo = GetNoiseColor().rgb;
+			surface.Smoothness = GetNoiseColor().a;
 		}
 		ENDCG
 	}
