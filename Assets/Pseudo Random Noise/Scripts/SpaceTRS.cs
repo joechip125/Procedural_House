@@ -1,7 +1,7 @@
 ﻿using System;
 using Unity.Mathematics;
 
-namespace RandomNoise
+namespace Pseudo_Random_Noise.Scripts
 {
     [Serializable]
     public struct SpaceTRS
