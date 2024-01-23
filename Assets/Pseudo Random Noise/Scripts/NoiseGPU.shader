@@ -14,7 +14,7 @@
 
 		#pragma target 4.5
 		
-		#include "HashProcedural.hlsl"
+		#include "NoiseProcedural.hlsl"
 
 		struct Input
 		{
