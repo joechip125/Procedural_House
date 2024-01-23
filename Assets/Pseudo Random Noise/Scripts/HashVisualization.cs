@@ -31,7 +31,8 @@ namespace Pseudo_Random_Noise.Scripts
 				trs.c0.z * p.c0 + trs.c1.z * p.c1 + trs.c2.z * p.c2 + trs.c3.z
 			);
 
-			public void Execute(int i) {
+			public void Execute(int i) 
+			{
 				float4x3 p = TransformPositions(domainTRS, transpose(positions[i]));
 
 				int4 u = (int4)floor(p.c0);
@@ -44,37 +45,18 @@ namespace Pseudo_Random_Noise.Scripts
 		
 		private static int
 			hashesId = Shader.PropertyToID("_Hashes");
-
-		[SerializeField]
-		Mesh instanceMesh;
-
-		[SerializeField]
-		Material material;
-
-		[SerializeField]
-		Shape shape;
-
-		[SerializeField, Range(0.1f, 10f)]
-		float instanceScale = 2f;
-
-		[SerializeField, Range(1, 512)]
-		int resolution = 16;
-
-		[SerializeField, Range(-0.5f, 0.5f)]
-		float displacement = 0.1f;
-
+		
 		[SerializeField]
 		int seed;
 
 		[SerializeField]
-		SpaceTRS domain = new SpaceTRS {
+		SpaceTRS domain = new SpaceTRS 
+		{
 			scale = 8f
 		};
 
 		NativeArray<uint4> hashes;
-		
 		ComputeBuffer hashesBuffer;
-
 		
 		protected override void EnableVisualization(int dataLength, MaterialPropertyBlock propertyBlock)
 		{
@@ -92,47 +74,14 @@ namespace Pseudo_Random_Noise.Scripts
 
 		protected override void UpdateVisualization(NativeArray<float3x4> positions, int resolution, JobHandle handle)
 		{
-			throw new System.NotImplementedException();
-		}
+			new HashJob {
+				positions = positions,
+				hashes = hashes,
+				hash = SmallXXHash.Seed(seed),
+				domainTRS = domain.Matrix
+			}.ScheduleParallel(hashes.Length, resolution, handle).Complete();
 
-	
-		
-		void OnValidate () {
-			if (hashesBuffer != null && enabled) {
-				OnDisable();
-				OnEnable();
-			}
-		}
-
-		void Update () {
-			if (isDirty || transform.hasChanged) {
-				isDirty = false;
-				transform.hasChanged = false;
-
-				JobHandle handle = shapeJobs[(int)shape](
-					positions, normals, resolution, transform.localToWorldMatrix, default
-				);
-
-				new HashJob {
-					positions = positions,
-					hashes = hashes,
-					hash = SmallXXHash.Seed(seed),
-					domainTRS = domain.Matrix
-				}.ScheduleParallel(hashes.Length, resolution, handle).Complete();
-
-				hashesBuffer.SetData(hashes.Reinterpret<uint>(4 * 4));
-				positionsBuffer.SetData(positions.Reinterpret<float3>(3 * 4 * 4));
-				normalsBuffer.SetData(normals.Reinterpret<float3>(3 * 4 * 4));
-
-				bounds = new Bounds(
-					transform.position,
-					float3(2f * cmax(abs(transform.lossyScale)) + displacement)
-				);
-			}
-
-			Graphics.DrawMeshInstancedProcedural(
-				instanceMesh, 0, material, bounds, resolution * resolution, propertyBlock
-			);
+			hashesBuffer.SetData(hashes.Reinterpret<uint>(4 * 4));
 		}
 	}
 }
