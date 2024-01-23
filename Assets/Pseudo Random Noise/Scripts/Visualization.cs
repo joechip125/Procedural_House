@@ -9,12 +9,12 @@ using static Unity.Mathematics.math;
 
 namespace Pseudo_Random_Noise.Scripts
 {
-    public class Visualization : MonoBehaviour
+    public abstract class Visualization : MonoBehaviour
     {
-	    
-		public enum Shape { Plane, Sphere, Torus }
+	    public enum Shape { Plane, Sphere, Torus }
 
-		static Shapes.ScheduleDelegate[] shapeJobs = {
+		static Shapes.ScheduleDelegate[] shapeJobs = 
+		{
 			Shapes.Job<Shapes.Plane>.ScheduleParallel,
 			Shapes.Job<Shapes.Sphere>.ScheduleParallel,
 			Shapes.Job<Shapes.Torus>.ScheduleParallel
@@ -25,6 +25,10 @@ namespace Pseudo_Random_Noise.Scripts
 			normalsId = Shader.PropertyToID("_Normals"),
 			configId = Shader.PropertyToID("_Config");
 
+		
+		public abstract void EnableVisualization ();
+		public abstract void DisableVisualization ();
+		
 		[SerializeField]
 		Mesh instanceMesh;
 
@@ -45,7 +49,7 @@ namespace Pseudo_Random_Noise.Scripts
 		
 		NativeArray<float3x4> positions, normals;
 
-		ComputeBuffer hashesBuffer, positionsBuffer, normalsBuffer;
+		ComputeBuffer positionsBuffer, normalsBuffer;
 
 		MaterialPropertyBlock propertyBlock;
 
@@ -61,7 +65,6 @@ namespace Pseudo_Random_Noise.Scripts
 			length = length / 4 + (length & 1);
 			positions = new NativeArray<float3x4>(length, Allocator.Persistent);
 			normals = new NativeArray<float3x4>(length, Allocator.Persistent);
-			hashesBuffer = new ComputeBuffer(length * 4, 4);
 			positionsBuffer = new ComputeBuffer(length * 4, 3 * 4);
 			normalsBuffer = new ComputeBuffer(length * 4, 3 * 4);
 
@@ -75,20 +78,17 @@ namespace Pseudo_Random_Noise.Scripts
 
 		void OnDisable () 
 		{
-			
 			positions.Dispose();
 			normals.Dispose();
-			hashesBuffer.Release();
 			positionsBuffer.Release();
 			normalsBuffer.Release();
-			hashesBuffer = null;
 			positionsBuffer = null;
 			normalsBuffer = null;
 		}
 
 		void OnValidate ()
 		{
-			if (hashesBuffer != null && enabled) 
+			if (positionsBuffer != null && enabled) 
 			{
 				OnDisable();
 				OnEnable();
@@ -105,9 +105,7 @@ namespace Pseudo_Random_Noise.Scripts
 				JobHandle handle = shapeJobs[(int)shape](
 					positions, normals, resolution, transform.localToWorldMatrix, default
 				);
-
 				
-				hashesBuffer.SetData(hashes.Reinterpret<uint>(4 * 4));
 				positionsBuffer.SetData(positions.Reinterpret<float3>(3 * 4 * 4));
 				normalsBuffer.SetData(normals.Reinterpret<float3>(3 * 4 * 4));
 
