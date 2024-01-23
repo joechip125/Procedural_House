@@ -5,7 +5,7 @@ namespace Pseudo_Random_Noise.Scripts
 {
     public static class MathExtensions
     {
-        public static float4x3 TransformVectors (float3x4 trs, float4x3 p, float w = 1f) 
+        public static float4x3 TransformVectors (this float3x4 trs, float4x3 p, float w = 1f) 
             => float4x3(
             trs.c0.x * p.c0 + trs.c1.x * p.c1 + trs.c2.x * p.c2 + trs.c3.x * w,
             trs.c0.y * p.c0 + trs.c1.y * p.c1 + trs.c2.y * p.c2 + trs.c3.y * w,

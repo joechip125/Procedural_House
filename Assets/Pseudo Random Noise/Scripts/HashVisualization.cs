@@ -33,7 +33,7 @@ namespace Pseudo_Random_Noise.Scripts
 
 			public void Execute(int i) 
 			{
-				float4x3 p = TransformPositions(domainTRS, transpose(positions[i]));
+				float4x3 p = domainTRS.TransformVectors(transpose(positions[i]));
 
 				int4 u = (int4)floor(p.c0);
 				int4 v = (int4)floor(p.c1);
