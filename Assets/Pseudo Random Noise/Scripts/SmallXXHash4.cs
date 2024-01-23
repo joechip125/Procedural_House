@@ -1,6 +1,6 @@
 ﻿using Unity.Mathematics;
 
-namespace RandomNoise
+namespace Pseudo_Random_Noise.Scripts
 {
     public readonly struct SmallXXHash
     {
