@@ -957,6 +957,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numberBones: 2
+  limbType: 0
   target: {fileID: 757210720491822021}
   control: {fileID: 757210718798400317}
 --- !u!114 &4789474247350779249
@@ -972,6 +973,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tree: {fileID: 0}
+  commanderTrans: {fileID: 0}
+  readyToRun: 0
 --- !u!1 &3035985181140810562
 GameObject:
   m_ObjectHideFlags: 0
@@ -1335,7 +1338,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4406285949845402992}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12.780253, y: -0.000023126602, z: -4.31002}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1377,6 +1380,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tree: {fileID: 11400000, guid: 3f211bd8eace7534ba4bc469fd2c317f, type: 2}
+  commanderTrans: {fileID: 0}
+  readyToRun: 0
 --- !u!54 &4640383935753414906
 Rigidbody:
   m_ObjectHideFlags: 0

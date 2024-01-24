@@ -37,8 +37,6 @@ public class TracerEyes : MonoBehaviour
     private bool somethingHit;
 
     private List<Memory> Memories = new();
-    
-    private GameObject currentInteractable;
 
     private float DistanceToObject { get; set; }
 
@@ -49,8 +47,7 @@ public class TracerEyes : MonoBehaviour
         DistanceToObject = 999;
         multiMask = 1 << 7 | 1 << 6 | 1 << 8;
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         timeSinceTrace += Time.deltaTime;
@@ -60,7 +57,6 @@ public class TracerEyes : MonoBehaviour
             timeSinceTrace -= traceInterval;
             DoMultiTrace();
         }
-        DoBoxTrace();
     }
 
     private void DoMultiTrace()
@@ -77,44 +73,6 @@ public class TracerEyes : MonoBehaviour
        }
     }
     
-
-    private void DoBoxTrace()
-    {
-        
-        var hits = Physics.BoxCastAll(transform.position + transform.forward * 1,
-            cubeSize / 2, transform.forward, transform.rotation, 0.5f).ToList();
-
-       var somet = hits.Where(h => h.collider.gameObject.layer == 8).ToList();
-       m_HitDetect = somet.Count > 0;
-
-       somet.ForEach(x =>
-       {
-           if (x.collider.gameObject.layer == 8)
-           {
-               currentInteractable = x.transform.gameObject;
-            
-               if (Memories.SingleOrDefault(y => y.type == TraceType.Commander) != default)
-               {
-                   
-               }
-               else
-               {
-                   Memories.Add(new Memory()
-                   {
-                       Transform = x.transform,
-                       type = TraceType.Commander
-                   });
-               }
-           }
-       });
-       
-       if (m_HitDetect)
-       {
-           
-       }
-
-    }
-
     private void OnDrawGizmos()
     {
         if (m_HitDetect)
