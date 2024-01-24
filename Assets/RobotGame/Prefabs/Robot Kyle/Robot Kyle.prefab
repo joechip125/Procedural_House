@@ -2324,8 +2324,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22701be17b5b459c84b87ec4ad9cecaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameOfLeafNodes:
-  - Wrist
+  leafNodes:
+  - {fileID: 316776907490050506}
+  - {fileID: 1221224575545353786}
+  - {fileID: 537813650217078115}
   handle: {fileID: 4575951520941755364, guid: fe5fa15df5dc7084193585b018567348, type: 3}
 --- !u!1001 &8222042961715233577
 PrefabInstance:
