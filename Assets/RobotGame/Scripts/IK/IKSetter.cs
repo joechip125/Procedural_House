@@ -1,19 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace RobotGame.Scripts.IK
 {
-
-    [Serializable]
-    public struct ControlNode
-    {
-        public ControlNode(string theName)
-        {
-            
-        }
-    }
 
     public class IKSetter : MonoBehaviour
     {
@@ -22,16 +14,29 @@ namespace RobotGame.Scripts.IK
         //Name
         //Transform of handle
         private bool quit;
-        private const string rootName = "Root";
+       
         
         [SerializeField] 
         private GameObject handle;
         
+     //   public List<GameObject> 
+
         private void Start()
         {
           
         }
 
+        private void SetIK()
+        {
+            foreach (var l in leafNodes)
+            {
+                var aHandle = Instantiate(handle).transform;
+                l.parent = aHandle;
+                var fast = l.AddComponent<FastIKFabric>();
+                fast.Target = aHandle;
+            }
+        }
+        
         private void SetLeafNodes()
         {
             var nodes = transform
@@ -44,11 +49,11 @@ namespace RobotGame.Scripts.IK
         
         private void OnDrawGizmos()
         {
-            if (!Application.isPlaying) return;
+          //  if (!Application.isPlaying) return;
             
             for (int i = 0; i < leafNodes.Count; i++)
             {
-                Gizmos.DrawWireSphere(leafNodes[i].position, 0.3f);
+                Gizmos.DrawWireSphere(leafNodes[i].position, 0.1f);
             }
         }
     }

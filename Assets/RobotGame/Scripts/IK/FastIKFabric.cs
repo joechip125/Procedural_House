@@ -1,13 +1,9 @@
-#if UNITY_EDITOR
 using UnityEditor;
-#endif
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 
+namespace RobotGame.Scripts.IK
+{
     /// <summary>
     /// Fabrik IK Solver
     /// </summary>
@@ -269,7 +265,7 @@ using UnityEngine;
 
                 current.rotation = theRot;
             }
-    }
+        }
 
         void OnDrawGizmos()
         {
@@ -279,7 +275,7 @@ using UnityEngine;
             {
                 var scale = Vector3.Distance(current.position, current.parent.position) * 0.1f;
                 Handles.matrix = Matrix4x4.TRS(current.position, Quaternion.FromToRotation(Vector3.up, 
-                    current.parent.position - current.position), 
+                        current.parent.position - current.position), 
                     new Vector3(scale, Vector3.Distance(current.parent.position, current.position), scale));
                 
                 Handles.color = Color.green;
@@ -298,3 +294,4 @@ using UnityEngine;
         }
         
     }
+}
