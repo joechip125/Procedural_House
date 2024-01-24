@@ -23,6 +23,16 @@ namespace Pseudo_Random_Noise.Scripts
 			scale = 8f
 		};
 
+		[SerializeField, Range(1, 3)]
+		int dimensions = 3;
+
+		static ScheduleDelegate[] noiseJobs = 
+		{
+			Job<Lattice1D>.ScheduleParallel,
+			Job<Lattice2D>.ScheduleParallel,
+			Job<Lattice3D>.ScheduleParallel
+		};
+
 		NativeArray<float4> noise;
 		ComputeBuffer noiseBuffer;
 		
@@ -42,7 +52,7 @@ namespace Pseudo_Random_Noise.Scripts
 
 		protected override void UpdateVisualization(NativeArray<float3x4> positions, int resolution, JobHandle handle)
 		{
-			Job<Lattice2D>.ScheduleParallel(positions, noise, seed, domain, resolution, handle)
+			noiseJobs[dimensions -1](positions, noise, seed, domain, resolution, handle)
 				.Complete();
 			noiseBuffer.SetData(noise.Reinterpret<float>(4 * 4));
 		}
