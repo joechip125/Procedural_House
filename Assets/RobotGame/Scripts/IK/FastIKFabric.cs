@@ -46,7 +46,6 @@ using UnityEngine;
         protected Vector3[] Positions;
         protected Vector3[] StartDirectionSucc;
         protected Quaternion[] StartRotationBone;
-        protected List<RotationLimiter> rotationLimiters;
         protected Quaternion StartRotationTarget;
         protected Transform Root;
 
@@ -65,7 +64,6 @@ using UnityEngine;
             BonesLength = new float[ChainLength];
             StartDirectionSucc = new Vector3[ChainLength + 1];
             StartRotationBone = new Quaternion[ChainLength + 1];
-            rotationLimiters = new ();
 
             //find root
             Root = transform;
@@ -92,16 +90,10 @@ using UnityEngine;
             {
                 Bones[i] = current;
                 StartRotationBone[i] = GetRotationRootSpace(current);
-                
-                if (Bones[i].transform.GetComponent<RotationLimiter>())
-                {
-                   // Debug.Log($"{Bones[i].transform.name} has RotationLimiter");
-                    rotationLimiters.Add (Bones[i].transform.GetComponent<RotationLimiter>());
-                }
 
                 var qAngles = Bones[i].localRotation;
                 var eAngles = qAngles.eulerAngles;
-            //    Debug.Log($"{Bones[i].transform.name} has startRotation {eAngles}");
+            
                 
                 if (i == Bones.Length - 1)
                 {
@@ -273,7 +265,7 @@ using UnityEngine;
         void OnDrawGizmos()
         {
 #if UNITY_EDITOR
-            var current = this.transform;
+            var current = transform;
             for (int i = 0; i < ChainLength && current != null && current.parent != null; i++)
             {
                 var scale = Vector3.Distance(current.position, current.parent.position) * 0.1f;
