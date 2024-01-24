@@ -4,6 +4,7 @@ using UnityEditor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -97,6 +98,11 @@ using UnityEngine;
 
                 var qAngles = Bones[i].localRotation;
                 var eAngles = qAngles.eulerAngles;
+
+                if (i == 0)
+                {
+                    
+                }
             
                 
                 if (i == Bones.Length - 1)
@@ -215,10 +221,7 @@ using UnityEngine;
             {
                 if (i == Positions.Length - 1)
                 {
-
-
                     SetRotationRootSpace(Bones[i], Quaternion.Inverse(targetRotation) * StartRotationTarget * Quaternion.Inverse(StartRotationBone[i]), i);
-                  //  SetRotationRootSpace(Bones[i], targetRotation * Quaternion.Inverse(StartRotationTarget) * StartRotationBone[i], i);
                 }
                 
                 else
@@ -263,16 +266,6 @@ using UnityEngine;
             else
             {
                 var theRot = Root.rotation * rotation;
-                if (index == 0)
-                {
-                   // var diff = StartRotationBone[index].z + rotation.z;
-                   // var xClamp = Mathf.Clamp(diff, -0.0004f, 0.0005f);
-                   // //Debug.Log($"clamp x : {xClamp}");
-                   // Debug.Log(theRot);
-                   // theRot.z = xClamp;
-                }
- 
-                //current.localRotation = theRot;
 
                 current.rotation = theRot;
             }
@@ -285,12 +278,23 @@ using UnityEngine;
             for (int i = 0; i < ChainLength && current != null && current.parent != null; i++)
             {
                 var scale = Vector3.Distance(current.position, current.parent.position) * 0.1f;
-                Handles.matrix = Matrix4x4.TRS(current.position, Quaternion.FromToRotation(Vector3.up, current.parent.position - current.position), new Vector3(scale, Vector3.Distance(current.parent.position, current.position), scale));
+                Handles.matrix = Matrix4x4.TRS(current.position, Quaternion.FromToRotation(Vector3.up, 
+                    current.parent.position - current.position), 
+                    new Vector3(scale, Vector3.Distance(current.parent.position, current.position), scale));
+                
                 Handles.color = Color.green;
                 Handles.DrawWireCube(Vector3.up * 0.5f, Vector3.one);
                 current = current.parent;
             }
 #endif
+            if (!Application.isPlaying) return;
+            
+            for (int i = 1; i < Positions.Length - 1; i++)
+            {
+                var point = Positions[i];
+                var point2 = Bones[i].position;
+                Gizmos.DrawLine(point2, point2 + (Positions[i + 1] - Positions[i - 1]) * 0.3f);
+            }
         }
-
+        
     }
