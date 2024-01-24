@@ -5,15 +5,7 @@ using UnityEngine;
 
 namespace RobotGame.Scripts.IK
 {
-    [Serializable]
-    public struct NodeInfo
-    {
-        public NodeInfo(Transform bone, Vector3 position,Vector3 startDir, Quaternion startRot, float boneLength)
-        {
-            
-        }
-    }
-    
+
     [Serializable]
     public class FastIKFabricBase
     {
@@ -46,19 +38,16 @@ namespace RobotGame.Scripts.IK
         public float SnapBackStrength = 1f;
 
 
-        protected float[] BonesLength; //Target to Origin
-        protected float CompleteLength;
-        protected Transform[] Bones;
-        protected Vector3[] Positions;
-        protected Vector3[] StartDirectionSucc;
-        protected Quaternion[] StartRotationBone;
-        protected Quaternion StartRotationTarget;
+        public float[] BonesLength; //Target to Origin
+        public float CompleteLength;
+        public Transform[] Bones;
+        public Vector3[] Positions;
+        public Vector3[] StartDirectionSucc;
+        public Quaternion[] StartRotationBone;
+        public Quaternion StartRotationTarget;
+        public Transform Root;
 
-        private List<NodeInfo> nodeInfo = new();
-
-        protected Transform Root;
-
-        public Transform Transform;
+        public Transform transform;
 
         
         public FastIKFabricBase(Transform root, Transform target, Transform pole, int chainLength = 2)
@@ -75,7 +64,7 @@ namespace RobotGame.Scripts.IK
         }
         
 
-        void Init()
+          void Init()
         {
             //initial array
             Bones = new Transform[ChainLength + 1];
@@ -83,17 +72,27 @@ namespace RobotGame.Scripts.IK
             BonesLength = new float[ChainLength];
             StartDirectionSucc = new Vector3[ChainLength + 1];
             StartRotationBone = new Quaternion[ChainLength + 1];
-            
+
             StartRotationTarget = GetRotationRootSpace(Target);
-            
+
+
             //init data
-            var current = Transform;
+            var current = transform;
             CompleteLength = 0;
             for (var i = Bones.Length - 1; i >= 0; i--)
             {
                 Bones[i] = current;
                 StartRotationBone[i] = GetRotationRootSpace(current);
 
+                var qAngles = Bones[i].localRotation;
+                var eAngles = qAngles.eulerAngles;
+
+                if (i == 0)
+                {
+                    
+                }
+            
+                
                 if (i == Bones.Length - 1)
                 {
                     //leaf
@@ -122,7 +121,9 @@ namespace RobotGame.Scripts.IK
 
             //get position
             for (int i = 0; i < Bones.Length; i++)
+            {
                 Positions[i] = GetPositionRootSpace(Bones[i]);
+            }
 
             var targetPosition = GetPositionRootSpace(Target);
             var targetRotation = GetRotationRootSpace(Target);
@@ -169,18 +170,17 @@ namespace RobotGame.Scripts.IK
             }
 
             //move towards pole
-            if (Pole != null)
+            
+            var polePosition = GetPositionRootSpace(Pole);
+            for (int i = 1; i < Positions.Length - 1; i++)
             {
-                var polePosition = GetPositionRootSpace(Pole);
-                for (int i = 1; i < Positions.Length - 1; i++)
-                {
-                    var plane = new Plane(Positions[i + 1] - Positions[i - 1], Positions[i - 1]);
-                    var projectedPole = plane.ClosestPointOnPlane(polePosition);
-                    var projectedBone = plane.ClosestPointOnPlane(Positions[i]);
-                    var angle = Vector3.SignedAngle(projectedBone - Positions[i - 1], projectedPole - Positions[i - 1], plane.normal);
-                    Positions[i] = Quaternion.AngleAxis(angle, plane.normal) * (Positions[i] - Positions[i - 1]) + Positions[i - 1];
-                }
+                var plane = new Plane(Positions[i + 1] - Positions[i - 1], Positions[i - 1]);
+                var projectedPole = plane.ClosestPointOnPlane(polePosition);
+                var projectedBone = plane.ClosestPointOnPlane(Positions[i]);
+                var angle = Vector3.SignedAngle(projectedBone - Positions[i - 1], projectedPole - Positions[i - 1], plane.normal);
+                Positions[i] = Quaternion.AngleAxis(angle, plane.normal) * (Positions[i] - Positions[i - 1]) + Positions[i - 1];
             }
+            
 
             //set position & rotation
             for (int i = 0; i < Positions.Length; i++)

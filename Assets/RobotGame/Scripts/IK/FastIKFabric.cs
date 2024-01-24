@@ -92,15 +92,6 @@ namespace RobotGame.Scripts.IK
                 Bones[i] = current;
                 StartRotationBone[i] = GetRotationRootSpace(current);
 
-                var qAngles = Bones[i].localRotation;
-                var eAngles = qAngles.eulerAngles;
-
-                if (i == 0)
-                {
-                    
-                }
-            
-                
                 if (i == Bones.Length - 1)
                 {
                     //leaf
