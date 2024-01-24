@@ -2325,7 +2325,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nameOfLeafNodes:
-  - 
+  - Wrist
   handle: {fileID: 4575951520941755364, guid: fe5fa15df5dc7084193585b018567348, type: 3}
 --- !u!1001 &8222042961715233577
 PrefabInstance:

@@ -31,30 +31,16 @@ namespace RobotGame.Scripts.IK
             {
                 if (current != null)
                 {
-                    var numChild = current.childCount;
-
-                    if (numChild < 2)
-                    {
-                        
-                        continue;
-                    }
-                    
                     var children = current
                         .Cast<Transform>()
                         .ToArray();
                     
+
                     foreach (var c in children)
                     {
                        
                     }
-
-                    for (int i = 0; i < numChild; i++)
-                    { 
-                        if (child.childCount > 1)
-                        {
-                           
-                        }
-                    }
+                    
 
                     child = current.GetChild(0);
                 }
