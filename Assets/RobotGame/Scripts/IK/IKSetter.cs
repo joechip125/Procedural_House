@@ -6,7 +6,8 @@ using UnityEngine;
 
 namespace RobotGame.Scripts.IK
 {
-
+    
+    
     public class IKSetter : MonoBehaviour
     {
         [SerializeField]
@@ -18,6 +19,8 @@ namespace RobotGame.Scripts.IK
         
         [SerializeField] 
         private GameObject handle;
+        
+        private List
         
      //   public List<GameObject> 
 
@@ -36,6 +39,11 @@ namespace RobotGame.Scripts.IK
                 var FastBase = new FastIKFabricBase(leaf, target, pole);
                 var fast = leaf.AddComponent<FastIKFabric>();
             }
+        }
+
+        private void UpdateIK()
+        {
+            
         }
         
         private void SetLeafNodes()

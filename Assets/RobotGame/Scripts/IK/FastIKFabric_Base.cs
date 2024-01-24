@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace RobotGame.Scripts.IK
 {
+    [Serializable]
     public class FastIKFabricBase
     {
                 /// <summary>
@@ -53,6 +54,7 @@ namespace RobotGame.Scripts.IK
             Root = rootNode;
             Target = target;
             Pole = pole;
+            ChainLength = 2;
             Init();
         }
         
@@ -85,9 +87,6 @@ namespace RobotGame.Scripts.IK
                 Bones[i] = current;
                 StartRotationBone[i] = GetRotationRootSpace(current);
 
-                var qAngles = Bones[i].localRotation;
-                var eAngles = qAngles.eulerAngles;
-                
                 if (i == Bones.Length - 1)
                 {
                     //leaf
