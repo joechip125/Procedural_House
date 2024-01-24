@@ -105,7 +105,7 @@ namespace RobotGame.Scripts.IK
         }
         
         
-        private void ResolveIK()
+        public void ResolveIK()
         {
             //Fabric
 

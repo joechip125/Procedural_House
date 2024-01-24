@@ -12,18 +12,13 @@ namespace RobotGame.Scripts.IK
     {
         [SerializeField]
         private List<Transform> leafNodes;
-        //Name
-        //Transform of handle
-        private bool quit;
-       
-        
+   
+
         [SerializeField] 
         private GameObject handle;
 
         private List<FastIKFabricBase> limbs = new();
         
-     //   public List<GameObject> 
-
         private void Start()
         {
             SetIK();  
@@ -39,13 +34,14 @@ namespace RobotGame.Scripts.IK
             }
         }
 
-        private void UpdateIK()
+        private void Update()
         {
             foreach (var limb in limbs)
             {
-                
+                limb.ResolveIK();
             }
         }
+        
 
         private void OnDrawGizmos()
         {
