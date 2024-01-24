@@ -28,13 +28,13 @@ namespace RobotGame.Scripts.IK
 
         private void SetIK()
         {
-            foreach (var l in leafNodes)
+            
+            foreach (var leaf in leafNodes)
             {
-                var aHandle = Instantiate(handle).transform;
-                l.parent = aHandle;
-                var fast = l.AddComponent<FastIKFabric>();
-                fast.Target = aHandle;
-                fast.Pole  = Instantiate(handle).transform;
+                var target = Instantiate(handle).transform;
+                var pole = Instantiate(handle).transform;
+                var FastBase = new FastIKFabricBase(leaf, target, pole);
+                var fast = leaf.AddComponent<FastIKFabric>();
             }
         }
         

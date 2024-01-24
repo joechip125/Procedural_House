@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace RobotGame.Scripts.IK
@@ -8,7 +9,7 @@ namespace RobotGame.Scripts.IK
                 /// <summary>
         /// Chain length of bones
         /// </summary>
-        public int ChainLength = 2;
+        public int ChainLength;
 
         /// <summary>
         /// Target the chain should bent to
@@ -16,7 +17,7 @@ namespace RobotGame.Scripts.IK
         public Transform Target;
         public Transform Pole;
 
-        private Vector3 lastPos;
+    
 
         /// <summary>
         /// Solver iterations per update
@@ -47,12 +48,23 @@ namespace RobotGame.Scripts.IK
 
         public Transform Transform;
 
-        // Start is called before the first frame update
-        void Awake()
+        public FastIKFabricBase(Transform rootNode, Transform target, Transform pole)
         {
-            lastPos = Target.position;
+            Root = rootNode;
+            Target = target;
+            Pole = pole;
             Init();
         }
+        
+        public FastIKFabricBase(Transform rootNode, Transform target, Transform pole, int chainLength)
+        {
+            Root = rootNode;
+            Target = target;
+            Pole = pole;
+            ChainLength = chainLength;
+            Init();
+        }
+        
 
         void Init()
         {
@@ -62,19 +74,9 @@ namespace RobotGame.Scripts.IK
             BonesLength = new float[ChainLength];
             StartDirectionSucc = new Vector3[ChainLength + 1];
             StartRotationBone = new Quaternion[ChainLength + 1];
-
-            //find root
-            Root = Transform;
-            for (var i = 0; i <= ChainLength; i++)
-            {
-                if (Root == null)
-                    throw new UnityException("The chain value is longer than the ancestor chain!");
-                Root = Root.parent;
-            }
             
             StartRotationTarget = GetRotationRootSpace(Target);
-
-
+            
             //init data
             var current = Transform;
             CompleteLength = 0;
@@ -85,12 +87,6 @@ namespace RobotGame.Scripts.IK
 
                 var qAngles = Bones[i].localRotation;
                 var eAngles = qAngles.eulerAngles;
-
-                if (i == 0)
-                {
-                    
-                }
-            
                 
                 if (i == Bones.Length - 1)
                 {
@@ -108,25 +104,8 @@ namespace RobotGame.Scripts.IK
                 current = current.parent;
             }
         }
-
-        private void Update()
-        {
-            if (Vector3.Distance(Root.position, Target.position) > 1f)
-            {
-                Target.position = lastPos;
-            }
-            else
-            {
-                lastPos = Target.position;
-            }
-        }
-
-
-        void LateUpdate()
-        {
-            ResolveIK();
-        }
-
+        
+        
         private void ResolveIK()
         {
             if (Target == null)
