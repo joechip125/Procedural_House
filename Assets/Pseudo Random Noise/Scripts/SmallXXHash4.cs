@@ -63,6 +63,10 @@ namespace Pseudo_Random_Noise.Scripts
             return avalanche;
         }
         
+        public uint4 BytesA => (uint4)this & 255;
+	
+        public float4 Floats01A => (float4)BytesA * (1f / 255f);
+        
         static uint4 RotateLeft (uint4 data, int steps) =>
             (data << steps) | (data >> 32 - steps);
         

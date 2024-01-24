@@ -13,8 +13,7 @@ namespace Pseudo_Random_Noise.Scripts
             {
                 int4 p0 = (int4)floor(positions.c0);
                 int4 p1 = p0 + 1;
-                float4 v = (uint4)hash.Eat(p1) & 255;
-                return v * (2f / 255f) - 1f;
+                return hash.Eat(p0).Floats01A + hash.Eat(p1).Floats01A - 1f;
             }
         }
     }
