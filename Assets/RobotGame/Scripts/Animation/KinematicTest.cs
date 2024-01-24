@@ -10,7 +10,9 @@ namespace RobotGame.Scripts.Animation
 
         private void OnDrawGizmos()
         {
-            throw new NotImplementedException();
+            var pos = transform.position;
+            var size = new Vector3(1, 3, 1);
+            Gizmos.DrawWireCube(pos, size);
         }
     }
 }

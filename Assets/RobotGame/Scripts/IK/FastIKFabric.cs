@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -21,6 +22,8 @@ using UnityEngine;
         /// </summary>
         public Transform Target;
         public Transform Pole;
+
+        private Vector3 lastPos;
 
         /// <summary>
         /// Solver iterations per update
@@ -53,6 +56,7 @@ using UnityEngine;
         // Start is called before the first frame update
         void Awake()
         {
+            lastPos = Target.position;
             Init();
         }
 
@@ -112,7 +116,19 @@ using UnityEngine;
             }
         }
 
-        // Update is called once per frame
+        private void Update()
+        {
+            if (Vector3.Distance(Root.position, Target.position) > 1f)
+            {
+                Target.position = lastPos;
+            }
+            else
+            {
+                lastPos = Target.position;
+            }
+        }
+
+
         void LateUpdate()
         {
             ResolveIK();
