@@ -30,21 +30,17 @@ public class TracerEyes : MonoBehaviour
     private float timeSinceTrace;
     private Vector3 currentDir;
     private object m_Hit;
-    public bool PlayerSeen { get; private set; }
-    public bool CommanderSeen { get; private set; }
-    public bool WallSeen { get; private set; }
+   
     private Vector3 cubeSize = new Vector3(2, 2, 2);
     private bool m_HitDetect;
 
-    public bool somethingHit;
+    private bool somethingHit;
 
-    public List<Memory> Memories = new();
+    private List<Memory> Memories = new();
+    
+    private GameObject currentInteractable;
 
-    public Memory currentMem;
-
-    public GameObject currentInteractable;
-
-    public float DistanceToObject { get; private set; }
+    private float DistanceToObject { get; set; }
 
     public event Action<TraceType> objectHit;
 
@@ -96,11 +92,7 @@ public class TracerEyes : MonoBehaviour
            if (x.collider.gameObject.layer == 8)
            {
                currentInteractable = x.transform.gameObject;
-               currentMem = new Memory()
-               {
-                    type = TraceType.Commander,
-                    Transform = x.transform
-               };
+            
                if (Memories.SingleOrDefault(y => y.type == TraceType.Commander) != default)
                {
                    
