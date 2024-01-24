@@ -19,8 +19,8 @@ namespace RobotGame.Scripts.IK
         
         [SerializeField] 
         private GameObject handle;
-        
-        private List
+
+        private List<FastIKFabricBase> limbs = new();
         
      //   public List<GameObject> 
 
@@ -34,10 +34,9 @@ namespace RobotGame.Scripts.IK
             
             foreach (var leaf in leafNodes)
             {
-                var target = Instantiate(handle).transform;
-                var pole = Instantiate(handle).transform;
-                var FastBase = new FastIKFabricBase(leaf, target, pole);
-                var fast = leaf.AddComponent<FastIKFabric>();
+                limbs.Add(new FastIKFabricBase(leaf, 
+                    Instantiate(handle).transform, 
+                    Instantiate(handle).transform));
             }
         }
 

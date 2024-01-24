@@ -195,39 +195,23 @@ namespace RobotGame.Scripts.IK
 
         private Vector3 GetPositionRootSpace(Transform current)
         {
-            if (Root == null)
-                return current.position;
-            else
-                return Quaternion.Inverse(Root.rotation) * (current.position - Root.position);
+            return Quaternion.Inverse(Root.rotation) * (current.position - Root.position);
         }
 
         private void SetPositionRootSpace(Transform current, Vector3 position)
         {
-            if (Root == null)
-                current.position = position;
-            else
-                current.position = Root.rotation * position + Root.position;
+            current.position = Root.rotation * position + Root.position;
         }
 
         private Quaternion GetRotationRootSpace(Transform current)
         {
-            //inverse(after) * before => rot: before -> after
-            if (Root == null)
-                return current.rotation;
-            else
-                return Quaternion.Inverse(current.rotation) * Root.rotation;
+            return Quaternion.Inverse(current.rotation) * Root.rotation;
         }
 
         private void SetRotationRootSpace(Transform current, Quaternion rotation, int index)
         {
-            if (Root == null)
-                current.rotation = rotation;
-            else
-            {
-                var theRot = Root.rotation * rotation;
-
-                current.rotation = theRot;
-            }
+            var theRot = Root.rotation * rotation;
+            current.rotation = theRot;
         }
 
         void OnDrawGizmos()
