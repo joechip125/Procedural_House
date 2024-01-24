@@ -18,6 +18,7 @@ namespace Pseudo_Random_Noise.Scripts
             span.p0 = (int4)points;
             span.p1 = span.p0 + 1;
             span.t = coordinates - points;
+            span.t =  span.t * span.t * span.t * (span.t * (span.t * 6f - 15f) + 10f);
             return span;
         }
         
@@ -36,7 +37,13 @@ namespace Pseudo_Random_Noise.Scripts
             {
                 LatticeSpan4 x = GetLatticeSpan4(positions.c0), z = GetLatticeSpan4(positions.c2);
                 
-                return lerp(hash.Eat(z.p0).Floats01A, hash.Eat(z.p1).Floats01A, z.t) * 2f - 1f;
+                SmallXXHash4 h0 = hash.Eat(x.p0), h1 = hash.Eat(x.p1);
+                
+                return lerp(
+                    lerp(h0.Eat(z.p0).Floats01A, h0.Eat(z.p1).Floats01A, z.t),
+                    lerp(h1.Eat(z.p0).Floats01A, h1.Eat(z.p1).Floats01A, z.t),
+                    x.t
+                ) * 2f - 1f;
             }
         }
     }
