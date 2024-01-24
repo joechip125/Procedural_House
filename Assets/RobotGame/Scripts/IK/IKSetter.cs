@@ -7,7 +7,7 @@ namespace RobotGame.Scripts.IK
 {
     public class IKSetter : MonoBehaviour
     {
-        private List<Transform> targets;
+        private List<Transform> leafNodes;
         //Name
         //Transform of handle
         private bool quit;
@@ -22,13 +22,14 @@ namespace RobotGame.Scripts.IK
         private void Start()
         {
             quit = false;
-            targets = new List<Transform>();
+            leafNodes = new List<Transform>();
 
-            var children = transform
+            leafNodes = transform
                 .Cast<Transform>()
                 .ToArray()
                 .Where(x => nameOfLeafNodes
-                    .Contains(x.name));
+                    .Contains(x.name))
+                .ToList();
         }
     }
 }
