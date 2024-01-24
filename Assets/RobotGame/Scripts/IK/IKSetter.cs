@@ -23,7 +23,7 @@ namespace RobotGame.Scripts.IK
 
         private void Start()
         {
-          
+            SetIK();  
         }
 
         private void SetIK()
@@ -34,6 +34,7 @@ namespace RobotGame.Scripts.IK
                 l.parent = aHandle;
                 var fast = l.AddComponent<FastIKFabric>();
                 fast.Target = aHandle;
+                fast.Pole  = Instantiate(handle).transform;
             }
         }
         
