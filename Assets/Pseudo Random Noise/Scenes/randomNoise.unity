@@ -335,8 +335,12 @@ PrefabInstance:
       value: Noise
       objectReference: {fileID: 0}
     - target: {fileID: 6238930402990749460, guid: 2514a3a2b71670b41b6bcbb5d5b42b6c, type: 3}
+      propertyPath: resolution
+      value: 113
+      objectReference: {fileID: 0}
+    - target: {fileID: 6238930402990749460, guid: 2514a3a2b71670b41b6bcbb5d5b42b6c, type: 3}
       propertyPath: instanceScale
-      value: 8
+      value: 4.39
       objectReference: {fileID: 0}
     - target: {fileID: 7384433645734923458, guid: 2514a3a2b71670b41b6bcbb5d5b42b6c, type: 3}
       propertyPath: m_RootOrder

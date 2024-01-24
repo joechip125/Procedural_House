@@ -29,5 +29,15 @@ namespace Pseudo_Random_Noise.Scripts
                 return lerp(hash.Eat(x.p0).Floats01A, hash.Eat(x.p1).Floats01A, x.t) * 2f - 1f;
             }
         }
+        
+        public struct Lattice2D : INoise 
+        {
+            public float4 GetNoise4(float4x3 positions, SmallXXHash4 hash) 
+            {
+                LatticeSpan4 x = GetLatticeSpan4(positions.c0), z = GetLatticeSpan4(positions.c2);
+                
+                return lerp(hash.Eat(z.p0).Floats01A, hash.Eat(z.p1).Floats01A, z.t) * 2f - 1f;
+            }
+        }
     }
 }
