@@ -1,9 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
 namespace RobotGame.Scripts.IK
 {
+    [Serializable]
+    public struct NodeInfo
+    {
+        public NodeInfo(Transform bone, Vector3 position,Vector3 startDir, Quaternion startRot, float boneLength)
+        {
+            
+        }
+    }
+    
     [Serializable]
     public class FastIKFabricBase
     {
@@ -17,9 +27,7 @@ namespace RobotGame.Scripts.IK
         /// </summary>
         public Transform Target;
         public Transform Pole;
-
-    
-
+        
         /// <summary>
         /// Solver iterations per update
         /// </summary>
@@ -45,24 +53,23 @@ namespace RobotGame.Scripts.IK
         protected Vector3[] StartDirectionSucc;
         protected Quaternion[] StartRotationBone;
         protected Quaternion StartRotationTarget;
+
+        private List<NodeInfo> nodeInfo = new();
+
         protected Transform Root;
 
         public Transform Transform;
 
-        public FastIKFabricBase(Transform rootNode, Transform target, Transform pole)
-        {
-            Root = rootNode;
-            Target = target;
-            Pole = pole;
-            ChainLength = 2;
-            Init();
-        }
         
-        public FastIKFabricBase(Transform rootNode, Transform target, Transform pole, int chainLength)
+        public FastIKFabricBase(Transform root, Transform target, Transform pole, int chainLength = 2)
         {
-            Root = rootNode;
-            Target = target;
+            Root = root;
             Pole = pole;
+            var parent = Root.parent;
+            Pole.parent = parent;
+            Pole.position = parent.position;
+            Root.parent = Target = target;
+
             ChainLength = chainLength;
             Init();
         }

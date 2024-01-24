@@ -118,19 +118,6 @@ namespace RobotGame.Scripts.IK
             }
         }
 
-        private void Update()
-        {
-            if (Vector3.Distance(Root.position, Target.position) > 1f)
-            {
-                Target.position = lastPos;
-            }
-            else
-            {
-                lastPos = Target.position;
-            }
-        }
-
-
         void LateUpdate()
         {
             ResolveIK();
