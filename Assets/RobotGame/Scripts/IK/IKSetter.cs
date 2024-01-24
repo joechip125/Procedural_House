@@ -31,7 +31,6 @@ namespace RobotGame.Scripts.IK
 
         private void SetIK()
         {
-            
             foreach (var leaf in leafNodes)
             {
                 limbs.Add(new FastIKFabricBase(leaf, 
@@ -42,23 +41,14 @@ namespace RobotGame.Scripts.IK
 
         private void UpdateIK()
         {
-            
+            foreach (var limb in limbs)
+            {
+                
+            }
         }
-        
-        private void SetLeafNodes()
-        {
-            var nodes = transform
-                .Cast<Transform>()
-                .ToArray().ToList();
-            //.Where(x => nameOfLeafNodes
-            //    .Contains(x.name))
-            //.ToList();
-        }
-        
+
         private void OnDrawGizmos()
         {
-          //  if (!Application.isPlaying) return;
-            
             for (int i = 0; i < leafNodes.Count; i++)
             {
                 Gizmos.DrawWireSphere(leafNodes[i].position, 0.1f);
