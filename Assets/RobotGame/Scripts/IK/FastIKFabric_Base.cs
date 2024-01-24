@@ -107,12 +107,6 @@ namespace RobotGame.Scripts.IK
         
         private void ResolveIK()
         {
-            if (Target == null)
-                return;
-
-            if (BonesLength.Length != ChainLength)
-                Init();
-
             //Fabric
 
             //  root
