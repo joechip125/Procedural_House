@@ -37,7 +37,8 @@ namespace Pseudo_Random_Noise.Scripts
             public static JobHandle ScheduleParallel (
                 NativeArray<float3x4> positions, NativeArray<float4> noise,
                 int seed, SpaceTRS domainTRS, int resolution, JobHandle dependency
-            ) => new Job<N> {
+            ) => new Job<N> 
+            {
                 positions = positions,
                 noise = noise,
                 hash = SmallXXHash.Seed(seed),

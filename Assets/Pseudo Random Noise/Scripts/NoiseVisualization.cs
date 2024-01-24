@@ -42,9 +42,8 @@ namespace Pseudo_Random_Noise.Scripts
 
 		protected override void UpdateVisualization(NativeArray<float3x4> positions, int resolution, JobHandle handle)
 		{
-			Job<Lattice1D>.ScheduleParallel(
-				positions, noise, seed, domain, resolution, handle
-			).Complete();
+			Job<Lattice1D>.ScheduleParallel(positions, noise, seed, domain, resolution, handle)
+				.Complete();
 			noiseBuffer.SetData(noise.Reinterpret<float>(4 * 4));
 		}
 	}
