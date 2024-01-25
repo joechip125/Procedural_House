@@ -23,20 +23,20 @@ namespace RobotGame.Scripts.IK
         private int numberSamples = 12;
         
         [Header("Parabola Velocity")]
-        [SerializeField, Range(-1f, 1f)]
-        private int xVal;
-        [SerializeField, Range(-1f, 1f)]
-        private int yVal;
-        [SerializeField, Range(-1f, 1f)]
-        private int zVal;
+        [SerializeField, Range(-1.0f, 1.0f)]
+        private float xVal;
+        [SerializeField, Range(-1.0f, 1.0f)]
+        private float yVal;
+        [SerializeField, Range(-1.0f, 1.0f)]
+        private float zVal;
         
         [Header("Parabola Acceleration")]
-        [SerializeField, Range(-1f, 1f)]
-        private int xVal1;
-        [SerializeField, Range(-1f, 1f)]
-        private int yVal1;
-        [SerializeField, Range(-1f, 1f)]
-        private int zVal1;
+        [SerializeField, Range(-1.0f, 1.0f)]
+        private float xVal1;
+        [SerializeField, Range(-1.0f, 1.0f)]
+        private float yVal1;
+        [SerializeField, Range(-1.0f, 1.0f)]
+        private float zVal1;
         
         
         private void Start()
@@ -77,10 +77,19 @@ namespace RobotGame.Scripts.IK
 
         private void TestParabola()
         {
-            var pos = transform.position;
+            var pos = limbs.Count > 1 ? limbs[2].Bones[^1].position: transform.position;
             parabola ??= new Parabola();
             parabola.GetSamples(pos, new Vector3(xVal,yVal, zVal), 
                 new Vector3(xVal1,yVal1, zVal1), numberSamples);
+
+            Gizmos.color = Color.green;
+            Gizmos.DrawSphere(pos, 0.1f);
+            
+            foreach (var t in parabola.samplePositions)
+            {
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawSphere(t, 0.01f);
+            }
         }
         
         
