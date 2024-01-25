@@ -9,35 +9,19 @@ namespace RobotGame.Scripts.IK
     [Serializable]
     public class FastIKFabricBase
     {
-                /// <summary>
-        /// Chain length of bones
-        /// </summary>
         public int ChainLength;
-
-        /// <summary>
-        /// Target the chain should bent to
-        /// </summary>
+        
         public Transform Target;
         public Transform Pole;
         
-        /// <summary>
-        /// Solver iterations per update
-        /// </summary>
         [Header("Solver Parameters")]
         public int Iterations = 10;
 
-        /// <summary>
-        /// Distance when the solver stops
-        /// </summary>
         public float Delta = 0.001f;
-
-        /// <summary>
-        /// Strength of going back to the start position.
-        /// </summary>
+        
         [Range(0, 1)]
         public float SnapBackStrength = 1f;
-
-
+        
         public float[] BonesLength; //Target to Origin
         public float CompleteLength;
         public Transform[] Bones;
@@ -48,7 +32,6 @@ namespace RobotGame.Scripts.IK
         public Transform Root;
 
         public Transform transform;
-
         
         public FastIKFabricBase(Transform root, Transform target, Transform pole, int chainLength = 2)
         {
@@ -62,9 +45,8 @@ namespace RobotGame.Scripts.IK
             ChainLength = chainLength;
             Init();
         }
-        
 
-          void Init()
+        private void Init()
         {
             //initial array
             Bones = new Transform[ChainLength + 1];
