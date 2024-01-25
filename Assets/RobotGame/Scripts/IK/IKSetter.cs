@@ -4,6 +4,7 @@ using System.Linq;
 using RobotGame.Scripts.Animation;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Splines;
 
 namespace RobotGame.Scripts.IK
 {
@@ -24,6 +25,11 @@ namespace RobotGame.Scripts.IK
 
         [SerializeField]
         public Vector3 gravity;
+
+        public Spline spline = new();
+
+        public BezierKnot startKnot;
+        public BezierKnot endKnot;
         
         private void Start()
         {
@@ -49,24 +55,23 @@ namespace RobotGame.Scripts.IK
             }
         }
 
-        private void TestRoot()
-        {
-            foreach (var limb in limbs)
-            {
-                for (int i = 0; i < limb.Positions.Length; i++)
-                {
-                    Gizmos.color = Color.green;
-                    Gizmos.DrawWireSphere(limb.Bones[i].position, 0.1f);
-                }
-            }
-        }
 
+        private void SplineTest()
+        {
+            var temp = spline;
+            var startPos = leafNodes.Count > 1 ? leafNodes[2].position: transform.position;
+            var knot = new BezierKnot()
+            {
+                Position = startPos
+            };
+        }
+        
         private void TestParabola()
         {
-            var startPos = limbs.Count > 1 ? limbs[2].Bones[^1].position: transform.position;
+            var startPos = leafNodes.Count > 1 ? leafNodes[2].position: transform.position;
             parabola ??= new Parabola();
             
-            var end = startPos + Vector3.forward * 2f;
+            var end = startPos + Vector3.forward * 1f;
             var time = 0f;
             var interval = 1f  / numberSamples;
             for (int i = 0; i < numberSamples; i++)
@@ -74,17 +79,12 @@ namespace RobotGame.Scripts.IK
                 var current = MathHelpers.Parabola(startPos, end, 0.5f, time);
                 time += interval;
                 Gizmos.color = Color.yellow;
-                Gizmos.DrawSphere(current, 0.05f);
-
-                if (i == numberSamples - 1)
-                {
-                    Gizmos.color = Color.green;
-                    Gizmos.DrawSphere(end, 0.05f);
-                }
+                Gizmos.DrawSphere(current, 0.01f);
             }
             
             Gizmos.color = Color.green;
             Gizmos.DrawSphere(startPos, 0.1f);
+            Gizmos.DrawSphere(end, 0.05f);
         }
         
         
