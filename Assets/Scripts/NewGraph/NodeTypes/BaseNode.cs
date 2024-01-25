@@ -9,7 +9,6 @@ public abstract class BaseNode : ScriptableObject
     [HideInInspector] public string guid;
     [HideInInspector] public Vector2 position;
     [HideInInspector] public CustomBlackboard blackboard;
-    [HideInInspector] public AiAgent agent;
     [TextArea] public string description;
 
     public enum State

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using RobotGame.Scripts.Animation;
+using RobotGame.Scripts.Math;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Splines;

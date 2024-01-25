@@ -4,7 +4,6 @@ namespace NewGraph.NodeTypes.CompositeNodes
 {
     public class StateComposite : BaseNode
     {
-        public Dictionary<STATE, BaseNode> children;
 
         public override void OnStart()
         {

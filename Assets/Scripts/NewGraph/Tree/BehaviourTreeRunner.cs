@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class BehaviourTreeRunner : MonoBehaviour, IEnemyCommands
+public class BehaviourTreeRunner : MonoBehaviour
 {
     public BehaviourTree tree;
     public Transform commanderTrans;
@@ -17,33 +17,13 @@ public class BehaviourTreeRunner : MonoBehaviour, IEnemyCommands
 
     private void Setup()
     {
-        Queue<CurrentCommand> commands = new Queue<CurrentCommand>();
-        commands.Enqueue(CurrentCommand.MoveToPosition);
-        commands.Enqueue(CurrentCommand.GetInstructions);
-        Queue<Vector3> goals = new Queue<Vector3>();
-    //    goals.Enqueue(commanderTrans.position);
-        
-        tree = tree.Clone();
-        tree.Bind(new AiAgent()
-        {
-            enemyTransform = gameObject.transform,
-            coneEyes = GetComponentInChildren<ConeEyes>(),
-            currentDestination = GameObject.Find("EnemyCommander").transform.position,
-            commandQueue = commands,
-            TargetQueue = goals
-        });
-
-        readyToRun = true;
+     
     }
     
     private void OnDisable()
     {
     }
 
-    private void OnObjectSeen(TraceType obj)
-    {
-        
-    }
 
     public Transform GetTopParent(Transform pTrans)
     {
@@ -67,15 +47,6 @@ public class BehaviourTreeRunner : MonoBehaviour, IEnemyCommands
     {
        
     }
-
-    public void SetNextCommand(CurrentCommand command)
-    {
-       
-    }
-
-    public void GetNextDestination(Action<Instruction> callBack)
-    {
-        
-    }
+    
 }
 
