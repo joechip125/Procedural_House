@@ -34,18 +34,18 @@ namespace RobotGame.Scripts.IK
         {
             Root = root;
             Pole = pole;
+            Target = target;
+            Target.position = Root.position;
             var parent = Root.parent;
             Pole.parent = parent;
             Pole.position = parent.position;
-            Root.parent = Target = target;
 
             ChainLength = chainLength;
-            //Init();
+            Init();
         }
 
         private void Init()
         {
-            //initial array
             Bones = new Transform[ChainLength + 1];
             Positions = new Vector3[ChainLength + 1];
             BonesLength = new float[ChainLength];
@@ -60,7 +60,7 @@ namespace RobotGame.Scripts.IK
             {
                 Bones[i] = current;
                 StartRotationBone[i] = GetRotationRootSpace(current);
-
+            
                 if (i == Bones.Length - 1)
                 {
                     StartDirectionSucc[i] = GetPositionRootSpace(Target) - GetPositionRootSpace(current);
@@ -71,7 +71,7 @@ namespace RobotGame.Scripts.IK
                     BonesLength[i] = StartDirectionSucc[i].magnitude;
                     CompleteLength += BonesLength[i];
                 }
-
+            
                 current = current.parent;
             }
         }
