@@ -25,8 +25,6 @@ namespace RobotGame.Scripts.IK
         [SerializeField]
         public Vector3 gravity;
         
-        
-        
         private void Start()
         {
             SetIK();
@@ -67,8 +65,7 @@ namespace RobotGame.Scripts.IK
         {
             var startPos = limbs.Count > 1 ? limbs[2].Bones[^1].position: transform.position;
             parabola ??= new Parabola();
-            parabola.GetSamples(startPos, startPos + Vector3.forward * 2f, 
-                gravity, numberSamples);
+            
             var end = startPos + Vector3.forward * 2f;
             var time = 0f;
             var interval = 1f  / numberSamples;
@@ -78,8 +75,14 @@ namespace RobotGame.Scripts.IK
                 time += interval;
                 Gizmos.color = Color.yellow;
                 Gizmos.DrawSphere(current, 0.05f);
+
+                if (i == numberSamples - 1)
+                {
+                    Gizmos.color = Color.green;
+                    Gizmos.DrawSphere(end, 0.05f);
+                }
             }
-            ;
+            
             Gizmos.color = Color.green;
             Gizmos.DrawSphere(startPos, 0.1f);
         }
