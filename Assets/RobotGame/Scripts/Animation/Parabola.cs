@@ -54,6 +54,7 @@ using UnityEngine;
         {
             samplePositions = new Vector3[numSamples];
             var interval = 1f / numSamples;
+            Debug.Log($"interval {interval}");
             var totalTime = 0f;
             
             start = startPos;
@@ -63,7 +64,8 @@ using UnityEngine;
 
             for (int i = 0; i < numSamples; i++)
             {
-                samplePositions[i] = GetPosition(totalTime = totalTime >= 1 ? totalTime +interval: 1);
+                samplePositions[i] = GetPosition(totalTime >= 1 ? totalTime : 1);
+                Debug.Log($"{totalTime += interval} {i}" );
             }
         }
         

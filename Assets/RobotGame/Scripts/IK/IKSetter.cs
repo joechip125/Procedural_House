@@ -65,19 +65,23 @@ namespace RobotGame.Scripts.IK
 
         private void TestParabola()
         {
-            var pos = limbs.Count > 1 ? limbs[2].Bones[^1].position: transform.position;
+            var startPos = limbs.Count > 1 ? limbs[2].Bones[^1].position: transform.position;
             parabola ??= new Parabola();
-            parabola.GetSamples(pos, pos + Vector3.forward * 2f, 
+            parabola.GetSamples(startPos, startPos + Vector3.forward * 2f, 
                 gravity, numberSamples);
-
-            Gizmos.color = Color.green;
-            Gizmos.DrawSphere(pos, 0.1f);
-            
-            foreach (var t in parabola.samplePositions)
+            var end = startPos + Vector3.forward * 2f;
+            var time = 0f;
+            var interval = 1f  / numberSamples;
+            for (int i = 0; i < numberSamples; i++)
             {
+                var current = MathHelpers.Parabola(startPos, end, 0.5f, time);
+                time += interval;
                 Gizmos.color = Color.yellow;
-                Gizmos.DrawSphere(t, 0.05f);
+                Gizmos.DrawSphere(current, 0.05f);
             }
+            ;
+            Gizmos.color = Color.green;
+            Gizmos.DrawSphere(startPos, 0.1f);
         }
         
         
