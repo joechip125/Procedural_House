@@ -36,9 +36,9 @@ namespace RobotGame.Scripts.IK
             Pole = pole;
             Target = target;
             Target.position = Root.position;
-            var parent = Root.parent;
-            Pole.parent = parent;
-            Pole.position = parent.position;
+            
+            Pole.parent =  Root.parent;
+            Pole.position = Pole.parent.position;
 
             ChainLength = chainLength;
             Init();
@@ -55,6 +55,7 @@ namespace RobotGame.Scripts.IK
             StartRotationTarget = GetRotationRootSpace(Target);
             
             var current = Root;
+            //Debug.Log($"root pos {Root.position} {Root.name}");
             CompleteLength = 0;
             for (var i = Bones.Length - 1; i >= 0; i--)
             {
@@ -74,6 +75,14 @@ namespace RobotGame.Scripts.IK
             
                 current = current.parent;
             }
+        }
+
+        public void ResolveTest()
+        {
+            for (int i = 0; i < Bones.Length; i++)
+            {
+                Positions[i] = GetPositionRootSpace(Bones[i]);
+            }    
         }
         
         public void ResolveIK()

@@ -37,7 +37,7 @@ namespace RobotGame.Scripts.IK
         {
             foreach (var limb in limbs)
             {
-               // limb.ResolveIK();
+                //limb.ResolveTest();
             }
         }
         
