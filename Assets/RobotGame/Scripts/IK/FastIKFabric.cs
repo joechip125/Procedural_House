@@ -20,8 +20,6 @@ namespace RobotGame.Scripts.IK
         public Transform Target;
         public Transform Pole;
 
-        private Vector3 lastPos;
-
         /// <summary>
         /// Solver iterations per update
         /// </summary>
@@ -53,7 +51,6 @@ namespace RobotGame.Scripts.IK
         // Start is called before the first frame update
         void Awake()
         {
-            lastPos = Target.position;
             Init();
         }
 
@@ -232,8 +229,8 @@ namespace RobotGame.Scripts.IK
             //inverse(after) * before => rot: before -> after
             if (Root == null)
                 return current.rotation;
-            else
-                return Quaternion.Inverse(current.rotation) * Root.rotation;
+         
+            return Quaternion.Inverse(current.rotation) * Root.rotation;
         }
 
         private void SetRotationRootSpace(Transform current, Quaternion rotation)

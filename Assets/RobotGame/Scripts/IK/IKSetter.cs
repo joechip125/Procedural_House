@@ -45,9 +45,14 @@ namespace RobotGame.Scripts.IK
         {
             foreach (var limb in limbs)
             {
-                var pos = limb.GetPositionAtIndex(2);
-                Gizmos.color = Color.red;
-                Gizmos.DrawWireSphere(pos, 0.1f);
+                for (int i = 0; i < limb.Positions.Length; i++)
+                {
+                    Gizmos.color = Color.red;
+                    Gizmos.DrawWireSphere(limb.Positions[i], 0.1f);
+                    
+                    Gizmos.color = Color.green;
+                    Gizmos.DrawWireSphere(limb.Bones[i].position, 0.1f);
+                }
             }
         }
         
