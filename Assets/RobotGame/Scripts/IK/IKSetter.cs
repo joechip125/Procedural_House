@@ -34,6 +34,7 @@ namespace RobotGame.Scripts.IK
         private void Start()
         {
             SetIK();
+            SplineTest();
         
         }
 
@@ -58,23 +59,27 @@ namespace RobotGame.Scripts.IK
 
         private void SplineTest()
         {
-            var temp = spline;
             var startPos = leafNodes.Count > 1 ? leafNodes[2].position: transform.position;
             var startTangent = new Vector3(0,0.25f, 0.3f);
             var endTangent = new Vector3(0,0.25f, 0.3f);
+
             startKnot = new BezierKnot()
             {
                 Position = startPos,
                 TangentIn = startTangent,
-                TangentOut = endTangent
+                TangentOut = endTangent,
+                Rotation = Quaternion.identity
             };
-            
+
             endKnot = new BezierKnot()
             {
                 Position = startPos + Vector3.forward * 0.8f,
                 TangentIn = -startTangent,
-                TangentOut = -endTangent
+                TangentOut = -endTangent,
+                Rotation = Quaternion.identity
             };
+            spline.Add(startKnot);
+            spline.Add(endKnot);
         }
         
         private void TestParabola()
