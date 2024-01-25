@@ -28,8 +28,11 @@ namespace RobotGame.Scripts.IK
 
         public Spline spline = new();
 
-        public BezierKnot startKnot;
-        public BezierKnot endKnot;
+        [SerializeField] 
+        private GameObject splinePrefab;
+        
+        private BezierKnot startKnot;
+        private BezierKnot endKnot;
         
         private void Start()
         {
@@ -59,6 +62,10 @@ namespace RobotGame.Scripts.IK
 
         private void SplineTest()
         {
+            spline ??= Instantiate(splinePrefab, transform.position, Quaternion.identity)
+                .GetComponent<Spline>();
+            spline.Clear();
+            
             var startPos = leafNodes.Count > 1 ? leafNodes[2].position: transform.position;
             var startTangent = new Vector3(0,0.25f, 0.3f);
             var endTangent = new Vector3(0,0.25f, 0.3f);
@@ -106,7 +113,9 @@ namespace RobotGame.Scripts.IK
         
         private void OnDrawGizmos()
         {
-           TestParabola();
+            
+            
+          // TestParabola();
         }
     }
 }

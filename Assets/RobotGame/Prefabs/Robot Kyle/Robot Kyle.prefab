@@ -1768,3 +1768,50 @@ MonoBehaviour:
   - {fileID: 537813650217078115}
   - {fileID: 1879970488558829209}
   handle: {fileID: 4575951520941755364, guid: fe5fa15df5dc7084193585b018567348, type: 3}
+  limbs: []
+  numberSamples: 12
+  gravity: {x: 0, y: 0, z: 0}
+  spline:
+    m_EditModeType: 1
+    m_Knots: []
+    m_Length: -1
+    m_Closed: 0
+  splinePrefab: {fileID: 6946962910584240380, guid: 42fdfa5f40d981543856af09613821f1, type: 3}
+  startKnot:
+    Position:
+      x: 0
+      y: 0
+      z: 0
+    TangentIn:
+      x: 0
+      y: 0
+      z: 0
+    TangentOut:
+      x: 0
+      y: 0
+      z: 0
+    Rotation:
+      value:
+        x: 0
+        y: 0
+        z: 0
+        w: 1
+  endKnot:
+    Position:
+      x: 0
+      y: 0
+      z: 0
+    TangentIn:
+      x: 0
+      y: 0
+      z: 0
+    TangentOut:
+      x: 0
+      y: 0
+      z: 0
+    Rotation:
+      value:
+        x: 0
+        y: 0
+        z: 0
+        w: 1
