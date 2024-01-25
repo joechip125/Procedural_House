@@ -39,17 +39,11 @@ namespace RobotGame.Scripts.IK
             StartRotationTarget = GetRotationRootSpace(Target);
             
             var bone = new IKBone();
-            for (var i = 0; i <= bones.Length - 1; i++)
+            for (var i = 0; i < bones.Length; i++)
             {
                 bones[i] = new IKBone();
-                if (Root.parent == null)
-                {
-                    break;
-                }
-                else
-                {
-                    
-                }
+                
+                if (Root.parent == null) continue;
                 Root = Root.parent;
             }
         }
