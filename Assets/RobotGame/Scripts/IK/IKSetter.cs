@@ -60,9 +60,20 @@ namespace RobotGame.Scripts.IK
         {
             var temp = spline;
             var startPos = leafNodes.Count > 1 ? leafNodes[2].position: transform.position;
+            var startTangent = new Vector3(0,0.25f, 0.3f);
+            var endTangent = new Vector3(0,0.25f, 0.3f);
             startKnot = new BezierKnot()
             {
-                Position = startPos
+                Position = startPos,
+                TangentIn = startTangent,
+                TangentOut = endTangent
+            };
+            
+            endKnot = new BezierKnot()
+            {
+                Position = startPos + Vector3.forward * 0.8f,
+                TangentIn = -startTangent,
+                TangentOut = -endTangent
             };
         }
         
