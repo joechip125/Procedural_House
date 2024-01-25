@@ -68,7 +68,7 @@ namespace RobotGame.Scripts.IK
 
             //find root
             Root = transform;
-            for (var i = 0; i <= ChainLength; i++)
+            for (var i = 0; i <= Bones.Length - 1; i++)
             {
                 if (Root == null)
                     throw new UnityException("The chain value is longer than the ancestor chain!");

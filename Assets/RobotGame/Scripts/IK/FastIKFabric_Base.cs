@@ -30,12 +30,12 @@ namespace RobotGame.Scripts.IK
         public Quaternion[] StartRotationBone;
         public Quaternion StartRotationTarget;
 
-        public FastIKFabricBase(Transform root, Transform target, Transform pole, int chainLength = 2)
+        public FastIKFabricBase(Transform leaf, Transform target, Transform pole, int chainLength = 2)
         {
-            Root = root;
+            Root = leaf;
             Pole = pole;
             Target = target;
-            Target.position = Root.position;
+            Target.position = Root.position + Vector3.right * 0.05f;
             
             Pole.parent =  Root.parent;
             Pole.position = Pole.parent.position;
@@ -51,11 +51,16 @@ namespace RobotGame.Scripts.IK
             BonesLength = new float[ChainLength];
             StartDirectionSucc = new Vector3[ChainLength + 1];
             StartRotationBone = new Quaternion[ChainLength + 1];
+            
+            for (var i = 0; i <= Bones.Length - 1; i++)
+            {
+                if (Root.parent == null) continue;
+                    Root = Root.parent;
+            }
 
             StartRotationTarget = GetRotationRootSpace(Target);
-            
+
             var current = Root;
-            //Debug.Log($"root pos {Root.position} {Root.name}");
             CompleteLength = 0;
             for (var i = Bones.Length - 1; i >= 0; i--)
             {
@@ -155,6 +160,11 @@ namespace RobotGame.Scripts.IK
             }
         }
 
+        public Vector3 GetPositionAtIndex(int index)
+        {
+            return GetPositionRootSpace(Bones[index]);
+        }
+        
         private Vector3 GetPositionRootSpace(Transform current)
         {
             return Quaternion.Inverse(Root.rotation) * (current.position - Root.position);

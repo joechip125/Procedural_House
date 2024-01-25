@@ -37,16 +37,23 @@ namespace RobotGame.Scripts.IK
         {
             foreach (var limb in limbs)
             {
-                //limb.ResolveTest();
+                limb.ResolveTest();
+            }
+        }
+
+        private void TestRoot()
+        {
+            foreach (var limb in limbs)
+            {
+                var pos = limb.GetPositionAtIndex(2);
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireSphere(pos, 0.1f);
             }
         }
         
         private void OnDrawGizmos()
         {
-            for (int i = 0; i < leafNodes.Count; i++)
-            {
-                Gizmos.DrawWireSphere(leafNodes[i].position, 0.1f);
-            }
+            TestRoot();
         }
     }
 }
