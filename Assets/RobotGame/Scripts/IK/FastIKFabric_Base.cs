@@ -63,12 +63,10 @@ namespace RobotGame.Scripts.IK
 
                 if (i == Bones.Length - 1)
                 {
-                    //leaf
                     StartDirectionSucc[i] = GetPositionRootSpace(Target) - GetPositionRootSpace(current);
                 }
                 else
                 {
-                    //mid bone
                     StartDirectionSucc[i] = GetPositionRootSpace(Bones[i + 1]) - GetPositionRootSpace(current);
                     BonesLength[i] = StartDirectionSucc[i].magnitude;
                     CompleteLength += BonesLength[i];

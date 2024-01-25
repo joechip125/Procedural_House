@@ -26,6 +26,7 @@ namespace RobotGame.Scripts.IK
 
         private void SetIK()
         {
+           
             foreach (var leaf in leafNodes)
             {
                 limbs.Add(new FastIKFabricBase(leaf, 
