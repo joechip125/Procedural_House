@@ -26,7 +26,7 @@ namespace RobotGame.Scripts.IK
         [SerializeField]
         public Vector3 gravity;
 
-        private Spline spline = new();
+        private SplineContainer spline = new();
 
         [SerializeField] 
         private GameObject splinePrefab;
