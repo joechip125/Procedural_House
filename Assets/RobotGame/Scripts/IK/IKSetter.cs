@@ -17,7 +17,7 @@ namespace RobotGame.Scripts.IK
         [SerializeField] 
         private GameObject handle;
 
-        private List<FastIKFabricBase> limbs = new();
+        public List<FastIKFabricBase> limbs = new();
         
         private void Start()
         {
@@ -26,15 +26,6 @@ namespace RobotGame.Scripts.IK
 
         private void SetIK()
         {
-            for (int i = 0; i < leafNodes.Count; i++)
-            {
-                limbs.Add(new FastIKFabricBase(leafNodes[i], 
-                    Instantiate(handle).transform, 
-                    Instantiate(handle).transform));
-                
-                
-            }
-            
             foreach (var leaf in leafNodes)
             {
                 limbs.Add(new FastIKFabricBase(leaf, 
@@ -47,7 +38,7 @@ namespace RobotGame.Scripts.IK
         {
             foreach (var limb in limbs)
             {
-                limb.ResolveIK();
+                //limb.ResolveIK();
             }
         }
         

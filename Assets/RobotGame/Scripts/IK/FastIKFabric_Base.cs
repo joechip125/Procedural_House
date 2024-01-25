@@ -30,8 +30,6 @@ namespace RobotGame.Scripts.IK
         public Quaternion StartRotationTarget;
         public Transform Root;
 
-        public Transform transform;
-        
         public FastIKFabricBase(Transform root, Transform target, Transform pole, int chainLength = 2)
         {
             Root = root;
@@ -56,7 +54,7 @@ namespace RobotGame.Scripts.IK
 
             StartRotationTarget = GetRotationRootSpace(Target);
             
-            var current = transform;
+            var current = Root;
             CompleteLength = 0;
             for (var i = Bones.Length - 1; i >= 0; i--)
             {
@@ -79,7 +77,6 @@ namespace RobotGame.Scripts.IK
                 current = current.parent;
             }
         }
-        
         
         public void ResolveIK()
         {
