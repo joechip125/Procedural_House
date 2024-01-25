@@ -35,9 +35,9 @@ namespace RobotGame.Scripts.IK
             Root = leaf;
             Pole = pole;
             Target = target;
-            Target.position = Root.position + Vector3.right * 0.05f;
+            Target.position = Root.position + Vector3.forward * 0.1f;
             
-            Pole.parent =  Root.parent;
+            Pole.parent =  leaf.parent;
             Pole.position = Pole.parent.position;
 
             ChainLength = chainLength;
@@ -51,16 +51,17 @@ namespace RobotGame.Scripts.IK
             BonesLength = new float[ChainLength];
             StartDirectionSucc = new Vector3[ChainLength + 1];
             StartRotationBone = new Quaternion[ChainLength + 1];
+
+            var current = Root;
             
             for (var i = 0; i <= Bones.Length - 1; i++)
             {
                 if (Root.parent == null) continue;
-                    Root = Root.parent;
+                Root = Root.parent;
             }
 
             StartRotationTarget = GetRotationRootSpace(Target);
 
-            var current = Root;
             CompleteLength = 0;
             for (var i = Bones.Length - 1; i >= 0; i--)
             {
