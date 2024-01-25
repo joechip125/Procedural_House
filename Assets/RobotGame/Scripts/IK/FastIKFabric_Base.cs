@@ -74,9 +74,7 @@ namespace RobotGame.Scripts.IK
             StartRotationBone = new Quaternion[ChainLength + 1];
 
             StartRotationTarget = GetRotationRootSpace(Target);
-
-
-            //init data
+            
             var current = transform;
             CompleteLength = 0;
             for (var i = Bones.Length - 1; i >= 0; i--)
@@ -84,15 +82,6 @@ namespace RobotGame.Scripts.IK
                 Bones[i] = current;
                 StartRotationBone[i] = GetRotationRootSpace(current);
 
-                var qAngles = Bones[i].localRotation;
-                var eAngles = qAngles.eulerAngles;
-
-                if (i == 0)
-                {
-                    
-                }
-            
-                
                 if (i == Bones.Length - 1)
                 {
                     //leaf
