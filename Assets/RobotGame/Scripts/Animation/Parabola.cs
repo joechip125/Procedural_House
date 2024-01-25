@@ -17,8 +17,7 @@ using UnityEngine;
             Vector3 horizontalDirection = Vector3.ProjectOnPlane(direction, -gravity.normalized);
             float verticalDifference = Vector3.Dot( direction, -gravity.normalized );
             float horizontalDistance = horizontalDirection.magnitude;
-          
-    
+            
             Debug.DrawLine(startPos,startPos+horizontalDirection,Color.red);
             Debug.DrawLine(startPos + horizontalDirection, startPos + horizontalDirection + Vector3.up * verticalDifference, Color.yellow);
             Vector2 d = new Vector2(horizontalDistance, verticalDifference);
@@ -52,6 +51,11 @@ using UnityEngine;
         public Vector3 GetPosition(float t)
         {
             return start + t * startVel + 0.5f * acceleration * t * t;
+        }
+        
+        public Vector3 GetPosition(Vector3 startPos,float t)
+        {
+            return startPos + t * startVel + 0.5f * acceleration * t * t;
         }
     
         public Vector3 GetDirection(float t) 
