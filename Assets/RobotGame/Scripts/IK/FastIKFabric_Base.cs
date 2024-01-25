@@ -12,6 +12,7 @@ namespace RobotGame.Scripts.IK
         
         public Transform Target;
         public Transform Pole;
+        public Transform Root;
         
         [Header("Solver Parameters")]
         public int Iterations = 10;
@@ -20,7 +21,7 @@ namespace RobotGame.Scripts.IK
         
         [Range(0, 1)]
         public float SnapBackStrength = 1f;
-        
+
         public float[] BonesLength; //Target to Origin
         public float CompleteLength;
         public Transform[] Bones;
@@ -28,7 +29,6 @@ namespace RobotGame.Scripts.IK
         public Vector3[] StartDirectionSucc;
         public Quaternion[] StartRotationBone;
         public Quaternion StartRotationTarget;
-        public Transform Root;
 
         public FastIKFabricBase(Transform root, Transform target, Transform pole, int chainLength = 2)
         {
@@ -40,7 +40,7 @@ namespace RobotGame.Scripts.IK
             Root.parent = Target = target;
 
             ChainLength = chainLength;
-            Init();
+            //Init();
         }
 
         private void Init()
