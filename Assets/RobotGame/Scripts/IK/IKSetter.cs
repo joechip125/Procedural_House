@@ -30,7 +30,7 @@ namespace RobotGame.Scripts.IK
         [SerializeField, Range(-1f, 1f)]
         private int zVal;
         
-        [Header("Parabola Velocity")]
+        [Header("Parabola Acceleration")]
         [SerializeField, Range(-1f, 1f)]
         private int xVal1;
         [SerializeField, Range(-1f, 1f)]
@@ -79,7 +79,8 @@ namespace RobotGame.Scripts.IK
         {
             var pos = transform.position;
             parabola ??= new Parabola();
-            parabola.GetSamples(pos, new Vector3(xVal,yVal, zVal), Vector3.right);
+            parabola.GetSamples(pos, new Vector3(xVal,yVal, zVal), 
+                new Vector3(xVal1,yVal1, zVal1), numberSamples);
         }
         
         
