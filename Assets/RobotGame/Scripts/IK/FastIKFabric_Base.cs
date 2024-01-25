@@ -38,7 +38,7 @@ namespace RobotGame.Scripts.IK
             Target.position = Root.position + Vector3.forward * 0.1f;
             
             Pole.parent =  leaf.parent;
-            Pole.position = Pole.parent.position;
+            Pole.position = Pole.parent.position+ Vector3.back * 0.2f;
 
             ChainLength = chainLength;
             Init();
@@ -81,14 +81,6 @@ namespace RobotGame.Scripts.IK
             
                 current = current.parent;
             }
-        }
-
-        public void ResolveTest()
-        {
-            for (int i = 0; i < Bones.Length; i++)
-            {
-                Positions[i] = GetPositionRootSpace(Bones[i]);
-            }    
         }
         
         public void ResolveIK()
