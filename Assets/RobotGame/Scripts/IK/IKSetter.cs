@@ -35,14 +35,13 @@ namespace RobotGame.Scripts.IK
         {
             SetIK();
             SplineTest();
-           
-        
         }
 
         private void SetIK()
         {
             foreach (var leaf in leafNodes)
             {
+                var target = Instantiate(handle).transform;
                 limbs.Add(new FastIKFabricBase(leaf, 
                     Instantiate(handle).transform, 
                     Instantiate(handle).transform));
