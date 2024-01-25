@@ -9,13 +9,12 @@ namespace RobotGame.Scripts.IK
     {
         public IKBone[] bones;
         
-        public int ChainLength;
-        
         public Transform Target;
         public Transform Pole;
         public Transform Root;
         public Transform Leaf;
-        
+        private Quaternion StartRotationTarget;
+
         public IKLimb(Transform leaf, Transform target, Transform pole, int chainLength = 2)
         {
             bones = new IKBone[chainLength + 1];
@@ -24,10 +23,10 @@ namespace RobotGame.Scripts.IK
             Leaf = leaf;
             
             
-            Init();
+            Initialize();
         }
 
-        private void Init()
+        private void Initialize()
         {
             Root = Leaf;
             var bone = new IKBone();
@@ -43,6 +42,39 @@ namespace RobotGame.Scripts.IK
                     
                 }
                 Root = Root.parent;
+            }
+        }
+        
+        private void Init()
+        {
+            var current = Root;
+            
+            for (var i = 0; i <= bones.Length - 1; i++)
+            {
+                if (Root.parent == null) continue;
+                Root = Root.parent;
+            }
+
+            StartRotationTarget = GetRotationRootSpace(Target);
+
+            var CompleteLength = 0;
+            for (var i = bones.Length - 1; i >= 0; i--)
+            {
+                bones[i].Bone = current;
+                bones[i].StartRotation = GetRotationRootSpace(current);
+            
+                if (i == bones.Length - 1)
+                {
+                    bones[i].StartDirection = GetPositionRootSpace(Target) - GetPositionRootSpace(current);
+                }
+                else
+                {
+                    bones[i].StartDirection = GetPositionRootSpace(bones[i + 1].Bone) - GetPositionRootSpace(current);
+                    BonesLength[i] = bones[i].StartDirection.magnitude;
+                    CompleteLength += BonesLength[i];
+                }
+            
+                current = current.parent;
             }
         }
         

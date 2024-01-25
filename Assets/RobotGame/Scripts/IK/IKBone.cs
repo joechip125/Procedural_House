@@ -9,5 +9,12 @@ namespace RobotGame.Scripts.IK
         public Transform Bone;
         public Vector3 StartDirection;
         public Quaternion StartRotation;
+        public float BoneLength;
+
+        public IKBone(Transform bone)
+        {
+            Bone = bone;
+            StartDirection
+        }
     }
 }
