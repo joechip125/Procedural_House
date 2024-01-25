@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using RobotGame.Scripts.Animation;
 using Unity.VisualScripting;
 using UnityEngine;
 
 namespace RobotGame.Scripts.IK
 {
-    
-    
     public class IKSetter : MonoBehaviour
     {
         [SerializeField]
@@ -17,10 +16,25 @@ namespace RobotGame.Scripts.IK
         private GameObject handle;
 
         public List<FastIKFabricBase> limbs = new();
+
+        private Parabola parabola = new();
+
+        [SerializeField, Range(3, 50)]
+        private int numberSamples = 12;
+        
+        [Header("Parabola Velocity")]
+        [SerializeField, Range(-1, 1)]
+        private int xVal = 0;
+        [SerializeField, Range(-1, 1)]
+        private int yVal = 0;
+        [SerializeField, Range(-1, 1)]
+        private int zVal = 0;
+        
         
         private void Start()
         {
-            SetIK();  
+            SetIK();
+        
         }
 
         private void SetIK()
@@ -52,10 +66,18 @@ namespace RobotGame.Scripts.IK
                 }
             }
         }
+
+        private void TestParabola()
+        {
+            var pos = transform.position;
+            parabola ??= new Parabola();
+           // parabola.GetSamples(pos, );
+        }
+        
         
         private void OnDrawGizmos()
         {
-            TestRoot();
+           TestParabola();
         }
     }
 }

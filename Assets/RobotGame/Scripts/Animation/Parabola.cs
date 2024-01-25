@@ -1,16 +1,20 @@
-﻿namespace RobotGame.Scripts.Animation
+﻿using System;
+
+namespace RobotGame.Scripts.Animation
 {
    using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+   [Serializable]
     public class Parabola 
     {
         Vector3 start;
         Vector3 end;
         Vector3 startVel;
         Vector3 acceleration;
-    
+        public Vector3[] samplePositions;
+        
         public float Plot(Vector3 startPos, Vector3 endPos, float speed, Vector3 gravity, bool shortest=true)
         {
             Vector3 direction = endPos - startPos;
@@ -18,8 +22,8 @@ using UnityEngine;
             float verticalDifference = Vector3.Dot( direction, -gravity.normalized );
             float horizontalDistance = horizontalDirection.magnitude;
             
-            Debug.DrawLine(startPos,startPos+horizontalDirection,Color.red);
-            Debug.DrawLine(startPos + horizontalDirection, startPos + horizontalDirection + Vector3.up * verticalDifference, Color.yellow);
+            Debug.DrawLine(startPos,startPos+horizontalDirection,Color.red, 12f);
+            Debug.DrawLine(startPos + horizontalDirection, startPos + horizontalDirection + Vector3.up * verticalDifference, Color.yellow, 12f);
             Vector2 d = new Vector2(horizontalDistance, verticalDifference);
             float speedSqr = speed * speed;
             float g = gravity.magnitude;
@@ -47,15 +51,30 @@ using UnityEngine;
             //duration
             return horizontalDistance / horizontalSpeedComponent;
         }
-    
+
+        public void GetSamples(Vector3 startPos,Vector3 startVelocity,Vector3 theAcceleration, int numSamples = 12)
+        {
+            samplePositions = new Vector3[numSamples];
+            var interval = 1f / numSamples;
+            var totalTime = 0f;
+            start = startPos;
+            startVel = startVelocity;
+            acceleration = theAcceleration;
+
+            for (int i = 0; i < numSamples; i++)
+            {
+                samplePositions[i] = GetPosition(totalTime = totalTime >= 1 ? totalTime +interval: 1);
+            }
+        }
+        
         public Vector3 GetPosition(float t)
         {
             return start + t * startVel + 0.5f * acceleration * t * t;
         }
         
-        public Vector3 GetPosition(Vector3 startPos,float t)
+        public Vector3 GetPosition(Vector3 startPos,Vector3 startVelocity,Vector3 theAcceleration,float t)
         {
-            return startPos + t * startVel + 0.5f * acceleration * t * t;
+            return startPos + t * startVelocity + 0.5f * theAcceleration * t * t;
         }
     
         public Vector3 GetDirection(float t) 
