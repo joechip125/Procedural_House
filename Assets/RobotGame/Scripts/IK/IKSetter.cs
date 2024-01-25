@@ -60,7 +60,7 @@ namespace RobotGame.Scripts.IK
         {
             var temp = spline;
             var startPos = leafNodes.Count > 1 ? leafNodes[2].position: transform.position;
-            var knot = new BezierKnot()
+            startKnot = new BezierKnot()
             {
                 Position = startPos
             };
