@@ -26,7 +26,7 @@ namespace RobotGame.Scripts.IK
         [SerializeField]
         public Vector3 gravity;
 
-        public Spline spline = new();
+        private Spline spline = new();
 
         [SerializeField] 
         private GameObject splinePrefab;
@@ -38,6 +38,7 @@ namespace RobotGame.Scripts.IK
         {
             SetIK();
             SplineTest();
+           
         
         }
 
@@ -62,9 +63,7 @@ namespace RobotGame.Scripts.IK
 
         private void SplineTest()
         {
-            spline ??= Instantiate(splinePrefab, transform.position, Quaternion.identity)
-                .GetComponent<Spline>();
-            spline.Clear();
+         //   transform.AddComponent<SplineComponent>();
             
             var startPos = leafNodes.Count > 1 ? leafNodes[2].position: transform.position;
             var startTangent = new Vector3(0,0.25f, 0.3f);
@@ -85,8 +84,8 @@ namespace RobotGame.Scripts.IK
                 TangentOut = -endTangent,
                 Rotation = Quaternion.identity
             };
-            spline.Add(startKnot);
-            spline.Add(endKnot);
+            //spline.Add(startKnot);
+            //spline.Add(endKnot);
         }
         
         private void TestParabola()
