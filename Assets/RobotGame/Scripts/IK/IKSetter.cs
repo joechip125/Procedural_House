@@ -63,7 +63,7 @@ namespace RobotGame.Scripts.IK
 
         private void SplineTest()
         {
-         //   transform.AddComponent<SplineComponent>();
+            transform.AddComponent<SplineContainer>();
             
             var startPos = leafNodes.Count > 1 ? leafNodes[2].position: transform.position;
             var startTangent = new Vector3(0,0.25f, 0.3f);

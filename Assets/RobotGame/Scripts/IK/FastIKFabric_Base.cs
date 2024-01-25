@@ -22,7 +22,7 @@ namespace RobotGame.Scripts.IK
         [Range(0, 1)]
         public float SnapBackStrength = 1f;
 
-        public float[] BonesLength; //Target to Origin
+        public float[] BonesLength; 
         public float CompleteLength;
         public Transform[] Bones;
         public Vector3[] Positions;
@@ -35,7 +35,8 @@ namespace RobotGame.Scripts.IK
             Root = leaf;
             Pole = pole;
             Target = target;
-            Target.position = Root.position + Vector3.forward * 0.1f;
+            Target.position = leaf.position + Vector3.forward * 0.1f;
+            Target.parent = leaf;
             
             Pole.parent =  leaf.parent;
             Pole.position = Pole.parent.position+ Vector3.back * 0.2f;
