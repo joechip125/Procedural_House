@@ -11,10 +11,12 @@ namespace RobotGame.Scripts.IK
         public Quaternion StartRotation;
         public float BoneLength;
 
-        public IKBone(Transform bone)
+        public IKBone(Transform bone, Vector3 startDirection, Quaternion startRotation)
         {
             Bone = bone;
-            StartDirection
+            StartRotation = startRotation;
+            StartDirection = startDirection;
+            BoneLength = 0;
         }
     }
 }

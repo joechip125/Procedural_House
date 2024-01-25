@@ -15,6 +15,8 @@ namespace RobotGame.Scripts.IK
         public Transform Leaf;
         private Quaternion StartRotationTarget;
 
+        private float completeLength;
+
         public IKLimb(Transform leaf, Transform target, Transform pole, int chainLength = 2)
         {
             bones = new IKBone[chainLength + 1];
@@ -29,6 +31,13 @@ namespace RobotGame.Scripts.IK
         private void Initialize()
         {
             Root = Leaf;
+            for (var i = 0; i <= bones.Length - 1; i++)
+            {
+                if (Root.parent == null) break;
+                Root = Root.parent;
+            }
+            StartRotationTarget = GetRotationRootSpace(Target);
+            
             var bone = new IKBone();
             for (var i = 0; i <= bones.Length - 1; i++)
             {
@@ -57,7 +66,7 @@ namespace RobotGame.Scripts.IK
 
             StartRotationTarget = GetRotationRootSpace(Target);
 
-            var CompleteLength = 0;
+            completeLength = 0f;
             for (var i = bones.Length - 1; i >= 0; i--)
             {
                 bones[i].Bone = current;
@@ -70,8 +79,8 @@ namespace RobotGame.Scripts.IK
                 else
                 {
                     bones[i].StartDirection = GetPositionRootSpace(bones[i + 1].Bone) - GetPositionRootSpace(current);
-                    BonesLength[i] = bones[i].StartDirection.magnitude;
-                    CompleteLength += BonesLength[i];
+                    bones[i].BoneLength = bones[i].StartDirection.magnitude;
+                    completeLength += bones[i].BoneLength;
                 }
             
                 current = current.parent;
