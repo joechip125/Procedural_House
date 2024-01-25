@@ -26,11 +26,8 @@ namespace RobotGame.Scripts.IK
         [SerializeField]
         public Vector3 gravity;
 
-        private SplineContainer spline = new();
+        private Spline spline;
 
-        [SerializeField] 
-        private GameObject splinePrefab;
-        
         private BezierKnot startKnot;
         private BezierKnot endKnot;
         
@@ -63,7 +60,7 @@ namespace RobotGame.Scripts.IK
 
         private void SplineTest()
         {
-            transform.AddComponent<SplineContainer>();
+            spline ??= transform.AddComponent<SplineContainer>().Spline;
             
             var startPos = leafNodes.Count > 1 ? leafNodes[2].position: transform.position;
             var startTangent = new Vector3(0,0.25f, 0.3f);
@@ -80,12 +77,12 @@ namespace RobotGame.Scripts.IK
             endKnot = new BezierKnot()
             {
                 Position = startPos + Vector3.forward * 0.8f,
-                TangentIn = -startTangent,
-                TangentOut = -endTangent,
+                TangentIn = startTangent,
+                TangentOut = endTangent,
                 Rotation = Quaternion.identity
-            };
-            //spline.Add(startKnot);
-            //spline.Add(endKnot);
+            }; 
+            spline.Add(startKnot);
+            spline.Add(endKnot);
         }
         
         private void TestParabola()

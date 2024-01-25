@@ -35,8 +35,7 @@ namespace RobotGame.Scripts.IK
             Root = leaf;
             Pole = pole;
             Target = target;
-            Target.parent = leaf;
-            Target.localPosition = Vector3.zero;
+            Target.position = leaf.position;
             
             Pole.parent =  leaf.parent;
             Pole.position = Pole.parent.position+ Vector3.back * 0.2f;
