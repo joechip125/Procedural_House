@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace RobotGame.Scripts.IK
 {
-
     [Serializable]
     public class FastIKFabricBase
     {
@@ -118,7 +117,6 @@ namespace RobotGame.Scripts.IK
                         SnapBackStrength);
                 }
                 
-
                 for (int iteration = 0; iteration < Iterations; iteration++)
                 {
                     //back
@@ -152,7 +150,6 @@ namespace RobotGame.Scripts.IK
                 Positions[i] = Quaternion.AngleAxis(angle, plane.normal) * (Positions[i] - Positions[i - 1]) + Positions[i - 1];
             }
             
-
             //set position & rotation
             for (int i = 0; i < Positions.Length; i++)
             {
@@ -166,7 +163,6 @@ namespace RobotGame.Scripts.IK
                     SetRotationRootSpace(Bones[i], Quaternion.FromToRotation(StartDirectionSucc[i], Positions[i + 1] - Positions[i]) *
                                                    Quaternion.Inverse(StartRotationBone[i]), i);
                 }
-
                 SetPositionRootSpace(Bones[i], Positions[i]);
             }
         }
