@@ -15,21 +15,19 @@ using UnityEngine;
         Vector3 acceleration;
         public Vector3[] samplePositions;
         
-        public float Plot(Vector3 startPos, Vector3 endPos, float speed, Vector3 gravity, bool shortest=true)
+        public float Plot( float speed, Vector3 gravity, bool shortest=true)
         {
-            Vector3 direction = endPos - startPos;
+            Vector3 direction = end - start;
             Vector3 horizontalDirection = Vector3.ProjectOnPlane(direction, -gravity.normalized);
             float verticalDifference = Vector3.Dot( direction, -gravity.normalized );
             float horizontalDistance = horizontalDirection.magnitude;
             
-            Debug.DrawLine(startPos,startPos+horizontalDirection,Color.red, 12f);
-            Debug.DrawLine(startPos + horizontalDirection, startPos + horizontalDirection + Vector3.up * verticalDifference, Color.yellow, 12f);
+            Debug.DrawLine(start,start+horizontalDirection,Color.red, 12f);
+            Debug.DrawLine(start + horizontalDirection, start + horizontalDirection + Vector3.up * verticalDifference, Color.yellow, 12f);
             Vector2 d = new Vector2(horizontalDistance, verticalDifference);
             float speedSqr = speed * speed;
             float g = gravity.magnitude;
-            start = startPos;
-            end = endPos;
-            
+
             float k = speedSqr / (g * d.x);
             float rootTerm2 = -1 + speedSqr * (speedSqr - 2 * g * d.y) / (g * g * d.x * d.x);
             if (rootTerm2 < 0)
@@ -46,20 +44,22 @@ using UnityEngine;
             acceleration = g * Vector3.down;
             startVel = horizontalSpeedComponent * horizontalDirection.normalized + verticalSpeedComponent * Vector3.up;
     
-            Debug.DrawLine(startPos, startPos+startVel, Color.green );
+            Debug.DrawLine(start, start+startVel, Color.green );
             
             //duration
             return horizontalDistance / horizontalSpeedComponent;
         }
 
-        public void GetSamples(Vector3 startPos,Vector3 startVelocity,Vector3 theAcceleration, int numSamples = 12)
+        public void GetSamples(Vector3 startPos,Vector3 endPos,Vector3 gravity, float speed, int numSamples = 12)
         {
             samplePositions = new Vector3[numSamples];
             var interval = 1f / numSamples;
             var totalTime = 0f;
+            
             start = startPos;
-            startVel = startVelocity;
-            acceleration = theAcceleration;
+            end = endPos;
+            startVel = endPos;
+            Plot(speed, gravity);
 
             for (int i = 0; i < numSamples; i++)
             {
