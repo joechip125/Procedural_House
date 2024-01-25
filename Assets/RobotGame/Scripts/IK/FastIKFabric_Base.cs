@@ -30,8 +30,6 @@ namespace RobotGame.Scripts.IK
         public Quaternion[] StartRotationBone;
         public Quaternion StartRotationTarget;
 
-        public IKBone[] IKBones;
-
         public FastIKFabricBase(Transform leaf, Transform target, Transform pole, int chainLength = 2)
         {
             Root = leaf;
@@ -53,7 +51,6 @@ namespace RobotGame.Scripts.IK
             BonesLength = new float[ChainLength];
             StartDirectionSucc = new Vector3[ChainLength + 1];
             StartRotationBone = new Quaternion[ChainLength + 1];
-            IKBones = new IKBone[ChainLength + 1];
 
             var current = Root;
             

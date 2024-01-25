@@ -23,12 +23,27 @@ namespace RobotGame.Scripts.IK
             Pole = pole;
             Leaf = leaf;
             
+            
             Init();
         }
 
         private void Init()
         {
-            
+            Root = Leaf;
+            var bone = new IKBone();
+            for (var i = 0; i <= bones.Length - 1; i++)
+            {
+                bones[i] = new IKBone();
+                if (Root.parent == null)
+                {
+                    break;
+                }
+                else
+                {
+                    
+                }
+                Root = Root.parent;
+            }
         }
         
         private Vector3 GetPositionRootSpace(Transform current)
