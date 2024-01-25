@@ -78,13 +78,6 @@ namespace RobotGame.Scripts.IK
         
         public void ResolveIK()
         {
-            //Fabric
-
-            //  root
-            //  (bone0) (bonelen 0) (bone1) (bonelen 1) (bone2)...
-            //   x--------------------x--------------------x---...
-
-            //get position
             for (int i = 0; i < Bones.Length; i++)
             {
                 Positions[i] = GetPositionRootSpace(Bones[i]);
@@ -92,13 +85,10 @@ namespace RobotGame.Scripts.IK
 
             var targetPosition = GetPositionRootSpace(Target);
             var targetRotation = GetRotationRootSpace(Target);
-
-            //1st is possible to reach?
+            
             if ((targetPosition - GetPositionRootSpace(Bones[0])).sqrMagnitude >= CompleteLength * CompleteLength)
             {
-                //just strech it
                 var direction = (targetPosition - Positions[0]).normalized;
-                //set everything after root
                 for (int i = 1; i < Positions.Length; i++)
                 {
                     Positions[i] = Positions[i - 1] + direction * BonesLength[i - 1];
@@ -114,27 +104,21 @@ namespace RobotGame.Scripts.IK
                 
                 for (int iteration = 0; iteration < Iterations; iteration++)
                 {
-                    //back
                     for (int i = Positions.Length - 1; i > 0; i--)
                     {
                         if (i == Positions.Length - 1)
-                            Positions[i] = targetPosition; //set it to target
+                            Positions[i] = targetPosition;
                         else
                             Positions[i] = Positions[i + 1] + (Positions[i] - Positions[i + 1]).normalized * BonesLength[i]; //set in line on distance
                     }
-
-                    //forward
                     for (int i = 1; i < Positions.Length; i++)
                         Positions[i] = Positions[i - 1] + (Positions[i] - Positions[i - 1]).normalized * BonesLength[i - 1];
-
-                    //close enough?
+                    
                     if ((Positions[^1] - targetPosition).sqrMagnitude < Delta * Delta)
                         break;
                 }
             }
 
-            //move towards pole
-            
             var polePosition = GetPositionRootSpace(Pole);
             for (int i = 1; i < Positions.Length - 1; i++)
             {
@@ -145,19 +129,19 @@ namespace RobotGame.Scripts.IK
                 Positions[i] = Quaternion.AngleAxis(angle, plane.normal) * (Positions[i] - Positions[i - 1]) + Positions[i - 1];
             }
             
-            //set position & rotation
             for (int i = 0; i < Positions.Length; i++)
             {
                 if (i == Positions.Length - 1)
                 {
-                    SetRotationRootSpace(Bones[i], Quaternion.Inverse(targetRotation) * StartRotationTarget * Quaternion.Inverse(StartRotationBone[i]), i);
+                    SetRotationRootSpace(Bones[i], 
+                        Quaternion.Inverse(targetRotation) * StartRotationTarget * 
+                        Quaternion.Inverse(StartRotationBone[i]), i);
                 }
                 
-                else
-                {
-                    SetRotationRootSpace(Bones[i], Quaternion.FromToRotation(StartDirectionSucc[i], Positions[i + 1] - Positions[i]) *
-                                                   Quaternion.Inverse(StartRotationBone[i]), i);
-                }
+                else SetRotationRootSpace(Bones[i], 
+                    Quaternion.FromToRotation(StartDirectionSucc[i], Positions[i + 1] - Positions[i]) *
+                    Quaternion.Inverse(StartRotationBone[i]), i);
+                
                 SetPositionRootSpace(Bones[i], Positions[i]);
             }
         }

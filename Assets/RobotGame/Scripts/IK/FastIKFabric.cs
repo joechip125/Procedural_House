@@ -195,13 +195,16 @@ namespace RobotGame.Scripts.IK
             {
                 if (i == Positions.Length - 1)
                 {
-                    SetRotationRootSpace(Bones[i], Quaternion.Inverse(targetRotation) * StartRotationTarget * Quaternion.Inverse(StartRotationBone[i]), i);
+                    SetRotationRootSpace(Bones[i], 
+                        Quaternion.Inverse(targetRotation) * StartRotationTarget * 
+                        Quaternion.Inverse(StartRotationBone[i]));
                 }
                 
                 else
                 {
-                    SetRotationRootSpace(Bones[i], Quaternion.FromToRotation(StartDirectionSucc[i], Positions[i + 1] - Positions[i]) *
-                                                   Quaternion.Inverse(StartRotationBone[i]), i);
+                    SetRotationRootSpace(Bones[i], 
+                        Quaternion.FromToRotation(StartDirectionSucc[i], Positions[i + 1] - Positions[i]) *
+                        Quaternion.Inverse(StartRotationBone[i]));
                 }
 
                 SetPositionRootSpace(Bones[i], Positions[i]);
@@ -233,7 +236,7 @@ namespace RobotGame.Scripts.IK
                 return Quaternion.Inverse(current.rotation) * Root.rotation;
         }
 
-        private void SetRotationRootSpace(Transform current, Quaternion rotation, int index)
+        private void SetRotationRootSpace(Transform current, Quaternion rotation)
         {
             if (Root == null)
                 current.rotation = rotation;
